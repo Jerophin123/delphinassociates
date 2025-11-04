@@ -22,6 +22,7 @@ export default function Header() {
   const [isScrollingUp, setIsScrollingUp] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -29,8 +30,18 @@ export default function Header() {
       setViewportHeight(window.innerHeight);
     };
     
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+    
+    const handleResize = () => {
+      updateViewportHeight();
+      checkMobile();
+    };
+    
     updateViewportHeight();
-    window.addEventListener("resize", updateViewportHeight);
+    checkMobile();
+    window.addEventListener("resize", handleResize);
     
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -53,12 +64,13 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", updateViewportHeight);
+      window.removeEventListener("resize", handleResize);
     };
   }, [lastScrollY]);
 
   // Determine header style based on scroll state and current page
   const isHomePage = pathname === "/";
+  const isInHeroSection = scrollY < viewportHeight * 1.1;
   
   let headerStyle = "bg-white shadow-md";
   let textStyle = "text-gray-700";
@@ -69,7 +81,12 @@ export default function Header() {
     const isAtHeroEnd = scrollY >= viewportHeight * 0.7 && scrollY <= viewportHeight * 1.1;
     const isPastHero = scrollY > viewportHeight * 1.1;
 
-    if (isAtTop) {
+    // Check if mobile menu is open on mobile in hero section
+    if (isMobile && isMobileMenuOpen && isInHeroSection) {
+      // Mobile menu open in hero section - translucent background
+      headerStyle = "bg-primary-dark/80 backdrop-blur-md shadow-lg border-b border-white/10";
+      textStyle = "text-white";
+    } else if (isAtTop) {
       // At the very top of the page - fully transparent
       headerStyle = "bg-transparent";
       textStyle = "text-white";

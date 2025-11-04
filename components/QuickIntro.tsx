@@ -41,7 +41,7 @@ export default function QuickIntro() {
             <div className="space-y-6 mb-8">
               <p className="text-lg text-gray-700 leading-relaxed">
                 Delphin Associates was established in <strong className="text-primary">1999</strong> by{" "}
-                <strong className="text-primary">Er. Delphin P. Stanley (DCE, B.Tech)</strong>, leading a team of 
+                <strong className="text-primary">Mr. Delphin P. Stanley (DCE, B.Tech)</strong>, leading a team of 
                 young engineers across Tamil Nadu. Our organization provides building consultancy,
                 construction, and project execution services for residential,
                 industrial, commercial, institutional, and church projects.

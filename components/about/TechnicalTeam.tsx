@@ -5,7 +5,7 @@ import { User, Award, Briefcase } from "lucide-react";
 
 const technicalTeam = [
   {
-    name: "Er. S.M. Darwin Rholland",
+    name: "Mr. S.M. Darwin Rholland",
     designation: "Technical Division Leader",
     description:
       "Leads the technical division with focus on precision planning, design innovation, and quality-driven execution. Ensures all projects meet the highest technical standards.",

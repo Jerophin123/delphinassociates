@@ -5,14 +5,14 @@ import { User, Award } from "lucide-react";
 
 const managementTeam = [
   {
-    name: "Er. Delphin P. Stanley",
+    name: "Mr. Delphin P. Stanley",
     designation: "Founder & Managing Director",
     qualifications: "DCE, B.Tech",
     description:
       "Established Delphin Associates in 1999 with a vision to provide quality construction services. Leads the organization with over 25 years of experience in civil construction.",
   },
   {
-    name: "Er. B.S. Sundar Singh",
+    name: "Mr. B.S. Sundar Singh",
     designation: "Management Team Leader",
     description:
       "Ensures transparency in financial systems and timely project completion. Manages operations with a focus on client satisfaction and organizational efficiency.",
