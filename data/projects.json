@@ -1,0 +1,138 @@
+[
+  {
+    "id": 1,
+    "title": "CSI Church Building - Madipakkam",
+    "category": "Church",
+    "location": "Madipakkam, Chennai",
+    "description": "Complete design and construction of CSI church building with modern architecture and sustainable design principles.",
+    "year": "2020"
+  },
+  {
+    "id": 2,
+    "title": "CSI Church Building - Thiruvottiyur",
+    "category": "Church",
+    "location": "Thiruvottiyur, Chennai",
+    "description": "Sacred space designed and built with attention to architectural aesthetics and community needs.",
+    "year": "2019"
+  },
+  {
+    "id": 3,
+    "title": "CSI Church Building - Irumbedu",
+    "category": "Church",
+    "location": "Irumbedu, Tamil Nadu",
+    "description": "Community-focused church building project emphasizing functionality and spiritual atmosphere.",
+    "year": "2021"
+  },
+  {
+    "id": 4,
+    "title": "CSI Church Building - Wallajabad",
+    "category": "Church",
+    "location": "Wallajabad, Tamil Nadu",
+    "description": "Modern church building with traditional elements, completed on schedule with high quality standards.",
+    "year": "2018"
+  },
+  {
+    "id": 5,
+    "title": "Residential Flats - T. Nagar",
+    "category": "Residential",
+    "location": "T. Nagar, Chennai",
+    "description": "Premium residential apartment complex with modern amenities and luxurious finishes.",
+    "year": "2022"
+  },
+  {
+    "id": 6,
+    "title": "Residential Flats - West Mambalam",
+    "category": "Residential",
+    "location": "West Mambalam, Chennai",
+    "description": "Deluxe residential flats designed for comfort and elegance, featuring spacious layouts.",
+    "year": "2021"
+  },
+  {
+    "id": 7,
+    "title": "Residential Flats - Kolathur",
+    "category": "Residential",
+    "location": "Kolathur, Chennai",
+    "description": "Economical yet high-quality residential flats emphasizing value and durability.",
+    "year": "2020"
+  },
+  {
+    "id": 8,
+    "title": "Residential Flats - Chengalpattu",
+    "category": "Residential",
+    "location": "Chengalpattu, Tamil Nadu",
+    "description": "Super deluxe flats with premium finishes and modern architectural design.",
+    "year": "2023"
+  },
+  {
+    "id": 9,
+    "title": "Residential Flats - Porur",
+    "category": "Residential",
+    "location": "Porur, Chennai",
+    "description": "Contemporary residential complex with sustainable building practices and green spaces.",
+    "year": "2022"
+  },
+  {
+    "id": 10,
+    "title": "Industrial Building - Ford Alliance Group",
+    "category": "Industrial",
+    "location": "Chennai",
+    "description": "Large-scale industrial facility designed for manufacturing operations with modern infrastructure.",
+    "year": "2019"
+  },
+  {
+    "id": 11,
+    "title": "Factory Building - MM Nagar",
+    "category": "Industrial",
+    "location": "MM Nagar, Chennai",
+    "description": "State-of-the-art factory building with efficient space utilization and compliance standards.",
+    "year": "2020"
+  },
+  {
+    "id": 12,
+    "title": "Industrial Complex - Poonamallee",
+    "category": "Industrial",
+    "location": "Poonamallee, Chennai",
+    "description": "Comprehensive industrial complex with multiple facilities and support infrastructure.",
+    "year": "2021"
+  },
+  {
+    "id": 13,
+    "title": "Mangadu College Building",
+    "category": "Institutional",
+    "location": "Mangadu, Chennai",
+    "description": "Educational institution building with classrooms, laboratories, and administrative facilities.",
+    "year": "2019"
+  },
+  {
+    "id": 14,
+    "title": "Peri College of Engineering",
+    "category": "Institutional",
+    "location": "Chennai",
+    "description": "Engineering college campus with modern academic blocks, labs, and student facilities.",
+    "year": "2020"
+  },
+  {
+    "id": 15,
+    "title": "Cottage/Guest Houses - Ooty",
+    "category": "Residential",
+    "location": "Ooty, Tamil Nadu",
+    "description": "Charming cottage and guest house project in the scenic hill station, blending with natural surroundings.",
+    "year": "2018"
+  },
+  {
+    "id": 16,
+    "title": "Community Road Formation Project",
+    "category": "Infrastructure",
+    "location": "Various Locations",
+    "description": "Road formation and infrastructure development for community-based projects across Tamil Nadu.",
+    "year": "2022"
+  },
+  {
+    "id": 17,
+    "title": "Land Survey & Drainage Works",
+    "category": "Infrastructure",
+    "location": "Various Locations",
+    "description": "Comprehensive land surveying and drainage system implementation for community development.",
+    "year": "2021"
+  }
+]
