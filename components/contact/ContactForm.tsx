@@ -17,7 +17,7 @@ export default function ContactForm() {
   const [error, setError] = useState("");
 
   // Google Apps Script web app URL (linked to Google Sheets)
-  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwHgHV_5X71EqEzmH5rnLn5FODjkdMkzPufGA4Sdln4IM99B6Gjmp6OHjUh1dcwH0dV/exec";
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzbV8LmKcIPBhrlolsmXbo1j4RnMl-0umCQdsBKUjd9nouH05jP0xJzklg1GCDVY8Hx/exec";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
