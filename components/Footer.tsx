@@ -77,7 +77,7 @@ export default function Footer() {
                   <FaInstagram size={24} />
                 </a>
                 <a
-                  href="https://x.com/Delphinass75358"
+                  href="https://x.com/delphin75358"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-white transition-colors"
