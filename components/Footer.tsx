@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Phone, Mail, MapPin } from "lucide-react";
+import { FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -56,6 +58,41 @@ export default function Footer() {
                   className="hover:text-white transition-colors"
                 >
                   nanchilassociates@gmail.com
+                </a>
+              </div>
+            </div>
+            {/* Social Media Links */}
+            <div className="mt-6">
+              <h4 className="text-sm font-semibold text-white mb-3">
+                Follow Us
+              </h4>
+              <div className="flex items-center space-x-4">
+                <a
+                  href="https://www.instagram.com/delphinassociatesofficial/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors"
+                  aria-label="Instagram"
+                >
+                  <FaInstagram size={24} />
+                </a>
+                <a
+                  href="https://x.com/Delphinass75358"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors"
+                  aria-label="X (formerly Twitter)"
+                >
+                  <FaXTwitter size={24} />
+                </a>
+                <a
+                  href="https://www.linkedin.com/company/delphin-associates"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors"
+                  aria-label="LinkedIn"
+                >
+                  <FaLinkedin size={24} />
                 </a>
               </div>
             </div>
