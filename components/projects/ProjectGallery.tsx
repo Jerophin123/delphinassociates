@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import projectsData from "@/data/projects.json";
 
 type Project = {
@@ -11,6 +12,7 @@ type Project = {
   location: string;
   description: string;
   year?: string;
+  image?: string;
 };
 
 const categories = ["All", "Church", "Residential", "Industrial", "Institutional", "Infrastructure"];
@@ -59,20 +61,42 @@ export default function ProjectGallery() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.05 }}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
+              className="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
             >
-              <div className="relative h-48 bg-gradient-to-br from-accent/20 to-primary/20">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-6xl opacity-30">
-                    {project.category === "Church" && "⛪"}
-                    {project.category === "Residential" && "🏠"}
-                    {project.category === "Industrial" && "🏭"}
-                    {project.category === "Institutional" && "🏫"}
-                    {project.category === "Infrastructure" && "🛣️"}
-                    {!["Church", "Residential", "Industrial", "Institutional", "Infrastructure"].includes(project.category) && "🏗️"}
+              <div className="relative h-48 bg-gradient-to-br from-accent/20 to-primary/20 overflow-hidden">
+                {/* Project Image */}
+                {project.image ? (
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                ) : (
+                  /* Fallback gradient background */
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-primary/20"></div>
+                )}
+                
+                {/* Dark gradient overlay for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent z-[1]"></div>
+                
+                {/* Fallback emoji if no image */}
+                {!project.image && (
+                  <div className="absolute inset-0 flex items-center justify-center z-[1]">
+                    <div className="text-6xl opacity-30">
+                      {project.category === "Church" && "⛪"}
+                      {project.category === "Residential" && "🏠"}
+                      {project.category === "Industrial" && "🏭"}
+                      {project.category === "Institutional" && "🏫"}
+                      {project.category === "Infrastructure" && "🛣️"}
+                      {!["Church", "Residential", "Industrial", "Institutional", "Infrastructure"].includes(project.category) && "🏗️"}
+                    </div>
                   </div>
-                </div>
-                <div className="absolute top-4 right-4">
+                )}
+                
+                {/* Category Badge */}
+                <div className="absolute top-4 right-4 z-10">
                   <span className="bg-accent text-white px-3 py-1 rounded-full text-xs font-semibold">
                     {project.category}
                   </span>

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, MapPin, Calendar } from "lucide-react";
 
 const featuredProjects = [
@@ -12,6 +13,7 @@ const featuredProjects = [
     location: "Multiple Locations",
     description: "Design and construction of church buildings across Tamil Nadu",
     year: "2020-2024",
+    image: "/projects/church-buildings.jpg",
   },
   {
     id: 2,
@@ -20,6 +22,7 @@ const featuredProjects = [
     location: "T. Nagar, West Mambalam, Kolathur",
     description: "Premium residential flats with modern amenities",
     year: "2018-2023",
+    image: "/projects/residential-flats.jpg",
   },
   {
     id: 3,
@@ -28,6 +31,7 @@ const featuredProjects = [
     location: "Ford Alliance Group, MM Nagar",
     description: "Large-scale industrial and factory buildings",
     year: "2019-2022",
+    image: "/projects/industrial-buildings.jpg",
   },
 ];
 
@@ -65,20 +69,40 @@ export default function ProjectHighlights() {
             >
               {/* Image Container */}
               <div className="relative h-64 bg-gradient-to-br from-primary via-primary-light to-primary-dark overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-8xl opacity-20 group-hover:opacity-30 group-hover:scale-110 transition-all duration-500">🏗️</div>
-                </div>
+                {/* Project Image */}
+                {project.image ? (
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority={index === 0}
+                  />
+                ) : (
+                  /* Fallback gradient background */
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-light to-primary-dark"></div>
+                )}
+                
+                {/* Dark gradient overlay for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent z-[1]"></div>
+                
+                {/* Fallback emoji if no image */}
+                {!project.image && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-8xl opacity-20 group-hover:opacity-30 group-hover:scale-110 transition-all duration-500">🏗️</div>
+                  </div>
+                )}
                 
                 {/* Category Badge */}
-                <div className="absolute top-4 left-4">
+                <div className="absolute top-4 left-4 z-10">
                   <span className="px-3 py-1 bg-accent text-white rounded-full text-xs font-bold uppercase tracking-wide">
                     {project.category}
                   </span>
                 </div>
 
                 {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-accent/0 group-hover:bg-accent/20 transition-all duration-500"></div>
+                <div className="absolute inset-0 bg-accent/0 group-hover:bg-accent/20 transition-all duration-500 z-10"></div>
               </div>
 
               {/* Content */}
