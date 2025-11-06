@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Send, CheckCircle, AlertCircle } from "lucide-react";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { getDb } from "@/lib/firebase";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -15,9 +17,6 @@ export default function ContactForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
-
-  // Google Apps Script web app URL (linked to Google Sheets)
-  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzbV8LmKcIPBhrlolsmXbo1j4RnMl-0umCQdsBKUjd9nouH05jP0xJzklg1GCDVY8Hx/exec";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,29 +31,19 @@ export default function ContactForm() {
     }
 
     try {
-      // Prepare JSON data matching the Google Apps Script expected format
-      // The script expects: fullName, email, phone, subject, message
-      const payload = {
+      // Get Firestore instance (client-side only)
+      const db = getDb();
+
+      // Save to Firebase Firestore
+      await addDoc(collection(db, "contacts"), {
         fullName: formData.name,
         email: formData.email,
         phone: formData.phone,
         subject: formData.subject,
         message: formData.message,
-      };
-
-      // Submit to Google Apps Script web app
-      // The script expects JSON data in e.postData.contents
-      // Note: With no-cors mode, we can't set custom headers, but the JSON body will still be sent
-      await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors", // Google Apps Script web apps typically require no-cors
-        body: JSON.stringify(payload),
+        timestamp: serverTimestamp(),
       });
 
-      // Note: With no-cors mode, we can't read the response status,
-      // but the submission still works and data is written to Google Sheets
-      // The script returns {result:"success"} or {result:"error", message: err} which we can't access in no-cors mode
-      
       // Show success message
       setIsSubmitted(true);
       setIsSubmitting(false);
@@ -70,9 +59,21 @@ export default function ContactForm() {
       setTimeout(() => {
         setIsSubmitted(false);
       }, 6000);
-    } catch (err) {
-      console.error("Error submitting form:", err);
-      setError("Failed to submit form. Please try again or contact us directly.");
+    } catch (err: any) {
+      console.error("Error saving contact:", err);
+      
+      // Provide more specific error messages
+      let errorMessage = "Failed to submit form. Please try again or contact us directly.";
+      
+      if (err?.code === "permission-denied") {
+        errorMessage = "Permission denied. Please check Firebase security rules.";
+      } else if (err?.code === "unavailable") {
+        errorMessage = "Service temporarily unavailable. Please try again later.";
+      } else if (err?.message) {
+        errorMessage = err.message;
+      }
+      
+      setError(errorMessage);
       setIsSubmitting(false);
     }
   };
