@@ -68,7 +68,7 @@ export default function ProjectGallery() {
                 {project.image ? (
                   <Image
                     src={project.image}
-                    alt={project.title}
+                    alt={`${project.title} - ${project.category} construction project by Delphin Associates in ${project.location}`}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

@@ -6,9 +6,35 @@ import TechnicalTeam from "@/components/about/TechnicalTeam";
 import OrganizationStrengths from "@/components/about/OrganizationStrengths";
 
 export const metadata: Metadata = {
-  title: "About Us | Delphin Associates",
+  title: "About Us",
   description:
-    "Learn about Delphin Associates - established in 1999, providing building consultancy, construction, and project execution services across Tamil Nadu.",
+    "Learn about Delphin Associates - established in 1999, providing building consultancy, construction, and project execution services across Tamil Nadu. Over 25 years of experience in civil construction, residential, industrial, commercial, institutional, and church projects in Chennai.",
+  keywords: [
+    "about Delphin Associates",
+    "construction company history",
+    "building consultancy Chennai",
+    "construction company established 1999",
+    "civil construction Tamil Nadu",
+    "experienced construction company",
+    "Chennai construction experts",
+  ],
+  openGraph: {
+    title: "About Us | Delphin Associates",
+    description:
+      "Learn about Delphin Associates - established in 1999, providing building consultancy, construction, and project execution services across Tamil Nadu. Over 25 years of experience in civil construction.",
+    url: "/about",
+    images: [
+      {
+        url: "/logo.jpg",
+        width: 1200,
+        height: 630,
+        alt: "About Delphin Associates",
+      },
+    ],
+  },
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default function AboutPage() {

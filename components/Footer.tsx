@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { FaInstagram, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
@@ -12,9 +13,16 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
-            <h3 className="text-2xl font-bold text-white mb-4 font-display">
-              Delphin Associates
-            </h3>
+            <div className="mb-4">
+              <Image
+                src="/logo.jpg"
+                alt="Delphin Associates Logo"
+                width={200}
+                height={70}
+                className="h-12 md:h-14 w-auto object-contain"
+                unoptimized
+              />
+            </div>
             <p className="mb-4 text-gray-400">
               You Dream We Build. Building Trust Through Quality Since 1999. Leading civil
               construction company in Chennai, Tamil Nadu, specializing in
@@ -24,7 +32,7 @@ export default function Footer() {
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <MapPin size={18} />
-                <span>Chennai, Tamil Nadu, India</span>
+                <span>Plot No 9, 8th Street, Kubera Nagar, Madipakkam, Chennai - 600 091</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone size={18} />

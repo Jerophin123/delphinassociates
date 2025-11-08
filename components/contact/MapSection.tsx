@@ -34,7 +34,7 @@ export default function MapSection() {
         />
       </div>
       <p className="text-sm text-gray-600 mt-4 text-center">
-        Chennai, Tamil Nadu, India
+        Plot No 9, 8th Street, Kubera Nagar, Madipakkam, Chennai - 600 091
       </p>
       <p className="text-xs text-gray-500 mt-2 text-center">
         <a 

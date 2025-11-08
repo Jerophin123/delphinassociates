@@ -2,9 +2,38 @@ import { Metadata } from "next";
 import ServicesList from "@/components/services/ServicesList";
 
 export const metadata: Metadata = {
-  title: "Our Services | Delphin Associates",
+  title: "Our Services",
   description:
-    "Comprehensive construction and consultancy services including residential, industrial, commercial, institutional, and church projects.",
+    "Comprehensive construction and consultancy services by Delphin Associates. We specialize in residential construction, industrial buildings, commercial projects, institutional structures, and church buildings. Expert building consultancy and project execution services in Chennai, Tamil Nadu.",
+  keywords: [
+    "construction services Chennai",
+    "building consultancy services",
+    "residential construction services",
+    "industrial construction",
+    "commercial construction Chennai",
+    "institutional building construction",
+    "church construction services",
+    "project execution services",
+    "construction consultancy Tamil Nadu",
+    "civil construction services",
+  ],
+  openGraph: {
+    title: "Our Services | Delphin Associates",
+    description:
+      "Comprehensive construction and consultancy services including residential, industrial, commercial, institutional, and church projects. Expert services in Chennai, Tamil Nadu.",
+    url: "/services",
+    images: [
+      {
+        url: "/logo.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Delphin Associates Services",
+      },
+    ],
+  },
+  alternates: {
+    canonical: "/services",
+  },
 };
 
 export default function ServicesPage() {

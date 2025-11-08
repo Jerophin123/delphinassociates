@@ -23,7 +23,7 @@ export default function ContactInfo() {
           <div>
             <h3 className="font-semibold text-gray-900 mb-1">Address</h3>
             <p className="text-gray-700">
-              Chennai, Tamil Nadu, India
+              Plot No 9, 8th Street, Kubera Nagar, Madipakkam, Chennai - 600 091
             </p>
           </div>
         </div>
