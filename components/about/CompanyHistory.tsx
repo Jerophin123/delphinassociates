@@ -17,7 +17,7 @@ export default function CompanyHistory() {
       <div className="prose prose-lg max-w-none">
         <p className="text-gray-700 mb-4">
           Delphin Associates was established in <strong>1999</strong> by{" "}
-          <strong>Er. Delphin P. Stanley (DCE, B.Tech)</strong>, a visionary
+          <strong>Mr. Delphin P. Stanley (DCE, B.Tech)</strong>, a visionary
           leader in the construction industry. Starting with a team of young,
           dedicated engineers across Tamil Nadu, the organization has grown to
           become a trusted name in civil construction and building consultancy.
