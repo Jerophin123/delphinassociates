@@ -139,12 +139,13 @@ export default function SEOStructuredData({ type = "LocalBusiness" }: Structured
     },
   };
 
-  let schema = organizationSchema;
-  if (type === "LocalBusiness") {
-    schema = localBusinessSchema;
-  } else if (type === "WebSite") {
-    schema = websiteSchema;
-  }
+  // Determine schema based on type - using Record<string, any> to allow different schema structures
+  const schema: Record<string, any> = 
+    type === "LocalBusiness" 
+      ? localBusinessSchema 
+      : type === "WebSite" 
+      ? websiteSchema 
+      : organizationSchema;
 
   return (
     <Script

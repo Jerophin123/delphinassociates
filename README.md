@@ -115,4 +115,4 @@ This project is ready for deployment on Vercel:
 
 ## 📜 License
 
-© 2025 Delphin Associates. All rights reserved.
+© 2024 Delphin Associates. All rights reserved.
