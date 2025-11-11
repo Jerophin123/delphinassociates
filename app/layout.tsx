@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -124,6 +125,18 @@ export default function RootLayout({
       >
         <SEOStructuredData type="Organization" />
         <SEOStructuredData type="WebSite" />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-2JT8PG47WJ"
+          strategy="afterInteractive"
+        />
+        <Script id="ga-gtag" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-2JT8PG47WJ');
+          `}
+        </Script>
         <Header />
         <main className="min-h-screen">{children}</main>
         <Footer />
