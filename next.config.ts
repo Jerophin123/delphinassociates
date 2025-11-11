@@ -9,6 +9,22 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    // Force apex domain to redirect to canonical www host
+    return [
+      {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "delphinassociates.com",
+          },
+        ],
+        destination: "https://www.delphinassociates.com/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
