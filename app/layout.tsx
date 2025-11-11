@@ -28,7 +28,11 @@ const getBaseUrl = () => {
     return new URL(process.env.NEXT_PUBLIC_SITE_URL);
   }
   if (process.env.VERCEL_URL) {
-    return new URL(`https://${process.env.VERCEL_URL}`);
+    const vercelHost = process.env.VERCEL_URL;
+    // Never use vercel.app hosts as canonical; fall back to production domain
+    if (!/vercel\.app$/i.test(vercelHost)) {
+      return new URL(`https://${vercelHost}`);
+    }
   }
   return new URL("https://www.delphinassociates.com");
 };
