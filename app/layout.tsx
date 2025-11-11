@@ -30,7 +30,7 @@ const getBaseUrl = () => {
   if (process.env.VERCEL_URL) {
     return new URL(`https://${process.env.VERCEL_URL}`);
   }
-  return new URL("https://delphinassociates.com");
+  return new URL("https://www.delphinassociates.com");
 };
 
 export const metadata: Metadata = {
