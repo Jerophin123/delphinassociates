@@ -92,6 +92,11 @@ export const metadata: Metadata = {
     images: ["/logo.jpg"],
     creator: "@delphin75358",
   },
+  verification: {
+    other: {
+      "msvalidate.01": "C63DE252D84E4F2847C50CE603ADB4B6",
+    },
+  },
   robots: {
     index: true,
     follow: true,
