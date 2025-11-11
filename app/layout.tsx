@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Analytics } from "@vercel/analytics/next";
 import SEOStructuredData from "@/components/SEOStructuredData";
+import GA from "@/components/GA";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -137,6 +138,7 @@ export default function RootLayout({
             gtag('config', 'G-2JT8PG47WJ');
           `}
         </Script>
+        <GA />
         <Header />
         <main className="min-h-screen">{children}</main>
         <Footer />
