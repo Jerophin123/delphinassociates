@@ -5,14 +5,15 @@ interface StructuredDataProps {
 }
 
 export default function SEOStructuredData({ type = "LocalBusiness" }: StructuredDataProps) {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://delphinassociates.com";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.delphinassociates.com";
 
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Delphin Associates",
     url: baseUrl,
-    logo: `${baseUrl}/logo.jpg`,
+    logo: `${baseUrl}/favicon.png`,
     description:
       "Delphin Associates - You Dream We Build. Building Trust Through Quality Since 1999. Leading civil construction company in Chennai, Tamil Nadu.",
     foundingDate: "1999",
@@ -34,7 +35,7 @@ export default function SEOStructuredData({ type = "LocalBusiness" }: Structured
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: "Delphin Associates",
-    image: `${baseUrl}/logo.jpg`,
+    image: `${baseUrl}/favicon.png`,
     "@id": baseUrl,
     url: baseUrl,
     telephone: "+91-98412-43345",
