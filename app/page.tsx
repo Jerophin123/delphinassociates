@@ -6,7 +6,7 @@ import ServicesPreview from "@/components/ServicesPreview";
 import CTASection from "@/components/CTASection";
 
 export const metadata: Metadata = {
-  title: "Home",
+  title: "Delphin Associates",
   description:
     "Delphin Associates - You Dream We Build. Leading civil construction company in Chennai, Tamil Nadu since 1999. Specializing in residential, industrial, commercial, institutional, and church construction projects. Expert building consultancy and construction services.",
   keywords: [
