@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { Suspense } from "react";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -138,7 +139,9 @@ export default function RootLayout({
             gtag('config', 'G-2JT8PG47WJ');
           `}
         </Script>
-        <GA />
+        <Suspense fallback={null}>
+          <GA />
+        </Suspense>
         <Header />
         <main className="min-h-screen">{children}</main>
         <Footer />
