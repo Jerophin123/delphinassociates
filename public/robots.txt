@@ -1,7 +1,21 @@
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+User-agent: bingbot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# Fallback for all other crawlers
 User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /admin/
+
+# Canonical host declaration (used by some crawlers like Bing)
+Host: www.delphinassociates.com
 
 Sitemap: https://www.delphinassociates.com/sitemap.xml
 
