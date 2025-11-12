@@ -109,8 +109,7 @@ export default function ServicesList() {
                         duration: 0.3,
                         delay: index * 0.1 + 0.2
                       }}
-                      whileHover={{ scale: 1.15 }}
-                      transition={{ duration: 0.2 }}
+                      whileHover={{ scale: 1.15, transition: { duration: 0.2 } }}
                     >
                       <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-accent flex-shrink-0" />
                     </motion.div>
