@@ -143,5 +143,14 @@
     "description": "Comprehensive land surveying and drainage system implementation for community development.",
     "year": "2021",
     "image": "/projects/infrastructure-drainage.jpg"
+  },
+  {
+    "id": 18,
+    "title": "CSI Arul Church - Madhavaram",
+    "category": "Church",
+    "location": "Madhavaram, Chennai",
+    "description": "Ongoing construction of CSI church building with modern architecture and sustainable design principles.",
+    "year": "2025",
+    "image": "/projects/church-madhavaram.jpg"
   }
 ]

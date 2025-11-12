@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { MapPin, Calendar } from "lucide-react";
 import projectsData from "@/data/projects.json";
 
 type Project = {
@@ -61,9 +63,13 @@ export default function ProjectGallery() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.05 }}
-              className="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
+              className="h-full"
             >
-              <div className="relative h-48 bg-gradient-to-br from-accent/20 to-primary/20 overflow-hidden">
+              <Link
+                href={`/projects/${project.id}`}
+                className="group block h-full bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow focus:outline-none focus:ring-2 focus:ring-accent/40"
+              >
+                <div className="relative h-48 bg-gradient-to-br from-accent/20 to-primary/20 overflow-hidden">
                 {/* Project Image */}
                 {project.image ? (
                   <Image
@@ -101,22 +107,24 @@ export default function ProjectGallery() {
                     {project.category}
                   </span>
                 </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-2 text-primary">
-                  {project.title}
-                </h3>
-                <p className="text-gray-600 text-sm mb-2 flex items-center">
-                  <span className="mr-1">📍</span>
-                  {project.location}
-                </p>
-                {project.year && (
-                  <p className="text-gray-500 text-sm mb-3">
-                    Year: {project.year}
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-2 text-primary">
+                    {project.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-2 flex items-center">
+                    <MapPin className="mr-1 h-4 w-4 text-accent" />
+                    {project.location}
                   </p>
-                )}
-                <p className="text-gray-700">{project.description}</p>
-              </div>
+                  {project.year && (
+                    <p className="text-gray-500 text-sm mb-3 flex items-center">
+                      <Calendar className="mr-1 h-4 w-4 text-accent" />
+                      Year: {project.year}
+                    </p>
+                  )}
+                  <p className="text-gray-700">{project.description}</p>
+                </div>
+              </Link>
             </motion.div>
           ))}
         </motion.div>

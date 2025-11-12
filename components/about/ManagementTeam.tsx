@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { User, Award } from "lucide-react";
+import { User, Award, Crown } from "lucide-react";
 
 const managementTeam = [
   {
@@ -10,10 +10,12 @@ const managementTeam = [
     qualifications: "DCE, B.Tech",
     description:
       "Established Delphin Associates in 1999 with a vision to provide quality construction services. Leads the organization with over 25 years of experience in civil construction.",
+    isFounder: true,
   },
   {
     name: "Mr. B.S. Sundar Singh",
     designation: "Management Team Leader",
+    qualifications: "DCE, B.Tech",
     description:
       "Ensures transparency in financial systems and timely project completion. Manages operations with a focus on client satisfaction and organizational efficiency.",
   },
@@ -39,8 +41,14 @@ export default function ManagementTeam() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: index * 0.1 }}
-            className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow"
+            className="relative bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow"
           >
+            {member.isFounder && (
+              <span className="absolute top-4 right-4 inline-flex items-center gap-1 rounded-full bg-yellow-400 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-yellow-950 shadow">
+                <Crown size={14} />
+                Founder
+              </span>
+            )}
             <div className="flex items-start space-x-4">
               <div className="w-16 h-16 bg-gradient-to-br from-accent/20 to-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
                 <User className="w-8 h-8 text-primary" />

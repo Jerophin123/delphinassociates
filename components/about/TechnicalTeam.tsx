@@ -6,6 +6,7 @@ import { User, Award, Briefcase } from "lucide-react";
 const technicalTeam = [
   {
     name: "Mr. S.M. Darwin Rholland",
+    qualifications: "B.Tech",
     designation: "Technical Division Leader",
     description:
       "Leads the technical division with focus on precision planning, design innovation, and quality-driven execution. Ensures all projects meet the highest technical standards.",
@@ -17,19 +18,19 @@ const technicalTeam = [
     description: "Experienced engineer specializing in project planning and execution.",
   },
   {
-    name: "Mr. Janarthanan",
+    name: "Mr. Janarthanan. S",
     qualifications: "DCE",
     experience: "10 years experience",
     description: "Skilled engineer with expertise in structural design and quality control.",
   },
   {
-    name: "Mr. John Griffin",
+    name: "Mr. John Griffin. C",
     qualifications: "DCE Civil",
     experience: "6 years experience",
     description: "Dedicated engineer focusing on residential and commercial projects.",
   },
   {
-    name: "Mr. Glenn Grifton",
+    name: "Mr. Glenn Grifton. C",
     qualifications: "BE Civil",
     experience: "4 years experience",
     description: "Young professional engineer contributing to innovative construction solutions.",
