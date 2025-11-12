@@ -9,9 +9,9 @@ export default function CompanyHistory() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
-      className="mb-16"
+      className="mb-8 sm:mb-12 md:mb-16"
     >
-      <h2 className="text-3xl font-bold mb-6 text-primary font-display">
+      <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-primary font-display">
         Our History
       </h2>
       <div className="prose prose-lg max-w-none">

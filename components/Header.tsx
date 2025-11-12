@@ -159,7 +159,12 @@ export default function Header() {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            <motion.div
+              animate={isMobileMenuOpen ? { rotate: 90 } : { rotate: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </motion.div>
           </button>
         </div>
 

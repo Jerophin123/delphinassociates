@@ -73,7 +73,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pb-8 md:pb-0">
       {/* Video Background - covers full viewport including header area */}
       <div className="fixed inset-0 w-full h-full z-0">
         <video
@@ -137,7 +137,7 @@ export default function Hero() {
       <div className="absolute top-20 left-10 w-72 h-72 bg-accent/10 rounded-full blur-3xl animate-pulse z-[1]"></div>
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-light/10 rounded-full blur-3xl animate-pulse z-[1]" style={{ animationDelay: '1s' }}></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full mt-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 w-full mt-16 sm:mt-8">
         <div className="max-w-4xl text-left">
           {/* Main Content */}
           <motion.div
@@ -149,16 +149,16 @@ export default function Hero() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="inline-block mb-6"
+              className="inline-block mb-4 sm:mb-6"
             >
-              <span className="px-4 py-2 bg-accent/20 text-accent rounded-full text-sm font-semibold border border-accent/30 backdrop-blur-sm">
+              <span className="px-3 sm:px-4 py-1.5 sm:py-2 bg-accent/20 text-accent rounded-full text-xs sm:text-sm font-semibold border border-accent/30 backdrop-blur-sm">
                 Building Excellence Since 1999
               </span>
             </motion.div>
             
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 md:mb-8 font-display leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-6 md:mb-8 font-display leading-tight">
               <span className="block text-white">You Dream</span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent-light to-accent mt-2">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent-light to-accent mt-1 sm:mt-2">
                 We Build
               </span>
             </h1>
@@ -167,7 +167,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 md:mb-10 font-light leading-relaxed max-w-3xl"
+              className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 mb-6 sm:mb-8 md:mb-10 font-light leading-relaxed max-w-3xl"
             >
               Leading civil construction company in Chennai, Tamil Nadu, delivering
               excellence in residential, industrial, commercial, institutional, and
@@ -178,24 +178,23 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-start items-start sm:items-center"
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-start items-stretch sm:items-center w-full sm:w-auto"
             >
               <Link
                 href="/contact"
-                className="group relative px-8 sm:px-10 py-4 sm:py-5 bg-accent text-white rounded-lg font-bold text-base sm:text-lg hover:bg-accent-light transition-all duration-300 shadow-2xl hover:shadow-accent/50 flex items-center justify-center space-x-3 overflow-hidden"
+                className="group relative px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-accent text-white rounded-lg font-bold text-sm sm:text-base md:text-lg hover:bg-accent-light transition-all duration-300 shadow-2xl hover:shadow-accent/50 flex items-center justify-center space-x-2 sm:space-x-3 overflow-hidden w-full sm:w-auto"
               >
                 <span className="relative z-10">Start Your Project</span>
                 <ArrowRight
-                  size={20}
-                  className="relative z-10 group-hover:translate-x-1 transition-transform sm:w-6 sm:h-6"
+                  className="relative z-10 group-hover:translate-x-1 transition-transform w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-accent-light to-accent opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </Link>
               <Link
                 href="/projects"
-                className="group px-8 sm:px-10 py-4 sm:py-5 bg-transparent text-white border-2 border-white/50 rounded-lg font-bold text-base sm:text-lg hover:bg-white hover:text-primary transition-all duration-300 backdrop-blur-sm flex items-center justify-center space-x-3"
+                className="group px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-transparent text-white border-2 border-white/50 rounded-lg font-bold text-sm sm:text-base md:text-lg hover:bg-white hover:text-primary transition-all duration-300 backdrop-blur-sm flex items-center justify-center space-x-2 sm:space-x-3 w-full sm:w-auto"
               >
-                <Play size={20} className="group-hover:scale-110 transition-transform sm:w-6 sm:h-6" />
+                <Play className="group-hover:scale-110 transition-transform w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
                 <span>View Portfolio</span>
               </Link>
             </motion.div>

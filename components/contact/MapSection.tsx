@@ -16,12 +16,12 @@ export default function MapSection() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
-      className="mt-12"
+      className="mt-8 sm:mt-10 md:mt-12"
     >
-      <h2 className="text-2xl font-bold mb-6 text-primary font-display">
+      <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-primary font-display">
         Find Us on Map
       </h2>
-      <div className="bg-gray-100 rounded-lg overflow-hidden shadow-md" style={{ height: "400px" }}>
+      <div className="bg-gray-100 rounded-lg overflow-hidden shadow-md h-[300px] sm:h-[350px] md:h-[400px]">
         <iframe
           src={`https://www.google.com/maps?q=${latitude},${longitude}&hl=en&z=15&output=embed`}
           width="100%"
@@ -33,10 +33,10 @@ export default function MapSection() {
           title="Delphin Associates Location"
         />
       </div>
-      <p className="text-sm text-gray-600 mt-4 text-center">
+      <p className="text-xs sm:text-sm text-gray-600 mt-3 sm:mt-4 text-center px-2">
         Plot No 9, 8th Street, Kubera Nagar, Madipakkam, Chennai - 600 091
       </p>
-      <p className="text-xs text-gray-500 mt-2 text-center">
+      <p className="text-xs text-gray-500 mt-1.5 sm:mt-2 text-center">
         <a 
           href="https://maps.app.goo.gl/iEheQtz1UEhEdY5s8" 
           target="_blank" 

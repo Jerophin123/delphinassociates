@@ -31,12 +31,12 @@ export default function ProjectGallery() {
   return (
     <div>
       {/* Category Filter */}
-      <div className="flex flex-wrap gap-4 justify-center mb-12">
+      <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 justify-center mb-6 sm:mb-8 md:mb-12">
         {categories.map((category) => (
           <button
             key={category}
             onClick={() => setSelectedCategory(category)}
-            className={`px-6 py-2 rounded-lg font-semibold transition-all ${
+            className={`px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 rounded-lg font-semibold text-xs sm:text-sm md:text-base transition-all ${
               selectedCategory === category
                 ? "bg-accent text-white shadow-md"
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -55,7 +55,7 @@ export default function ProjectGallery() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
         >
           {filteredProjects.map((project, index) => (
             <motion.div
@@ -67,9 +67,9 @@ export default function ProjectGallery() {
             >
               <Link
                 href={`/projects/${project.id}`}
-                className="group block h-full bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow focus:outline-none focus:ring-2 focus:ring-accent/40"
+                className="group block h-full bg-white rounded-lg shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] overflow-hidden hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25),0_16px_32px_-8px_rgba(0,0,0,0.15),0_8px_16px_-4px_rgba(0,0,0,0.1)] transition-all duration-300 hover:-translate-y-3 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-accent/40"
               >
-                <div className="relative h-48 bg-gradient-to-br from-accent/20 to-primary/20 overflow-hidden">
+                <div className="relative h-40 sm:h-44 md:h-48 bg-gradient-to-br from-accent/20 to-primary/20 overflow-hidden">
                 {/* Project Image */}
                 {project.image ? (
                   <Image
@@ -108,21 +108,31 @@ export default function ProjectGallery() {
                   </span>
                 </div>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2 text-primary">
+                <div className="p-4 sm:p-5 md:p-6">
+                  <h3 className="text-lg sm:text-xl font-bold mb-2 text-primary">
                     {project.title}
                   </h3>
-                  <p className="text-gray-600 text-sm mb-2 flex items-center">
-                    <MapPin className="mr-1 h-4 w-4 text-accent" />
-                    {project.location}
-                  </p>
+                  <div className="text-gray-600 text-xs sm:text-sm mb-2 flex items-center">
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <MapPin className="mr-1 w-3 h-3 sm:w-4 sm:h-4 text-accent" />
+                    </motion.div>
+                    <span className="break-words">{project.location}</span>
+                  </div>
                   {project.year && (
-                    <p className="text-gray-500 text-sm mb-3 flex items-center">
-                      <Calendar className="mr-1 h-4 w-4 text-accent" />
+                    <div className="text-gray-500 text-xs sm:text-sm mb-2 sm:mb-3 flex items-center">
+                      <motion.div
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <Calendar className="mr-1 w-3 h-3 sm:w-4 sm:h-4 text-accent" />
+                      </motion.div>
                       Year: {project.year}
-                    </p>
+                    </div>
                   )}
-                  <p className="text-gray-700">{project.description}</p>
+                  <p className="text-sm sm:text-base text-gray-700">{project.description}</p>
                 </div>
               </Link>
             </motion.div>
