@@ -44,7 +44,7 @@ export default function ManagementTeam() {
             className="relative bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow"
           >
             {member.isFounder && (
-              <span className="absolute top-4 right-4 inline-flex items-center gap-1 rounded-full bg-yellow-400 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-yellow-950 shadow">
+              <span className="absolute top-4 right-4 hidden md:inline-flex items-center gap-1 rounded-full bg-yellow-400 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-yellow-950 shadow">
                 <Crown size={14} />
                 Founder
               </span>
@@ -58,11 +58,19 @@ export default function ManagementTeam() {
                   {member.name}
                 </h3>
                 {member.qualifications && (
-                  <div className="flex items-center space-x-1 text-accent mb-2">
-                    <Award size={16} />
-                    <span className="text-sm font-semibold">
-                      {member.qualifications}
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-accent mb-2">
+                    <span className="inline-flex items-center space-x-1">
+                      <Award size={16} />
+                      <span className="text-sm font-semibold">
+                        {member.qualifications}
+                      </span>
                     </span>
+                    {member.isFounder && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-yellow-400 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-yellow-950 shadow md:hidden">
+                        <Crown size={12} />
+                        Founder
+                      </span>
+                    )}
                   </div>
                 )}
                 <p className="text-accent font-semibold mb-2">

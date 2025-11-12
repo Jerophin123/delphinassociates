@@ -120,3 +120,4 @@ export default function ProjectDetailContent({ project }: { project: Project }) 
   );
 }
 
+
