@@ -91,8 +91,7 @@ export default function ManagementTeam() {
                           duration: 0.3,
                           delay: index * 0.1 + 0.2
                         }}
-                        whileHover={{ scale: 1.15 }}
-                        transition={{ duration: 0.2 }}
+                        whileHover={{ scale: 1.15, transition: { duration: 0.2 } }}
                       >
                         <Award className="w-3 h-3 sm:w-4 sm:h-4" />
                       </motion.div>
