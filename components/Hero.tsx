@@ -1,124 +1,30 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, Play } from "lucide-react";
 
 export default function Hero() {
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [videoError, setVideoError] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    let isMounted = true;
-    let playPromise: Promise<void> | undefined;
-    
-    if (video) {
-      // Force video to load
-      video.load();
-      
-      // Handle video loaded
-      const handleLoadedData = () => {
-        if (isMounted) {
-          setVideoLoaded(true);
-          setVideoError(false);
-        }
-      };
-      
-      // Handle video error
-      const handleError = () => {
-        if (isMounted) {
-          console.error('Video failed to load');
-          setVideoError(true);
-          setVideoLoaded(false);
-        }
-      };
-      
-      video.addEventListener('loadeddata', handleLoadedData);
-      video.addEventListener('error', handleError);
-      
-      // Try to play the video
-      playPromise = video.play().catch((err) => {
-        // Silently ignore AbortError (happens when component unmounts during play)
-        // Only log other errors if component is still mounted
-        if (isMounted && err.name !== 'AbortError' && err.name !== 'NotAllowedError') {
-          console.error('Video autoplay failed:', err);
-        }
-      });
-      
-      return () => {
-        isMounted = false;
-        video.removeEventListener('loadeddata', handleLoadedData);
-        video.removeEventListener('error', handleError);
-        
-        // Pause video if component unmounts
-        try {
-          if (video && !video.paused) {
-            video.pause();
-          }
-        } catch (err) {
-          // Ignore errors when pausing during unmount
-        }
-        
-        // Handle play promise cancellation gracefully
-        if (playPromise) {
-          playPromise.catch(() => {
-            // Silently ignore AbortError and other cancellation errors
-          });
-        }
-      };
-    }
-  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pb-8 md:pb-0">
-      {/* Video Background - covers full viewport including header area */}
+      {/* Hero Image Background - covers full viewport including header area */}
       <div className="fixed inset-0 w-full h-full z-0">
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-            videoLoaded ? 'opacity-100' : 'opacity-0'
-          }`}
+        <img
+          src="/hero_image.jpg"
+          alt="Hero background"
+          className="absolute inset-0 w-full h-full object-cover"
           style={{ 
             minHeight: '100vh',
             minWidth: '100%',
           }}
-        >
-          {/* Updated to match actual filename */}
-          <source src="/hero_video.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        />
         
         {/* Dark overlay for better text readability */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary-dark/55 via-primary-dark/45 to-primary-dark/55"></div>
         
         {/* Additional overlay for depth */}
         <div className="absolute inset-0 bg-gradient-to-t from-primary-dark via-transparent to-transparent opacity-40"></div>
-      </div>
-
-      {/* Static gradient fallback in case video doesn't load */}
-      <div 
-        className={`absolute inset-0 bg-gradient-to-br from-primary-dark via-primary to-primary-dark z-0 transition-opacity duration-1000 ${
-          videoLoaded && !videoError ? 'opacity-0' : 'opacity-100'
-        }`}
-      >
-        {/* Subtle pattern overlay */}
-        <div className="absolute inset-0 opacity-[0.03]">
-          <div 
-            className="absolute inset-0" 
-            style={{
-              backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
-              backgroundSize: '40px 40px',
-            }}
-          />
-        </div>
       </div>
 
       {/* Animated grid pattern overlay */}
