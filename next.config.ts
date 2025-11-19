@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
         hostname: "**",
       },
     ],
+    qualities: [75, 85],
   },
   async redirects() {
     // Force apex domain to redirect to canonical www host

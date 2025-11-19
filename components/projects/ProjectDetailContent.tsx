@@ -14,6 +14,13 @@ type Project = {
   image?: string;
 };
 
+type ProjectDetailExtras = {
+  overview: string;
+  scopeOfWork: string[];
+  highlights: { label: string; value: string }[];
+  outcomes: string[];
+};
+
 const containerVariants = {
   hidden: { opacity: 0, y: 24 },
   visible: {
@@ -37,7 +44,15 @@ const itemVariants = {
   },
 };
 
-export default function ProjectDetailContent({ project }: { project: Project }) {
+type ProjectDetailContentProps = {
+  project: Project;
+  detail?: ProjectDetailExtras;
+};
+
+export default function ProjectDetailContent({
+  project,
+  detail,
+}: ProjectDetailContentProps) {
   return (
     <motion.div
       variants={containerVariants}
@@ -123,8 +138,67 @@ export default function ProjectDetailContent({ project }: { project: Project }) 
           variants={itemVariants}
           className="mt-4 sm:mt-5 md:mt-6 text-sm sm:text-base md:text-lg leading-relaxed text-gray-700"
         >
-          {project.description}
+          {detail?.overview ?? project.description}
         </motion.p>
+
+        {detail?.highlights?.length ? (
+          <motion.div
+            variants={itemVariants}
+            className="mt-6 grid gap-3 sm:gap-4 sm:grid-cols-3"
+          >
+            {detail.highlights.map((item) => (
+              <div
+                key={item.label}
+                className="rounded-xl border border-gray-100 bg-white/80 p-4 shadow-sm"
+              >
+                <p className="text-xs uppercase tracking-wide text-gray-500">
+                  {item.label}
+                </p>
+                <p className="mt-1 text-lg font-semibold text-primary">
+                  {item.value}
+                </p>
+              </div>
+            ))}
+          </motion.div>
+        ) : null}
+
+        {detail?.scopeOfWork?.length ? (
+          <motion.div
+            variants={itemVariants}
+            className="mt-8 rounded-2xl bg-gray-50 p-5 sm:p-6"
+          >
+            <h2 className="text-lg sm:text-xl font-semibold text-primary">
+              Scope of Work
+            </h2>
+            <ul className="mt-3 space-y-2 text-sm sm:text-base text-gray-700">
+              {detail.scopeOfWork.map((scope) => (
+                <li key={scope} className="flex gap-3">
+                  <span className="mt-1 h-2 w-2 rounded-full bg-accent" />
+                  <span>{scope}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        ) : null}
+
+        {detail?.outcomes?.length ? (
+          <motion.div
+            variants={itemVariants}
+            className="mt-6 rounded-2xl border border-primary/10 bg-primary/5 p-5 sm:p-6"
+          >
+            <h2 className="text-lg sm:text-xl font-semibold text-primary">
+              Outcomes & Impact
+            </h2>
+            <ul className="mt-3 space-y-2 text-sm sm:text-base text-gray-800">
+              {detail.outcomes.map((outcome) => (
+                <li key={outcome} className="flex gap-3">
+                  <span className="mt-1 h-2.5 w-2.5 rounded-full border border-primary bg-white" />
+                  <span>{outcome}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        ) : null}
       </motion.div>
     </motion.div>
   );

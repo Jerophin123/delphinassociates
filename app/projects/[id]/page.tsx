@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import projectsData from "@/data/projects.json";
+import projectDetails from "@/data/projectDetails";
 import ProjectDetailContent from "@/components/projects/ProjectDetailContent";
 
 type Project = {
@@ -35,6 +36,7 @@ export async function generateMetadata({
   const resolvedParams = await Promise.resolve(params);
   const projectId = Number(resolvedParams.id);
   const project = projects.find((item) => item.id === projectId);
+  const detail = projectDetails[projectId];
 
   if (!project) {
     return {
@@ -44,10 +46,12 @@ export async function generateMetadata({
 
   return {
     title: `${project.title} | Projects | Delphin Associates`,
-    description: `${project.title} – ${project.category} project located in ${project.location}. ${project.description}`,
+    description: detail?.overview
+      ? `${project.title} – ${detail.overview}`
+      : `${project.title} – ${project.category} project located in ${project.location}. ${project.description}`,
     openGraph: {
       title: `${project.title} | Projects | Delphin Associates`,
-      description: project.description,
+      description: detail?.overview ?? project.description,
       url: `/projects/${project.id}`,
       images: project.image
         ? [
@@ -72,6 +76,7 @@ export default async function ProjectDetailPage({
   const resolvedParams = await Promise.resolve(params);
   const projectId = Number(resolvedParams.id);
   const project = projects.find((item) => item.id === projectId);
+  const detail = projectDetails[projectId];
 
   if (!project) {
     notFound();
@@ -88,7 +93,7 @@ export default async function ProjectDetailPage({
           Back to projects
         </Link>
 
-        <ProjectDetailContent project={project} />
+        <ProjectDetailContent project={project} detail={detail} />
       </div>
     </div>
   );
