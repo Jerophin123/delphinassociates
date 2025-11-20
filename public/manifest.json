@@ -1,0 +1,32 @@
+{
+  "name": "Delphin Associates",
+  "short_name": "Delphin Associates",
+  "description": "Leading civil construction company in Chennai, Tamil Nadu",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#7c3aed",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/favicon 48 x 48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon 64 x 64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon 128 x 128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    }
+  ]
+}
+

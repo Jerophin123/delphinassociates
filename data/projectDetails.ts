@@ -352,3 +352,4 @@ const projectDetails: ProjectDetailMap = {
 
 export default projectDetails;
 
+

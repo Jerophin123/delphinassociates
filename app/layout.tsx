@@ -115,10 +115,18 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  manifest: "/manifest.json",
   icons: {
-    icon: [{ url: "/favicon.ico" }, { url: "/favicon.png", type: "image/png" }],
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon 48 x 48.png", type: "image/png", sizes: "48x48" },
+      { url: "/favicon 64 x 64.png", type: "image/png", sizes: "64x64" },
+      { url: "/favicon 128 x 128.png", type: "image/png", sizes: "128x128" },
+    ],
     shortcut: "/favicon.ico",
-    apple: "/favicon.png",
+    apple: [
+      { url: "/favicon 128 x 128.png", sizes: "128x128", type: "image/png" },
+    ],
   },
   category: "Construction",
   classification: "Business",
