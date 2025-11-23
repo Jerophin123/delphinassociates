@@ -5,19 +5,25 @@ import { motion } from "framer-motion";
 export default function CompanyHistory() {
   return (
     <motion.section
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ 
+        type: "spring",
+        stiffness: 100,
+        damping: 20,
+        mass: 0.8
+      }}
       className="mb-8 sm:mb-12 md:mb-16"
+      style={{ willChange: 'opacity, transform' }}
     >
       <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-primary font-display">
         Our History
       </h2>
       <div className="prose prose-lg max-w-none">
         <p className="text-gray-700 mb-4">
-          Delphin Associates was established in <strong>1999</strong> by{" "}
-          <strong>Mr. Delphin P. Stanley (DCE, B.Tech)</strong>, a visionary
+          Delphin Associates was established in <strong className="text-gray-800">1999</strong> by{" "}
+          <strong className="text-gray-800">Mr. Delphin P. Stanley (DCE, B.Tech)</strong>, a visionary
           leader in the construction industry. Starting with a team of young,
           dedicated engineers across Tamil Nadu, the organization has grown to
           become a trusted name in civil construction and building consultancy.

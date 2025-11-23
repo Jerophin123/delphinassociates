@@ -10,7 +10,7 @@ type ProjectDetailMap = Record<number, ProjectDetailExtras>;
 const projectDetails: ProjectDetailMap = {
   1: {
     overview:
-      "We partnered with the CSI Madipakkam congregation to create a contemporary worship space that honors traditional liturgy while delivering modern acoustics, natural light, and thermal comfort for a 600-seat community.",
+      "We partnered with the CSI St Mark's Church Madipakkam congregation to create a contemporary worship space that honors traditional liturgy while delivering modern acoustics, natural light, and thermal comfort for a 600-seat community.",
     scopeOfWork: [
       "End-to-end design-build delivery including structural, MEP, and interiors",
       "Integration of exposed concrete fins for passive cooling and daylighting",
@@ -351,5 +351,6 @@ const projectDetails: ProjectDetailMap = {
 };
 
 export default projectDetails;
+
 
 

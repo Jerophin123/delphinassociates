@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { MapPin, Calendar } from "lucide-react";
+import { MapPin, Calendar, Church, Home, Factory, GraduationCap, Route, Grid3x3 } from "lucide-react";
 import projectsData from "@/data/projects.json";
 
 type Project = {
@@ -17,7 +17,20 @@ type Project = {
   image?: string;
 };
 
-const categories = ["All", "Church", "Residential", "Industrial", "Institutional", "Infrastructure"];
+const categoryConfig = [
+  { name: "All", icon: Grid3x3, color: "from-primary to-primary-dark" },
+  { name: "Church", icon: Church, color: "from-purple-500 to-purple-600" },
+  { name: "Residential", icon: Home, color: "from-blue-500 to-blue-600" },
+  { name: "Industrial", icon: Factory, color: "from-orange-500 to-orange-600" },
+  { name: "Institutional", icon: GraduationCap, color: "from-green-500 to-green-600" },
+  { name: "Infrastructure", icon: Route, color: "from-teal-500 to-teal-600" },
+];
+
+// Helper function to get icon for category
+const getCategoryIcon = (category: string) => {
+  const config = categoryConfig.find((c) => c.name === category);
+  return config ? config.icon : Grid3x3;
+};
 
 export default function ProjectGallery() {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -30,21 +43,40 @@ export default function ProjectGallery() {
 
   return (
     <div>
-      {/* Category Filter */}
-      <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 justify-center mb-6 sm:mb-8 md:mb-12">
-        {categories.map((category) => (
-          <button
-            key={category}
-            onClick={() => setSelectedCategory(category)}
-            className={`px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 rounded-lg font-semibold text-xs sm:text-sm md:text-base transition-all ${
-              selectedCategory === category
-                ? "bg-accent text-white shadow-md"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-          >
-            {category}
-          </button>
-        ))}
+      {/* Modern Category Filter */}
+      <div className="mb-8 sm:mb-10 md:mb-12">
+        <div className="flex flex-wrap gap-2 sm:gap-3 justify-center items-center">
+          {categoryConfig.map((category, index) => {
+            const Icon = category.icon;
+            const isActive = selectedCategory === category.name;
+
+            return (
+              <motion.button
+                key={category.name}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                onClick={() => setSelectedCategory(category.name)}
+                className={`group relative px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 rounded-lg font-semibold text-xs sm:text-sm md:text-base transition-all duration-300 flex items-center gap-2 sm:gap-2.5 ${
+                  isActive
+                    ? "bg-gradient-to-r from-accent to-accent-dark text-white shadow-lg shadow-accent/30 scale-105"
+                    : "bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md"
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Icon
+                  className={`w-4 h-4 sm:w-5 sm:h-5 transition-all duration-300 ${
+                    isActive
+                      ? "text-white"
+                      : "text-gray-600 group-hover:text-accent"
+                  }`}
+                />
+                <span className="whitespace-nowrap">{category.name}</span>
+              </motion.button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Projects Grid */}
@@ -54,16 +86,27 @@ export default function ProjectGallery() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ 
+            type: "spring",
+            stiffness: 300,
+            damping: 30
+          }}
           className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
         >
           {filteredProjects.map((project, index) => (
             <motion.div
               key={project.id}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.05 }}
+              transition={{ 
+                type: "spring",
+                stiffness: 120,
+                damping: 20,
+                mass: 0.7,
+                delay: index * 0.04
+              }}
               className="h-full"
+              style={{ willChange: 'opacity, transform' }}
             >
               <Link
                 href={`/projects/${project.id}`}
@@ -103,7 +146,11 @@ export default function ProjectGallery() {
                 
                 {/* Category Badge */}
                 <div className="absolute top-4 right-4 z-10">
-                  <span className="bg-accent text-white px-3 py-1 rounded-full text-xs font-semibold">
+                  <span className="bg-accent text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5">
+                    {(() => {
+                      const CategoryIcon = getCategoryIcon(project.category);
+                      return <CategoryIcon className="w-3 h-3" />;
+                    })()}
                     {project.category}
                   </span>
                 </div>

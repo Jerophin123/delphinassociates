@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { MapPin, Calendar } from "lucide-react";
+import { MapPin, Calendar, Church, Home, Factory, GraduationCap, Route, Grid3x3 } from "lucide-react";
 
 type Project = {
   id: number;
@@ -47,6 +47,18 @@ const itemVariants = {
 type ProjectDetailContentProps = {
   project: Project;
   detail?: ProjectDetailExtras;
+};
+
+// Helper function to get icon for category
+const getCategoryIcon = (category: string) => {
+  const categoryIcons: Record<string, typeof Church> = {
+    Church,
+    Residential: Home,
+    Industrial: Factory,
+    Institutional: GraduationCap,
+    Infrastructure: Route,
+  };
+  return categoryIcons[category] || Grid3x3;
 };
 
 export default function ProjectDetailContent({
@@ -97,7 +109,11 @@ export default function ProjectDetailContent({
       </motion.div>
 
       <motion.div variants={itemVariants} className="md:w-1/2">
-        <span className="inline-block rounded-full bg-accent/10 px-3 sm:px-4 py-0.5 sm:py-1 text-xs sm:text-sm font-semibold text-accent">
+        <span className="inline-block rounded-full bg-accent/10 px-3 sm:px-4 py-0.5 sm:py-1 text-xs sm:text-sm font-semibold text-accent flex items-center gap-1.5 w-fit">
+          {(() => {
+            const CategoryIcon = getCategoryIcon(project.category);
+            return <CategoryIcon className="w-3 h-3 sm:w-4 sm:h-4" />;
+          })()}
           {project.category}
         </span>
 

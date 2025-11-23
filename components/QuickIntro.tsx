@@ -73,10 +73,16 @@ export default function QuickIntro() {
         <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-center">
           <motion.div
             ref={ref}
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ 
+              type: "spring",
+              stiffness: 100,
+              damping: 20,
+              mass: 0.8
+            }}
+            style={{ willChange: 'opacity, transform' }}
           >
             <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-primary/10 text-primary rounded-full text-xs sm:text-sm font-semibold mb-4 sm:mb-6">
               About Us
@@ -111,11 +117,17 @@ export default function QuickIntro() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ 
+              type: "spring",
+              stiffness: 100,
+              damping: 20,
+              mass: 0.8
+            }}
             className="relative"
+            style={{ willChange: 'opacity, transform' }}
           >
             {/* Stats Grid */}
             <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
@@ -124,31 +136,51 @@ export default function QuickIntro() {
                 return (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="group relative bg-gradient-to-br from-white to-gray-50 rounded-2xl p-4 sm:p-6 md:p-8 shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25),0_16px_32px_-8px_rgba(0,0,0,0.15),0_8px_16px_-4px_rgba(0,0,0,0.1)] transition-all duration-500 border border-gray-100 hover:border-accent/30 hover:-translate-y-3 hover:scale-[1.02]"
+                    initial={{ opacity: 0, scale: 0.85 }}
+                    animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.85 }}
+                    transition={{ 
+                      type: "spring",
+                      stiffness: 120,
+                      damping: 20,
+                      mass: 0.7,
+                      delay: index * 0.08
+                    }}
+                    whileHover={{ 
+                      y: -12,
+                      scale: 1.02,
+                      transition: {
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 25
+                      }
+                    }}
+                    className="group relative bg-gradient-to-br from-white to-gray-50 rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-100 hover:border-accent/30 shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25),0_16px_32px_-8px_rgba(0,0,0,0.15),0_8px_16px_-4px_rgba(0,0,0,0.1)] transition-[box-shadow,border-color] duration-300 ease-out"
+                    style={{ willChange: 'transform' }}
                   >
                     {/* Icon */}
                     <motion.div 
                       className={`mb-3 sm:mb-4 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center shadow-lg`}
-                      initial={{ opacity: 0, scale: 0, rotate: -180 }}
+                      initial={{ opacity: 0, scale: 0.85 }}
                       animate={isInView ? { 
                         opacity: 1, 
-                        scale: 1, 
-                        rotate: 0,
+                        scale: 1,
                         transition: {
                           type: "spring",
-                          stiffness: 200,
-                          damping: 15,
-                          delay: index * 0.1 + 0.2
+                          stiffness: 150,
+                          damping: 18,
+                          mass: 0.6,
+                          delay: index * 0.08 + 0.15
                         }
-                      } : { opacity: 0, scale: 0, rotate: -180 }}
+                      } : { opacity: 0, scale: 0.85 }}
                       whileHover={{ 
-                        scale: 1.15, 
-                        rotate: [0, -10, 10, -10, 0],
-                        transition: { duration: 0.5 }
+                        scale: 1.1,
+                        transition: {
+                          type: "spring",
+                          stiffness: 500,
+                          damping: 30
+                        }
                       }}
+                      style={{ willChange: 'transform' }}
                     >
                       <motion.div
                         animate={isInView ? {

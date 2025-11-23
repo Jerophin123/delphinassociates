@@ -97,26 +97,43 @@ export default function Hero() {
         <div className="max-w-4xl lg:max-w-5xl text-left">
           {/* Main Content - Optimized animations with GPU acceleration */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{ 
+              type: "spring",
+              stiffness: 100,
+              damping: 20,
+              mass: 0.8
+            }}
             style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
           >
             <h1 className="text-6xl sm:text-7xl md:text-7xl lg:text-8xl xl:text-8xl 2xl:text-8xl font-bold mb-4 sm:mb-5 md:mb-6 lg:mb-8 font-display leading-[1.1] md:leading-tight tracking-tight">
               <motion.span 
                 className="block text-white drop-shadow-lg"
-                initial={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, x: -15 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 120,
+                  damping: 22,
+                  mass: 0.7,
+                  delay: 0.2
+                }}
                 style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
               >
                 You Dream
               </motion.span>
               <motion.span 
                 className="block text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent-light to-accent mt-1 sm:mt-1.5 md:mt-2 lg:mt-2.5 drop-shadow-lg"
-                initial={{ opacity: 0, x: -20 }}
+                initial={{ opacity: 0, x: -15 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 120,
+                  damping: 22,
+                  mass: 0.7,
+                  delay: 0.3
+                }}
                 style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
               >
                 We Build
@@ -124,9 +141,15 @@ export default function Hero() {
             </h1>
             
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+              transition={{ 
+                type: "spring",
+                stiffness: 100,
+                damping: 20,
+                mass: 0.8,
+                delay: 0.4
+              }}
               className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-100 md:text-gray-200 mb-6 sm:mb-7 md:mb-8 lg:mb-10 xl:mb-12 font-light leading-relaxed md:leading-relaxed max-w-3xl lg:max-w-4xl drop-shadow-md"
               style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
             >
@@ -136,9 +159,15 @@ export default function Hero() {
             </motion.p>
             
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
+              transition={{ 
+                type: "spring",
+                stiffness: 100,
+                damping: 20,
+                mass: 0.8,
+                delay: 0.5
+              }}
               className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-5 lg:gap-6 justify-start items-stretch sm:items-center w-full sm:w-auto"
               style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
             >

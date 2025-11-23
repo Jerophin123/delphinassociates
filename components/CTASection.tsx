@@ -25,17 +25,29 @@ export default function CTASection() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ 
+            type: "spring",
+            stiffness: 100,
+            damping: 20,
+            mass: 0.8
+          }}
+          style={{ willChange: 'opacity, transform' }}
         >
           <motion.span
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            transition={{ 
+              type: "spring",
+              stiffness: 150,
+              damping: 18,
+              mass: 0.6
+            }}
             className="inline-block px-4 py-2 bg-accent/20 text-accent rounded-full text-sm font-semibold mb-6 border border-accent/30"
+            style={{ willChange: 'transform' }}
           >
             Get Started Today
           </motion.span>
@@ -56,12 +68,23 @@ export default function CTASection() {
             <motion.a
               href="tel:+919841243345"
               whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="group flex items-center justify-center space-x-2 sm:space-x-3 px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-white text-primary rounded-lg font-bold text-base sm:text-lg hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:shadow-white/50 w-full sm:w-auto"
+              whileTap={{ scale: 0.98 }}
+              transition={{ 
+                type: "spring",
+                stiffness: 400,
+                damping: 25
+              }}
+              className="group flex items-center justify-center space-x-2 sm:space-x-3 px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-white text-primary rounded-lg font-bold text-base sm:text-lg hover:bg-gray-100 transition-colors duration-300 shadow-2xl hover:shadow-white/50 w-full sm:w-auto"
+              style={{ willChange: 'transform' }}
             >
               <motion.div
                 whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.2 }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 500,
+                  damping: 30
+                }}
+                style={{ willChange: 'transform' }}
               >
                 <Phone className="w-5 h-5 sm:w-6 sm:h-6" />
               </motion.div>

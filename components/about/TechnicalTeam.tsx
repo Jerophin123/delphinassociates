@@ -40,11 +40,17 @@ const technicalTeam = [
 export default function TechnicalTeam() {
   return (
     <motion.section
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ 
+        type: "spring",
+        stiffness: 100,
+        damping: 20,
+        mass: 0.8
+      }}
       className="mb-8 sm:mb-12 md:mb-16"
+      style={{ willChange: 'opacity, transform' }}
     >
       <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-primary font-display">
         Technical Team
@@ -53,27 +59,50 @@ export default function TechnicalTeam() {
         {technicalTeam.map((member, index) => (
           <motion.div
             key={member.name}
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
-            className="bg-white border border-gray-200 rounded-lg p-4 sm:p-5 md:p-6 shadow-[0_6px_12px_-3px_rgba(0,0,0,0.1),0_3px_6px_-2px_rgba(0,0,0,0.06),0_1px_3px_-1px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_40px_-8px_rgba(0,0,0,0.2),0_10px_20px_-5px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-2 hover:scale-[1.01]"
+            viewport={{ once: true, margin: "-30px" }}
+            transition={{ 
+              type: "spring",
+              stiffness: 120,
+              damping: 20,
+              mass: 0.7,
+              delay: index * 0.08
+            }}
+            whileHover={{ 
+              y: -8,
+              scale: 1.01,
+              transition: {
+                type: "spring",
+                stiffness: 400,
+                damping: 25
+              }
+            }}
+            className="bg-white border border-gray-200 hover:border-accent/30 rounded-lg p-4 sm:p-5 md:p-6 shadow-[0_6px_12px_-3px_rgba(0,0,0,0.1),0_3px_6px_-2px_rgba(0,0,0,0.06),0_1px_3px_-1px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_40px_-8px_rgba(0,0,0,0.2),0_10px_20px_-5px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08)] transition-[box-shadow,border-color] duration-300 ease-out"
+            style={{ willChange: 'transform' }}
           >
             <div className="flex items-start space-x-3 sm:space-x-4">
               <motion.div 
                 className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-accent/20 to-primary/20 rounded-full flex items-center justify-center flex-shrink-0"
-                initial={{ opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, scale: 0.85 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ 
-                  duration: 0.4,
-                  ease: "easeOut",
-                  delay: index * 0.1 
+                  type: "spring",
+                  stiffness: 150,
+                  damping: 18,
+                  mass: 0.6,
+                  delay: index * 0.08 + 0.1
                 }}
                 whileHover={{ 
-                  scale: 1.1,
-                  transition: { duration: 0.2 }
+                  scale: 1.08,
+                  transition: {
+                    type: "spring",
+                    stiffness: 500,
+                    damping: 30
+                  }
                 }}
+                style={{ willChange: 'transform' }}
               >
                 <User className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
               </motion.div>

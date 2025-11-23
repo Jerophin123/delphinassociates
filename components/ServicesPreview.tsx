@@ -52,11 +52,17 @@ export default function ServicesPreview() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ 
+            type: "spring",
+            stiffness: 100,
+            damping: 20,
+            mass: 0.8
+          }}
           className="text-center mb-8 sm:mb-12 md:mb-16"
+          style={{ willChange: 'opacity, transform' }}
         >
           <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-primary/10 text-primary rounded-full text-xs sm:text-sm font-semibold mb-3 sm:mb-4">
             Our Expertise
@@ -75,27 +81,50 @@ export default function ServicesPreview() {
             return (
               <motion.div
                 key={service.title}
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="group relative bg-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25),0_16px_32px_-8px_rgba(0,0,0,0.15),0_8px_16px_-4px_rgba(0,0,0,0.1)] transition-all duration-500 border border-gray-100 hover:border-accent/30 hover:-translate-y-3 hover:scale-[1.02]"
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 20,
+                  mass: 0.8,
+                  delay: index * 0.08
+                }}
+                whileHover={{ 
+                  y: -12,
+                  scale: 1.02,
+                  transition: {
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 25
+                  }
+                }}
+                className="group relative bg-white rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-100 hover:border-accent/30 shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25),0_16px_32px_-8px_rgba(0,0,0,0.15),0_8px_16px_-4px_rgba(0,0,0,0.1)] transition-[box-shadow,border-color] duration-300 ease-out"
+                style={{ willChange: 'transform' }}
               >
                 {/* Icon with gradient background */}
                 <motion.div 
                   className={`mb-4 sm:mb-6 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center shadow-lg`}
-                  initial={{ opacity: 0, scale: 0.8 }}
+                  initial={{ opacity: 0, scale: 0.85 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ 
-                    duration: 0.4,
-                    ease: "easeOut",
-                    delay: index * 0.1 
+                    type: "spring",
+                    stiffness: 150,
+                    damping: 18,
+                    mass: 0.6,
+                    delay: index * 0.08 + 0.1
                   }}
                   whileHover={{ 
-                    scale: 1.1,
-                    transition: { duration: 0.2 }
+                    scale: 1.08,
+                    transition: {
+                      type: "spring",
+                      stiffness: 500,
+                      damping: 30
+                    }
                   }}
+                  style={{ willChange: 'transform' }}
                 >
                   <Icon className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                 </motion.div>

@@ -3,7 +3,19 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, MapPin, Calendar } from "lucide-react";
+import { ArrowRight, MapPin, Calendar, Church, Home, Factory, GraduationCap, Route, Grid3x3 } from "lucide-react";
+
+// Helper function to get icon for category
+const getCategoryIcon = (category: string) => {
+  const categoryIcons: Record<string, typeof Church> = {
+    Church,
+    Residential: Home,
+    Industrial: Factory,
+    Institutional: GraduationCap,
+    Infrastructure: Route,
+  };
+  return categoryIcons[category] || Grid3x3;
+};
 
 const featuredProjects = [
   {
@@ -40,11 +52,17 @@ export default function ProjectHighlights() {
     <section className="relative z-10 py-12 sm:py-16 md:py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ 
+            type: "spring",
+            stiffness: 100,
+            damping: 20,
+            mass: 0.8
+          }}
           className="text-center mb-8 sm:mb-12 md:mb-16"
+          style={{ willChange: 'opacity, transform' }}
         >
           <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-accent/10 text-accent rounded-full text-xs sm:text-sm font-semibold mb-3 sm:mb-4">
             Our Portfolio
@@ -61,11 +79,27 @@ export default function ProjectHighlights() {
           {featuredProjects.map((project, index) => (
             <motion.div
               key={project.id}
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative bg-white rounded-2xl shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] overflow-hidden hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25),0_16px_32px_-8px_rgba(0,0,0,0.15),0_8px_16px_-4px_rgba(0,0,0,0.1)] transition-all duration-500 hover:-translate-y-3 hover:scale-[1.02]"
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ 
+                type: "spring",
+                stiffness: 100,
+                damping: 20,
+                mass: 0.8,
+                delay: index * 0.08
+              }}
+              whileHover={{ 
+                y: -12,
+                scale: 1.02,
+                transition: {
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 25
+                }
+              }}
+              className="group relative bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-accent/30 shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25),0_16px_32px_-8px_rgba(0,0,0,0.15),0_8px_16px_-4px_rgba(0,0,0,0.1)] transition-[box-shadow,border-color] duration-300 ease-out"
+              style={{ willChange: 'transform' }}
             >
               {/* Image Container */}
               <div className="relative h-48 sm:h-56 md:h-64 bg-gradient-to-br from-primary via-primary-light to-primary-dark overflow-hidden">
@@ -96,7 +130,11 @@ export default function ProjectHighlights() {
                 
                 {/* Category Badge */}
                 <div className="absolute top-4 left-4 z-10">
-                  <span className="px-3 py-1 bg-accent text-white rounded-full text-xs font-bold uppercase tracking-wide">
+                  <span className="px-3 py-1 bg-accent text-white rounded-full text-xs font-bold uppercase tracking-wide flex items-center gap-1.5">
+                    {(() => {
+                      const CategoryIcon = getCategoryIcon(project.category);
+                      return <CategoryIcon className="w-3 h-3" />;
+                    })()}
                     {project.category}
                   </span>
                 </div>
