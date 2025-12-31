@@ -125,7 +125,7 @@ export default function Footer() {
                   <FaXTwitter className="w-5 h-5 sm:w-6 sm:h-6" />
                 </motion.a>
                 <motion.a
-                  href="https://www.linkedin.com/company/delphin-associates"
+                  href="https://www.linkedin.com/company/delphin-associates-official/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-white transition-colors"

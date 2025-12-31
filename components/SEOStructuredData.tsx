@@ -27,7 +27,7 @@ export default function SEOStructuredData({ type = "LocalBusiness" }: Structured
     sameAs: [
       "https://www.instagram.com/delphinassociatesofficial/",
       "https://x.com/delphin75358",
-      "https://www.linkedin.com/company/delphin-associates",
+      "https://www.linkedin.com/company/delphin-associates-official/",
     ],
   };
 
