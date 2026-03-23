@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   Building2,
@@ -8,6 +9,7 @@ import {
   Church,
   Wrench,
   CheckCircle,
+  ArrowRight,
 } from "lucide-react";
 
 const services = [
@@ -90,11 +92,23 @@ export default function ServicesList() {
                 damping: 25
               }
             }}
-            className={`group relative bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25),0_16px_32px_-8px_rgba(0,0,0,0.15),0_8px_16px_-4px_rgba(0,0,0,0.1)] hover:border-accent/30 transition-[box-shadow,border-color] duration-300 ease-out ${
+            className={`group relative bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25),0_16px_32px_-8px_rgba(0,0,0,0.15),0_8px_16px_-4px_rgba(0,0,0,0.1)] hover:border-accent/30 transition-[box-shadow,border-color] duration-300 ease-out ${
               isEven ? 'md:flex-row' : 'md:flex-row-reverse'
             }`}
-            style={{ willChange: 'transform' }}
+            style={{
+              willChange: "transform",
+            }}
           >
+            {/* 3D depth layers (desktop hover only) */}
+            <div
+              className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br from-accent/25 via-transparent to-accent-light/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              style={{ transform: "translateZ(0)" }}
+            />
+            <div
+              className="pointer-events-none absolute left-10 right-10 -bottom-10 h-14 bg-black/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              style={{ transform: "translateZ(0)" }}
+            />
+
             {/* Gradient Header Section */}
             <div className={`relative h-32 sm:h-40 bg-gradient-to-br ${
               index % 4 === 0 ? 'from-accent to-accent-dark' :
@@ -134,7 +148,7 @@ export default function ServicesList() {
                 style={{ willChange: 'transform' }}
               >
                 <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-xl">
-                  <Icon className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-white" />
+                <Icon className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-white" />
                 </div>
               </motion.div>
               
@@ -156,7 +170,7 @@ export default function ServicesList() {
                   mass: 0.7,
                   delay: index * 0.08 + 0.15
                 }}
-                className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 text-primary font-display group-hover:text-accent transition-colors duration-300 ease-out"
+                className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 text-primary-dark font-display group-hover:text-accent transition-colors duration-300 ease-out"
                 style={{ willChange: 'transform, opacity' }}
               >
                 {service.title}
@@ -208,17 +222,33 @@ export default function ServicesList() {
                     >
                       <CheckCircle className="w-5 h-5 text-accent" />
                     </motion.div>
-                    <span className="text-sm sm:text-base text-gray-700 group-hover/feature:text-primary transition-colors">
+                    <span className="text-sm sm:text-base text-gray-700 group-hover/feature:text-accent transition-colors">
                       {feature}
                     </span>
                   </motion.div>
                 ))}
               </div>
+
+              <div className="mt-5 sm:mt-6">
+                <Link
+                  href="/contact"
+                  className="group inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 bg-accent text-black rounded-xl font-bold text-sm sm:text-base hover:bg-accent-light transition-colors shadow-2xl shadow-accent/20 hover:shadow-accent/45"
+                >
+                  <span>Discuss This Service</span>
+                  <motion.div
+                    whileHover={{ x: 2 }}
+                    transition={{ duration: 0.2 }}
+                    className="ml-2 inline-flex"
+                  >
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </motion.div>
+                </Link>
+              </div>
             </div>
 
             {/* Hover Overlay Effect */}
             <motion.div 
-              className="absolute inset-0 pointer-events-none rounded-2xl"
+              className="absolute inset-0 pointer-events-none rounded-3xl"
               initial={{ opacity: 0 }}
               whileHover={{ opacity: 1 }}
               transition={{ 

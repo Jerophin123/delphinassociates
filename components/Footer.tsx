@@ -11,7 +11,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative z-30 bg-primary-dark text-gray-300">
+    <footer className="relative z-30 bg-primary-dark text-[#B0B0B0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8">
           {/* Company Info */}
@@ -26,7 +26,7 @@ export default function Footer() {
                 unoptimized
               />
             </div>
-            <p className="mb-3 sm:mb-4 text-sm sm:text-base text-gray-400">
+            <p className="mb-3 sm:mb-4 text-sm sm:text-base text-[#B0B0B0]">
               You Dream We Build. Building Trust Through Quality Since 1999. Leading civil
               construction company in Chennai, Tamil Nadu, specializing in
               residential, industrial, commercial, institutional, and church
@@ -41,7 +41,9 @@ export default function Footer() {
                 >
                   <MapPin className="w-4 h-4 sm:w-5 sm:h-5" />
                 </motion.div>
-                <span className="text-xs sm:text-sm break-words">Plot No 9, 8th Street, Kubera Nagar, Madipakkam, Chennai - 600 091</span>
+                <span className="text-xs sm:text-sm break-words">
+                  No. 261A, 6th Main road, LIC nagar, Madipakkam, Chennai- 600 091.
+                </span>
               </div>
               <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                 <motion.div
@@ -57,7 +59,7 @@ export default function Footer() {
                 >
                   +91 98412 43345
                 </a>
-                <span className="text-gray-500">|</span>
+                <span className="text-[#B0B0B0]/70">|</span>
                 <a
                   href="tel:+919940306399"
                   className="hover:text-white transition-colors text-xs sm:text-sm"
@@ -106,7 +108,7 @@ export default function Footer() {
                   href="https://www.instagram.com/delphinassociatesofficial/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-[#B0B0B0] hover:text-accent transition-colors"
                   aria-label="Instagram"
                   whileHover={{ scale: 1.15 }}
                   transition={{ duration: 0.2 }}
@@ -117,7 +119,7 @@ export default function Footer() {
                   href="https://x.com/delphin75358"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-[#B0B0B0] hover:text-accent transition-colors"
                   aria-label="X (formerly Twitter)"
                   whileHover={{ scale: 1.15 }}
                   transition={{ duration: 0.2 }}
@@ -128,7 +130,7 @@ export default function Footer() {
                   href="https://www.linkedin.com/company/delphin-associates-official/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-[#B0B0B0] hover:text-accent transition-colors"
                   aria-label="LinkedIn"
                   whileHover={{ scale: 1.15 }}
                   transition={{ duration: 0.2 }}
@@ -202,23 +204,23 @@ export default function Footer() {
               <div>
                 <p className="font-medium text-white">State Bank of India</p>
                 <p>A/C No. 10054049937</p>
-                <p className="text-gray-400">Saidapet Branch</p>
+                <p className="text-[#B0B0B0]">Saidapet Branch</p>
               </div>
               <div>
                 <p className="font-medium text-white">ICICI Bank</p>
                 <p>A/C No. 410205000559</p>
-                <p className="text-gray-400">Guindy Branch</p>
+                <p className="text-[#B0B0B0]">Guindy Branch</p>
               </div>
               <div>
                 <p className="font-medium text-white">ICICI Bank</p>
                 <p>A/C No. 155405500318</p>
-                <p className="text-gray-400">Adambakkam Branch</p>
+                <p className="text-[#B0B0B0]">Adambakkam Branch</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-primary mt-6 sm:mt-8 pt-6 sm:pt-8 text-center text-xs sm:text-sm text-gray-400 px-2">
+        <div className="border-t border-primary mt-6 sm:mt-8 pt-6 sm:pt-8 text-center text-xs sm:text-sm text-[#B0B0B0]/70 px-2">
           <p>
             © {currentYear} Delphin Associates. All rights reserved. | You Dream We Build - Building
             Trust Through Quality Since 1999

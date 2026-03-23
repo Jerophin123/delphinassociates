@@ -2,47 +2,47 @@
 
 import { motion } from "framer-motion";
 import {
-  Award,
-  Clock,
-  Users,
-  Headphones,
-  Eye,
-  CheckCircle2,
+  ShieldCheck,
+  Timer,
+  HardHat,
+  MessageSquare,
+  ClipboardCheck,
+  LifeBuoy,
 } from "lucide-react";
 
 const strengths = [
   {
-    icon: Award,
+    icon: ShieldCheck,
     title: "First-Quality Standards",
     description:
       "Maintaining first-quality standards in all our projects, ensuring durability and excellence.",
   },
   {
-    icon: Clock,
+    icon: Timer,
     title: "Timely Completion",
     description:
       "Committed to timely completion of every work, respecting client deadlines and project schedules.",
   },
   {
-    icon: Users,
+    icon: HardHat,
     title: "Technically Strong Team",
     description:
       "Highly experienced design and execution team with expertise across all construction domains.",
   },
   {
-    icon: Headphones,
+    icon: MessageSquare,
     title: "Free Consultancy Support",
     description:
       "Providing free consultancy support for clients, helping them make informed decisions.",
   },
   {
-    icon: Eye,
+    icon: ClipboardCheck,
     title: "Transparent Execution",
     description:
       "Transparent execution and budgeting, ensuring clients are always informed and involved.",
   },
   {
-    icon: CheckCircle2,
+    icon: LifeBuoy,
     title: "Post-Completion Service",
     description:
       "Continuous service even after project completion, ensuring long-term satisfaction and support.",
@@ -64,7 +64,7 @@ export default function OrganizationStrengths() {
       className="mb-8 sm:mb-12 md:mb-16"
       style={{ willChange: 'opacity, transform' }}
     >
-      <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-primary font-display">
+      <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 font-display tracking-[0.02em] bg-gradient-to-r from-accent via-accent-light to-accent bg-clip-text text-transparent">
         Organization Strengths
       </h2>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
@@ -90,9 +90,13 @@ export default function OrganizationStrengths() {
                 damping: 25
               }
             }}
-            className="bg-gradient-to-br from-gray-50 to-white rounded-lg p-4 sm:p-5 md:p-6 border border-gray-200 hover:border-accent/30 shadow-[0_6px_12px_-3px_rgba(0,0,0,0.1),0_3px_6px_-2px_rgba(0,0,0,0.06),0_1px_3px_-1px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_40px_-8px_rgba(0,0,0,0.2),0_10px_20px_-5px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08)] transition-[box-shadow,border-color] duration-300 ease-out"
-            style={{ willChange: 'transform' }}
+            className="group relative bg-white rounded-3xl p-5 sm:p-6 md:p-7 border border-accent/15 hover:border-accent/35 transition-[box-shadow,border-color] duration-300 ease-out overflow-hidden shadow-[0_12px_28px_-18px_rgba(0,0,0,0.25)] hover:shadow-[0_48px_90px_-30px_rgba(0,0,0,0.35)]"
+            style={{ willChange: "transform" }}
           >
+            {/* 3D depth layers (static, no mouse tracking) */}
+            <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-accent/12 via-transparent to-accent-light/8" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/10 via-black/5 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300" />
+            <div className="pointer-events-none absolute -top-10 -right-10 w-32 h-32 rounded-full bg-accent/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
             <motion.div
               initial={{ opacity: 0, scale: 0.85 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -107,9 +111,9 @@ export default function OrganizationStrengths() {
               className="mb-3 sm:mb-4"
               style={{ willChange: 'transform' }}
             >
-              <strength.icon className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 text-accent" />
+              <strength.icon className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 text-accent drop-shadow-[0_0_14px_rgba(212,175,55,0.18)]" />
             </motion.div>
-            <h3 className="text-lg sm:text-xl font-bold mb-2 text-primary">
+            <h3 className="text-lg sm:text-xl font-bold mb-2 text-primary tracking-[0.01em]">
               {strength.title}
             </h3>
             <p className="text-sm sm:text-base text-gray-700">{strength.description}</p>

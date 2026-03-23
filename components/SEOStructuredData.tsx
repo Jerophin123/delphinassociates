@@ -42,7 +42,7 @@ export default function SEOStructuredData({ type = "LocalBusiness" }: Structured
     priceRange: "$$",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Plot No 9, 8th Street, Kubera Nagar, Madipakkam",
+      streetAddress: "No. 261A, 6th Main road, LIC nagar, Madipakkam",
       addressLocality: "Chennai",
       addressRegion: "Tamil Nadu",
       postalCode: "600091",

@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 import ServicesList from "@/components/services/ServicesList";
+import ServicesHero from "@/components/services/ServicesHero";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Our Services",
@@ -38,19 +40,61 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   return (
-    <div className="pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
-        <div className="text-center mb-8 sm:mb-10 md:mb-12">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 font-display">
-            Our Services
-          </h1>
-          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto px-2">
-            Comprehensive construction and consultancy services tailored to meet
-            your project requirements
-          </p>
+    <div className="pt-20 bg-white text-primary-dark">
+      <ServicesHero />
+
+      <section className="relative bg-white py-12 sm:py-16 md:py-20 overflow-hidden border-b border-accent/10">
+        <div
+          className="absolute top-[-12rem] left-[-10rem] w-96 h-96 bg-accent/10 rounded-full blur-3xl pointer-events-none"
+        />
+        <div
+          className="absolute bottom-[-14rem] right-[-10rem] w-96 h-96 bg-accent/5 rounded-full blur-3xl pointer-events-none"
+        />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ServicesList />
         </div>
-        <ServicesList />
-      </div>
+      </section>
+
+      <section className="bg-gradient-to-br from-white via-gray-50 to-white py-12 sm:py-16 md:py-20 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 items-center gap-8 sm:gap-10 md:gap-12">
+            <div className="text-center md:text-left">
+              <span className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-accent/10 text-accent rounded-full text-xs sm:text-sm font-semibold border border-accent/20">
+                Lets Build Together
+              </span>
+              <h2 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold font-display tracking-[0.02em]">
+                Request a Free Consultation
+              </h2>
+              <p className="mt-3 text-gray-600 text-base sm:text-lg max-w-xl leading-relaxed mx-auto md:mx-0 px-2 md:px-0">
+                Tell us your project scope and timelines. We'll help you with transparent planning, quality execution, and reliable support.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center md:justify-end mt-2">
+              <a
+                className="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-accent text-black rounded-lg font-bold text-sm sm:text-base hover:bg-accent-light transition-colors shadow-2xl shadow-accent/25 hover:shadow-accent/45"
+                href="tel:+919841243345"
+              >
+                <span>Call Us Now</span>
+                <span className="ml-2 inline-block transition-transform group-hover:translate-x-1">
+                  &rarr;
+                </span>
+              </a>
+
+              <Link
+                href="/contact"
+                className="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-primary/5 backdrop-blur-sm text-primary-dark rounded-lg font-bold text-sm sm:text-base hover:bg-accent/15 hover:text-accent transition-[background-color,color,border-color] duration-300 ease-out border border-accent/60"
+              >
+                <span>Get a Quote</span>
+                <span className="ml-2 inline-block transition-transform group-hover:translate-x-1">
+                  &rarr;
+                </span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

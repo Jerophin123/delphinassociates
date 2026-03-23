@@ -83,11 +83,11 @@ export default async function ProjectDetailPage({
   }
 
   return (
-    <div className="pt-20">
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="pt-20 bg-white text-primary-dark min-h-screen">
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
         <Link
           href="/projects"
-          className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-200"
+          className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-4 py-2 text-sm font-semibold text-accent transition hover:bg-accent/15"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to projects

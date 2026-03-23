@@ -49,7 +49,10 @@ const featuredProjects = [
 
 export default function ProjectHighlights() {
   return (
-    <section className="relative z-10 py-12 sm:py-16 md:py-24 bg-gradient-to-b from-white to-gray-50">
+    <section
+      id="home-project-highlights"
+      className="relative z-10 py-12 sm:py-16 md:py-24 bg-gradient-to-b from-white to-gray-50 overflow-hidden border-y border-accent/10"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -67,7 +70,7 @@ export default function ProjectHighlights() {
           <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-accent/10 text-accent rounded-full text-xs sm:text-sm font-semibold mb-3 sm:mb-4">
             Our Portfolio
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 font-display text-primary">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 font-display text-primary-dark tracking-[0.02em]">
             Featured Projects
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-2">
@@ -98,7 +101,7 @@ export default function ProjectHighlights() {
                   damping: 25
                 }
               }}
-              className="group relative bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-accent/30 shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25),0_16px_32px_-8px_rgba(0,0,0,0.15),0_8px_16px_-4px_rgba(0,0,0,0.1)] transition-[box-shadow,border-color] duration-300 ease-out"
+              className="group relative bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-accent/30 shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25),0_16px_32px_-8px_rgba(0,0,0,0.15),0_8px_16px_-4px_rgba(0,0,0,0.1)] transition-[box-shadow,border-color] duration-300 ease-out"
               style={{ willChange: 'transform' }}
             >
               {/* Image Container */}
@@ -146,7 +149,7 @@ export default function ProjectHighlights() {
               {/* Content */}
               <div className="p-4 sm:p-5 md:p-6 relative">
                 <div className="flex items-start justify-between mb-2 sm:mb-3">
-                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-primary group-hover:text-accent transition-colors">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-primary-dark group-hover:text-accent transition-colors">
                     {project.title}
                   </h3>
                 </div>
@@ -205,7 +208,7 @@ export default function ProjectHighlights() {
         >
           <Link
             href="/projects"
-            className="group inline-flex items-center space-x-2 sm:space-x-3 px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-primary text-white rounded-lg font-bold text-sm sm:text-base md:text-lg hover:bg-primary-dark transition-all duration-300 shadow-xl hover:shadow-2xl"
+            className="group inline-flex items-center space-x-2 sm:space-x-3 px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-accent text-black rounded-xl font-bold text-sm sm:text-base md:text-lg hover:bg-accent-light transition-all duration-300 shadow-2xl shadow-accent/25 hover:shadow-accent/45"
           >
             <span>Explore All Projects</span>
             <motion.div

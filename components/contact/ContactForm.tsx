@@ -93,13 +93,21 @@ export default function ContactForm() {
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
-      className="bg-white rounded-lg shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25),0_16px_32px_-8px_rgba(0,0,0,0.15),0_8px_16px_-4px_rgba(0,0,0,0.1)] transition-all duration-500 p-4 sm:p-6 md:p-8 hover:-translate-y-2 hover:scale-[1.01]"
+      className="bg-white rounded-3xl shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25),0_16px_32px_-8px_rgba(0,0,0,0.15),0_8px_16px_-4px_rgba(0,0,0,0.1)] transition-all duration-500 p-4 sm:p-6 md:p-8 hover:-translate-y-2 hover:scale-[1.01]"
     >
-      <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-primary font-display">
-        Send Us a Message
-      </h2>
+      <div className="mb-4 sm:mb-6">
+        <div className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full border border-accent/25 bg-accent/10 text-accent font-semibold text-xs sm:text-sm">
+          Send Your Requirement
+        </div>
+        <h2 className="mt-4 text-xl sm:text-2xl font-bold text-primary font-display">
+          Send Us a Message
+        </h2>
+        <p className="mt-2 text-sm sm:text-base text-gray-600">
+          We typically respond within 24 hours.
+        </p>
+      </div>
       {error && (
-        <div className="mb-3 sm:mb-4 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-2 text-red-700">
+        <div className="mb-3 sm:mb-4 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-2xl flex items-center space-x-2 text-red-700">
           <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5" />
           <span className="text-xs sm:text-sm">{error}</span>
         </div>
@@ -119,120 +127,131 @@ export default function ContactForm() {
           </p>
         </motion.div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 md:space-y-6">
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
-            >
-              Full Name *
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              required
-              value={formData.name}
-              onChange={handleChange}
-              disabled={isSubmitting}
-              className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
-            >
-              Email Address *
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              required
-              value={formData.email}
-              onChange={handleChange}
-              disabled={isSubmitting}
-              className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="phone"
-              className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
-            >
-              Phone Number *
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              required
-              value={formData.phone}
-              onChange={handleChange}
-              disabled={isSubmitting}
-              className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="subject"
-              className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
-            >
-              Subject *
-            </label>
-            <select
-              id="subject"
-              name="subject"
-              required
-              value={formData.subject}
-              onChange={handleChange}
-              disabled={isSubmitting}
-              className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-            >
-              <option value="">Select a subject</option>
-              <option value="residential">Residential Construction</option>
-              <option value="industrial">Industrial & Commercial</option>
-              <option value="institutional">Institutional Buildings</option>
-              <option value="church">Church Buildings</option>
-              <option value="consultancy">Consultancy Services</option>
-              <option value="other">Other Inquiry</option>
-            </select>
-          </div>
-          <div>
-            <label
-              htmlFor="message"
-              className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
-            >
-              Message *
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              required
-              rows={5}
-              value={formData.message}
-              onChange={handleChange}
-              disabled={isSubmitting}
-              className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full px-5 sm:px-6 py-2.5 sm:py-3 bg-accent text-white rounded-lg font-semibold text-sm sm:text-base hover:bg-accent-light transition-colors flex items-center justify-center space-x-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
-          >
-            <span>{isSubmitting ? "Submitting..." : "Send Message"}</span>
-            {!isSubmitting && (
-              <motion.div
-                whileHover={{ x: 2 }}
-                transition={{ duration: 0.2 }}
+        <>
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 md:space-y-6">
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
               >
-                <Send className="w-4 h-4 sm:w-5 sm:h-5" />
-              </motion.div>
-            )}
-          </button>
-        </form>
+                Full Name *
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                autoComplete="name"
+                value={formData.name}
+                onChange={handleChange}
+                disabled={isSubmitting}
+                className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
+              >
+                Email Address *
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                autoComplete="email"
+                value={formData.email}
+                onChange={handleChange}
+                disabled={isSubmitting}
+                className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="phone"
+                className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
+              >
+                Phone Number *
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                required
+                autoComplete="tel"
+                inputMode="tel"
+                value={formData.phone}
+                onChange={handleChange}
+                disabled={isSubmitting}
+                className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="subject"
+                className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
+              >
+                Subject *
+              </label>
+              <select
+                id="subject"
+                name="subject"
+                required
+                value={formData.subject}
+                onChange={handleChange}
+                disabled={isSubmitting}
+                className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+              >
+                <option value="">Select a subject</option>
+                <option value="residential">Residential Construction</option>
+                <option value="industrial">Industrial & Commercial</option>
+                <option value="institutional">Institutional Buildings</option>
+                <option value="church">Church Buildings</option>
+                <option value="consultancy">Consultancy Services</option>
+                <option value="other">Other Inquiry</option>
+              </select>
+            </div>
+            <div>
+              <label
+                htmlFor="message"
+                className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
+              >
+                Message *
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                required
+                rows={5}
+                autoComplete="off"
+                value={formData.message}
+                onChange={handleChange}
+                disabled={isSubmitting}
+                className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full px-5 sm:px-6 py-2.5 sm:py-3 bg-accent text-black rounded-xl font-semibold text-sm sm:text-base hover:bg-accent-light transition-colors flex items-center justify-center space-x-2 disabled:bg-accent/40 disabled:cursor-not-allowed"
+            >
+              <span>{isSubmitting ? "Submitting..." : "Send Message"}</span>
+              {!isSubmitting && (
+                <motion.div
+                  whileHover={{ x: 2 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Send className="w-4 h-4 sm:w-5 sm:h-5" />
+                </motion.div>
+              )}
+            </button>
+          </form>
+
+          <p className="mt-4 text-[11px] sm:text-xs text-gray-500">
+            By submitting, you agree that your message will be stored in our Firestore database for follow-up.
+          </p>
+        </>
       )}
     </motion.div>
   );

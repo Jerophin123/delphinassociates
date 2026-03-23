@@ -7,9 +7,9 @@ import { Award, Users, CheckCircle2, TrendingUp } from "lucide-react";
 
 const stats = [
   { icon: Award, value: "25+", label: "Years of Experience", color: "from-accent to-accent-light" },
-  { icon: TrendingUp, value: "100+", label: "Projects Completed", color: "from-primary to-primary-light" },
+  { icon: TrendingUp, value: "100+", label: "Projects Completed", color: "from-accent-light to-accent" },
   { icon: Users, value: "50+", label: "Happy Clients", color: "from-accent-light to-accent" },
-  { icon: CheckCircle2, value: "100%", label: "Quality Assured", color: "from-primary-light to-primary" },
+  { icon: CheckCircle2, value: "100%", label: "Quality Assured", color: "from-accent to-accent-dark" },
 ];
 
 // Counter component that animates from 0 to target value
@@ -64,9 +64,12 @@ export default function QuickIntro() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section className="relative z-10 py-12 sm:py-16 md:py-24 bg-white overflow-hidden">
+    <section
+      id="home-quickintro"
+      className="relative z-10 py-12 sm:py-16 md:py-24 bg-primary-dark overflow-hidden border-y border-accent/10"
+    >
       {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -84,22 +87,22 @@ export default function QuickIntro() {
             }}
             style={{ willChange: 'opacity, transform' }}
           >
-            <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-primary/10 text-primary rounded-full text-xs sm:text-sm font-semibold mb-4 sm:mb-6">
+            <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-accent/10 text-accent rounded-full text-xs sm:text-sm font-semibold mb-4 sm:mb-6">
               About Us
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 md:mb-8 font-display text-primary leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 md:mb-8 font-display text-white leading-tight tracking-[0.02em]">
               Excellence in Construction
               <span className="block text-accent mt-1 sm:mt-2">Since 1999</span>
             </h2>
             <div className="space-y-4 sm:space-y-6 mb-6 sm:mb-8">
-              <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed">
-                Delphin Associates was established in <strong className="text-primary">1999</strong> by{" "}
-                <strong className="text-primary">Mr. Delphin P. Stanley (DCE, B.Tech)</strong>, leading a team of 
+              <p className="text-sm sm:text-base md:text-lg text-[#B0B0B0] leading-relaxed">
+                Delphin Associates was established in <strong className="text-accent">1999</strong> by{" "}
+                <strong className="text-accent">Mr. Delphin P. Stanley (DCE, B.Tech)</strong>, leading a team of 
                 young engineers across Tamil Nadu. Our organization provides building consultancy,
                 construction, and project execution services for residential,
                 industrial, commercial, institutional, and church projects.
               </p>
-              <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed">
+              <p className="text-sm sm:text-base md:text-lg text-[#B0B0B0] leading-relaxed">
                 We are known for <strong className="text-accent">transparency</strong>, <strong className="text-accent">timely completion</strong>, and
                 <strong className="text-accent"> post-completion support</strong>. Our commitment to quality and customer
                 satisfaction has made us a trusted name in the construction industry.
@@ -107,7 +110,7 @@ export default function QuickIntro() {
             </div>
             <Link
               href="/about"
-              className="group inline-flex items-center space-x-2 sm:space-x-3 px-6 sm:px-8 py-3 sm:py-4 bg-primary text-white rounded-lg font-bold text-sm sm:text-base md:text-lg hover:bg-primary-dark transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="group inline-flex items-center space-x-2 sm:space-x-3 px-6 sm:px-8 py-3 sm:py-4 bg-accent text-black rounded-xl font-bold text-sm sm:text-base md:text-lg hover:bg-accent-light transition-all duration-300 shadow-2xl shadow-accent/25 hover:shadow-accent/45"
             >
               <span>Learn More About Us</span>
               <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -154,12 +157,18 @@ export default function QuickIntro() {
                         damping: 25
                       }
                     }}
-                    className="group relative bg-gradient-to-br from-white to-gray-50 rounded-2xl p-4 sm:p-6 md:p-8 border border-gray-100 hover:border-accent/30 shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25),0_16px_32px_-8px_rgba(0,0,0,0.15),0_8px_16px_-4px_rgba(0,0,0,0.1)] transition-[box-shadow,border-color] duration-300 ease-out"
-                    style={{ willChange: 'transform' }}
+                    className="group relative bg-gradient-to-br from-primary to-primary-light rounded-3xl p-4 sm:p-6 md:p-8 border border-white/10 hover:border-accent/30 transition-[box-shadow,border-color] duration-300 ease-out overflow-hidden shadow-[0_12px_28px_-18px_rgba(0,0,0,0.65)] hover:shadow-[0_48px_110px_-40px_rgba(0,0,0,0.75)]"
+                    style={{ willChange: "transform" }}
                   >
-                    {/* Icon */}
-                    <motion.div 
-                      className={`mb-3 sm:mb-4 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center shadow-lg`}
+                    {/* 3D depth layers */}
+                    <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-accent/15 via-transparent to-accent-light/10" />
+                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 via-black/10 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="pointer-events-none absolute left-0 top-0 h-24 w-24 bg-[radial-gradient(circle_at_top_left,rgba(212,175,55,0.35)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                    <div className="relative z-10">
+                      {/* Icon */}
+                      <motion.div 
+                        className={`mb-3 sm:mb-4 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center shadow-lg`}
                       initial={{ opacity: 0, scale: 0.85 }}
                       animate={isInView ? { 
                         opacity: 1, 
@@ -194,18 +203,16 @@ export default function QuickIntro() {
                       >
                         <Icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white" />
                       </motion.div>
-                    </motion.div>
-                    
-                    {/* Value */}
-                    <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-1 sm:mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                      <AnimatedCounter value={stat.value} isInView={isInView} />
-                    </div>
-                    
-                    {/* Label */}
-                    <div className="text-xs sm:text-sm md:text-base text-gray-600 font-medium">{stat.label}</div>
+                      </motion.div>
 
-                    {/* Hover effect */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-500`}></div>
+                      {/* Value */}
+                      <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-1 sm:mb-2 bg-gradient-to-r from-accent via-accent-light to-accent bg-clip-text text-transparent">
+                        <AnimatedCounter value={stat.value} isInView={isInView} />
+                      </div>
+
+                      {/* Label */}
+                      <div className="text-xs sm:text-sm md:text-base text-[#B0B0B0] font-medium">{stat.label}</div>
+                    </div>
                   </motion.div>
                 );
               })}

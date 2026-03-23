@@ -12,14 +12,14 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         primary: {
-          DEFAULT: "#1A237E",
-          dark: "#0D1137",
-          light: "#283593",
+          DEFAULT: "#121212",
+          dark: "#0A0A0A",
+          light: "#1E1E1E",
         },
         accent: {
-          DEFAULT: "#DAA520",
-          light: "#FFD700",
-          dark: "#B8860B",
+          DEFAULT: "#D4AF37",
+          light: "#C5A46D",
+          dark: "#9C7B1E",
         },
       },
       fontFamily: {

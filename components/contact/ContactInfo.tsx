@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { BadgeCheck, Clock, Mail, MapPin, Phone } from "lucide-react";
 
 export default function ContactInfo() {
   return (
@@ -24,12 +24,21 @@ export default function ContactInfo() {
           damping: 25
         }
       }}
-      className="bg-gradient-to-br from-gray-50 to-white rounded-lg border border-gray-200 hover:border-accent/30 shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] p-4 sm:p-6 md:p-8 hover:shadow-[0_24px_48px_-8px_rgba(0,0,0,0.22),0_12px_24px_-6px_rgba(0,0,0,0.14),0_6px_12px_-3px_rgba(0,0,0,0.1)] transition-[box-shadow,border-color] duration-300 ease-out"
+      className="bg-gradient-to-br from-gray-50 to-white rounded-3xl border border-gray-200 hover:border-accent/30 shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] p-4 sm:p-6 md:p-8 hover:shadow-[0_24px_48px_-8px_rgba(0,0,0,0.22),0_12px_24px_-6px_rgba(0,0,0,0.14),0_6px_12px_-3px_rgba(0,0,0,0.1)] transition-[box-shadow,border-color] duration-300 ease-out"
       style={{ willChange: 'transform' }}
     >
-      <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-primary font-display">
-        Get In Touch
-      </h2>
+      <div className="mb-4 sm:mb-6">
+        <div className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full border border-accent/25 bg-accent/10 text-accent font-semibold text-xs sm:text-sm">
+          <MapPin className="w-4 h-4" />
+          Contact Details
+        </div>
+        <h2 className="mt-4 text-xl sm:text-2xl font-bold text-primary font-display">
+          Talk to Our Team
+        </h2>
+        <p className="mt-2 text-sm sm:text-base text-gray-600">
+          For project consultations, site visits, and construction consultancy support.
+        </p>
+      </div>
       <div className="space-y-4 sm:space-y-5 md:space-y-6">
         <motion.div 
           className="flex items-start space-x-3 sm:space-x-4"
@@ -60,7 +69,7 @@ export default function ContactInfo() {
           <div>
             <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1">Address</h3>
             <p className="text-xs sm:text-sm text-gray-700 break-words">
-              Plot No 9, 8th Street, Kubera Nagar, Madipakkam, Chennai - 600 091
+              No. 261A, 6th Main road, LIC nagar, Madipakkam, Chennai- 600 091.
             </p>
           </div>
         </motion.div>
@@ -187,11 +196,19 @@ export default function ContactInfo() {
         </motion.div>
       </div>
 
-      <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-gray-200">
-        <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-3 sm:mb-4">Consultants</h3>
-        <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm text-gray-700">
-          <p>Kannimar Consultants, Chennai</p>
-          <p>DAR & Associates, Chennai</p>
+      <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-accent/10">
+        <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-3 sm:mb-4">
+          Consultant Partners
+        </h3>
+        <div className="space-y-2 text-xs sm:text-sm text-gray-700">
+          <div className="flex items-start gap-2">
+            <BadgeCheck className="w-4 h-4 text-accent mt-0.5" />
+            <p>Kannimar Consultants, Chennai</p>
+          </div>
+          <div className="flex items-start gap-2">
+            <BadgeCheck className="w-4 h-4 text-accent mt-0.5" />
+            <p>DAR & Associates, Chennai</p>
+          </div>
         </div>
       </div>
     </motion.div>

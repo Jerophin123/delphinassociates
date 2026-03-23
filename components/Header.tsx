@@ -24,6 +24,7 @@ export default function Header() {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
+  const [isLightHomeSection, setIsLightHomeSection] = useState(false);
 
   useEffect(() => {
     const updateViewportHeight = () => {
@@ -71,8 +72,40 @@ export default function Header() {
   // Determine header style based on scroll state and current page
   const isHomePage = pathname === "/";
   const isInHeroSection = scrollY < viewportHeight * 1.1;
+
+  useEffect(() => {
+    if (!isHomePage) return;
+
+    const lightIds = new Set(["home-project-highlights", "home-cta-section"]);
+    const ratiosById: Record<string, number> = {};
+
+    const targets = Array.from(lightIds)
+      .map((id) => document.getElementById(id))
+      .filter(Boolean) as HTMLElement[];
+
+    if (!targets.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const id = (entry.target as HTMLElement).id;
+          ratiosById[id] = entry.isIntersecting ? entry.intersectionRatio : 0;
+        }
+
+        const nextIsLight = Array.from(lightIds).some((id) => (ratiosById[id] ?? 0) >= 0.18);
+        setIsLightHomeSection(nextIsLight);
+      },
+      {
+        threshold: [0, 0.12, 0.18, 0.25, 0.35, 0.5],
+      }
+    );
+
+    targets.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [isHomePage]);
   
-  let headerStyle = "bg-white shadow-md";
+  let headerStyle =
+    "bg-white/80 backdrop-blur-md shadow-sm border-b border-accent/20";
   let textStyle = "text-gray-700";
 
   // Only apply video/scroll-based styling on home page
@@ -84,31 +117,39 @@ export default function Header() {
     // Check if mobile menu is open on mobile in hero section
     if (isMobile && isMobileMenuOpen && isInHeroSection) {
       // Mobile menu open in hero section - translucent background
-      headerStyle = "bg-primary-dark/80 backdrop-blur-md shadow-lg border-b border-white/10";
+      headerStyle =
+        "bg-primary-dark/80 backdrop-blur-md shadow-lg border-b border-accent/20";
       textStyle = "text-white";
     } else if (isAtTop) {
       // At the very top of the page - fully transparent
       headerStyle = "bg-transparent";
-      textStyle = "text-white";
+      textStyle = "text-accent";
     } else if (isPastHero) {
       // Past the hero section - white background to match content sections
-      headerStyle = "bg-white shadow-md";
-      textStyle = "text-gray-700";
+      headerStyle =
+        isLightHomeSection
+          ? "bg-white/80 backdrop-blur-md shadow-sm border-b border-accent/20"
+          : "bg-primary-dark/92 backdrop-blur-md shadow-lg border-b border-accent/20";
+      textStyle = isLightHomeSection ? "text-primary-dark" : "text-[#B0B0B0]";
     } else if (isAtHeroEnd) {
       // At the end of hero section - blend with video overlay (dark blue)
-      headerStyle = "bg-primary-dark/95 backdrop-blur-md shadow-lg border-b border-white/10";
-      textStyle = "text-white";
+      headerStyle =
+        "bg-primary-dark/85 backdrop-blur-md shadow-lg border-b border-accent/20";
+      textStyle = "text-accent";
     } else if (isScrollingUp && scrollY > viewportHeight * 0.5) {
       // Scrolling up from lower part of hero section - white background
-      headerStyle = "bg-white shadow-md";
-      textStyle = "text-gray-700";
+      headerStyle =
+        isLightHomeSection
+          ? "bg-white/80 backdrop-blur-md shadow-sm border-b border-accent/20"
+          : "bg-primary-dark/92 backdrop-blur-md shadow-lg border-b border-accent/20";
+      textStyle = isLightHomeSection ? "text-primary-dark" : "text-[#B0B0B0]";
     } else {
       // Default: scrolling down within hero - transparent
       headerStyle = "bg-transparent";
-      textStyle = "text-white";
+      textStyle = "text-accent";
     }
   }
-  // For all other pages, navbar is always white
+  // For all other pages, navbar stays white glass
 
   return (
     <motion.header
@@ -136,17 +177,17 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative text-sm font-medium transition-colors ${
+                className={`group relative text-sm font-medium transition-colors duration-300 ease-out ${
                   pathname === item.href
                     ? "text-accent"
                     : `${textStyle} hover:text-accent`
-                }`}
+                } hover:drop-shadow-[0_0_14px_rgba(212,175,55,0.25)] after:absolute after:left-0 after:bottom-[-0.25rem] after:h-[2px] after:w-full after:origin-left after:scale-x-0 after:bg-gradient-to-r after:from-accent after:to-accent-light after:transition-transform after:duration-300 after:ease-out group-hover:after:scale-x-100`}
               >
                 {item.name}
                 {pathname === item.href && (
                   <motion.div
                     layoutId="navbar-indicator"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent"
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-accent to-accent-light shadow-[0_0_14px_rgba(212,175,55,0.35)]"
                   />
                 )}
               </Link>
@@ -155,7 +196,7 @@ export default function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className={`md:hidden p-2 ${textStyle} hover:text-accent transition-colors`}
+            className={`md:hidden w-10 h-10 flex items-center justify-center ${textStyle} hover:text-accent transition-colors`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
