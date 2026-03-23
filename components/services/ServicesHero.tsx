@@ -28,32 +28,46 @@ export default function ServicesHero() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-50px" }}
-          transition={{
-            type: "spring",
-            stiffness: 100,
-            damping: 20,
-            mass: 0.8,
-          }}
-          style={{ willChange: "opacity, transform" }}
+          transition={{ staggerChildren: 0.15 }}
           className="text-center"
         >
-          <span className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-accent/10 text-accent rounded-full text-xs sm:text-sm font-semibold border border-accent/20">
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-accent/10 text-accent rounded-full text-xs sm:text-sm font-semibold border border-accent/20"
+          >
             Our Expertise
-          </span>
+          </motion.span>
 
-          <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold font-display tracking-[0.02em] text-primary-dark">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold font-display tracking-[0.02em] text-primary-dark"
+          >
             Construction & Consultancy Services
-          </h1>
+          </motion.h1>
 
-          <p className="mt-3 text-gray-600 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed px-2">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-3 text-gray-600 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed px-2"
+          >
             Comprehensive solutions tailored to residential, industrial, commercial, institutional, and church project needs.
             We build with transparency, quality, and timely execution.
-          </p>
+          </motion.p>
 
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mt-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mt-8"
+          >
             <motion.a
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
@@ -84,7 +98,7 @@ export default function ServicesHero() {
               <span>Get a Quote</span>
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

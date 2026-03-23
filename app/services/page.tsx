@@ -73,7 +73,7 @@ export default function ServicesPage() {
 
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center md:justify-end mt-2">
               <a
-                className="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-accent text-black rounded-lg font-bold text-sm sm:text-base hover:bg-accent-light transition-colors shadow-2xl shadow-accent/25 hover:shadow-accent/45"
+                className="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-accent text-black rounded-xl font-bold text-sm sm:text-base hover:bg-accent-light transition-colors shadow-2xl shadow-accent/25 hover:shadow-accent/45"
                 href="tel:+919841243345"
               >
                 <span>Call Us Now</span>
@@ -84,7 +84,7 @@ export default function ServicesPage() {
 
               <Link
                 href="/contact"
-                className="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-primary/5 backdrop-blur-sm text-primary-dark rounded-lg font-bold text-sm sm:text-base hover:bg-accent/15 hover:text-accent transition-[background-color,color,border-color] duration-300 ease-out border border-accent/60"
+                className="group inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-primary/5 backdrop-blur-sm text-primary-dark rounded-xl font-bold text-sm sm:text-base hover:bg-accent/15 hover:text-accent transition-[background-color,color,border-color] duration-300 ease-out border border-accent/60"
               >
                 <span>Get a Quote</span>
                 <span className="ml-2 inline-block transition-transform group-hover:translate-x-1">

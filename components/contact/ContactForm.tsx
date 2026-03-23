@@ -3,8 +3,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Send, CheckCircle, AlertCircle } from "lucide-react";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { getDb } from "@/lib/firebase";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -31,18 +29,18 @@ export default function ContactForm() {
     }
 
     try {
-      // Get Firestore instance (client-side only)
-      const db = getDb();
-
-      // Save to Firebase Firestore
-      await addDoc(collection(db, "contacts"), {
-        fullName: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        subject: formData.subject,
-        message: formData.message,
-        timestamp: serverTimestamp(),
+      // Send directly via our new API Route that acts as the backend using Nodemailer
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
       });
+      
+      const result = await response.json();
+      
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || "Failed to send message. Please try again.");
+      }
 
       // Show success message
       setIsSubmitted(true);
@@ -63,15 +61,7 @@ export default function ContactForm() {
       console.error("Error saving contact:", err);
       
       // Provide more specific error messages
-      let errorMessage = "Failed to submit form. Please try again or contact us directly.";
-      
-      if (err?.code === "permission-denied") {
-        errorMessage = "Permission denied. Please check Firebase security rules.";
-      } else if (err?.code === "unavailable") {
-        errorMessage = "Service temporarily unavailable. Please try again later.";
-      } else if (err?.message) {
-        errorMessage = err.message;
-      }
+      const errorMessage = err?.message || "Failed to submit form. Please try again or contact us directly.";
       
       setError(errorMessage);
       setIsSubmitting(false);
@@ -249,7 +239,7 @@ export default function ContactForm() {
           </form>
 
           <p className="mt-4 text-[11px] sm:text-xs text-gray-500">
-            By submitting, you agree that your message will be stored in our Firestore database for follow-up.
+            By submitting, you agree that we may contact you regarding your inquiry.
           </p>
         </>
       )}
