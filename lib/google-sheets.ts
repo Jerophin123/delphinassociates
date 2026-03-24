@@ -62,3 +62,109 @@ export async function appendToGoogleSheet(data: any, emailStatus: string = 'Sent
     return { success: false, error: error.message };
   }
 }
+
+export async function logVisitorToGoogleSheet(data: any) {
+  try {
+    if (!process.env.GOOGLE_CLIENT_EMAIL || !process.env.GOOGLE_PRIVATE_KEY || !process.env.GOOGLE_SHEET_VISITOR_ID) {
+      return { success: false, reason: "Missing credentials" };
+    }
+    let privateKey = process.env.GOOGLE_PRIVATE_KEY;
+    if (privateKey) {
+      privateKey = privateKey.replace(/\\n/g, '\n').replace(/"/g, '');
+    }
+    const auth = new google.auth.GoogleAuth({
+      credentials: {
+        client_email: process.env.GOOGLE_CLIENT_EMAIL,
+        private_key: privateKey,
+      },
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
+
+    const sheets = google.sheets({ version: 'v4', auth });
+    const sheetName = 'Visitors';
+
+    const rowData = [
+      data.timestamp || new Date().toLocaleString(),
+      data.ip || '',
+      data.city || '',
+      data.region || '',
+      data.country || '',
+      data.postalcode || data.postalCode || '',
+      data.timezone || '',
+      data.maplink || data.mapLink || '',
+      data.isp || '',
+      data.deviceBrand || '',
+      data.deviceModel || '',
+      data.os || '',
+      data.browser || '',
+      data.screenSize || '',
+      data.deviceType || '',
+      data.referrer || '',
+      data.pageVisited || '',
+      data.language || '',
+      data.connection || '',
+      data.cpuCores || '',
+      data.deviceMemory || '',
+      data.colorDepth || '',
+      data.pixelRatio || '',
+      data.urlParameters || '',
+      data.fullUserAgent || '',
+      data.localTime || '',
+      data.platform || ''
+    ];
+
+    try {
+      // Attempt to append to existing sheet
+      await sheets.spreadsheets.values.append({
+        spreadsheetId: process.env.GOOGLE_SHEET_VISITOR_ID,
+        range: `${sheetName}!A:AA`,
+        valueInputOption: 'USER_ENTERED',
+        requestBody: { values: [rowData] }
+      });
+    } catch (error: any) {
+      // If sheet doesn't exist (Unable to parse range error)
+      if (error.message && error.message.includes('Unable to parse range')) {
+        // Create the sheet
+        await sheets.spreadsheets.batchUpdate({
+          spreadsheetId: process.env.GOOGLE_SHEET_VISITOR_ID,
+          requestBody: {
+            requests: [{
+              addSheet: { properties: { title: sheetName } }
+            }]
+          }
+        });
+
+        // Add headers
+        const headers = [
+          'timestamp', 'ip', 'city', 'region', 'country', 'postalCode', 'timezone', 
+          'mapLink', 'isp', 'deviceBrand', 'deviceModel', 'os', 'browser', 
+          'screenSize', 'deviceType', 'referrer', 'pageVisited',
+          'language', 'connection', 'cpuCores', 'deviceMemory', 'colorDepth',
+          'pixelRatio', 'urlParameters', 'fullUserAgent', 'localTime', 'platform'
+        ];
+        
+        await sheets.spreadsheets.values.append({
+          spreadsheetId: process.env.GOOGLE_SHEET_VISITOR_ID,
+          range: `${sheetName}!A1:AA1`,
+          valueInputOption: 'USER_ENTERED',
+          requestBody: { values: [headers] }
+        });
+
+        // Append the actual data now
+        await sheets.spreadsheets.values.append({
+          spreadsheetId: process.env.GOOGLE_SHEET_VISITOR_ID,
+          range: `${sheetName}!A:AA`,
+          valueInputOption: 'USER_ENTERED',
+          requestBody: { values: [rowData] }
+        });
+      } else {
+        throw error;
+      }
+    }
+
+    return { success: true };
+  } catch (error: any) {
+    console.error('❌ Error appending visitor to Google Sheet:', error.message);
+    return { success: false, error: error.message };
+  }
+}
