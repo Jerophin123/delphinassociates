@@ -9,6 +9,8 @@ import { Analytics } from "@vercel/analytics/next";
 import SEOStructuredData from "@/components/SEOStructuredData";
 import GA from "@/components/GA";
 import VisitorTracking from "@/components/VisitorTracking";
+import FloatingChatbot from "@/components/FloatingChatbot";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -180,6 +182,8 @@ export default function RootLayout({
         <VisitorTracking />
         <Header />
         <main className="min-h-screen">{children}</main>
+        <FloatingChatbot />
+        <ScrollToTop />
         <Footer />
         <Analytics />
       </body>

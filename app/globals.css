@@ -19,28 +19,24 @@ body {
   background: var(--background);
 }
 
-/* Prevent layout shifting when the scrollbar appears/disappears between pages */
+/* Hide scrollbars globally but keep functionality */
 html {
-  scrollbar-gutter: stable;
-  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  overflow-y: scroll; /* Keep scroll behavior */
+}
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 body {
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
   overflow-y: scroll;
 }
-
-/* Desktop-only: avoid the visual gap between scrollbar and page content */
-@media (min-width: 768px) {
-  html {
-    scrollbar-gutter: auto;
-    overflow-y: auto;
-  }
-
-  body {
-    overflow-y: auto;
-  }
+body::-webkit-scrollbar {
+  display: none;
 }
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
