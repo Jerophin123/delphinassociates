@@ -119,14 +119,14 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/favicon 48 x 48.png", type: "image/png", sizes: "48x48" },
-      { url: "/favicon 64 x 64.png", type: "image/png", sizes: "64x64" },
-      { url: "/favicon 128 x 128.png", type: "image/png", sizes: "128x128" },
+      { url: "/favicon.ico?v=2", sizes: "any" },
+      { url: "/favicon 48 x 48.png?v=2", type: "image/png", sizes: "48x48" },
+      { url: "/favicon 64 x 64.png?v=2", type: "image/png", sizes: "64x64" },
+      { url: "/favicon 128 x 128.png?v=2", type: "image/png", sizes: "128x128" },
     ],
-    shortcut: "/favicon.ico",
+    shortcut: "/favicon.ico?v=2",
     apple: [
-      { url: "/favicon 128 x 128.png", sizes: "128x128", type: "image/png" },
+      { url: "/favicon 128 x 128.png?v=2", sizes: "128x128", type: "image/png" },
     ],
   },
   category: "Construction",
@@ -149,23 +149,31 @@ export default function RootLayout({
           src="https://www.googletagmanager.com/gtag/js?id=G-2JT8PG47WJ"
           strategy="afterInteractive"
         />
-        <Script id="ga-gtag" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-2JT8PG47WJ');
-          `}
-        </Script>
-        <Script id="ms-clarity" strategy="afterInteractive">
-          {`
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "u4ed5jx0fg");
-          `}
-        </Script>
+        <Script 
+          id="ga-gtag" 
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-2JT8PG47WJ');
+            `,
+          }}
+        />
+        <Script 
+          id="ms-clarity" 
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "u4ed5jx0fg");
+            `,
+          }}
+        />
         <Suspense fallback={null}>
           <GA />
         </Suspense>
