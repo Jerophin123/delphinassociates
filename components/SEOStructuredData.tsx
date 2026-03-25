@@ -28,6 +28,7 @@ export default function SEOStructuredData({ type = "LocalBusiness" }: Structured
       "https://www.instagram.com/delphinassociatesofficial/",
       "https://x.com/delphin75358",
       "https://www.linkedin.com/company/delphin-associates-official/",
+      "https://www.threads.com/@delphinassociatesofficial",
     ],
   };
 

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { FaInstagram, FaLinkedin } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import { FaXTwitter, FaThreads } from "react-icons/fa6";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -136,6 +136,17 @@ export default function Footer() {
                   transition={{ duration: 0.2 }}
                 >
                   <FaLinkedin className="w-5 h-5 sm:w-6 sm:h-6" />
+                </motion.a>
+                <motion.a
+                  href="https://www.threads.com/@delphinassociatesofficial"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#B0B0B0] hover:text-accent transition-colors"
+                  aria-label="Threads"
+                  whileHover={{ scale: 1.15 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <FaThreads className="w-5 h-5 sm:w-6 sm:h-6" />
                 </motion.a>
               </div>
             </div>

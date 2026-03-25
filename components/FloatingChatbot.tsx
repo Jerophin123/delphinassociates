@@ -500,7 +500,7 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="flex flex-wrap justify-end gap-2 w-full"
+              className="hidden sm:flex flex-wrap justify-end gap-2 w-full"
             >
               <button
                 onClick={() => { setIsOpen(true); setShowNotification(false); setHasUnread(false); handleOptionClick("services", "1. Our Services"); }}
