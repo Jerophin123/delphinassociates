@@ -1,7 +1,7 @@
 <div align="center">
   <img src="public/logo.jpg" alt="Delphin Associates Logo" width="250" />
 
-  # Delphin Associates - Official Website
+  # Delphin Associates - Enterprise Web Application
   
   **"You Dream We Build. Building Trust Through Quality Since 1999."**
 
@@ -485,7 +485,17 @@ A: Sometimes Webpack aggressively caches classes. Shut down the server `CTRL+C`,
 
 ---
 
-## 16. License & Legal
+## 16. Roadmap & Future Enhancements
+
+Our architecture is scalable to infinity. We plan to augment this platform with:
+- [ ] **Content Management System (CMS) Integration**: Moving the static portfolio items in `/projects` into an external headless CMS (like Sanity or Strapi) to allow administrative staff to upload new construction project photos without code deployment.
+- [ ] **Zod Validation Pipelines**: Upgrading our API route input validations from manual `if (!data)` checks to rigorous Zod schema parsing.
+- [ ] **Dynamic Pricing Calculators**: Creating a client-side calculator where users can estimate construction costs based on square footage and material grades.
+- [ ] **Client Portal**: Allowing active clients to log in and view live progress photos of their ongoing construction sites.
+
+---
+
+## 17. License & Legal
 
 This entire application—including all custom UI architectures, heuristic chatbot logic, backend telemetry models, database connector philosophies, SVG aggregations, color mapping systems, linguistic knowledge bases, and architectural methodologies—is the strict proprietary property of **Delphin Associates**.
 
