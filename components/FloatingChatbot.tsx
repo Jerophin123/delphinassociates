@@ -83,6 +83,14 @@ const getAnswerFromKnowledgeBase = (question: string) => {
 
 export default function FloatingChatbot() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    handleResize(); // Initial check
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   const [showNotification, setShowNotification] = useState(false);
   const [hasUnread, setHasUnread] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
@@ -131,27 +139,87 @@ export default function FloatingChatbot() {
   }, [messages]);
 
   useEffect(() => {
-    // Pop out notification after 2 seconds
-    const timer = setTimeout(() => {
-      if (!isOpen) {
-        setShowNotification(true);
-        setHasUnread(true);
-      }
-    }, 2000);
+    let timer: NodeJS.Timeout;
+    let hideTimer: NodeJS.Timeout;
+    let fallbackTimer: NodeJS.Timeout;
+    let hasTriggered = false;
 
-    // Auto-hide after 15 seconds
-    const hideTimer = setTimeout(() => {
-      setShowNotification(false);
-    }, 15000);
+    const triggerNotification = (playSound = false) => {
+      if (hasTriggered || isOpen) return;
+      hasTriggered = true;
+      
+      setShowNotification(true);
+      setHasUnread(true);
+      
+      if (playSound) {
+        // Play notification sound now that we securely have a verified user interaction
+        const audio = new Audio("/Notification.wav");
+        audio.volume = 0.7; // slightly reduced volume
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Silently suppress the promise rejection to avoid console spam
+            // Browser may still natively log a warning, but our app won't crash or throw loudly.
+          });
+        }
+      }
+
+      // Auto-hide after 15 seconds
+      hideTimer = setTimeout(() => {
+        setShowNotification(false);
+      }, 15000);
+    };
+
+    const handleInteraction = () => {
+      // Clean up listeners
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('keydown', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+      clearTimeout(fallbackTimer);
+      
+      // Short delay after interaction so it feels natural.
+      // We explicitly pass true to play sound since they interacted.
+      timer = setTimeout(() => triggerNotification(true), 1500);
+    };
+
+    // Wait for user interaction to bypass autoplay restrictions.
+    // 'scroll' and 'mousemove' are purposefully excluded because dragging the scrollbar
+    // or moving the mouse doesn't unlock audio context in Chrome/Edge, which causes the NotAllowedError.
+    window.addEventListener('click', handleInteraction);
+    window.addEventListener('keydown', handleInteraction);
+    window.addEventListener('touchstart', handleInteraction);
+
+    // Fallback: If no interaction in 5 seconds, just show the visual notification
+    fallbackTimer = setTimeout(() => {
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('keydown', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+      triggerNotification(false); // Explicity pass false to prevent the audio element from attempting to play and throwing an error
+    }, 5000);
 
     return () => {
       clearTimeout(timer);
       clearTimeout(hideTimer);
+      clearTimeout(fallbackTimer);
+      window.removeEventListener('click', handleInteraction);
+      window.removeEventListener('keydown', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
     };
   }, []);
 
   const addMessage = (msg: Omit<Message, "id">) => {
     setMessages((prev) => [...prev, { ...msg, id: Date.now().toString() }]);
+    
+    // Play message sound effect
+    const soundFile = msg.sender === "user" ? "/send.mp3" : "/receive.mp3";
+    const audio = new Audio(soundFile);
+    audio.volume = 0.5;
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Silently catch autoplay restrictions (though user has already interacted to send a message)
+      });
+    }
   };
 
   const handleOptionClick = (value: string, label: string) => {
@@ -385,12 +453,12 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.7, y: 40, x: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
-            exit={{ opacity: 0, scale: 0.7, y: 40, x: 10 }}
-            transition={{ type: "spring", damping: 25, stiffness: 350 }}
-            style={{ transformOrigin: "bottom right" }}
-            className="bg-white sm:rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] w-full sm:w-[400px] flex flex-col overflow-hidden pointer-events-auto h-full sm:h-[600px] sm:max-h-[calc(100vh-120px)]"
+            initial={isMobile ? { opacity: 0, y: 20 } : { opacity: 0, scale: 0.7, y: 40, x: 10 }}
+            animate={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, scale: 1, y: 0, x: 0 }}
+            exit={isMobile ? { opacity: 0, y: 20 } : { opacity: 0, scale: 0.7, y: 40, x: 10 }}
+            transition={isMobile ? { type: "tween", duration: 0.25, ease: "easeOut" } : { type: "spring", damping: 25, stiffness: 350 }}
+            style={isMobile ? {} : { transformOrigin: "bottom right" }}
+            className={`bg-white sm:rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] w-full sm:w-[400px] flex flex-col overflow-hidden pointer-events-auto h-full sm:h-[600px] sm:max-h-[calc(100vh-120px)] ${isMobile ? "will-change-transform" : ""}`}
           >
             {/* Modern Header - Optimized for Mobile */}
             <div className="bg-primary p-5 sm:p-6 flex justify-between items-center relative overflow-hidden">
