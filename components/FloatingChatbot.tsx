@@ -461,27 +461,27 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
             className={`bg-white sm:rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] w-full sm:w-[400px] flex flex-col overflow-hidden pointer-events-auto h-full sm:h-[600px] sm:max-h-[calc(100vh-120px)] ${isMobile ? "will-change-transform" : ""}`}
           >
             {/* Modern Header - Optimized for Mobile */}
-            <div className="bg-primary p-5 sm:p-6 flex justify-between items-center relative overflow-hidden">
-              <div className="absolute -top-10 -right-10 w-32 h-32 bg-accent opacity-5 blur-[50px] rounded-full" />
+            <div className="bg-white p-5 sm:p-6 flex justify-between items-center relative overflow-hidden shrink-0">
+              <div className="absolute -top-10 -right-10 w-32 h-32 bg-accent opacity-10 blur-[50px] rounded-full" />
               
               <div className="flex items-center space-x-3 sm:space-x-3.5 relative z-10">
                 <div className="relative">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-[#ffffff10] backdrop-blur-md flex items-center justify-center border border-white/10 shadow-inner">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-accent/10 backdrop-blur-md flex items-center justify-center border border-accent/20 shadow-inner">
                     <Bot className="w-6 h-6 sm:w-7 sm:h-7 text-accent" />
                   </div>
-                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 sm:w-3.5 sm:h-3.5 bg-green-500 rounded-full border-2 border-primary" />
+                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 sm:w-3.5 sm:h-3.5 bg-green-500 rounded-full border-2 border-white" />
                 </div>
                 <div>
-                  <h3 className="text-white font-bold text-base sm:text-lg tracking-tight font-display">Delphin Associates</h3>
-                  <div className="flex items-center space-x-1 sm:space-x-1.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                    <p className="text-[10px] sm:text-[11px] text-gray-300 font-medium uppercase tracking-wider">Online Assistant</p>
+                  <h3 className="text-gray-900 font-bold text-base sm:text-lg tracking-tight font-display">Delphin Associates</h3>
+                  <div className="flex items-center space-x-1 sm:space-x-1.5 mt-0.5">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                    <p className="text-[10px] sm:text-[11px] text-gray-500 font-medium uppercase tracking-wider">Online Assistant</p>
                   </div>
                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="relative z-20 w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-gray-300 hover:text-white hover:bg-white/10 transition-all border border-white/5 active:scale-90"
+                className="relative z-20 w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-all border border-gray-200 active:scale-90"
                 aria-label="Close chat"
               >
                 <X className="w-6 h-6 sm:w-5 sm:h-5" />

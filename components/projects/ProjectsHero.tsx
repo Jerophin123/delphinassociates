@@ -49,11 +49,11 @@ function TiltCard({ item }: { item: { icon: any; value: string; label: string } 
       className="group relative rounded-2xl border border-white/80 bg-gradient-to-b from-white to-white/60 backdrop-blur-md p-5 shadow-[0_8px_16px_-6px_rgba(0,0,0,0.05),_inset_0_1px_1px_rgba(255,255,255,1)] hover:shadow-[0_20px_40px_-10px_rgba(212,175,55,0.15),_0_10px_20px_-5px_rgba(0,0,0,0.06),_inset_0_1px_1px_rgba(255,255,255,1)] cursor-default transition-shadow duration-300"
     >
       {/* Inner subtle depth layer */}
-      <div 
-        style={{ transform: "translateZ(-8px)" }} 
+      <div
+        style={{ transform: "translateZ(-8px)" }}
         className="absolute inset-0 rounded-2xl border border-accent/10 pointer-events-none"
       />
-      
+
       <div style={{ transform: "translateZ(16px)" }} className="flex items-center gap-2 text-accent font-semibold transition-transform duration-300">
         <Icon className="w-5 h-5 group-hover:text-amber-500 transition-colors" />
         <span className="text-3xl font-bold font-display tracking-tight text-primary-dark">{item.value}</span>
@@ -103,7 +103,7 @@ export default function ProjectsHero() {
               animate={{ opacity: 1, y: 0 }}
               className="mt-4 text-base sm:text-lg text-gray-600 max-w-2xl leading-relaxed"
             >
-              Showcasing our excellence in construction across multiple sectors—built with quality, transparency, and on-time execution.
+              Showcasing our excellence in construction across multiple sectors built with quality, transparency, and on-time execution.
             </motion.p>
 
             <motion.div

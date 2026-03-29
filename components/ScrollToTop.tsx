@@ -29,21 +29,23 @@ export default function ScrollToTop() {
   };
 
   return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={scrollToTop}
-          className="fixed bottom-32 right-6 sm:right-[52px] z-40 w-10 h-10 bg-white text-primary rounded-full flex items-center justify-center shadow-lg border border-gray-100 hover:bg-gray-50 transition-colors"
-          aria-label="Scroll to top"
-        >
-          <ChevronUp className="w-5 h-5" />
-        </motion.button>
-      )}
-    </AnimatePresence>
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 pointer-events-none">
+      <AnimatePresence>
+        {isVisible && (
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={scrollToTop}
+            className="pointer-events-auto w-10 h-10 bg-white text-primary rounded-full flex items-center justify-center shadow-lg border border-gray-100 hover:bg-gray-50 transition-colors"
+            aria-label="Scroll to top"
+          >
+            <ChevronUp className="w-5 h-5" />
+          </motion.button>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
