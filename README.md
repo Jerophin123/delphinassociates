@@ -84,8 +84,9 @@ Construction clients value precision and speed. The web platform must reflect th
 ### Resiliency First
 The construction sector operates non-stop; our lead pipelines must too. If a third-party service (like sending an email via Nodemailer) fails, our fallback mechanisms ensure data is still mutated and preserved securely in Google Sheets logging. If Google APIs experience an outage, fallback caching mechanisms hold data. 
 
-### "Wow" Factor Native Design
+### "Wow" Factor Native Design & Modern UI
 We refuse to rely on heavy UI libraries (like MUI or Ant Design) which bloat bundles. Every component is painstakingly crafted using utility classes from **Tailwind CSS** and animated using **Framer Motion** spring physics. 
+Recently, we've elevated the design language by introducing advanced Framer Motion sliding animations and optimized mobile aesthetics (specifically refining heading scales for optimal cross-device readability) across our core sections to deliver a truly premium, dynamic digital experience.
 
 ---
 
@@ -392,14 +393,14 @@ We extended the default Tailwind palette with our exact brand hex codes:
 - **`accent-light`**: `#F4D36D` (Used strictly for hover states to indicate interactability).
 
 ### Typography Rules
-We import massive, weighty variable fonts to project unyielding strength (akin to concrete and steel).
-- **Display Typeface**: Utilized for massive `h1`, `h2` elements. Tight kerning, heavy font weights (`font-bold`, `tracking-tight`).
-- **Body Typeface**: Highly legible sans-serif for deep paragraphs, ensuring readability across all devices.
+We enforce a premium typography system ensuring consistent, modern aesthetics that align with high-end architecture.
+- **Display Typeface (`Montserrat`)**: Utilized for massive `h1`, `h2`, and structural headings. Configured with specific weights, clean geometric alignment, and strict letter-spacing to project unyielding strength and luxury.
+- **Body Typeface (`Inter`)**: Highly legible, modern sans-serif used for deep paragraphs, interactive UI text, and components, ensuring flawless readability and responsive scaling across all devices.
 
 ### Animation Protocols (Framer Motion)
 Websites without motion feel static and dead. We breathe life into the site, but responsibly.
-- **Scroll Revealing**: We use `whileInView` extensively. When an element enters the viewport, it is assigned `initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}`. This cascading waterfall effect guides the user's eye downward through the funnel.
-- **Micro-Interactions**: Buttons don't just change color; they physically react. Buttons possess `whileHover={{ scale: 1.02 }}` and `whileTap={{ scale: 0.98 }}`, offering visceral, tactile feedback mimicking physical pressing.
+- **Scroll Revealing & Sliding**: We use `whileInView` extensively. When elements enter the viewport, they are assigned entering animations (e.g., `initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}`). Recently implemented dynamic left-to-right sliding animations for key content blocks to guide the user's eye gracefully through the funnel.
+- **Micro-Interactions**: Buttons and navigational tools (like the repositioned, bottom-center Floating Scroll Button) don't just change color; they physically react. Buttons possess `whileHover={{ scale: 1.02 }}` and `whileTap={{ scale: 0.98 }}`, offering visceral, tactile feedback mimicking physical pressing.
 
 ---
 
