@@ -51,34 +51,34 @@ export default function ProjectHighlights() {
   return (
     <section
       id="home-project-highlights"
-      className="relative z-10 py-12 sm:py-16 md:py-24 bg-gradient-to-b from-white to-gray-50 overflow-hidden border-y border-accent/10"
+      className="relative z-10 py-12 sm:py-20 md:py-28 bg-gradient-to-b from-white to-gray-50 overflow-hidden border-y border-black/5"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
-          transition={{ 
-            type: "spring",
-            stiffness: 100,
-            damping: 20,
-            mass: 0.8
-          }}
-          className="text-center mb-8 sm:mb-12 md:mb-16"
-          style={{ willChange: 'opacity, transform' }}
+          transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="text-center mb-12 sm:mb-16 md:mb-20"
         >
-          <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-accent/10 text-accent rounded-full text-xs sm:text-sm font-semibold mb-3 sm:mb-4">
-            Our Portfolio
-          </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 font-display text-primary-dark tracking-[0.02em]">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <span className="h-[2px] w-8 bg-accent"></span>
+            <span className="text-accent text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
+              Our Portfolio
+            </span>
+            <span className="h-[2px] w-8 bg-accent"></span>
+          </div>
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6 font-display text-primary-dark tracking-tight">
             Featured Projects
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-2">
+          <p className="text-sm sm:text-lg md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed font-light">
             Showcasing our excellence across various sectors with innovative design and quality construction
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-12 md:mb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-10 mb-12 sm:mb-16 md:mb-20">
           {featuredProjects.map((project, index) => (
             <motion.div
               key={project.id}
@@ -86,43 +86,26 @@ export default function ProjectHighlights() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ 
-                type: "spring",
-                stiffness: 100,
-                damping: 20,
-                mass: 0.8,
-                delay: index * 0.08
+                duration: 0.6,
+                delay: index * 0.1,
+                ease: [0.21, 0.47, 0.32, 0.98]
               }}
-              whileHover={{ 
-                y: -12,
-                scale: 1.02,
-                transition: {
-                  type: "spring",
-                  stiffness: 400,
-                  damping: 25
-                }
-              }}
-              className="group relative bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-accent/30 shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25),0_16px_32px_-8px_rgba(0,0,0,0.15),0_8px_16px_-4px_rgba(0,0,0,0.1)] transition-[box-shadow,border-color] duration-300 ease-out"
-              style={{ willChange: 'transform' }}
+              className="group relative bg-white rounded-3xl sm:rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 will-change-transform hover:-translate-y-2 border border-gray-100 flex flex-col h-full"
             >
               {/* Image Container */}
-              <div className="relative h-48 sm:h-56 md:h-64 bg-gradient-to-br from-primary via-primary-light to-primary-dark overflow-hidden">
-                {/* Project Image */}
+              <div className="relative h-56 sm:h-72 w-full overflow-hidden bg-gray-100 flex-shrink-0">
                 {project.image ? (
                   <Image
                     src={project.image}
                     alt={`${project.title} - ${project.category} construction project by Delphin Associates in ${project.location}`}
                     fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     priority={index === 0}
                   />
                 ) : (
-                  /* Fallback gradient background */
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-light to-primary-dark"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200"></div>
                 )}
-                
-                {/* Dark gradient overlay for text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent z-[1]"></div>
                 
                 {/* Fallback emoji if no image */}
                 {!project.image && (
@@ -131,92 +114,80 @@ export default function ProjectHighlights() {
                   </div>
                 )}
                 
+                {/* Subtle gradient overlay to make image vibrant */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                
                 {/* Category Badge */}
-                <div className="absolute top-4 left-4 z-10">
-                  <span className="px-3 py-1 bg-accent text-white rounded-full text-xs font-bold uppercase tracking-wide flex items-center gap-1.5">
+                <div className="absolute top-5 left-5 z-10 transition-transform duration-500 group-hover:translate-y-1">
+                  <div className="backdrop-blur-md bg-white/95 shadow-[0_4px_12px_rgb(0,0,0,0.1)] border border-white/20 px-4 py-2 rounded-full flex items-center gap-2 group-hover:bg-accent group-hover:border-accent transition-colors duration-300">
                     {(() => {
                       const CategoryIcon = getCategoryIcon(project.category);
-                      return <CategoryIcon className="w-3 h-3" />;
+                      return <CategoryIcon className="w-4 h-4 text-accent group-hover:text-white transition-colors" />;
                     })()}
-                    {project.category}
-                  </span>
+                    <span className="text-xs font-bold uppercase tracking-wider text-gray-900 group-hover:text-white transition-colors">{project.category}</span>
+                  </div>
                 </div>
-
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-accent/0 group-hover:bg-accent/20 transition-all duration-500 z-10"></div>
               </div>
 
               {/* Content */}
-              <div className="p-4 sm:p-5 md:p-6 relative">
-                <div className="flex items-start justify-between mb-2 sm:mb-3">
-                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-primary-dark group-hover:text-accent transition-colors">
-                    {project.title}
-                  </h3>
-                </div>
+              <div className="p-5 sm:p-8 flex flex-col flex-grow">
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-5 group-hover:text-accent transition-colors duration-300 leading-tight">
+                  {project.title}
+                </h3>
                 
-                <div className="space-y-1.5 sm:space-y-2 mb-3 sm:mb-4">
-                  <div className="flex items-center text-gray-600 text-xs sm:text-sm">
-                    <motion.div
-                      whileHover={{ scale: 1.1 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-accent" />
-                    </motion.div>
-                    <span className="break-words">{project.location}</span>
+                <div className="space-y-4 mb-6">
+                  <div className="flex items-center text-gray-500 text-sm font-medium">
+                    <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-accent/10 group-hover:text-accent transition-colors shrink-0">
+                      <MapPin className="w-4 h-4 text-gray-400 group-hover:text-accent transition-colors" />
+                    </div>
+                    <span className="break-words line-clamp-1">{project.location}</span>
                   </div>
-                  <div className="flex items-center text-gray-600 text-xs sm:text-sm">
-                    <motion.div
-                      whileHover={{ scale: 1.1 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Calendar className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-accent" />
-                    </motion.div>
+                  <div className="flex items-center text-gray-500 text-sm font-medium">
+                    <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-accent/10 group-hover:text-accent transition-colors shrink-0">
+                      <Calendar className="w-4 h-4 text-gray-400 group-hover:text-accent transition-colors" />
+                    </div>
                     <span>{project.year}</span>
                   </div>
                 </div>
 
-                <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4 leading-relaxed">
+                <p className="text-sm sm:text-base text-gray-500 mb-6 sm:mb-8 leading-relaxed font-light flex-grow">
                   {project.description}
                 </p>
 
-                <Link
-                  href={`/projects#project-${project.id}`}
-                  className="inline-flex items-center space-x-1.5 sm:space-x-2 text-accent font-semibold text-sm sm:text-base group-hover:space-x-2 sm:group-hover:space-x-3 transition-all"
-                >
-                  <span>View Details</span>
-                  <motion.div
-                    whileHover={{ x: 2 }}
-                    transition={{ duration: 0.2 }}
+                <div className="mt-auto">
+                  <Link
+                    href={`/projects#project-${project.id}`}
+                    className="inline-flex items-center gap-3 text-primary-dark font-semibold text-sm group/link hover:text-accent transition-colors duration-300 uppercase tracking-widest mt-auto w-fit"
                   >
-                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </motion.div>
-                </Link>
+                    <span className="relative">
+                      View Project
+                      <span className="absolute left-0 -bottom-1 w-full h-[2px] bg-accent scale-x-0 group-hover/link:scale-x-100 transition-transform origin-left duration-300 ease-out"></span>
+                    </span>
+                    <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover/link:bg-accent group-hover/link:text-white transition-all duration-300 group-hover/link:translate-x-1">
+                      <ArrowRight className="w-4 h-4" />
+                    </div>
+                  </Link>
+                </div>
               </div>
-
-              {/* Decorative corner */}
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-accent/20 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </motion.div>
           ))}
         </div>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center"
         >
           <Link
             href="/projects"
-            className="group inline-flex items-center space-x-2 sm:space-x-3 px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-accent text-black rounded-xl font-bold text-sm sm:text-base md:text-lg hover:bg-accent-light transition-all duration-300 shadow-2xl shadow-accent/25 hover:shadow-accent/45"
+            className="group inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-white transition-all duration-300 bg-primary-dark rounded-xl hover:bg-gray-800 hover:shadow-xl hover:shadow-gray-900/20"
           >
-            <span>Explore All Projects</span>
-            <motion.div
-              whileHover={{ x: 4 }}
-              transition={{ duration: 0.2 }}
-            >
-              <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" />
-            </motion.div>
+            <span className="flex items-center gap-2">
+              Explore All Projects
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-300" />
+            </span>
           </Link>
         </motion.div>
       </div>

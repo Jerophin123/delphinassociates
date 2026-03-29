@@ -15,31 +15,22 @@ export default function ContactInfo() {
         damping: 20,
         mass: 0.8
       }}
-      whileHover={{ 
-        y: -8,
-        scale: 1.01,
-        transition: {
-          type: "spring",
-          stiffness: 400,
-          damping: 25
-        }
-      }}
-      className="bg-gradient-to-br from-gray-50 to-white rounded-3xl border border-gray-200 hover:border-accent/30 shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] p-4 sm:p-6 md:p-8 hover:shadow-[0_24px_48px_-8px_rgba(0,0,0,0.22),0_12px_24px_-6px_rgba(0,0,0,0.14),0_6px_12px_-3px_rgba(0,0,0,0.1)] transition-[box-shadow,border-color] duration-300 ease-out"
+      className="bg-gradient-to-br from-gray-50 to-white rounded-[2.5rem] border border-gray-100 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 p-5 sm:p-8 md:p-10 hover:-translate-y-2 hover:border-gray-200"
       style={{ willChange: 'transform' }}
     >
-      <div className="mb-4 sm:mb-6">
-        <div className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full border border-accent/25 bg-accent/10 text-accent font-semibold text-xs sm:text-sm">
-          <MapPin className="w-4 h-4" />
+      <div className="mb-3 sm:mb-6">
+        <div className="inline-flex items-center gap-2 px-3 sm:px-5 py-1.5 sm:py-2 rounded-full border border-accent/25 bg-accent/10 text-accent font-semibold text-[10px] sm:text-sm">
+          <MapPin className="w-3 sm:w-4 h-3 sm:h-4" />
           Contact Details
         </div>
-        <h2 className="mt-4 text-xl sm:text-2xl font-bold text-primary font-display">
+        <h2 className="mt-3 sm:mt-4 text-lg sm:text-2xl font-bold text-primary font-display">
           Talk to Our Team
         </h2>
-        <p className="mt-2 text-sm sm:text-base text-gray-600">
+        <p className="mt-2 text-[13px] sm:text-base text-gray-600">
           For project consultations, site visits, and construction consultancy support.
         </p>
       </div>
-      <div className="space-y-4 sm:space-y-5 md:space-y-6">
+      <div className="space-y-3 sm:space-y-5 md:space-y-6">
         <motion.div 
           className="flex items-start space-x-3 sm:space-x-4"
           initial={{ opacity: 0, x: -15 }}
@@ -55,7 +46,7 @@ export default function ContactInfo() {
           style={{ willChange: 'opacity, transform' }}
         >
           <motion.div 
-            className="w-10 h-10 sm:w-12 sm:h-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0"
+            className="w-10 h-10 sm:w-14 sm:h-14 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0"
             whileHover={{ scale: 1.08 }}
             transition={{ 
               type: "spring",
@@ -64,11 +55,11 @@ export default function ContactInfo() {
             }}
             style={{ willChange: 'transform' }}
           >
-            <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
+            <MapPin className="w-4 h-4 sm:w-6 sm:h-6 text-accent" />
           </motion.div>
           <div>
-            <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1">Address</h3>
-            <p className="text-xs sm:text-sm text-gray-700 break-words">
+            <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-0.5 sm:mb-1">Address</h3>
+            <p className="text-[11px] sm:text-sm text-gray-700 break-words">
               No. 261A, 6th Main road, LIC nagar, Madipakkam, Chennai- 600 091.
             </p>
           </div>
@@ -89,7 +80,7 @@ export default function ContactInfo() {
           style={{ willChange: 'opacity, transform' }}
         >
           <motion.div 
-            className="w-10 h-10 sm:w-12 sm:h-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0"
+            className="w-10 h-10 sm:w-14 sm:h-14 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0"
             whileHover={{ scale: 1.08 }}
             transition={{ 
               type: "spring",
@@ -98,13 +89,13 @@ export default function ContactInfo() {
             }}
             style={{ willChange: 'transform' }}
           >
-            <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
+            <Phone className="w-4 h-4 sm:w-6 sm:h-6 text-accent" />
           </motion.div>
           <div>
-            <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1">Phone</h3>
+            <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-0.5 sm:mb-1">Phone</h3>
             <a
               href="tel:+919841243345"
-              className="text-xs sm:text-sm text-gray-700 hover:text-accent transition-colors block"
+              className="text-[11px] sm:text-sm text-gray-700 hover:text-accent transition-colors block"
             >
               +91 98412 43345
             </a>
@@ -132,7 +123,7 @@ export default function ContactInfo() {
           style={{ willChange: 'opacity, transform' }}
         >
           <motion.div 
-            className="w-10 h-10 sm:w-12 sm:h-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0"
+            className="w-10 h-10 sm:w-14 sm:h-14 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0"
             whileHover={{ scale: 1.08 }}
             transition={{ 
               type: "spring",
@@ -141,13 +132,13 @@ export default function ContactInfo() {
             }}
             style={{ willChange: 'transform' }}
           >
-            <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
+            <Mail className="w-4 h-4 sm:w-6 sm:h-6 text-accent" />
           </motion.div>
           <div>
-            <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1">Email</h3>
+            <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-0.5 sm:mb-1">Email</h3>
             <a
               href="mailto:delphinassociates@gmail.com"
-              className="text-xs sm:text-sm text-gray-700 hover:text-accent transition-colors block break-all sm:break-normal"
+              className="text-[11px] sm:text-sm text-gray-700 hover:text-accent transition-colors block break-all sm:break-normal"
             >
               delphinassociates@gmail.com
             </a>
@@ -175,7 +166,7 @@ export default function ContactInfo() {
           style={{ willChange: 'opacity, transform' }}
         >
           <motion.div 
-            className="w-10 h-10 sm:w-12 sm:h-12 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0"
+            className="w-10 h-10 sm:w-14 sm:h-14 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0"
             whileHover={{ scale: 1.08 }}
             transition={{ 
               type: "spring",
@@ -184,11 +175,11 @@ export default function ContactInfo() {
             }}
             style={{ willChange: 'transform' }}
           >
-            <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
+            <Clock className="w-4 h-4 sm:w-6 sm:h-6 text-accent" />
           </motion.div>
           <div>
-            <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1">Business Hours</h3>
-            <p className="text-xs sm:text-sm text-gray-700">
+            <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-0.5 sm:mb-1">Business Hours</h3>
+            <p className="text-[11px] sm:text-sm text-gray-700">
               Monday - Saturday: 9:00 AM - 6:00 PM
             </p>
             <p className="text-xs sm:text-sm text-gray-700">Sunday: Closed</p>

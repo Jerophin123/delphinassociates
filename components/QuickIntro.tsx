@@ -63,169 +63,140 @@ export default function QuickIntro() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.21, 0.47, 0.32, 0.98]
+      }
+    }
+  };
+
   return (
     <section
       id="home-quickintro"
-      className="relative z-10 py-12 sm:py-16 md:py-24 bg-primary-dark overflow-hidden border-y border-accent/10"
+      className="relative z-10 py-12 sm:py-20 md:py-28 bg-primary-dark overflow-hidden border-y border-white/5"
     >
-      {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
+      {/* Background decoration - refined glows */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3"></div>
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent-light/5 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/4"></div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <motion.div
             ref={ref}
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
-            transition={{ 
-              type: "spring",
-              stiffness: 100,
-              damping: 20,
-              mass: 0.8
-            }}
-            style={{ willChange: 'opacity, transform' }}
+            variants={containerVariants}
           >
-            <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-accent/10 text-accent rounded-full text-xs sm:text-sm font-semibold mb-4 sm:mb-6">
-              About Us
-            </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 md:mb-8 font-display text-white leading-tight tracking-[0.02em]">
-              Excellence in Construction
-              <span className="block text-accent mt-1 sm:mt-2">Since 1999</span>
-            </h2>
-            <div className="space-y-4 sm:space-y-6 mb-6 sm:mb-8">
-              <p className="text-sm sm:text-base md:text-lg text-[#B0B0B0] leading-relaxed">
-                Delphin Associates was established in <strong className="text-accent">1999</strong> by{" "}
-                <strong className="text-accent">Mr. Delphin P. Stanley (DCE, B.Tech)</strong>, leading a team of 
+            <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
+              <span className="h-[2px] w-12 bg-accent"></span>
+              <span className="text-accent text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
+                About Us
+              </span>
+            </motion.div>
+            <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6 font-display text-white leading-[1.15] tracking-tight">
+              Excellence in <br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400">Construction</span>
+              <span className="block mt-2 text-xl sm:text-2xl md:text-4xl text-accent font-medium">Since 1999</span>
+            </motion.h2>
+            <motion.div variants={itemVariants} className="space-y-6 mb-10">
+              <p className="text-sm sm:text-base text-gray-400 leading-relaxed font-light">
+                Delphin Associates was established in <strong className="text-white font-medium">1999</strong> by{" "}
+                <strong className="text-white font-medium">Mr. Delphin P. Stanley (DCE, B.Tech)</strong>, leading a team of 
                 young engineers across Tamil Nadu. Our organization provides building consultancy,
                 construction, and project execution services for residential,
                 industrial, commercial, institutional, and church projects.
               </p>
-              <p className="text-sm sm:text-base md:text-lg text-[#B0B0B0] leading-relaxed">
-                We are known for <strong className="text-accent">transparency</strong>, <strong className="text-accent">timely completion</strong>, and
-                <strong className="text-accent"> post-completion support</strong>. Our commitment to quality and customer
+              <p className="text-sm sm:text-base text-gray-400 leading-relaxed font-light">
+                We are known for <strong className="text-white font-medium">transparency</strong>, <strong className="text-white font-medium">timely completion</strong>, and
+                <strong className="text-white font-medium"> post-completion support</strong>. Our commitment to quality and customer
                 satisfaction has made us a trusted name in the construction industry.
               </p>
-            </div>
-            <Link
-              href="/about"
-              className="group inline-flex items-center space-x-2 sm:space-x-3 px-6 sm:px-8 py-3 sm:py-4 bg-accent text-black rounded-xl font-bold text-sm sm:text-base md:text-lg hover:bg-accent-light transition-all duration-300 shadow-2xl shadow-accent/25 hover:shadow-accent/45"
-            >
-              <span>Learn More About Us</span>
-              <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
+            </motion.div>
+            
+            <motion.div variants={itemVariants}>
+              <Link
+                href="/about"
+                className="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-black transition-all duration-300 bg-accent rounded-xl hover:bg-accent-light hover:ring-4 hover:ring-accent/30 overflow-hidden"
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  Learn More About Us
+                  <svg className="w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </span>
+                <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+              </Link>
+            </motion.div>
           </motion.div>
 
+          {/* Stats Grid */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 100 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            transition={{ 
-              type: "spring",
-              stiffness: 100,
-              damping: 20,
-              mass: 0.8
-            }}
+            transition={{ duration: 1, ease: [0.21, 0.47, 0.32, 0.98] }}
             className="relative"
-            style={{ willChange: 'opacity, transform' }}
           >
-            {/* Stats Grid */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
+            <div className="grid grid-cols-2 gap-3 sm:gap-6">
               {stats.map((stat, index) => {
                 const Icon = stat.icon;
                 return (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, scale: 0.85 }}
-                    animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.85 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ 
-                      type: "spring",
-                      stiffness: 120,
-                      damping: 20,
-                      mass: 0.7,
-                      delay: index * 0.08
+                      duration: 0.6,
+                      delay: index * 0.1,
+                      ease: [0.21, 0.47, 0.32, 0.98]
                     }}
-                    whileHover={{ 
-                      y: -12,
-                      scale: 1.02,
-                      transition: {
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 25
-                      }
-                    }}
-                    className="group relative bg-gradient-to-br from-primary to-primary-light rounded-3xl p-4 sm:p-6 md:p-8 border border-white/10 hover:border-accent/30 transition-[box-shadow,border-color] duration-300 ease-out overflow-hidden shadow-[0_12px_28px_-18px_rgba(0,0,0,0.65)] hover:shadow-[0_48px_110px_-40px_rgba(0,0,0,0.75)]"
-                    style={{ willChange: "transform" }}
+                    whileHover={{ y: -6, scale: 1.02 }}
+                    className="group relative rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-8 overflow-hidden backdrop-blur-xl bg-white/[0.02] border border-white/5 hover:border-accent/30 hover:bg-white/[0.04] transition-all duration-500 shadow-2xl shadow-black/50"
                   >
-                    {/* 3D depth layers */}
-                    <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-accent/15 via-transparent to-accent-light/10" />
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 via-black/10 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
-                    <div className="pointer-events-none absolute left-0 top-0 h-24 w-24 bg-[radial-gradient(circle_at_top_left,rgba(212,175,55,0.35)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                    <div className="relative z-10">
+                    {/* Hover Glow */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-accent/10 via-transparent to-transparent" />
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-accent/20 rounded-full blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    <div className="relative z-10 flex flex-col items-start gap-y-4">
                       {/* Icon */}
-                      <motion.div 
-                        className={`mb-3 sm:mb-4 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center shadow-lg`}
-                      initial={{ opacity: 0, scale: 0.85 }}
-                      animate={isInView ? { 
-                        opacity: 1, 
-                        scale: 1,
-                        transition: {
-                          type: "spring",
-                          stiffness: 150,
-                          damping: 18,
-                          mass: 0.6,
-                          delay: index * 0.08 + 0.15
-                        }
-                      } : { opacity: 0, scale: 0.85 }}
-                      whileHover={{ 
-                        scale: 1.1,
-                        transition: {
-                          type: "spring",
-                          stiffness: 500,
-                          damping: 30
-                        }
-                      }}
-                      style={{ willChange: 'transform' }}
-                    >
-                      <motion.div
-                        animate={isInView ? {
-                          scale: [1, 1.2, 1],
-                          transition: {
-                            delay: index * 0.1 + 0.5,
-                            duration: 0.6,
-                            ease: "easeOut"
-                          }
-                        } : {}}
-                      >
-                        <Icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white" />
-                      </motion.div>
-                      </motion.div>
-
-                      {/* Value */}
-                      <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-1 sm:mb-2 bg-gradient-to-r from-accent via-accent-light to-accent bg-clip-text text-transparent">
-                        <AnimatedCounter value={stat.value} isInView={isInView} />
+                      <div className="p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 group-hover:border-accent/40 group-hover:bg-accent/10 transition-colors duration-500 shadow-inner">
+                        <Icon className="w-5 h-5 sm:w-8 sm:h-8 text-white group-hover:text-accent transition-colors duration-300" />
                       </div>
 
-                      {/* Label */}
-                      <div className="text-xs sm:text-sm md:text-base text-[#B0B0B0] font-medium">{stat.label}</div>
+                      {/* Value & Label */}
+                      <div>
+                        <span className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 group-hover:from-accent group-hover:to-accent-light tracking-tight transition-all duration-500">
+                          <AnimatedCounter value={stat.value} isInView={isInView} />
+                        </span>
+                        <div className="mt-1 sm:mt-2 text-xs sm:text-base text-gray-400 font-medium tracking-wide group-hover:text-gray-300 transition-colors duration-300">
+                          {stat.label}
+                        </div>
+                      </div>
                     </div>
                   </motion.div>
                 );
               })}
             </div>
-
-            {/* Decorative element */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="absolute -z-10 -bottom-10 -right-10 w-64 h-64 bg-accent/10 rounded-full blur-3xl"
-            ></motion.div>
+            
+            {/* Soft backdrop glow behind the grid */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-accent/5 rounded-full blur-[100px] -z-10 mix-blend-screen pointer-events-none"></div>
           </motion.div>
         </div>
       </div>

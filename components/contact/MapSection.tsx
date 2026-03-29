@@ -44,7 +44,7 @@ export default function MapSection() {
         </a>
       </div>
 
-      <div className="bg-gradient-to-br from-white via-gray-50 to-white rounded-3xl overflow-hidden border border-accent/15 shadow-sm">
+      <div className="bg-gradient-to-br from-white via-gray-50 to-white rounded-[2.5rem] overflow-hidden border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(212,175,55,0.08)] transition-all duration-500">
         <div className="bg-gray-100 relative h-[300px] sm:h-[350px] md:h-[400px] overflow-hidden">
           <iframe
             src={mapEmbedUrl}

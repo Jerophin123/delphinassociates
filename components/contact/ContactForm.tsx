@@ -83,16 +83,16 @@ export default function ContactForm() {
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
-      className="bg-white rounded-3xl shadow-[0_8px_16px_-4px_rgba(0,0,0,0.12),0_4px_8px_-2px_rgba(0,0,0,0.08),0_2px_4px_-1px_rgba(0,0,0,0.06)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25),0_16px_32px_-8px_rgba(0,0,0,0.15),0_8px_16px_-4px_rgba(0,0,0,0.1)] transition-all duration-500 p-4 sm:p-6 md:p-8 hover:-translate-y-2 hover:scale-[1.01]"
+      className="bg-white rounded-[2.5rem] border border-gray-100 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 p-5 sm:p-8 md:p-10 hover:-translate-y-2 hover:border-gray-200"
     >
-      <div className="mb-4 sm:mb-6">
-        <div className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full border border-accent/25 bg-accent/10 text-accent font-semibold text-xs sm:text-sm">
+      <div className="mb-3 sm:mb-6">
+        <div className="inline-flex items-center gap-2 px-3 sm:px-5 py-1.5 sm:py-2 rounded-full border border-accent/25 bg-accent/10 text-accent font-semibold text-[10px] sm:text-sm">
           Send Your Requirement
         </div>
-        <h2 className="mt-4 text-xl sm:text-2xl font-bold text-primary font-display">
+        <h2 className="mt-3 sm:mt-4 text-lg sm:text-2xl font-bold text-primary font-display">
           Send Us a Message
         </h2>
-        <p className="mt-2 text-sm sm:text-base text-gray-600">
+        <p className="mt-2 text-[13px] sm:text-base text-gray-600">
           We typically respond within 24 hours.
         </p>
       </div>
@@ -118,11 +118,11 @@ export default function ContactForm() {
         </motion.div>
       ) : (
         <>
-          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 md:space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-5 md:space-y-6">
             <div>
               <label
                 htmlFor="name"
-                className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
+                className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2"
               >
                 Full Name *
               </label>
@@ -134,14 +134,13 @@ export default function ContactForm() {
                 autoComplete="name"
                 value={formData.name}
                 onChange={handleChange}
-                disabled={isSubmitting}
-                className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-sm border border-gray-200/80 bg-gray-50/50 rounded-xl focus:bg-white focus:ring-2 focus:ring-accent/50 focus:border-accent hover:border-gray-300 transition-all duration-300 disabled:bg-gray-100 disabled:cursor-not-allowed"
               />
             </div>
             <div>
               <label
                 htmlFor="email"
-                className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
+                className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2"
               >
                 Email Address *
               </label>
@@ -153,14 +152,13 @@ export default function ContactForm() {
                 autoComplete="email"
                 value={formData.email}
                 onChange={handleChange}
-                disabled={isSubmitting}
-                className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-sm border border-gray-200/80 bg-gray-50/50 rounded-xl focus:bg-white focus:ring-2 focus:ring-accent/50 focus:border-accent hover:border-gray-300 transition-all duration-300 disabled:bg-gray-100 disabled:cursor-not-allowed"
               />
             </div>
             <div>
               <label
                 htmlFor="phone"
-                className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
+                className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2"
               >
                 Phone Number *
               </label>
@@ -173,14 +171,13 @@ export default function ContactForm() {
                 inputMode="tel"
                 value={formData.phone}
                 onChange={handleChange}
-                disabled={isSubmitting}
-                className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-sm border border-gray-200/80 bg-gray-50/50 rounded-xl focus:bg-white focus:ring-2 focus:ring-accent/50 focus:border-accent hover:border-gray-300 transition-all duration-300 disabled:bg-gray-100 disabled:cursor-not-allowed"
               />
             </div>
             <div>
               <label
                 htmlFor="subject"
-                className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
+                className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2"
               >
                 Subject *
               </label>
@@ -190,8 +187,7 @@ export default function ContactForm() {
                 required
                 value={formData.subject}
                 onChange={handleChange}
-                disabled={isSubmitting}
-                className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-sm border border-gray-200/80 bg-gray-50/50 rounded-xl focus:bg-white focus:ring-2 focus:ring-accent/50 focus:border-accent hover:border-gray-300 transition-all duration-300 disabled:bg-gray-100 disabled:cursor-not-allowed appearance-none"
               >
                 <option value="">Select a subject</option>
                 <option value="residential">Residential Construction</option>
@@ -205,7 +201,7 @@ export default function ContactForm() {
             <div>
               <label
                 htmlFor="message"
-                className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5 sm:mb-2"
+                className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2"
               >
                 Message *
               </label>
@@ -217,14 +213,13 @@ export default function ContactForm() {
                 autoComplete="off"
                 value={formData.message}
                 onChange={handleChange}
-                disabled={isSubmitting}
-                className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-sm border border-gray-200/80 bg-gray-50/50 rounded-xl focus:bg-white focus:ring-2 focus:ring-accent/50 focus:border-accent hover:border-gray-300 transition-all duration-300 disabled:bg-gray-100 disabled:cursor-not-allowed resize-y"
               />
             </div>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full px-5 sm:px-6 py-2.5 sm:py-3 bg-accent text-black rounded-xl font-semibold text-sm sm:text-base hover:bg-accent-light transition-colors flex items-center justify-center space-x-2 disabled:bg-accent/40 disabled:cursor-not-allowed"
+              className="w-full mt-2 group inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl bg-accent text-black text-sm sm:text-base font-bold shadow-[0_8px_30px_rgba(212,175,55,0.25)] hover:bg-[#b0912f] transition-all duration-300 transform hover:-translate-y-0.5 disabled:bg-accent/40 disabled:hover:translate-y-0 disabled:shadow-none disabled:cursor-not-allowed"
             >
               <span>{isSubmitting ? "Submitting..." : "Send Message"}</span>
               {!isSubmitting && (

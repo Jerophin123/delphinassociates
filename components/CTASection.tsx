@@ -8,144 +8,105 @@ export default function CTASection() {
   return (
     <section
       id="home-cta-section"
-      className="relative z-10 py-12 md:py-24 bg-gradient-to-br from-white via-gray-50 to-white text-primary-dark overflow-hidden border-y border-accent/10"
+      className="relative z-10 py-12 sm:py-20 md:py-28 bg-gradient-to-br from-white via-gray-50 to-white text-primary-dark overflow-hidden border-y border-black/5"
     >
       {/* Background decorations */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[100px] -translate-x-1/4 -translate-y-1/4"></div>
+      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[80px] translate-x-1/4 translate-y-1/4"></div>
       
       {/* Grid pattern overlay */}
-      <div className="absolute inset-0 opacity-5">
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
         <div 
           className="absolute inset-0" 
           style={{
-            backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.06) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(0,0,0,0.06) 1px, transparent 1px)`,
-            backgroundSize: '50px 50px',
+            backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.8) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(0,0,0,0.8) 1px, transparent 1px)`,
+            backgroundSize: '40px 40px',
           }}
         />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 30, scale: 0.95 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true, margin: "-50px" }}
-          transition={{ 
-            type: "spring",
-            stiffness: 100,
-            damping: 20,
-            mass: 0.8
-          }}
-          style={{ willChange: 'opacity, transform' }}
+          transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="relative rounded-2xl sm:rounded-[2.5rem] bg-white/70 backdrop-blur-2xl border border-white shadow-[0_8px_40px_rgb(0,0,0,0.08)] hover:shadow-[0_16px_60px_rgb(0,0,0,0.12)] transition-shadow duration-500 p-5 sm:p-10 md:p-16 lg:p-20 overflow-hidden"
         >
-          <motion.span
+          {/* Inner subtle glow */}
+          <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent pointer-events-none"></div>
+
+          <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ 
-              type: "spring",
-              stiffness: 150,
-              damping: 18,
-              mass: 0.6
-            }}
-            className="inline-block px-4 py-2 bg-accent/20 text-accent rounded-full text-sm font-semibold mb-6 border border-accent/30"
-            style={{ willChange: 'transform' }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.21, 0.47, 0.32, 0.98] }}
+            className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-accent/10 text-accent rounded-full text-xs sm:text-sm font-bold tracking-[0.2em] uppercase mb-6 sm:mb-8 border border-accent/20"
           >
+            <span className="w-2 h-2 rounded-full bg-accent animate-[pulse_2s_ease-in-out_infinite]"></span>
             Get Started Today
-          </motion.span>
+          </motion.div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 md:mb-8 font-display overflow-visible">
-            Ready to Start Your
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent-light to-accent mt-1 md:mt-2 pb-1 md:pb-2 overflow-visible" style={{ WebkitTextFillColor: 'transparent', textRendering: 'optimizeLegibility', lineHeight: '1.15' }}>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 xl:mb-8 font-display tracking-tight leading-[1.1]">
+            Ready to Start Your <br className="hidden md:block"/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-dark via-primary to-primary-light mt-2 pb-2 inline-block">
               Dream Project?
             </span>
           </h2>
           
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 md:mb-12 text-gray-600 max-w-3xl mx-auto leading-relaxed px-2">
+          <p className="text-sm sm:text-lg md:text-xl text-gray-500 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed font-light">
             Let us help you build your dream project with transparency, quality,
             and timely completion. Experience excellence in construction.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mb-8 md:mb-12 w-full sm:w-auto">
-            <motion.a
-              href="tel:+919841243345"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ 
-                type: "spring",
-                stiffness: 400,
-                damping: 25
-              }}
-              className="group flex items-center justify-center space-x-2 sm:space-x-3 px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-accent text-black rounded-xl font-bold text-base sm:text-lg hover:bg-accent-light transition-colors duration-300 shadow-2xl shadow-accent/25 hover:shadow-accent/45 w-full sm:w-auto"
-              style={{ willChange: 'transform' }}
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center w-full sm:w-auto relative z-20">
+            <Link
+              href="/contact"
+              className="group relative inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-white transition-all duration-300 bg-primary-dark rounded-xl hover:bg-gray-900 hover:shadow-xl hover:shadow-gray-900/20 w-full sm:w-auto overflow-hidden border border-transparent"
             >
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                transition={{ 
-                  type: "spring",
-                  stiffness: 500,
-                  damping: 30
-                }}
-                style={{ willChange: 'transform' }}
-              >
-                <Phone className="w-5 h-5 sm:w-6 sm:h-6" />
-              </motion.div>
-                <span>Call Us Now</span>
-            </motion.a>
+              <span className="relative z-10 flex items-center gap-2">
+                Get a Quote
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-300" />
+              </span>
+              <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+            </Link>
             
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-full sm:w-auto"
+            <a
+              href="tel:+919841243345"
+              className="group inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-primary-dark transition-all duration-300 bg-white border-2 border-gray-100 rounded-xl hover:border-accent hover:bg-accent/5 hover:text-accent w-full sm:w-auto"
             >
-              <Link
-                href="/contact"
-                className="group flex items-center justify-center space-x-2 sm:space-x-3 px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-accent text-white rounded-xl font-bold text-base sm:text-lg hover:bg-accent-light transition-all duration-300 shadow-2xl hover:shadow-accent/50 border-2 border-transparent hover:border-white/50 w-full sm:w-auto"
-              >
-                <span>Get a Quote</span>
-                <motion.div
-                  whileHover={{ x: 2 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" />
-                </motion.div>
-              </Link>
-            </motion.div>
+              <span className="flex items-center gap-2">
+                <Phone className="w-5 h-5 group-hover:-translate-y-1 transition-transform duration-300" />
+                Call Us Now
+              </span>
+            </a>
           </div>
 
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center items-center text-gray-600 px-2"
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-200/50 flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center items-center text-gray-500"
           >
             <a
               href="mailto:delphinassociates@gmail.com"
-              className="group flex items-center space-x-2 hover:text-accent transition-colors text-sm sm:text-base md:text-lg break-all sm:break-normal"
+              className="group flex items-center gap-2 hover:text-accent transition-colors text-xs sm:text-sm md:text-base font-medium"
             >
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.2 }}
-                className="flex-shrink-0"
-              >
-                <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
-              </motion.div>
+              <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
+                <Mail className="w-3 h-3 sm:w-4 sm:h-4 group-hover:text-accent transition-colors" />
+              </div>
               <span>delphinassociates@gmail.com</span>
             </a>
-            <span className="hidden sm:inline text-gray-400">|</span>
+            <span className="hidden sm:inline w-1 h-1 rounded-full bg-gray-300"></span>
             <a
               href="mailto:nanchilassociates@gmail.com"
-              className="group flex items-center space-x-2 hover:text-accent transition-colors text-sm sm:text-base md:text-lg break-all sm:break-normal"
+              className="group flex items-center gap-2 hover:text-accent transition-colors text-xs sm:text-sm md:text-base font-medium"
             >
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.2 }}
-                className="flex-shrink-0"
-              >
-                <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
-              </motion.div>
+              <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
+                <Mail className="w-3 h-3 sm:w-4 sm:h-4 group-hover:text-accent transition-colors" />
+              </div>
               <span>nanchilassociates@gmail.com</span>
             </a>
           </motion.div>

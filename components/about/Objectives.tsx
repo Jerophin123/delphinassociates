@@ -26,75 +26,58 @@ const objectives = [
 
 export default function Objectives() {
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ 
-        type: "spring",
-        stiffness: 100,
-        damping: 20,
-        mass: 0.8
-      }}
-      className="mb-8 sm:mb-12 md:mb-16"
-      style={{ willChange: 'opacity, transform' }}
-    >
-      <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 font-display tracking-[0.02em] bg-gradient-to-r from-accent via-accent-light to-accent bg-clip-text text-transparent">
-        Our Objectives
-      </h2>
-      <div className="grid md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+    <section className="mb-12 sm:mb-20 md:mb-24">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+        className="mb-8 sm:mb-12"
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <span className="h-[2px] w-8 bg-accent"></span>
+          <span className="text-accent text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
+            Our Goals
+          </span>
+        </div>
+        <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold font-display text-primary-dark tracking-tight">
+          Our Objectives
+        </h2>
+      </motion.div>
+
+      <div className="grid md:grid-cols-3 gap-4 sm:gap-8">
         {objectives.map((objective, index) => (
           <motion.div
             key={objective.title}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-30px" }}
+            viewport={{ once: true, margin: "-50px" }}
             transition={{ 
-              type: "spring",
-              stiffness: 120,
-              damping: 20,
-              mass: 0.7,
-              delay: index * 0.08
+              duration: 0.6,
+              delay: index * 0.1,
+              ease: [0.21, 0.47, 0.32, 0.98]
             }}
-            whileHover={{ 
-              y: -8,
-              scale: 1.01,
-              transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 25
-              }
-            }}
-            className="group relative bg-white rounded-3xl p-5 sm:p-6 md:p-7 border border-accent/10 hover:border-accent/30 transition-[box-shadow,border-color] duration-300 ease-out overflow-hidden shadow-[0_12px_28px_-18px_rgba(0,0,0,0.25)] hover:shadow-[0_48px_90px_-30px_rgba(0,0,0,0.35)]"
-            style={{ willChange: "transform" }}
+            className="group relative bg-white rounded-[2rem] overflow-hidden border border-gray-200 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 will-change-transform hover:-translate-y-2 p-6 sm:p-8 flex flex-col h-full hover:border-gray-300"
           >
-            {/* 3D depth layers (static, no mouse tracking) */}
-            <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-accent/10 via-transparent to-accent-light/8" />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/10 via-black/5 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300" />
-            <div className="pointer-events-none absolute left-0 top-0 h-24 w-24 bg-[radial-gradient(circle_at_top_left,rgba(212,175,55,0.35)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.85 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ 
-                type: "spring",
-                stiffness: 150,
-                damping: 18,
-                mass: 0.6,
-                delay: index * 0.08 + 0.1
-              }}
-              className="mb-3 sm:mb-4"
-              style={{ willChange: 'transform' }}
-            >
-              <objective.icon className="w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 text-accent drop-shadow-[0_0_14px_rgba(212,175,55,0.18)]" />
-            </motion.div>
-            <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 text-primary tracking-[0.01em]">
-              {objective.title}
-            </h3>
-            <p className="text-sm sm:text-base text-gray-700">{objective.description}</p>
+            {/* Subtle Gradient background on hover */}
+            <div className="absolute inset-0 bg-gradient-to-br from-accent/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            
+            <div className="relative z-10 flex flex-col items-start h-full">
+              <div className="mb-6 p-3 sm:p-4 rounded-2xl bg-gray-50 group-hover:bg-accent/10 transition-colors duration-500 shadow-sm border border-black/5">
+                <objective.icon className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-accent transition-colors duration-500" />
+              </div>
+              
+              <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-gray-900 group-hover:text-accent transition-colors duration-300">
+                {objective.title}
+              </h3>
+              
+              <p className="text-sm sm:text-base text-gray-500 leading-relaxed font-light mt-auto">
+                {objective.description}
+              </p>
+            </div>
           </motion.div>
         ))}
       </div>
-    </motion.section>
+    </section>
   );
 }

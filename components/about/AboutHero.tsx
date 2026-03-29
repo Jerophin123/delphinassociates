@@ -4,57 +4,64 @@ import { motion } from "framer-motion";
 
 export default function AboutHero() {
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-accent/15 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.18)_0%,transparent_55%),linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(250,250,250,1)_100%)] px-6 py-10 sm:px-10 sm:py-12 mb-10 sm:mb-12 md:mb-14">
-      <div className="pointer-events-none absolute -top-24 -right-24 w-72 h-72 rounded-full bg-accent/15 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-accent-light/10 blur-3xl" />
+    <div className="relative overflow-hidden rounded-[2.5rem] border border-gray-100 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.08)_0%,transparent_55%),linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(250,250,250,1)_100%)] shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-5 pt-8 pb-12 sm:px-12 sm:pt-10 sm:pb-20 xl:pt-12 xl:pb-24 mb-12 sm:mb-20 md:mb-24">
+      {/* Decorative dots pattern similar to Home */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+      
+      {/* Subtle glowing orbs */}
+      <div className="pointer-events-none absolute -top-32 -right-32 w-96 h-96 rounded-full bg-accent/5 blur-[100px]" />
+      <div className="pointer-events-none absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-accent/5 blur-[100px]" />
 
-      <div className="relative text-center">
+      <div className="relative z-10 text-center max-w-4xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full border border-accent/25 bg-accent/10 text-accent font-semibold text-sm sm:text-base"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="flex items-center justify-center gap-3 mb-6"
         >
-          <span className="w-2 h-2 rounded-full bg-gradient-to-r from-accent to-accent-light" />
-          Established Since 1999
+          <span className="h-[2px] w-8 bg-accent"></span>
+          <span className="text-accent text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
+            Since 1999
+          </span>
+          <span className="h-[2px] w-8 bg-accent"></span>
         </motion.div>
 
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="mt-5 text-3xl sm:text-4xl md:text-5xl font-bold font-display tracking-[0.01em] text-black"
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-display tracking-tight text-primary-dark mb-4 sm:mb-6"
         >
           Delphin Associates
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-4 mx-auto max-w-2xl text-base sm:text-lg text-gray-600 leading-relaxed"
+          transition={{ duration: 0.6, delay: 0.2, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="mx-auto max-w-2xl text-base sm:text-xl text-gray-500 leading-relaxed font-light"
         >
-          You Dream We Build. Building trust through quality since 1999.
+          <strong className="text-gray-900 font-semibold">You Dream We Build:</strong> Building trust through quality since 1999.
           Leading civil construction company in Chennai, Tamil Nadu.
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6"
+          transition={{ duration: 0.6, delay: 0.4, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 max-w-3xl mx-auto"
         >
-          <div className="rounded-2xl border border-gray-100 bg-white/70 backdrop-blur-sm p-4 sm:p-5 transition-transform hover:-translate-y-1">
-            <div className="text-2xl font-bold text-primary-dark">25+</div>
-            <div className="mt-1 text-sm font-semibold text-gray-600">Years Experience</div>
+          <div className="rounded-2xl border border-gray-100 bg-white/60 backdrop-blur-md p-5 sm:p-8 transition-transform hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5 hover:border-accent/20">
+            <div className="text-2xl sm:text-4xl font-black text-primary-dark mb-2 font-display">25+</div>
+            <div className="text-xs sm:text-sm font-semibold text-gray-500 uppercase tracking-wider">Years Experience</div>
           </div>
-          <div className="rounded-2xl border border-gray-100 bg-white/70 backdrop-blur-sm p-4 sm:p-5 transition-transform hover:-translate-y-1">
-            <div className="text-2xl font-bold text-primary-dark">100%</div>
-            <div className="mt-1 text-sm font-semibold text-gray-600">Quality Assurance</div>
+          <div className="rounded-2xl border border-gray-100 bg-white/60 backdrop-blur-md p-5 sm:p-8 transition-transform hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5 hover:border-accent/20">
+            <div className="text-2xl sm:text-4xl font-black text-primary-dark mb-2 font-display">100%</div>
+            <div className="text-xs sm:text-sm font-semibold text-gray-500 uppercase tracking-wider">Quality Assurance</div>
           </div>
-          <div className="rounded-2xl border border-gray-100 bg-white/70 backdrop-blur-sm p-4 sm:p-5 transition-transform hover:-translate-y-1">
-            <div className="text-2xl font-bold text-primary-dark">End-to-End</div>
-            <div className="mt-1 text-sm font-semibold text-gray-600">Execution & Consultancy</div>
+          <div className="rounded-2xl border border-gray-100 bg-white/60 backdrop-blur-md p-5 sm:p-8 transition-transform hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5 hover:border-accent/20">
+            <div className="text-2xl sm:text-4xl font-black text-primary-dark mb-2 font-display">E2E</div>
+            <div className="text-xs sm:text-sm font-semibold text-gray-500 uppercase tracking-wider">Execution & Consultancy</div>
           </div>
         </motion.div>
       </div>

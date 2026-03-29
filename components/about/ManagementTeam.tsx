@@ -39,130 +39,91 @@ function getInitials(name: string) {
 
 export default function ManagementTeam() {
   return (
-    <motion.section
-      id="management-team"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ 
-        type: "spring",
-        stiffness: 100,
-        damping: 20,
-        mass: 0.8
-      }}
-      className="mb-8 sm:mb-12 md:mb-16 scroll-mt-28"
-      style={{ willChange: 'opacity, transform' }}
-    >
-      <div className="mb-6 sm:mb-8">
-        <div className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full border border-accent/25 bg-accent/10 text-accent font-semibold text-xs sm:text-sm">
-          <Medal className="w-4 h-4" />
-          Management Team
+    <section id="management-team" className="mb-12 sm:mb-20 md:mb-24 scroll-mt-28">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+        className="mb-8 sm:mb-12"
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <span className="h-[2px] w-8 bg-accent"></span>
+          <span className="text-accent text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
+            Management Team
+          </span>
         </div>
-        <h2 className="mt-4 text-2xl sm:text-3xl font-bold font-display tracking-[0.01em] bg-gradient-to-r from-accent via-accent-light to-accent bg-clip-text text-transparent">
+        <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold font-display text-primary-dark tracking-tight">
           Leaders who keep projects on track
         </h2>
-        <p className="mt-3 text-sm sm:text-base text-gray-600 max-w-2xl">
+        <p className="mt-4 text-sm sm:text-base text-gray-500 max-w-2xl leading-relaxed font-light">
           Clear direction, transparent execution, and client-first decision making.
         </p>
-      </div>
-      <div className="grid md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+      </motion.div>
+
+      <div className="grid md:grid-cols-2 gap-4 sm:gap-8">
         {managementTeam.map((member, index) => (
           <motion.div
             key={member.name}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-30px" }}
+            viewport={{ once: true, margin: "-50px" }}
             transition={{ 
-              type: "spring",
-              stiffness: 120,
-              damping: 20,
-              mass: 0.7,
-              delay: index * 0.08
+              duration: 0.6,
+              delay: index * 0.1,
+              ease: [0.21, 0.47, 0.32, 0.98]
             }}
-            className={`group relative rounded-3xl p-5 sm:p-6 md:p-7 border border-accent/15 hover:border-accent/35 shadow-[0_12px_28px_-18px_rgba(0,0,0,0.25)] hover:shadow-[0_48px_90px_-30px_rgba(0,0,0,0.35)] transition-[box-shadow,border-color] duration-300 ease-out overflow-hidden ${
+            className={`group relative rounded-[2rem] overflow-hidden shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 will-change-transform hover:-translate-y-2 border p-6 sm:p-8 flex flex-col h-full ${
               member.isFounder 
-                ? "bg-gradient-to-br from-yellow-50/50 to-white" 
-                : "bg-white"
+                ? "bg-gradient-to-br from-yellow-50/50 to-white border-yellow-300/60" 
+                : "bg-white border-gray-200 hover:border-gray-300"
             }`}
-            style={{
-              willChange: "transform",
-            }}
-            whileHover={{
-              y: -10,
-              scale: 1.02,
-              transition: {
-                type: "spring",
-                stiffness: 420,
-                damping: 24,
-              },
-            }}
           >
             {member.isFounder && (
-              <span className="absolute top-4 right-4 hidden md:inline-flex items-center gap-1 rounded-full bg-yellow-400 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-yellow-950 shadow">
-                        <motion.div
-                          whileHover={{ scale: 1.1 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                  <Medal size={14} />
-                        </motion.div>
+              <span className="absolute top-6 right-6 hidden md:inline-flex items-center gap-1.5 rounded-full bg-yellow-100 border border-yellow-200/50 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-yellow-800">
+                <Medal size={14} className="text-yellow-600" />
                 Founder
               </span>
             )}
-            {/* 3D depth layers (static, no mouse tracking) */}
-            <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-accent/10 via-transparent to-accent-light/8" />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/10 via-black/5 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300" />
-            <div className="pointer-events-none absolute left-0 top-0 h-24 w-24 bg-[radial-gradient(circle_at_top_left,rgba(212,175,55,0.35)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="flex items-start space-x-3 sm:space-x-4">
-              <motion.div 
-                className="relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-accent/20 to-accent-light/10 shadow-[0_10px_30px_-16px_rgba(212,175,55,0.35)]"
-                initial={{ opacity: 0, scale: 0.85 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ 
-                  type: "spring",
-                  stiffness: 150,
-                  damping: 18,
-                  mass: 0.6,
-                  delay: index * 0.08 + 0.1
-                }}
-                whileHover={{ 
-                  scale: 1.08,
-                  transition: {
-                    type: "spring",
-                    stiffness: 500,
-                    damping: 30
-                  }
-                }}
-                style={{ willChange: "transform" }}
+            
+            {/* Subtle Gradient background on hover */}
+            <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${member.isFounder ? 'bg-gradient-to-br from-yellow-100/20 to-transparent' : 'bg-gradient-to-br from-accent/[0.02] to-transparent'}`} />
+
+            <div className="relative z-10 flex items-start space-x-5 h-full">
+              <div 
+                className={`relative w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center flex-shrink-0 border border-black/5 transition-colors duration-500 shadow-sm ${member.isFounder ? 'bg-yellow-50 group-hover:bg-yellow-100/50' : 'bg-gray-50 group-hover:bg-accent/10'}`}
               >
-                <div className="pointer-events-none absolute inset-0 rounded-full bg-[linear-gradient(135deg,rgba(255,255,255,0.65)_0%,transparent_55%)] opacity-70" />
-                <span className="relative z-10 text-xs sm:text-sm md:text-base font-bold text-accent drop-shadow-[0_0_14px_rgba(212,175,55,0.18)]">
+                <span className={`relative z-10 text-base sm:text-xl font-bold transition-colors duration-500 ${member.isFounder ? 'text-yellow-700 group-hover:text-yellow-800' : 'text-gray-700 group-hover:text-accent'}`}>
                   {getInitials(member.name)}
                 </span>
-              </motion.div>
-              <div className="flex-1">
-                <h3 className="text-lg sm:text-xl font-bold mb-1 text-primary tracking-[0.01em]">
+              </div>
+              
+              <div className="flex-1 flex flex-col pt-1">
+                <h3 className="text-lg sm:text-xl font-bold mb-1.5 text-gray-900 group-hover:text-accent transition-colors duration-300">
                   {member.name}
                 </h3>
+                
                 {member.qualifications && (
-                  <div className="flex flex-wrap items-center gap-2 mb-2">
-                    <span className="inline-flex items-center gap-1 rounded-full border border-accent/15 bg-accent/10 px-3 py-1 text-[11px] sm:text-xs font-semibold text-accent">
-                      <BadgeCheck className="w-3 h-3" />
+                  <div className="flex flex-wrap items-center gap-2 mb-3">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-2.5 py-1 text-xs font-semibold text-gray-600">
+                      <BadgeCheck className="w-3.5 h-3.5 text-gray-400" />
                       {member.qualifications}
                     </span>
 
                     {member.isFounder && (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-yellow-400 px-2.5 py-1 text-[11px] sm:text-xs font-semibold uppercase tracking-wide text-yellow-950 shadow md:hidden">
-                        <Medal className="w-3 h-3" />
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-yellow-100 border border-yellow-200/50 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-yellow-800 md:hidden">
+                        <Medal className="w-3.5 h-3.5 text-yellow-600" />
                         Founder
                       </span>
                     )}
                   </div>
                 )}
-                <p className="text-sm sm:text-base text-accent font-semibold mb-2">
+                
+                <p className={`text-sm sm:text-base font-semibold mb-3 ${member.isFounder ? 'text-yellow-700' : 'text-accent'}`}>
                   {member.designation}
                 </p>
-                <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                
+                <p className="text-gray-500 leading-relaxed font-light text-xs sm:text-sm md:text-base mt-2 sm:mt-0">
                   {member.description}
                 </p>
               </div>
@@ -170,6 +131,6 @@ export default function ManagementTeam() {
           </motion.div>
         ))}
       </div>
-    </motion.section>
+    </section>
   );
 }

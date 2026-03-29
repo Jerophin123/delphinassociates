@@ -37,6 +37,28 @@ body {
 body::-webkit-scrollbar {
   display: none;
 }
+
+@layer base {
+  h1, h2, h3 {
+    font-family: var(--font-montserrat), system-ui, sans-serif !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+  }
+
+  h4, h5, h6 {
+    font-family: var(--font-montserrat), system-ui, sans-serif !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+  }
+
+  button, nav, .btn, .nav-link {
+    font-family: var(--font-montserrat), system-ui, sans-serif !important;
+    font-weight: 500 !important;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

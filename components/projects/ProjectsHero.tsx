@@ -1,165 +1,129 @@
 "use client";
 
-import React from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Calendar, MapPin, Sparkles } from "lucide-react";
 
-function TiltCard({ item }: { item: { icon: any; value: string; label: string } }) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseXSpring = useSpring(x);
-  const mouseYSpring = useSpring(y);
-
-  // Professional subtle rotation (max 6 degrees)
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["6deg", "-6deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-6deg", "6deg"]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    x.set(xPct);
-    y.set(yPct);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  const Icon = item.icon;
-
-  return (
-    <motion.div
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        rotateX,
-        rotateY,
-        transformStyle: "preserve-3d",
-      }}
-      whileHover={{ scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="group relative rounded-2xl border border-white/80 bg-gradient-to-b from-white to-white/60 backdrop-blur-md p-5 shadow-[0_8px_16px_-6px_rgba(0,0,0,0.05),_inset_0_1px_1px_rgba(255,255,255,1)] hover:shadow-[0_20px_40px_-10px_rgba(212,175,55,0.15),_0_10px_20px_-5px_rgba(0,0,0,0.06),_inset_0_1px_1px_rgba(255,255,255,1)] cursor-default transition-shadow duration-300"
-    >
-      {/* Inner subtle depth layer */}
-      <div
-        style={{ transform: "translateZ(-8px)" }}
-        className="absolute inset-0 rounded-2xl border border-accent/10 pointer-events-none"
-      />
-
-      <div style={{ transform: "translateZ(16px)" }} className="flex items-center gap-2 text-accent font-semibold transition-transform duration-300">
-        <Icon className="w-5 h-5 group-hover:text-amber-500 transition-colors" />
-        <span className="text-3xl font-bold font-display tracking-tight text-primary-dark">{item.value}</span>
-      </div>
-      <div style={{ transform: "translateZ(8px)" }} className="mt-2 text-sm font-semibold text-gray-600 transition-transform duration-300">
-        {item.label}
-      </div>
-    </motion.div>
-  );
-}
-
 export default function ProjectsHero() {
   return (
-    <header className="relative overflow-hidden border-b border-accent/10">
-      <div className="pointer-events-none absolute -top-24 -left-10 w-72 h-72 rounded-full bg-accent/15 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-28 -right-10 w-[22rem] h-[22rem] rounded-full bg-accent/8 blur-3xl" />
-      <div className="pointer-events-none absolute inset-0 opacity-60">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.20)_0%,transparent_60%),linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(250,250,250,1)_100%)]" />
-      </div>
+    <section
+      id="projects-hero"
+      className="relative z-10 pt-4 pb-12 sm:pt-6 sm:pb-16 md:pt-4 md:pb-24 bg-white overflow-hidden"
+    >
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="relative overflow-hidden rounded-[2.5rem] border border-gray-100 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.08)_0%,transparent_55%),linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(250,250,250,1)_100%)] shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-5 pt-8 pb-12 sm:px-12 sm:pt-10 sm:pb-20 xl:pt-12 xl:pb-24"
+        >
+          {/* Decorative dots pattern */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+          
+          {/* Subtle glowing orbs */}
+          <div className="pointer-events-none absolute -top-32 -right-32 w-96 h-96 rounded-full bg-accent/5 blur-[100px]" />
+          <div className="pointer-events-none absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-accent/5 blur-[100px]" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14 md:py-16">
-        <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 items-start">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ staggerChildren: 0.15 }}
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/25 bg-accent/10 text-accent font-semibold text-xs sm:text-sm"
-            >
-              <Sparkles className="w-4 h-4" />
-              Our Portfolio
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-5 text-3xl sm:text-4xl md:text-5xl font-bold font-display tracking-[0.01em] text-black"
-            >
-              Our Projects
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-4 text-base sm:text-lg text-gray-600 max-w-2xl leading-relaxed"
-            >
-              Showcasing our excellence in construction across multiple sectors built with quality, transparency, and on-time execution.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-8 grid sm:grid-cols-3 gap-5"
-              style={{ perspective: 1000 }}
-            >
-              {[
-                { icon: Calendar, value: "100+", label: "Projects completed" },
-                { icon: Sparkles, value: "25", label: "Project sectors" },
-                { icon: MapPin, value: "TN", label: "Chennai & Tamil Nadu" },
-              ].map((item, idx) => {
-                return <TiltCard key={idx} item={item} />;
-              })}
-            </motion.div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="rounded-3xl border border-accent/15 bg-white/70 backdrop-blur-sm shadow-sm p-6 sm:p-7"
-          >
-            <div className="text-xs uppercase tracking-wide text-gray-500 font-semibold">
-              Start your next project
-            </div>
-            <div className="mt-2 text-2xl sm:text-3xl font-bold font-display">
-              Let us plan it right
-            </div>
-            <p className="mt-3 text-gray-600 leading-relaxed">
-              Tell us your scope and timeline. We will respond with a clear plan for construction execution and consultancy.
-            </p>
-
-            <div className="mt-6 flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <a
-                href="tel:+919841243345"
-                className="group inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-accent text-black font-bold shadow-2xl shadow-accent/25 hover:shadow-accent/40 hover:bg-accent-light transition-all duration-300"
+          <div className="relative z-10 grid lg:grid-cols-[1fr_minmax(auto,450px)] gap-12 lg:gap-16 items-center">
+            {/* Left Column Content */}
+            <div className="text-left">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
+                className="flex items-center gap-3 mb-4 sm:mb-6"
               >
-                <span>Call Us</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-              </a>
-              <Link
-                href="/contact"
-                className="group inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary/5 border border-accent/60 text-primary-dark font-bold hover:bg-accent/15 hover:text-accent transition-colors"
+                <span className="h-[2px] w-8 bg-accent"></span>
+                <span className="text-accent text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
+                  Our Portfolio
+                </span>
+              </motion.div>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1, ease: [0.21, 0.47, 0.32, 0.98] }}
+                className="mt-4 text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-display tracking-tight text-primary-dark mb-4 sm:mb-6"
               >
-                <span>Get a Quote</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-              </Link>
+                Our Projects
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2, ease: [0.21, 0.47, 0.32, 0.98] }}
+                className="mt-4 sm:mt-6 max-w-xl sm:max-w-2xl text-base sm:text-xl text-gray-500 leading-relaxed font-light"
+              >
+                Showcasing our excellence in construction across multiple sectors built with quality, transparency, and on-time execution.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4, ease: [0.21, 0.47, 0.32, 0.98] }}
+                className="mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-8 max-w-4xl"
+              >
+                {[
+                  { icon: Calendar, value: "100+", label: "Projects completed" },
+                  { icon: Sparkles, value: "25+", label: "Project sectors" },
+                  { icon: MapPin, value: "TN", label: "Chennai & Tamil Nadu" },
+                ].map((item, idx) => {
+                  const Icon = item.icon;
+                  return (
+                    <div key={idx} className="group relative rounded-2xl border border-gray-100 bg-white/60 backdrop-blur-md p-5 sm:p-8 transition-transform hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(212,175,55,0.08)] hover:border-accent/20">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-accent group-hover:text-yellow-600 transition-colors" />
+                        <div className="text-2xl sm:text-4xl font-black text-primary-dark font-display">{item.value}</div>
+                      </div>
+                      <div className="text-xs sm:text-sm font-semibold text-gray-500 uppercase tracking-wider">{item.label}</div>
+                    </div>
+                  );
+                })}
+              </motion.div>
             </div>
-            <div className="mt-5 text-xs sm:text-sm text-gray-500">
-              Typically responds within 24 hours.
-            </div>
-          </motion.div>
-        </div>
+
+            {/* Right Column Custom Card */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
+              className="relative overflow-hidden rounded-[2.5rem] border border-gray-100 bg-white/95 backdrop-blur-xl shadow-[0_8px_30px_-4px_rgba(0,0,0,0.06),0_4px_12px_-2px_rgba(0,0,0,0.04)] p-6 sm:p-10 lg:p-12 hover:shadow-[0_20px_40px_-8px_rgba(0,0,0,0.1),0_10px_24px_-4px_rgba(0,0,0,0.06)] hover:-translate-y-2 transition-all duration-500"
+            >
+              <div className="text-[10px] sm:text-xs uppercase tracking-widest text-gray-500 font-bold mb-3 sm:mb-4">
+                Start your next project
+              </div>
+              <h2 className="text-2xl sm:text-4xl font-bold font-display text-primary-dark tracking-tight mb-4 sm:mb-5">
+                Let us plan it right
+              </h2>
+              <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-6 sm:mb-8">
+                Tell us your scope and timeline. We will respond with a clear plan for construction execution and consultancy.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 mb-6 sm:mb-8">
+                <a
+                  href="tel:+919841243345"
+                  className="group inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-6 sm:py-4 rounded-xl bg-[#d4af37] text-black font-bold text-sm sm:text-base shadow-[0_8px_30px_rgba(212,175,55,0.25)] hover:bg-[#b0912f] transition-all duration-300 transform hover:-translate-y-0.5"
+                >
+                  <span>Call Us</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                </a>
+                <Link
+                  href="/contact"
+                  className="group inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-6 sm:py-4 rounded-xl bg-gray-50 border border-gray-200 text-primary-dark text-sm sm:text-base font-bold hover:bg-white hover:border-gray-300 hover:shadow-sm transition-all duration-300 transform hover:-translate-y-0.5"
+                >
+                  <span>Get a Quote</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                </Link>
+              </div>
+              
+              <div className="text-xs sm:text-sm font-medium text-gray-500 flex items-center gap-2 opacity-90">
+                Typically responds within 24 hours.
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
       </div>
-    </header>
+    </section>
   );
 }

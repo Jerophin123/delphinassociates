@@ -13,12 +13,25 @@ export default function Hero() {
       <div className="fixed inset-0 w-full h-full z-0" style={{ transform: 'translateZ(0)', bottom: 0, height: '100vh' }}>
         <div className="absolute inset-0 w-full h-full" style={{ willChange: 'transform', transform: 'translateZ(0)', bottom: 0, height: '100vh' }}>
           <Image
-            src="/hero_image.jpg"
+            src="/hero_background.jpg"
             alt="Hero background"
             fill
             priority
             quality={85}
-            className="object-cover"
+            className="object-cover hidden sm:block"
+            sizes="100vw"
+            style={{ 
+              transform: 'translateZ(0)',
+              filter: 'brightness(0.65)',
+            }}
+          />
+          <Image
+            src="/hero_background_mobile.jpg"
+            alt="Hero background mobile"
+            fill
+            priority
+            quality={85}
+            className="object-cover sm:hidden"
             sizes="100vw"
             style={{ 
               transform: 'translateZ(0)',
@@ -93,7 +106,7 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-5 md:px-8 lg:px-12 xl:px-16 py-8 sm:py-12 md:py-16 lg:py-20 w-full mt-16 sm:mt-12 md:mt-8 lg:mt-4">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-5 md:px-8 lg:px-12 xl:px-16 py-8 sm:py-12 md:py-16 lg:py-20 w-full mt-10 sm:mt-12 md:mt-8 lg:mt-4">
         <div className="max-w-4xl lg:max-w-5xl text-left">
           {/* Main Content - Optimized animations with GPU acceleration */}
           <motion.div
@@ -107,7 +120,7 @@ export default function Hero() {
             }}
             style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
           >
-            <h1 className="text-6xl sm:text-7xl md:text-7xl lg:text-8xl xl:text-8xl 2xl:text-8xl font-bold mb-4 sm:mb-5 md:mb-6 lg:mb-8 font-display leading-[1.1] md:leading-tight tracking-[0.02em]">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-8xl 2xl:text-8xl font-bold mb-4 sm:mb-5 md:mb-6 lg:mb-8 font-display leading-[1.1] md:leading-tight tracking-[0.02em]">
               <motion.span 
                 className="block text-transparent bg-clip-text bg-gradient-to-l from-[#FFFFFF] via-[#FFF2B3] to-[#D4AF37] drop-shadow-[0_0_22px_rgba(212,175,55,0.65)]"
                 initial={{ opacity: 0, x: -15 }}
@@ -150,7 +163,7 @@ export default function Hero() {
                 mass: 0.8,
                 delay: 0.4
               }}
-              className="text-base sm:text-lg md:text-xl lg:text-2xl text-[#B0B0B0] mb-6 sm:mb-7 md:mb-8 lg:mb-10 xl:mb-12 font-light leading-relaxed md:leading-relaxed max-w-3xl lg:max-w-4xl drop-shadow-md"
+              className="text-sm sm:text-base md:text-xl lg:text-2xl text-[#B0B0B0] mb-6 sm:mb-7 md:mb-8 lg:mb-10 xl:mb-12 font-light leading-relaxed md:leading-relaxed max-w-3xl lg:max-w-4xl drop-shadow-md"
               style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
             >
               Leading civil construction company in Chennai, Tamil Nadu, delivering
@@ -173,7 +186,7 @@ export default function Hero() {
             >
               <Link
                 href="/contact"
-                className="group relative px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 bg-accent text-black rounded-xl font-bold text-sm sm:text-base md:text-lg shadow-2xl shadow-accent/30 hover:shadow-accent/55 hover:bg-accent-light transition-[background-color,box-shadow,transform] duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 overflow-hidden w-full sm:w-auto min-h-[48px] sm:min-h-[52px] md:min-h-[56px] will-change-transform hover:scale-[1.02] active:scale-[0.98]"
+                className="group relative px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 bg-accent text-black rounded-xl font-bold text-sm sm:text-base md:text-lg shadow-2xl shadow-accent/30 hover:shadow-accent/55 hover:bg-accent-light transition-[background-color,box-shadow,transform] duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 overflow-hidden w-full sm:w-auto min-h-[44px] sm:min-h-[52px] md:min-h-[56px] will-change-transform hover:scale-[1.02] active:scale-[0.98]"
                 style={{ transform: 'translateZ(0)' }}
               >
                 <span className="relative z-10">Start Your Project</span>
@@ -186,7 +199,7 @@ export default function Hero() {
               </Link>
               <Link
                 href="/projects"
-                className="group px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 bg-primary-dark/25 backdrop-blur-sm text-white border-2 border-accent/60 rounded-xl font-bold text-sm sm:text-base md:text-lg hover:bg-accent/10 hover:text-accent transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 w-full sm:w-auto min-h-[48px] sm:min-h-[52px] md:min-h-[56px] shadow-xl hover:shadow-[0_0_30px_rgba(212,175,55,0.12)] will-change-transform hover:scale-[1.02] active:scale-[0.98] hover:border-accent/90"
+                className="group px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 bg-primary-dark/25 backdrop-blur-sm text-white border-2 border-accent/60 rounded-xl font-bold text-sm sm:text-base md:text-lg hover:bg-accent/10 hover:text-accent transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 w-full sm:w-auto min-h-[44px] sm:min-h-[52px] md:min-h-[56px] shadow-xl hover:shadow-[0_0_30px_rgba(212,175,55,0.12)] will-change-transform hover:scale-[1.02] active:scale-[0.98] hover:border-accent/90"
                 style={{ transform: 'translateZ(0)' }}
               >
                 <Play className="group-hover:scale-110 transition-transform duration-300 ease-out will-change-transform w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" style={{ transform: 'translateZ(0)' }} />

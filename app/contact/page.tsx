@@ -42,7 +42,7 @@ export default function ContactPage() {
     <>
       <SEOStructuredData type="LocalBusiness" />
       <div className="pt-20 bg-white text-primary-dark min-h-screen">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 sm:pt-6 sm:pb-10 md:pt-8 md:pb-12">
           <ContactHero />
 
           <div className="mt-2">

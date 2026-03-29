@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Suspense } from "react";
-import { Inter, Poppins } from "next/font/google";
+import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -18,10 +18,10 @@ const inter = Inter({
   display: "swap",
 });
 
-const poppins = Poppins({
+const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-poppins",
+  variable: "--font-montserrat",
   display: "swap",
 });
 
@@ -143,7 +143,7 @@ export default function RootLayout({
   return (
     <html lang="en-IN" className="scroll-smooth">
       <body
-        className={`${inter.variable} ${poppins.variable} font-sans antialiased`}
+        className={`${inter.variable} ${montserrat.variable} font-sans antialiased`}
       >
         <SEOStructuredData type="Organization" />
         <SEOStructuredData type="WebSite" />

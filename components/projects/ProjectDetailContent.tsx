@@ -70,7 +70,7 @@ export default function ProjectDetailContent({
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="mt-6 sm:mt-8 md:mt-10 grid lg:grid-cols-[1fr_1fr] gap-6 sm:gap-8 md:gap-10 items-start"
+      className="mt-4 sm:mt-8 md:mt-10 grid lg:grid-cols-[1fr_1fr] gap-5 sm:gap-8 md:gap-10 items-start"
     >
       <motion.div variants={itemVariants} className="w-full">
         <div className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-gray-100 bg-gradient-to-br from-gray-50 to-white shadow-sm">
@@ -112,18 +112,18 @@ export default function ProjectDetailContent({
       </motion.div>
 
       <motion.div variants={itemVariants} className="w-full">
-        <div className="rounded-2xl sm:rounded-3xl border border-gray-100 bg-white/80 backdrop-blur-sm shadow-sm p-6 sm:p-7">
-          <span className="inline-flex rounded-full bg-accent/10 px-3 sm:px-4 py-0.5 sm:py-1 text-xs sm:text-sm font-semibold text-accent items-center gap-1.5 w-fit">
+        <div className="rounded-2xl sm:rounded-3xl border border-gray-100 bg-white/80 backdrop-blur-sm shadow-sm p-4 sm:p-7">
+          <span className="inline-flex rounded-full bg-accent/10 px-2 sm:px-4 py-0.5 sm:py-1 text-[10px] sm:text-sm font-semibold text-accent items-center gap-1.5 w-fit">
             {(() => {
               const CategoryIcon = getCategoryIcon(project.category);
-              return <CategoryIcon className="w-3 h-3 sm:w-4 sm:h-4" />;
+              return <CategoryIcon className="w-2.5 h-2.5 sm:w-4 sm:h-4" />;
             })()}
             {project.category}
           </span>
 
           <motion.h1
             variants={itemVariants}
-            className="mt-3 sm:mt-4 text-2xl sm:text-3xl md:text-4xl font-bold text-primary-dark"
+            className="mt-3 sm:mt-4 text-xl sm:text-3xl md:text-4xl font-bold text-primary-dark"
           >
             {project.title}
           </motion.h1>
@@ -150,7 +150,7 @@ export default function ProjectDetailContent({
 
           <motion.p
             variants={itemVariants}
-            className="mt-4 sm:mt-5 md:mt-6 text-sm sm:text-base md:text-lg leading-relaxed text-gray-700"
+            className="mt-3 sm:mt-5 md:mt-6 text-sm sm:text-lg leading-relaxed text-gray-700"
           >
             {detail?.overview ?? project.description}
           </motion.p>
@@ -163,10 +163,10 @@ export default function ProjectDetailContent({
               {detail.highlights.map((item) => (
                 <div
                   key={item.label}
-                  className="rounded-xl border border-gray-100 bg-white p-4 shadow-sm hover:shadow-md transition-shadow"
+                  className="rounded-xl border border-gray-100 bg-white p-3 sm:p-4 shadow-sm hover:shadow-md transition-shadow"
                 >
-                  <p className="text-xs uppercase tracking-wide text-gray-500">{item.label}</p>
-                  <p className="mt-1 text-lg font-semibold text-accent">{item.value}</p>
+                  <p className="text-[10px] sm:text-xs uppercase tracking-wide text-gray-500">{item.label}</p>
+                  <p className="mt-1 text-base sm:text-lg font-semibold text-accent">{item.value}</p>
                 </div>
               ))}
             </motion.div>
