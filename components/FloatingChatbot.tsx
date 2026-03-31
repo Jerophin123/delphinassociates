@@ -84,6 +84,11 @@ const getAnswerFromKnowledgeBase = (question: string) => {
 export default function FloatingChatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const isOpenRef = useRef(false);
+
+  useEffect(() => {
+    isOpenRef.current = isOpen;
+  }, [isOpen]);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 640);
@@ -141,11 +146,10 @@ export default function FloatingChatbot() {
   useEffect(() => {
     let timer: NodeJS.Timeout;
     let hideTimer: NodeJS.Timeout;
-    let fallbackTimer: NodeJS.Timeout;
     let hasTriggered = false;
 
     const triggerNotification = (playSound = false) => {
-      if (hasTriggered || isOpen) return;
+      if (hasTriggered || isOpenRef.current) return;
       hasTriggered = true;
       
       setShowNotification(true);
@@ -159,7 +163,6 @@ export default function FloatingChatbot() {
         if (playPromise !== undefined) {
           playPromise.catch(() => {
             // Silently suppress the promise rejection to avoid console spam
-            // Browser may still natively log a warning, but our app won't crash or throw loudly.
           });
         }
       }
@@ -170,39 +173,30 @@ export default function FloatingChatbot() {
       }, 15000);
     };
 
-    const handleInteraction = () => {
-      // Clean up listeners
-      window.removeEventListener('click', handleInteraction);
-      window.removeEventListener('keydown', handleInteraction);
-      window.removeEventListener('touchstart', handleInteraction);
-      clearTimeout(fallbackTimer);
+    const handleInteraction = (e: Event) => {
+      const target = e.target as HTMLElement;
+      // Trigger if the clicked element or its parent is a button or a link
+      const isButtonOrLink = target.closest('a') !== null || target.closest('button') !== null;
       
-      // Short delay after interaction so it feels natural.
-      // We explicitly pass true to play sound since they interacted.
-      timer = setTimeout(() => triggerNotification(true), 1500);
+      if (isButtonOrLink) {
+        // Clean up listeners
+        window.removeEventListener('click', handleInteraction);
+        window.removeEventListener('touchstart', handleInteraction);
+        
+        // Timer for 10 to 15 seconds random delay
+        const delay = Math.floor(Math.random() * (15000 - 10000 + 1)) + 10000;
+        
+        timer = setTimeout(() => triggerNotification(true), delay);
+      }
     };
 
-    // Wait for user interaction to bypass autoplay restrictions.
-    // 'scroll' and 'mousemove' are purposefully excluded because dragging the scrollbar
-    // or moving the mouse doesn't unlock audio context in Chrome/Edge, which causes the NotAllowedError.
     window.addEventListener('click', handleInteraction);
-    window.addEventListener('keydown', handleInteraction);
     window.addEventListener('touchstart', handleInteraction);
-
-    // Fallback: If no interaction in 5 seconds, just show the visual notification
-    fallbackTimer = setTimeout(() => {
-      window.removeEventListener('click', handleInteraction);
-      window.removeEventListener('keydown', handleInteraction);
-      window.removeEventListener('touchstart', handleInteraction);
-      triggerNotification(false); // Explicity pass false to prevent the audio element from attempting to play and throwing an error
-    }, 5000);
 
     return () => {
       clearTimeout(timer);
       clearTimeout(hideTimer);
-      clearTimeout(fallbackTimer);
       window.removeEventListener('click', handleInteraction);
-      window.removeEventListener('keydown', handleInteraction);
       window.removeEventListener('touchstart', handleInteraction);
     };
   }, []);

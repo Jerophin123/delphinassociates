@@ -314,6 +314,20 @@ To dominate Chennai's local SEO for "Civil Construction", standard `<title>` and
 - **`LocalBusiness` Schema**: Includes hyper-specific metadata such as `geo` coordinates (Latitude 12.958168, Longitude 80.203867), `openingHoursSpecification`, `priceRange`, and an exhaustive `hasOfferCatalog` listing our specific services. 
 - **Google Knowledge Graph**: Automatically binds our social networks (Instagram, X, LinkedIn, Threads) in the `sameAs` array, ensuring Google parses Delphin Associates as a verified, multi-platform corporaton.
 
+### Dynamic Hardware Performance Engine (`components/PerformanceProvider.tsx`)
+
+Because civil architecture demands an uncompromising, cinematic web presence containing heavy glassmorphism, overlapping CSS filters, and massive radial blurs (`backdrop-filter: blur(120px)`), rendering the site natively on lower-end devices would cause severe layout thrashing and scrolling lag. We engineered a highly sophisticated algorithmic workaround.
+
+#### Exhaustive GPU Architecture Matrix
+Our custom `usePerformance` Context taps into the `WEBGL_debug_renderer_info` to extract exact Unmasked Renderer Strings (e.g., `GeForce RTX` or `Adreno 610`). It parses strings through a massive RegExp Engine:
+- **Intelligent Classification**: Evaluates device generation logic (separating `Intel Iris Xe` from older `Intel UHD`, and sorting `RX 6000` from `Radeon RX 400`).
+- **High Tier Allocation**: Permits full visual fidelity exclusively to high-bandwidth discrete GPUs (e.g., RTX 3080) and modern Apple Silicon (M1 Pro+).
+- **Mobile Restriction Sandbox**: Absolutely zero mobile devices are granted "High" tier effects. Even flagship phones (iPhone 17 Pro Max, Samsung S26 Ultra) will thermal throttle under 6 full-viewport layers of CSS blending logic. They are hard-limited to 'Mid-Range' to prioritize flawless, stutter-free scrolling.
+
+#### Live V-Sync Degradation Safety Net
+- We don't just rely on static string parsing. A lightweight `requestAnimationFrame` monitor calculates precise framerate (FPS) measurements under load. 
+- If a GPU lies about its performance capabilities (e.g. overheating or throttling) and drops below 45 FPS for 3 consecutive seconds, the engine triggers an automatic **Emergency Downgrade**. It gracefully kills the heavy overlapping DOM elements in real-time without reloading the page, instantly restoring buttery 60 FPS scrolling.
+
 ### Global Layouts & Error Boundaries
 
 - **`layout.tsx`**: Wraps the entire application. Loads custom Google Fonts via `next/font/google` (zero CLS), spawns the Global Vercel Analytics provider, and ensures the `<FloatingChatbot />` and `<Footer />` surround every subsequent page.

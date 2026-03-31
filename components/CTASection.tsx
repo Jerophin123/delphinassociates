@@ -11,8 +11,8 @@ export default function CTASection() {
       className="relative z-10 py-12 sm:py-20 md:py-28 bg-gradient-to-br from-white via-gray-50 to-white text-primary-dark overflow-hidden border-y border-black/5"
     >
       {/* Background decorations */}
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[100px] -translate-x-1/4 -translate-y-1/4"></div>
-      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[80px] translate-x-1/4 translate-y-1/4"></div>
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[50px] sm:blur-[100px] -translate-x-1/4 -translate-y-1/4 pointer-events-none"></div>
+      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[40px] sm:blur-[80px] translate-x-1/4 translate-y-1/4 pointer-events-none"></div>
       
       {/* Grid pattern overlay */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
@@ -28,13 +28,13 @@ export default function CTASection() {
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 30, scale: 0.95 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="relative rounded-2xl sm:rounded-[2.5rem] bg-white/70 backdrop-blur-2xl border border-white shadow-[0_8px_40px_rgb(0,0,0,0.08)] hover:shadow-[0_16px_60px_rgb(0,0,0,0.12)] transition-shadow duration-500 p-5 sm:p-10 md:p-16 lg:p-20 overflow-hidden"
-        >
-          {/* Inner subtle glow */}
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+            className="relative rounded-2xl sm:rounded-[2.5rem] bg-white/70 backdrop-blur-md sm:backdrop-blur-2xl border border-white shadow-[0_8px_40px_rgb(0,0,0,0.08)] hover:shadow-[0_16px_60px_rgb(0,0,0,0.12)] transition-shadow duration-500 p-5 sm:p-10 md:p-16 lg:p-20 overflow-hidden"
+          >
+            {/* Inner subtle glow */}
           <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent pointer-events-none"></div>
 
           <motion.div

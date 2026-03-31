@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { Award, Users, CheckCircle2, TrendingUp } from "lucide-react";
+import { usePerformance } from "@/components/PerformanceProvider";
 
 const stats = [
   { icon: Award, value: "25+", label: "Years of Experience", color: "from-accent to-accent-light" },
@@ -12,7 +13,6 @@ const stats = [
   { icon: CheckCircle2, value: "100%", label: "Quality Assured", color: "from-accent to-accent-dark" },
 ];
 
-// Counter component that animates from 0 to target value
 function AnimatedCounter({ 
   value, 
   isInView 
@@ -20,41 +20,45 @@ function AnimatedCounter({
   value: string; 
   isInView: boolean;
 }) {
-  const [count, setCount] = useState(0);
+  const nodeRef = useRef<HTMLSpanElement>(null);
   
   // Extract numeric value and suffix
   const numericValue = parseInt(value.replace(/[^0-9]/g, ''));
   const suffix = value.replace(/[0-9]/g, '');
   
   useEffect(() => {
-    if (!isInView) return;
+    if (!isInView || !nodeRef.current) return;
     
+    let startTime: number | null = null;
     const duration = 2000; // 2 seconds
-    const steps = 60; // Number of animation steps
-    const increment = numericValue / steps;
-    const stepDuration = duration / steps;
+    let animationFrameId: number;
     
-    let currentStep = 0;
-    const timer = setInterval(() => {
-      currentStep++;
-      const nextValue = Math.min(
-        Math.floor(increment * currentStep),
-        numericValue
-      );
-      setCount(nextValue);
+    const easeOutQuart = (x: number): number => 1 - Math.pow(1 - x, 4);
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = timestamp - startTime;
+      const percent = Math.min(progress / duration, 1);
       
-      if (currentStep >= steps) {
-        setCount(numericValue);
-        clearInterval(timer);
+      const currentVal = Math.floor(numericValue * easeOutQuart(percent));
+      
+      if (nodeRef.current) {
+        nodeRef.current.textContent = currentVal + suffix;
       }
-    }, stepDuration);
+      
+      if (percent < 1) {
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    };
     
-    return () => clearInterval(timer);
-  }, [isInView, numericValue]);
+    animationFrameId = requestAnimationFrame(animate);
+    
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isInView, numericValue, suffix]);
   
   return (
-    <span>
-      {count}{suffix}
+    <span ref={nodeRef} className="tabular-nums font-variant-numeric-tabular">
+      0{suffix}
     </span>
   );
 }
@@ -62,6 +66,7 @@ function AnimatedCounter({
 export default function QuickIntro() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { tier, reducedMotion } = usePerformance();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -91,9 +96,19 @@ export default function QuickIntro() {
       id="home-quickintro"
       className="relative z-10 py-12 sm:py-20 md:py-28 bg-primary-dark overflow-hidden border-y border-white/5"
     >
-      {/* Background decoration - refined glows */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3"></div>
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent-light/5 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/4"></div>
+      {/* Background decoration - dynamically optimized based on hardware */}
+      {tier !== 'low' && (
+        <>
+          <div 
+            className={`absolute top-0 right-0 w-[500px] h-[500px] bg-accent/10 rounded-full ${tier === 'mid' ? 'blur-[40px] sm:blur-[60px]' : 'blur-[60px] sm:blur-[120px]'} pointer-events-none`}
+            style={{ transform: "translate3d(33%, -50%, 0)", willChange: "transform" }}
+          ></div>
+          <div 
+            className={`absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent-light/5 rounded-full ${tier === 'mid' ? 'blur-[40px] sm:blur-[60px]' : 'blur-[50px] sm:blur-[100px]'} pointer-events-none`}
+            style={{ transform: "translate3d(-25%, 33%, 0)", willChange: "transform" }}
+          ></div>
+        </>
+      )}
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -148,10 +163,10 @@ export default function QuickIntro() {
 
           {/* Stats Grid */}
           <motion.div
-            initial={{ opacity: 0, x: 100 }}
+            initial={reducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 100 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 1, ease: [0.21, 0.47, 0.32, 0.98] }}
+            transition={{ duration: reducedMotion ? 0 : 1, ease: [0.21, 0.47, 0.32, 0.98] }}
             className="relative"
           >
             <div className="grid grid-cols-2 gap-3 sm:gap-6">
@@ -167,12 +182,16 @@ export default function QuickIntro() {
                       delay: index * 0.1,
                       ease: [0.21, 0.47, 0.32, 0.98]
                     }}
-                    whileHover={{ y: -6, scale: 1.02 }}
-                    className="group relative rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-8 overflow-hidden backdrop-blur-xl bg-white/[0.02] border border-white/5 hover:border-accent/30 hover:bg-white/[0.04] transition-all duration-500 shadow-2xl shadow-black/50"
+                    style={{ willChange: "transform, opacity" }}
+                    className={`group relative rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-8 overflow-hidden ${tier === 'high' ? 'backdrop-blur-md bg-gradient-to-b from-white/[0.04] to-white/[0.01]' : 'bg-white/[0.03]'} border border-white/5 hover:border-accent/30 transition-all duration-500 hover:shadow-2xl hover:shadow-accent/5 hover:-translate-y-1.5 hover:scale-[1.02]`}
                   >
-                    {/* Hover Glow */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-accent/10 via-transparent to-transparent" />
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-accent/20 rounded-full blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    {/* Hover Glow - GPU Optimized */}
+                    {tier !== 'low' && (
+                      <>
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-accent/10 via-transparent to-transparent pointer-events-none" style={{ transform: "translate3d(0,0,0)", willChange: "opacity" }} />
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-accent/20 rounded-full blur-[30px] sm:blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ transform: "translate3d(0,0,0)", willChange: "opacity" }}></div>
+                      </>
+                    )}
                     
                     <div className="relative z-10 flex flex-col items-start gap-y-4">
                       {/* Icon */}
@@ -196,7 +215,7 @@ export default function QuickIntro() {
             </div>
             
             {/* Soft backdrop glow behind the grid */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-accent/5 rounded-full blur-[100px] -z-10 mix-blend-screen pointer-events-none"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-accent/5 rounded-full blur-[60px] sm:blur-[100px] -z-10 pointer-events-none" style={{ transform: "translateZ(0)" }}></div>
           </motion.div>
         </div>
       </div>

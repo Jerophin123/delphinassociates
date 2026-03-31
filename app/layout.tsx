@@ -11,6 +11,7 @@ import GA from "@/components/GA";
 import VisitorTracking from "@/components/VisitorTracking";
 import FloatingChatbot from "@/components/FloatingChatbot";
 import ScrollToTop from "@/components/ScrollToTop";
+import { PerformanceProvider } from "@/components/PerformanceProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -145,47 +146,49 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${montserrat.variable} font-sans antialiased`}
       >
-        <SEOStructuredData type="Organization" />
-        <SEOStructuredData type="WebSite" />
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-2JT8PG47WJ"
-          strategy="afterInteractive"
-        />
-        <Script 
-          id="ga-gtag" 
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-2JT8PG47WJ');
-            `,
-          }}
-        />
-        <Script 
-          id="ms-clarity" 
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(c,l,a,r,i,t,y){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-              })(window, document, "clarity", "script", "u4ed5jx0fg");
-            `,
-          }}
-        />
-        <Suspense fallback={null}>
-          <GA />
-        </Suspense>
-        <VisitorTracking />
-        <Header />
-        <main className="min-h-screen">{children}</main>
-        <FloatingChatbot />
-        <ScrollToTop />
-        <Footer />
-        <Analytics />
+        <PerformanceProvider>
+          <SEOStructuredData type="Organization" />
+          <SEOStructuredData type="WebSite" />
+          <Script
+            src="https://www.googletagmanager.com/gtag/js?id=G-2JT8PG47WJ"
+            strategy="afterInteractive"
+          />
+          <Script 
+            id="ga-gtag" 
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-2JT8PG47WJ');
+              `,
+            }}
+          />
+          <Script 
+            id="ms-clarity" 
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function(c,l,a,r,i,t,y){
+                  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+                })(window, document, "clarity", "script", "u4ed5jx0fg");
+              `,
+            }}
+          />
+          <Suspense fallback={null}>
+            <GA />
+          </Suspense>
+          <VisitorTracking />
+          <Header />
+          <main className="min-h-screen">{children}</main>
+          <FloatingChatbot />
+          <ScrollToTop />
+          <Footer />
+          <Analytics />
+        </PerformanceProvider>
       </body>
     </html>
   );

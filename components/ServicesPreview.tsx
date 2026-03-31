@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Building2, Factory, School, Church, Wrench, CheckCircle, ArrowRight } from "lucide-react";
+import { usePerformance } from "@/components/PerformanceProvider";
 
 const services = [
   {
@@ -44,14 +45,26 @@ const services = [
 ];
 
 export default function ServicesPreview() {
+  const { tier, reducedMotion } = usePerformance();
+
   return (
     <section
       id="home-services-preview"
       className="relative z-10 py-12 sm:py-20 md:py-28 bg-gradient-to-b from-primary-dark to-primary overflow-hidden border-y border-white/5"
     >
-      {/* Background decoration */}
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px] -translate-y-1/2 -translate-x-1/4"></div>
-      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-accent-light/5 rounded-full blur-[100px] translate-y-1/3 translate-x-1/4"></div>
+      {/* Background decoration - dynamically optimized based on hardware */}
+      {tier !== 'low' && (
+        <>
+          <div 
+            className={`absolute top-0 left-0 w-[500px] h-[500px] bg-accent/10 rounded-full ${tier === 'mid' ? 'blur-[40px] sm:blur-[60px]' : 'blur-[60px] sm:blur-[120px]'} pointer-events-none`}
+            style={{ transform: "translate3d(-25%, -50%, 0)", willChange: "transform" }}
+          ></div>
+          <div 
+            className={`absolute bottom-0 right-0 w-[400px] h-[400px] bg-accent-light/5 rounded-full ${tier === 'mid' ? 'blur-[40px] sm:blur-[60px]' : 'blur-[50px] sm:blur-[100px]'} pointer-events-none`}
+            style={{ transform: "translate3d(25%, 33%, 0)", willChange: "transform" }}
+          ></div>
+        </>
+      )}
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -82,20 +95,24 @@ export default function ServicesPreview() {
             return (
               <motion.div
                 key={service.title}
-                initial={{ opacity: 0, y: 30 }}
+                initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ 
-                  duration: 0.6,
-                  delay: index * 0.1,
+                  duration: reducedMotion ? 0 : 0.6,
+                  delay: reducedMotion ? 0 : index * 0.1,
                   ease: [0.21, 0.47, 0.32, 0.98]
                 }}
-                whileHover={{ y: -8 }}
-                className="group relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 overflow-hidden backdrop-blur-xl bg-white/[0.02] border border-white/5 hover:border-accent/30 hover:bg-white/[0.04] transition-all duration-500 shadow-2xl shadow-black/50"
+                style={{ willChange: "transform, opacity" }}
+                className={`group relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 overflow-hidden ${tier === 'high' ? 'backdrop-blur-md bg-gradient-to-b from-white/[0.04] to-white/[0.01]' : 'bg-white/[0.03]'} border border-white/5 hover:border-accent/30 transition-all duration-500 hover:shadow-2xl hover:shadow-accent/5 hover:-translate-y-2`}
               >
-                {/* 3D depth layer / Hover Glow */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-accent/10 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute -right-12 -top-12 w-48 h-48 bg-accent/20 rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                {/* 3D depth layer / Hover Glow - GPU Optimized */}
+                {tier !== 'low' && (
+                  <>
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-accent/10 via-transparent to-transparent pointer-events-none" style={{ transform: "translate3d(0,0,0)", willChange: "opacity" }} />
+                    <div className="absolute -right-12 -top-12 w-48 h-48 bg-accent/20 rounded-full blur-[40px] sm:blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ transform: "translate3d(0,0,0)", willChange: "opacity" }}></div>
+                  </>
+                )}
 
                 <div className="relative z-10 flex flex-col h-full">
                   {/* Icon */}

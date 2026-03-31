@@ -4,8 +4,10 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Play } from "lucide-react";
+import { usePerformance } from "@/components/PerformanceProvider";
 
 export default function Hero() {
+  const { tier, reducedMotion } = usePerformance();
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pb-12 sm:pb-8 md:pb-6 lg:pb-0" style={{ marginBottom: 0 }}>
@@ -81,30 +83,34 @@ export default function Hero() {
         />
       </div>
 
-      {/* Optimized floating orbs - reduced blur for performance, GPU accelerated */}
-      <div 
-        className="absolute top-16 left-4 sm:top-20 sm:left-10 w-48 h-48 sm:w-72 sm:h-72 md:w-80 md:h-80 bg-accent/8 rounded-full blur-3xl animate-pulse z-[1] pointer-events-none" 
-        style={{ 
-          willChange: 'opacity, transform',
-          transform: 'translateZ(0)',
-        }}
-      />
-      <div 
-        className="absolute bottom-16 right-4 sm:bottom-20 sm:right-10 w-64 h-64 sm:w-96 sm:h-96 md:w-[28rem] md:h-[28rem] bg-primary-light/8 rounded-full blur-3xl animate-pulse z-[1] pointer-events-none" 
-        style={{ 
-          animationDelay: '1s',
-          willChange: 'opacity, transform',
-          transform: 'translateZ(0)',
-        }}
-      />
-      <div 
-        className="absolute top-1/2 left-1/4 w-32 h-32 sm:w-48 sm:h-48 bg-accent-light/5 rounded-full blur-2xl animate-pulse z-[1] pointer-events-none" 
-        style={{ 
-          animationDelay: '2s',
-          willChange: 'opacity, transform',
-          transform: 'translateZ(0)',
-        }}
-      />
+      {/* Optimized floating orbs - conditionally rendered based on hardware tier */}
+      {tier !== 'low' && (
+        <>
+          <div 
+            className={`absolute top-16 left-4 sm:top-20 sm:left-10 w-48 h-48 sm:w-72 sm:h-72 md:w-80 md:h-80 bg-accent/8 rounded-full ${tier === 'mid' ? 'blur-xl' : 'blur-2xl sm:blur-3xl'} ${reducedMotion ? '' : 'md:animate-pulse'} z-[1] pointer-events-none`}
+            style={{ 
+              willChange: 'opacity, transform',
+              transform: 'translateZ(0)',
+            }}
+          />
+          <div 
+            className={`absolute bottom-16 right-4 sm:bottom-20 sm:right-10 w-64 h-64 sm:w-96 sm:h-96 md:w-[28rem] md:h-[28rem] bg-primary-light/8 rounded-full ${tier === 'mid' ? 'blur-xl' : 'blur-2xl sm:blur-3xl'} ${reducedMotion ? '' : 'md:animate-pulse'} z-[1] pointer-events-none`}
+            style={{ 
+              animationDelay: '1s',
+              willChange: 'opacity, transform',
+              transform: 'translateZ(0)',
+            }}
+          />
+          <div 
+            className={`absolute top-1/2 left-1/4 w-32 h-32 sm:w-48 sm:h-48 bg-accent-light/5 rounded-full ${tier === 'mid' ? 'blur-lg' : 'blur-xl sm:blur-2xl'} ${reducedMotion ? '' : 'md:animate-pulse'} z-[1] pointer-events-none`}
+            style={{ 
+              animationDelay: '2s',
+              willChange: 'opacity, transform',
+              transform: 'translateZ(0)',
+            }}
+          />
+        </>
+      )}
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-5 md:px-8 lg:px-12 xl:px-16 py-8 sm:py-12 md:py-16 lg:py-20 w-full mt-10 sm:mt-12 md:mt-8 lg:mt-4">
         <div className="max-w-4xl lg:max-w-5xl text-left">
@@ -122,30 +128,32 @@ export default function Hero() {
           >
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-8xl 2xl:text-8xl font-bold mb-4 sm:mb-5 md:mb-6 lg:mb-8 font-display leading-[1.1] md:leading-tight tracking-[0.02em]">
               <motion.span 
-                className="block text-transparent bg-clip-text bg-gradient-to-l from-[#FFFFFF] via-[#FFF2B3] to-[#D4AF37] drop-shadow-[0_0_22px_rgba(212,175,55,0.65)]"
-                initial={{ opacity: 0, x: -15 }}
+                className={`block text-transparent bg-clip-text bg-gradient-to-l from-[#FFFFFF] via-[#FFF2B3] to-[#D4AF37] ${tier === 'low' ? '' : 'drop-shadow-[0_0_22px_rgba(212,175,55,0.65)]'}`}
+                initial={reducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -15 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ 
+                  duration: reducedMotion ? 0 : undefined,
                   type: "spring",
                   stiffness: 120,
                   damping: 22,
                   mass: 0.7,
-                  delay: 0.2
+                  delay: reducedMotion ? 0 : 0.2
                 }}
                 style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
               >
                 You Dream
               </motion.span>
               <motion.span 
-                className="block text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent-light to-accent-dark mt-1 sm:mt-1.5 md:mt-2 lg:mt-2.5 drop-shadow-lg"
-                initial={{ opacity: 0, x: -15 }}
+                className={`block text-transparent bg-clip-text bg-gradient-to-r from-accent via-accent-light to-accent-dark mt-1 sm:mt-1.5 md:mt-2 lg:mt-2.5 ${tier === 'low' ? '' : 'drop-shadow-lg'}`}
+                initial={reducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -15 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ 
+                  duration: reducedMotion ? 0 : undefined,
                   type: "spring",
                   stiffness: 120,
                   damping: 22,
                   mass: 0.7,
-                  delay: 0.3
+                  delay: reducedMotion ? 0 : 0.3
                 }}
                 style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
               >
