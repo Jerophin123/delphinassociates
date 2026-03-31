@@ -333,7 +333,7 @@ Our custom `usePerformance` Context taps into WebGL contexts to extract exact Un
   - **Unisoc / Spreadtrum**: Hardcoded to safely deploy the Low tier for the vast majority of budget devices worldwide.
 
 #### Mobile Restriction Sandbox & Thermal Throttling Prevention
-Despite the raw benchmark power of modern mobile flagships (iPhone 16 Pro, Samsung S24 Ultra), absolutely zero mobile devices are granted "High" tier UI effects. Rendering 6 full-viewport layers of CSS blending and massive radial blurs causes severe thermal throttling on passively cooled mobile devices. By sandboxing all premium mobile processors exclusively to the "Mid-Range", we guarantee flawless 60 FPS scrolling and protect battery life while retaining premium transitions.
+Despite the raw benchmark power of modern mobile flagships (iPhone 17 Pro Max, Samsung S26 Ultra), absolutely zero mobile devices are granted "High" tier UI effects. Rendering 6 full-viewport layers of CSS blending and massive radial blurs causes severe thermal throttling on passively cooled mobile devices. By sandboxing all premium mobile processors exclusively to the "Mid-Range", we guarantee flawless 60 FPS scrolling and protect battery life while retaining premium transitions.
 
 #### Live V-Sync Degradation Safety Net
 - We don't just rely on static string parsing. A lightweight `requestAnimationFrame` monitor calculates precise framerate (FPS) measurements under load. 
