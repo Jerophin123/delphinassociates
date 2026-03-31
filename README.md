@@ -318,11 +318,22 @@ To dominate Chennai's local SEO for "Civil Construction", standard `<title>` and
 
 Because civil architecture demands an uncompromising, cinematic web presence containing heavy glassmorphism, overlapping CSS filters, and massive radial blurs (`backdrop-filter: blur(120px)`), rendering the site natively on lower-end devices would cause severe layout thrashing and scrolling lag. We engineered a highly sophisticated algorithmic workaround.
 
-#### Exhaustive GPU Architecture Matrix
-Our custom `usePerformance` Context taps into the `WEBGL_debug_renderer_info` to extract exact Unmasked Renderer Strings (e.g., `GeForce RTX` or `Adreno 610`). It parses strings through a massive RegExp Engine:
-- **Intelligent Classification**: Evaluates device generation logic (separating `Intel Iris Xe` from older `Intel UHD`, and sorting `RX 6000` from `Radeon RX 400`).
-- **High Tier Allocation**: Permits full visual fidelity exclusively to high-bandwidth discrete GPUs (e.g., RTX 3080) and modern Apple Silicon (M1 Pro+).
-- **Mobile Restriction Sandbox**: Absolutely zero mobile devices are granted "High" tier effects. Even flagship phones (iPhone 17 Pro Max, Samsung S26 Ultra) will thermal throttle under 6 full-viewport layers of CSS blending logic. They are hard-limited to 'Mid-Range' to prioritize flawless, stutter-free scrolling.
+#### Exhaustive GPU & SoC Architecture Matrix
+Our custom `usePerformance` Context taps into WebGL contexts to extract exact Unmasked Renderer Strings (e.g., `GeForce RTX`, `Adreno 610`, or `Mali-G710`). It parses these strings through a massive, multi-vendor RegExp Engine targeting both Desktop and Mobile ecosystems:
+- **Apple Ecosystem**: Categorizes M-Series Silicon (Pro/Max/Ultra to High Tier) and A-Series SoC (Mid Tier).
+- **Desktop Discrete & Integrated GPUs**: 
+  - **NVIDIA**: Separates RTX/High-end GTX (High Tier) from Legacy GT/MX series (Low Tier).
+  - **AMD Radeon**: Sorts RDNA/Vega (High Tier) from older Polaris and Legacy GCN APUs (Low Tier).
+  - **Intel**: Identifies Arc Alchemist and Iris Xe (Mid Tier) vs legacy HD/UHD graphics (Low Tier).
+- **Comprehensive Mobile SoC Detection**: 
+  - **Qualcomm Snapdragon / Adreno**: Identifies flagship 7/8 series and modern 8-core Adrenos (Mid Tier) vs legacy processors (Low Tier).
+  - **Samsung Exynos / Xclipse**: Distinguishes between AMD RDNA-powered Xclipse GPUs (Mid Tier) and standard or legacy Exynos configurations (Low Tier).
+  - **MediaTek Dimensity / Helio**: Caps high-end Dimensity/Helio G9 chips at Mid Tier, while dropping standard Helio entry SOCs to Low.
+  - **ARM Mali & PowerVR**: Parses Valhall/Immortalis architectures (Mid Tier) vs older Legacy Mali and PowerVR/Rogue logic (Low Tier).
+  - **Unisoc / Spreadtrum**: Hardcoded to safely deploy the Low tier for the vast majority of budget devices worldwide.
+
+#### Mobile Restriction Sandbox & Thermal Throttling Prevention
+Despite the raw benchmark power of modern mobile flagships (iPhone 16 Pro, Samsung S24 Ultra), absolutely zero mobile devices are granted "High" tier UI effects. Rendering 6 full-viewport layers of CSS blending and massive radial blurs causes severe thermal throttling on passively cooled mobile devices. By sandboxing all premium mobile processors exclusively to the "Mid-Range", we guarantee flawless 60 FPS scrolling and protect battery life while retaining premium transitions.
 
 #### Live V-Sync Degradation Safety Net
 - We don't just rely on static string parsing. A lightweight `requestAnimationFrame` monitor calculates precise framerate (FPS) measurements under load. 

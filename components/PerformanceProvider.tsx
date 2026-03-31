@@ -166,21 +166,21 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
           calculatedTier = "low"; 
         }
       }
-      // 5. QUALCOMM ADRENO (ANDROID)
-      else if (renderer.includes("adreno")) {
+      // 5. QUALCOMM ADRENO / SNAPDRAGON (ANDROID)
+      else if (renderer.includes("adreno") || renderer.includes("snapdragon")) {
         specs.vendor = "Qualcomm";
         specs.type = "Mobile";
         const match = renderer.match(/adreno\s*([0-9]{3})/);
         const series = match ? parseInt(match[1]) : 0;
         
-        if (series >= 700 || series >= 650) {
-          specs.architecture = `Adreno ${series}`;
+        if (series >= 700 || series >= 650 || renderer.includes("snapdragon 8") || renderer.includes("snapdragon 7")) {
+          specs.architecture = series ? `Adreno ${series}` : "Snapdragon 7/8 Series";
           specs.estimatedClass = "Mid-Range"; // Mobile GPUs never get 'High' to prevent thermal throttling on 120px CSS blurs
           calculatedTier = "mid";
-        } else if (series === 0 && coreCount >= 8 && maxTextureSize >= 8192) {
+        } else if ((series === 0 && coreCount >= 8 && maxTextureSize >= 8192) || renderer.includes("snapdragon")) {
           // Fallback logic! If browser scrubbed the Adreno version number from string
           // but phone has 8 cores and supports heavy textures, it's a modern Snapdragon (Mid Tier).
-          specs.architecture = `Modern Adreno (Masked)`;
+          specs.architecture = `Modern Adreno/Snapdragon (Masked)`;
           specs.estimatedClass = "Mid-Range";
           calculatedTier = "mid";
         } else {
@@ -210,6 +210,44 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
         specs.architecture = "PowerVR Rogue/SGX";
         specs.estimatedClass = "Budget/Legacy";
         calculatedTier = "low";
+      }
+      // 8. SAMSUNG XCLIPSE / EXYNOS (MOBILE)
+      else if (renderer.includes("xclipse") || renderer.includes("exynos")) {
+        specs.vendor = "Samsung";
+        specs.type = "Mobile";
+        if (renderer.includes("xclipse")) {
+          const match = renderer.match(/xclipse\s*([0-9]{3})/);
+          const series = match ? match[1] : "";
+          specs.architecture = `Xclipse ${series} (RDNA)`.trim();
+          specs.estimatedClass = "Mid-Range"; 
+          calculatedTier = "mid";
+        } else {
+          specs.architecture = "Exynos Legacy/Masked";
+          specs.estimatedClass = "Budget/Legacy";
+          calculatedTier = "low";
+        }
+      }
+      // 9. MEDIATEK (DIMENSITY / HELIO)
+      else if (renderer.includes("mediatek") || renderer.includes("dimensity") || renderer.includes("helio")) {
+        specs.vendor = "MediaTek";
+        specs.type = "Mobile";
+        if (renderer.includes("dimensity") || renderer.includes("helio g9") || (coreCount >= 8 && maxTextureSize >= 8192)) {
+          specs.architecture = "Dimensity / High-End Helio";
+          specs.estimatedClass = "Mid-Range";
+          calculatedTier = "mid";
+        } else {
+          specs.architecture = "Helio Legacy / Entry SoC";
+          specs.estimatedClass = "Budget/Legacy";
+          calculatedTier = "low";
+        }
+      }
+      // 10. UNISOC / SPREADTRUM
+      else if (renderer.includes("unisoc") || renderer.includes("spreadtrum") || renderer.includes("tigert")) {
+        specs.vendor = "Unisoc";
+        specs.type = "Mobile";
+        specs.architecture = "Unisoc / Spreadtrum";
+        specs.estimatedClass = "Budget/Legacy";
+        calculatedTier = "low"; // Mostly entry-level hardware
       }
 
       // Hard limits and Accessibility Overrides
