@@ -1,13 +1,49 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Play } from "lucide-react";
 import { usePerformance } from "@/components/PerformanceProvider";
 
+const PARTICLES = [
+  { size: 3, x: 10, y: 120, duration: 25, delay: 0 },
+  { size: 4, x: 30, y: 140, duration: 35, delay: 2 },
+  { size: 2, x: 50, y: 110, duration: 20, delay: 5 },
+  { size: 5, x: 70, y: 130, duration: 40, delay: 1 },
+  { size: 2, x: 80, y: 115, duration: 28, delay: 8 },
+  { size: 3, x: 95, y: 165, duration: 32, delay: 3 },
+  { size: 4, x: 15, y: 150, duration: 22, delay: 6 },
+  { size: 2, x: 45, y: 110, duration: 30, delay: 4 },
+  { size: 3, x: 60, y: 170, duration: 26, delay: 7 },
+  { size: 5, x: 85, y: 145, duration: 38, delay: 2 },
+  { size: 2, x: 25, y: 135, duration: 24, delay: 9 },
+  { size: 4, x: 5, y: 185, duration: 34, delay: 1 },
+];
+
 export default function Hero() {
   const { tier, reducedMotion } = usePerformance();
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    if (tier !== 'high' || reducedMotion) return;
+    
+    // Throttle for performance
+    let ticking = false;
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setMousePosition({ x: e.clientX, y: e.clientY });
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [tier, reducedMotion]);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pb-12 sm:pb-8 md:pb-6 lg:pb-0" style={{ marginBottom: 0 }}>
@@ -61,6 +97,16 @@ export default function Hero() {
         />
       </div>
 
+      {/* Flagship Interactive Engine Spotlight */}
+      {tier === 'high' && !reducedMotion && (
+        <div 
+          className="pointer-events-none fixed inset-0 z-[2] transition-opacity duration-300"
+          style={{
+            background: `radial-gradient(800px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(212, 175, 55, 0.08), transparent 40%)`,
+          }}
+        />
+      )}
+
       {/* Optimized grid pattern overlay - GPU accelerated */}
       <div 
         className="absolute inset-0 opacity-[0.03] md:opacity-[0.05] z-[1] pointer-events-none" 
@@ -110,6 +156,35 @@ export default function Hero() {
             }}
           />
         </>
+      )}
+
+      {/* Flagship Floating Particles */}
+      {tier === 'high' && !reducedMotion && (
+        <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden" style={{ transform: 'translateZ(0)' }}>
+          {PARTICLES.map((p, i) => (
+            <motion.div
+              key={i}
+              className="absolute rounded-full bg-accent/40 shadow-[0_0_12px_rgba(212,175,55,0.8)]"
+              style={{
+                width: p.size,
+                height: p.size,
+                left: `${p.x}%`,
+                top: `${p.y}%`,
+              }}
+              animate={{
+                y: [0, -window.innerHeight - 200],
+                x: [0, Math.sin(p.duration) * 50],
+                opacity: [0, 0.8, 0],
+              }}
+              transition={{
+                duration: p.duration,
+                repeat: Infinity,
+                delay: p.delay,
+                ease: "linear",
+              }}
+            />
+          ))}
+        </div>
       )}
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-5 md:px-8 lg:px-12 xl:px-16 py-8 sm:py-12 md:py-16 lg:py-20 w-full mt-10 sm:mt-12 md:mt-8 lg:mt-4">
@@ -194,23 +269,27 @@ export default function Hero() {
             >
               <Link
                 href="/contact"
-                className="group relative px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 bg-accent text-black rounded-xl font-bold text-sm sm:text-base md:text-lg shadow-2xl shadow-accent/30 hover:shadow-accent/55 hover:bg-accent-light transition-[background-color,box-shadow,transform] duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 overflow-hidden w-full sm:w-auto min-h-[44px] sm:min-h-[52px] md:min-h-[56px] will-change-transform hover:scale-[1.02] active:scale-[0.98]"
+                className={`group relative px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 bg-accent text-black rounded-xl font-bold text-sm sm:text-base md:text-lg ${tier === 'low' ? '' : 'shadow-2xl shadow-accent/30 hover:shadow-accent/55'} hover:bg-accent-light transition-[background-color,box-shadow,transform] duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 overflow-hidden w-full sm:w-auto min-h-[44px] sm:min-h-[52px] md:min-h-[56px] will-change-transform ${tier === 'low' ? '' : 'hover:scale-[1.02] active:scale-[0.98]'}`}
                 style={{ transform: 'translateZ(0)' }}
               >
                 <span className="relative z-10">Start Your Project</span>
                 <ArrowRight
-                  className="relative z-10 group-hover:translate-x-1 transition-transform duration-300 ease-out will-change-transform w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"
+                  className={`relative z-10 ${tier === 'low' ? '' : 'group-hover:translate-x-1'} transition-transform duration-300 ease-out will-change-transform w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6`}
                   style={{ transform: 'translateZ(0)' }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-accent-light via-accent to-accent-light opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
-                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
+                {tier !== 'low' && (
+                  <>
+                    <div className="absolute inset-0 bg-gradient-to-r from-accent-light via-accent to-accent-light opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
+                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
+                  </>
+                )}
               </Link>
               <Link
                 href="/projects"
-                className="group px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 bg-primary-dark/25 backdrop-blur-sm text-white border-2 border-accent/60 rounded-xl font-bold text-sm sm:text-base md:text-lg hover:bg-accent/10 hover:text-accent transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 w-full sm:w-auto min-h-[44px] sm:min-h-[52px] md:min-h-[56px] shadow-xl hover:shadow-[0_0_30px_rgba(212,175,55,0.12)] will-change-transform hover:scale-[1.02] active:scale-[0.98] hover:border-accent/90"
+                className={`group px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 ${tier === 'low' ? 'bg-black/60 border-accent text-white' : 'bg-primary-dark/25 backdrop-blur-sm text-white border-accent/60'} border-2 rounded-xl font-bold text-sm sm:text-base md:text-lg hover:bg-accent/10 hover:text-accent transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 w-full sm:w-auto min-h-[44px] sm:min-h-[52px] md:min-h-[56px] shadow-xl ${tier === 'low' ? '' : 'hover:shadow-[0_0_30px_rgba(212,175,55,0.12)] hover:scale-[1.02] active:scale-[0.98]'} hover:border-accent/90 will-change-transform`}
                 style={{ transform: 'translateZ(0)' }}
               >
-                <Play className="group-hover:scale-110 transition-transform duration-300 ease-out will-change-transform w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" style={{ transform: 'translateZ(0)' }} />
+                <Play className={`${tier === 'low' ? '' : 'group-hover:scale-110'} transition-transform duration-300 ease-out will-change-transform w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6`} style={{ transform: 'translateZ(0)' }} />
                 <span>View Portfolio</span>
               </Link>
             </motion.div>

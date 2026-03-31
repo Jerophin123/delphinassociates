@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Building2, Factory, School, Church, Wrench, CheckCircle, ArrowRight } from "lucide-react";
@@ -43,6 +44,78 @@ const services = [
     color: "from-accent-dark to-accent-light",
   },
 ];
+
+const ServiceCard = ({ service, index, tier, reducedMotion }: any) => {
+  const Icon = service.icon;
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (tier !== 'high' || reducedMotion || !cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    setMousePosition({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  const rotateX = isHovered && tier === 'high' && !reducedMotion ? ((mousePosition.y / (cardRef.current?.clientHeight || 200)) - 0.5) * -15 : 0;
+  const rotateY = isHovered && tier === 'high' && !reducedMotion ? ((mousePosition.x / (cardRef.current?.clientWidth || 200)) - 0.5) * 15 : 0;
+
+  return (
+    <motion.div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ 
+        duration: reducedMotion ? 0 : 0.6,
+        delay: reducedMotion ? 0 : index * 0.1,
+        ease: [0.21, 0.47, 0.32, 0.98]
+      }}
+      animate={{
+        rotateX,
+        rotateY,
+        transformPerspective: 1000,
+      }}
+      style={{ willChange: "transform, opacity" }}
+      className={`group relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 overflow-hidden ${tier === 'high' ? 'backdrop-blur-md bg-gradient-to-b from-white/[0.04] to-white/[0.01]' : (tier === 'mid' ? 'backdrop-blur-sm bg-white/[0.03]' : 'bg-[#0a0a0a]')} border border-white/5 hover:border-accent/30 transition-[border-color,box-shadow,transform] duration-500 hover:shadow-2xl hover:shadow-accent/5 ${tier === 'high' ? '' : 'hover:-translate-y-2'}`}
+    >
+      {tier === 'high' && isHovered && !reducedMotion && (
+        <div
+          className="absolute inset-0 pointer-events-none opacity-80 z-0 mix-blend-screen transition-opacity duration-300"
+          style={{
+            background: `radial-gradient(400px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(212,175,55,0.12), transparent 40%)`
+          }}
+        />
+      )}
+
+      {tier !== 'low' && (
+        <>
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-accent/10 via-transparent to-transparent pointer-events-none" style={{ transform: "translate3d(0,0,0)", willChange: "opacity" }} />
+          <div className="absolute -right-12 -top-12 w-48 h-48 bg-accent/20 rounded-full blur-[40px] sm:blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ transform: "translate3d(0,0,0)", willChange: "opacity" }}></div>
+        </>
+      )}
+
+      <div className={`relative z-10 flex flex-col h-full transform-gpu ${tier === 'high' && isHovered && !reducedMotion ? 'translate-z-10' : ''}`}>
+        <div className={`mb-6 sm:mb-8 w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center shadow-lg shadow-black/50 group-hover:scale-110 transition-transform duration-500 ease-out`}>
+          <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-black" />
+        </div>
+
+        <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-white group-hover:text-accent transition-colors duration-300">
+          {service.title}
+        </h3>
+        <p className="text-sm sm:text-base text-gray-400 leading-relaxed font-light mb-6 flex-grow">
+          {service.description}
+        </p>
+      </div>
+    </motion.div>
+  );
+};
 
 export default function ServicesPreview() {
   const { tier, reducedMotion } = usePerformance();
@@ -90,48 +163,9 @@ export default function ServicesPreview() {
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 mb-12 sm:mb-16 md:mb-20">
-          {services.map((service, index) => {
-            const Icon = service.icon;
-            return (
-              <motion.div
-                key={service.title}
-                initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ 
-                  duration: reducedMotion ? 0 : 0.6,
-                  delay: reducedMotion ? 0 : index * 0.1,
-                  ease: [0.21, 0.47, 0.32, 0.98]
-                }}
-                style={{ willChange: "transform, opacity" }}
-                className={`group relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 overflow-hidden ${tier === 'high' ? 'backdrop-blur-md bg-gradient-to-b from-white/[0.04] to-white/[0.01]' : 'bg-white/[0.03]'} border border-white/5 hover:border-accent/30 transition-all duration-500 hover:shadow-2xl hover:shadow-accent/5 hover:-translate-y-2`}
-              >
-                {/* 3D depth layer / Hover Glow - GPU Optimized */}
-                {tier !== 'low' && (
-                  <>
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-accent/10 via-transparent to-transparent pointer-events-none" style={{ transform: "translate3d(0,0,0)", willChange: "opacity" }} />
-                    <div className="absolute -right-12 -top-12 w-48 h-48 bg-accent/20 rounded-full blur-[40px] sm:blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ transform: "translate3d(0,0,0)", willChange: "opacity" }}></div>
-                  </>
-                )}
-
-                <div className="relative z-10 flex flex-col h-full">
-                  {/* Icon */}
-                  <div className={`mb-6 sm:mb-8 w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br ${service.color} flex items-center justify-center shadow-lg shadow-black/50 group-hover:scale-110 transition-transform duration-500 ease-out`}>
-                    <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-black" />
-                  </div>
-
-                  <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-white group-hover:text-accent transition-colors duration-300">
-                    {service.title}
-                  </h3>
-                  <p className="text-sm sm:text-base text-gray-400 leading-relaxed font-light mb-6 flex-grow">
-                    {service.description}
-                  </p>
-                  
-
-                </div>
-              </motion.div>
-            );
-          })}
+          {services.map((service, index) => (
+            <ServiceCard key={service.title} service={service} index={index} tier={tier} reducedMotion={reducedMotion} />
+          ))}
         </div>
 
         <motion.div

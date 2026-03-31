@@ -1,6 +1,9 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState, ReactNode, useRef } from "react";
+import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
+import { Loader2 } from "lucide-react";
 
 export type PerformanceTier = "high" | "mid" | "low";
 
@@ -17,28 +20,31 @@ interface PerformanceContextProps {
   gpuInfo: string | null;
   coreCount: number;
   hardwareSpecs: HardwareSpecs | null;
+  isInitialized: boolean;
 }
 
 const PerformanceContext = createContext<PerformanceContextProps>({
-  tier: "high", // Defaults to high until hydration to prevent layout jumping
+  tier: "low", // Defaults to low (Progressive Enhancement) for instant mobile hydration
   reducedMotion: false,
   gpuInfo: null,
   coreCount: 4,
   hardwareSpecs: null,
+  isInitialized: false,
 });
 
 export const usePerformance = () => useContext(PerformanceContext);
 
 export function PerformanceProvider({ children }: { children: ReactNode }) {
   const [metrics, setMetrics] = useState<PerformanceContextProps>({
-    tier: "high",
+    tier: "low",
     reducedMotion: false,
     gpuInfo: null,
     coreCount: 4,
     hardwareSpecs: null,
+    isInitialized: false,
   });
 
-  const currentTierRef = useRef<PerformanceTier>("high");
+  const currentTierRef = useRef<PerformanceTier>("low");
 
   useEffect(() => {
     try {
@@ -48,6 +54,7 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
       const memory = navigator.deviceMemory || 4; 
 
       let gpuInfo = "Unknown GPU";
+      let maxTextureSize = 0;
       const canvas = document.createElement("canvas");
       let gl: WebGLRenderingContext | null = null;
       try {
@@ -57,10 +64,12 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
           if (debugInfo) {
             gpuInfo = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) as string;
           }
+          maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
         }
       } catch (e) {}
 
-      const renderer = gpuInfo.toLowerCase();
+      // Strip trademarks like (R) or (TM) that break rigid regex matching
+      const renderer = gpuInfo.toLowerCase().replace(/\((r|tm)\)/g, '').replace(/graphics/g, '').trim();
       const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
       let calculatedTier: PerformanceTier = "high";
@@ -145,7 +154,7 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
           specs.type = "Discrete";
           specs.estimatedClass = "Mid-Range";
           calculatedTier = "mid"; // Intel drivers on WebGL are unreliable for complex CSS blurs
-        } else if (/iris\s*(?:xe|plus|pro)/.test(renderer)) {
+        } else if ((renderer.includes("iris") && renderer.includes("xe")) || /iris\s*(?:plus|pro)/.test(renderer)) {
           specs.architecture = "Iris Xe/Plus";
           specs.type = "Integrated";
           specs.estimatedClass = "Mid-Range";
@@ -161,12 +170,18 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
       else if (renderer.includes("adreno")) {
         specs.vendor = "Qualcomm";
         specs.type = "Mobile";
-        const match = renderer.match(/adreno\s*(?:\(tm\))?\s*([0-9]{3})/);
+        const match = renderer.match(/adreno\s*([0-9]{3})/);
         const series = match ? parseInt(match[1]) : 0;
         
         if (series >= 700 || series >= 650) {
           specs.architecture = `Adreno ${series}`;
           specs.estimatedClass = "Mid-Range"; // Mobile GPUs never get 'High' to prevent thermal throttling on 120px CSS blurs
+          calculatedTier = "mid";
+        } else if (series === 0 && coreCount >= 8 && maxTextureSize >= 8192) {
+          // Fallback logic! If browser scrubbed the Adreno version number from string
+          // but phone has 8 cores and supports heavy textures, it's a modern Snapdragon (Mid Tier).
+          specs.architecture = `Modern Adreno (Masked)`;
+          specs.estimatedClass = "Mid-Range";
           calculatedTier = "mid";
         } else {
           specs.architecture = `Adreno ${series || "Legacy"}`;
@@ -202,10 +217,20 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
         calculatedTier = "low";
       } else if (coreCount <= 2 || memory <= 2) {
         calculatedTier = "low";
-      } else if (isMobileDevice && calculatedTier === "high") {
-        // Absolute fail-safe: Mobile devices NEVER get "High" tier effects
-        // Glassmorphism over multiple layers brings even an iPhone 15 Pro to its knees in mobile Safari.
+      }
+      
+      // Absolute fail-safe: Mobile devices NEVER get "High" tier effects
+      // Glassmorphism over multiple layers brings even an iPhone 15 Pro to its knees in mobile Safari.
+      if (isMobileDevice && calculatedTier === "high") {
         calculatedTier = "mid";
+      }
+
+      // Developer/Testing Override via URL parameter e.g., ?forceTier=high
+      const urlParams = new URLSearchParams(window.location.search);
+      const forceTier = urlParams.get('forceTier') as PerformanceTier | null;
+      if (forceTier === 'high' || forceTier === 'mid' || forceTier === 'low') {
+        calculatedTier = forceTier;
+        console.info(`[Hardware Profiler] Tier forcefully overridden to: ${forceTier}`);
       }
 
       currentTierRef.current = calculatedTier;
@@ -215,6 +240,7 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
         gpuInfo: renderer !== "unknown gpu" ? gpuInfo : "Hardware Masked",
         coreCount,
         hardwareSpecs: specs,
+        isInitialized: true,
       });
 
       // ---------------------------------------------------------
@@ -269,6 +295,39 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
 
   return (
     <PerformanceContext.Provider value={metrics}>
+      <AnimatePresence>
+        {!metrics.isInitialized && (
+          <motion.div
+            key="performance-splash"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-background/95 backdrop-blur-md select-none"
+          >
+            <div className="relative mb-8 w-32 h-32 md:w-48 md:h-48 overflow-hidden rounded-full shadow-2xl ring-4 ring-primary/10">
+              <Image 
+                src="/splash.png" 
+                alt="Delphin Associates Splash" 
+                fill 
+                className="object-cover"
+                priority
+              />
+            </div>
+            
+            <div className="flex flex-col items-center gap-4">
+              <motion.div 
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+              >
+                <Loader2 className="w-8 h-8 text-primary" />
+              </motion.div>
+              <p className="text-sm font-medium tracking-widest text-muted-foreground uppercase opacity-80 animate-pulse">
+                Optimizing Experience
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {children}
     </PerformanceContext.Provider>
   );

@@ -183,7 +183,7 @@ export default function QuickIntro() {
                       ease: [0.21, 0.47, 0.32, 0.98]
                     }}
                     style={{ willChange: "transform, opacity" }}
-                    className={`group relative rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-8 overflow-hidden ${tier === 'high' ? 'backdrop-blur-md bg-gradient-to-b from-white/[0.04] to-white/[0.01]' : 'bg-white/[0.03]'} border border-white/5 hover:border-accent/30 transition-all duration-500 hover:shadow-2xl hover:shadow-accent/5 hover:-translate-y-1.5 hover:scale-[1.02]`}
+                    className={`group relative rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-8 overflow-hidden ${tier === 'high' ? 'backdrop-blur-md bg-gradient-to-b from-white/[0.04] to-white/[0.01]' : (tier === 'mid' ? 'backdrop-blur-sm bg-white/[0.03]' : 'bg-black/50')} border border-white/5 hover:border-accent/30 transition-[transform,box-shadow,background-color] duration-500 ${tier !== 'low' ? 'hover:shadow-2xl hover:shadow-accent/5 hover:-translate-y-1.5 hover:scale-[1.02]' : ''}`}
                   >
                     {/* Hover Glow - GPU Optimized */}
                     {tier !== 'low' && (
@@ -215,7 +215,9 @@ export default function QuickIntro() {
             </div>
             
             {/* Soft backdrop glow behind the grid */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-accent/5 rounded-full blur-[60px] sm:blur-[100px] -z-10 pointer-events-none" style={{ transform: "translateZ(0)" }}></div>
+            {tier !== 'low' && (
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-accent/5 rounded-full blur-[60px] sm:blur-[100px] -z-10 pointer-events-none" style={{ transform: "translateZ(0)" }}></div>
+            )}
           </motion.div>
         </div>
       </div>
