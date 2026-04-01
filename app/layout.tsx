@@ -12,6 +12,7 @@ import VisitorTracking from "@/components/VisitorTracking";
 import FloatingChatbot from "@/components/FloatingChatbot";
 import ScrollToTop from "@/components/ScrollToTop";
 import { PerformanceProvider } from "@/components/PerformanceProvider";
+import CustomCursor from "@/components/ui/CustomCursor";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -184,6 +185,7 @@ export default function RootLayout({
           <VisitorTracking />
           <Header />
           <main className="min-h-screen">{children}</main>
+          <CustomCursor />
           <FloatingChatbot />
           <ScrollToTop />
           <Footer />

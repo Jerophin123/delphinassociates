@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { MapPin, Calendar, Church, Home, Factory, GraduationCap, Route, Grid3x3 } from "lucide-react";
+import { usePerformance } from "../PerformanceProvider";
 
 type Project = {
   id: number;
@@ -65,6 +66,7 @@ export default function ProjectDetailContent({
   project,
   detail,
 }: ProjectDetailContentProps) {
+  const { tier } = usePerformance();
   return (
     <motion.div
       variants={containerVariants}
@@ -112,7 +114,7 @@ export default function ProjectDetailContent({
       </motion.div>
 
       <motion.div variants={itemVariants} className="w-full">
-        <div className="rounded-2xl sm:rounded-3xl border border-gray-100 bg-white/80 backdrop-blur-sm shadow-sm p-4 sm:p-7">
+        <div className={`rounded-2xl sm:rounded-3xl border border-gray-100 ${tier === 'low' ? 'bg-white/95' : 'bg-white/80 backdrop-blur-sm'} shadow-sm p-4 sm:p-7`}>
           <span className="inline-flex rounded-full bg-accent/10 px-2 sm:px-4 py-0.5 sm:py-1 text-[10px] sm:text-sm font-semibold text-accent items-center gap-1.5 w-fit">
             {(() => {
               const CategoryIcon = getCategoryIcon(project.category);

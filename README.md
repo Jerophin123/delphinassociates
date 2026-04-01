@@ -86,7 +86,9 @@ The construction sector operates non-stop; our lead pipelines must too. If a thi
 
 ### "Wow" Factor Native Design & Modern UI
 We refuse to rely on heavy UI libraries (like MUI or Ant Design) which bloat bundles. Every component is painstakingly crafted using utility classes from **Tailwind CSS** and animated using **Framer Motion** spring physics. 
-Recently, we've elevated the design language by introducing advanced Framer Motion sliding animations and optimized mobile aesthetics (specifically refining heading scales for optimal cross-device readability) across our core sections to deliver a truly premium, dynamic digital experience.
+
+Recently, we've pioneered the **"Liquid Glass" UI System**—a hardware-aware styling engine that delivers premium, 60fps glassmorphism (backdrop blurs, frosted textures, and dynamic translucency) exclusively to high-performance hardware, while maintaining crisp, solid aesthetics for mobile and legacy devices.
+
 
 ---
 
@@ -266,10 +268,14 @@ delphin-associates/
 │   ├── contact/                   # Contact-specific client components
 │   │   ├── ContactForm.tsx        # Complex state-driven controlled form with Zod validation patterns
 │   │   └── MapSection.tsx         # Lazy-loaded interactive Google Maps iframe
-│   ├── FloatingChatbot.tsx        # BEHEMOTH component handling rule-based AI interactions
+│   ├── FloatingChatbot.tsx        # BEHEMOTH component handling rule-based AI & 'Liquid Glass' UI
 │   ├── Footer.tsx                 # Standardized global footer with 12-column grid compliance
 │   ├── Navigation.tsx             # Responsive header, handles scroll locking and hamburger menus
-│   └── SEOStructuredData.tsx      # Headless component pumping dynamic JSON-LD into the <head>
+│   ├── PerformanceProvider.tsx    # Hardware-aware environment profiler & tier manager
+│   ├── SEOStructuredData.tsx      # Headless component pumping dynamic JSON-LD into the <head>
+│   └── services/
+│       └── ServicesCTA.tsx         # Standardized 'Liquid Glass' call-to-action component
+
 ├── lib/                           # Abstracted Business Logic & Services
 │   ├── email-templates.ts         # Hardcoded, table-based archaic HTML/CSS for perfect email client rendering
 │   ├── google-sheets.ts           # JWT authentication and array-appending abstractions for the API
@@ -301,10 +307,12 @@ Using a highly optimized `getAnswerFromKnowledgeBase(question: string)` regex/st
 If the user types "Where are your apartments?", the function catches `apartment` and instantly serves: *"We build premium residential flats with modern amenities. Our featured projects include flats in T. Nagar, West Mambalam, and Kolathur."*
 This operates with **0ms latency** because the logic is bundled locally inside the client script.
 
-#### Responsive Interactivity:
-- Uses `Framer Motion` extensively to create a bouncy, inviting entrance (`initial={{ opacity: 0, scale: 0.9, y: 20 }}`).
-- Features a passive "Notification Bubble" that pops up 2 seconds after page load acting as a non-intrusive hook.
+#### Premium "Liquid Glass" Skins:
+- **High-Tier Interface**: On flagship hardware, the bot renders with a full frosted-gold glass body, `backdrop-blur-md`, and custom translucent message bubbles.
+- **Modern Scrollbar**: Features a bespoke golden-glass scrollbar logic that prevents browser default "jank" and matches the high-end aesthetic.
+- **Contrast-Optimized Icons**: Dynamically swaps profile icons to black when rendered on glass to ensure WCAG-compliant readability without sacrificing the "luxury" look.
 - **Mobile First Adaptation**: On viewports under `sm` (640px), we proactively hide secondary quick options ("View Services", "Projects") and exclusively render the minimal chat bubble. This guarantees the user's thumb has full access to the actual site content without a massive UI overlay blinding them.
+
 
 ### SEO Structured Data Injection (`components/SEOStructuredData.tsx`)
 
@@ -335,9 +343,16 @@ Our custom `usePerformance` Context taps into WebGL contexts to extract exact Un
 #### Mobile Restriction Sandbox & Thermal Throttling Prevention
 Despite the raw benchmark power of modern mobile flagships (iPhone 17 Pro Max, Samsung S26 Ultra), absolutely zero mobile devices are granted "High" tier UI effects. Rendering 6 full-viewport layers of CSS blending and massive radial blurs causes severe thermal throttling on passively cooled mobile devices. By sandboxing all premium mobile processors exclusively to the "Mid-Range", we guarantee flawless 60 FPS scrolling and protect battery life while retaining premium transitions.
 
-#### Live V-Sync Degradation Safety Net
-- We don't just rely on static string parsing. A lightweight `requestAnimationFrame` monitor calculates precise framerate (FPS) measurements under load. 
-- If a GPU lies about its performance capabilities (e.g. overheating or throttling) and drops below 45 FPS for 3 consecutive seconds, the engine triggers an automatic **Emergency Downgrade**. It gracefully kills the heavy overlapping DOM elements in real-time without reloading the page, instantly restoring buttery 60 FPS scrolling.
+#### Dynamic Micro-Benchmark Fallback
+If the WebGL parsing engine fails to identify a recognized GPU string (frequent with Safari's privacy anti-fingerprinting and Tor browsers), the engine does not default to the lowest tier blindly. It seamlessly executes a lightning-fast, non-blocking `requestAnimationFrame` canvas drawing test. By rendering 500 translucent geometric shapes with heavy drop shadows, the engine simulates CSS compositing pressure and measures the raw execution speed to assign a tailored "High", "Mid", or "Low" tier in under 50 milliseconds.
+
+#### Zero-Latency Profile Persistence
+Performing WebGL string extraction, executing RegExp parsing, and running canvas benchmarks cost compute baseline. Once the engine calculates a tier, it strictly commits this profile exclusively into `localStorage`. On all subsequent return visits or page navigations, the engine bypasses the entire hardware detection pipeline to instantly enforce the tailored UI tier, resulting in true zero-latency hydration.
+
+#### Live V-Sync Degradation & Throttling Persistence
+- Static parsing and initial benchmarks are inherently limited. Our lightweight `requestAnimationFrame` monitor continuously calculates precise framerate (FPS) measurements under continuous load. 
+- If a GPU lies about its performance capabilities or begins to passively overheat and thermal throttle (dropping below 45 FPS for 3 consecutive seconds), the engine triggers an automatic **Emergency Downgrade**. It gracefully kills the heavy overlapping DOM elements in real-time without needing to reload the DOM layout.
+- Crucially, this UI degradation immediately overwrites the `localStorage` key. If a user's phone struggles, we persist their downgraded profile locally, guaranteeing permanent protection against future UI freezing.
 
 ### Global Layouts & Error Boundaries
 
@@ -421,6 +436,32 @@ We extended the default Tailwind palette with our exact brand hex codes:
 We enforce a premium typography system ensuring consistent, modern aesthetics that align with high-end architecture.
 - **Display Typeface (`Montserrat`)**: Utilized for massive `h1`, `h2`, and structural headings. Configured with specific weights, clean geometric alignment, and strict letter-spacing to project unyielding strength and luxury.
 - **Body Typeface (`Inter`)**: Highly legible, modern sans-serif used for deep paragraphs, interactive UI text, and components, ensuring flawless readability and responsive scaling across all devices.
+
+### The "Liquid Glass" System & UI Hierarchical Split
+We have pioneered a hardware-aware **Hierarchical UI Split** that ensures the aesthetic matches the device's thermal and computational budget. The style is not static; it is a spectrum of fidelity:
+
+#### 1. High Tier: "Liquid Glass" (Flagship Performance)
+Designed for modern desktops with discrete GPUs and M-Series Silicon.
+- **Visuals**: Primary use of `backdrop-filter: blur(24px)` (frosted glass).
+- **Insignias**: Glass-morphic icon containers with `border-top: 1px solid rgba(255,255,255,0.7)`.
+- **Interactions**: Complex physics-based animations and 3D floating shadows.
+- **Buttons**: Inverted glass-gold buttons (`liquid-glass-btn-accent-invert`).
+
+#### 2. Mid Tier: "Translucent Profile" (Mainstream Efficiency)
+Designed for mid-range laptops, high-end Android, and older iPhones.
+- **Visuals**: Replaces blur with high-quality **alpha-translucency** (`rgba(255,255,255,0.8)`).
+- **Optimization**: Disables backdrop filters entirely to prevent GPU overdraw and lag during scroll events.
+- **Shadows**: Maintains standard soft shadows for depth without the computation of blurred background layers.
+
+#### 3. Low Tier: "Opaque Profile" (Absolute Performance)
+Designed for budget devices, legacy hardware, and "Reduced Motion" accessibility modes.
+- **Visuals**: **Solid Opaque** backgrounds (`#FFFFFF` or `#0A0A0A`).
+- **Optimization**: Strips all transparency and shadows to ensure the paint-to-pixel pipeline is as short as possible.
+- **Reliability**: Guarantees a stable 60fps experience even on devices with minimal VRAM and low core counts.
+
+#### Implementation & Context
+- **Utility Classes**: Found in `globals.css` (e.g., `.liquid-glass-card-light`, `.liquid-glass-msg`).
+- **Dynamic Context**: Components consume the `usePerformance()` hook to toggle between these profiles seamlessly based on real-time hardware profiling.
 
 ### Animation Protocols (Framer Motion)
 Websites without motion feel static and dead. We breathe life into the site, but responsibly.

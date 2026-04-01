@@ -3,8 +3,10 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Phone, Mail, ArrowRight } from "lucide-react";
+import { usePerformance } from "./PerformanceProvider";
 
 export default function CTASection() {
+  const { tier, reducedMotion } = usePerformance();
   return (
     <section
       id="home-cta-section"
@@ -28,11 +30,14 @@ export default function CTASection() {
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div
-            initial={{ opacity: 0, y: 30, scale: 0.95 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="relative rounded-2xl sm:rounded-[2.5rem] bg-white/70 backdrop-blur-md sm:backdrop-blur-2xl border border-white shadow-[0_8px_40px_rgb(0,0,0,0.08)] hover:shadow-[0_16px_60px_rgb(0,0,0,0.12)] transition-shadow duration-500 p-5 sm:p-10 md:p-16 lg:p-20 overflow-hidden"
+            className="w-full"
+        >
+          <motion.div
+            className={`relative rounded-2xl sm:rounded-[2.5rem] ${tier === 'low' ? 'bg-white' : (tier === 'mid' ? 'bg-white/80 backdrop-blur-md' : 'liquid-glass-card-light')} border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:shadow-[0_16px_60px_rgb(0,0,0,0.12)] transition-shadow duration-500 p-5 sm:p-10 md:p-16 lg:p-20 overflow-hidden`}
           >
             {/* Inner subtle glow */}
           <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent pointer-events-none"></div>
@@ -50,9 +55,13 @@ export default function CTASection() {
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 xl:mb-8 font-display tracking-tight leading-[1.1]">
             Ready to Start Your <br className="hidden md:block"/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-dark via-primary to-primary-light mt-2 pb-2 inline-block">
+            <motion.span 
+              animate={tier === 'high' && !reducedMotion ? { backgroundPosition: ["0% center", "200% center"] } : {}}
+              transition={{ repeat: Infinity, ease: "linear", duration: 15 }}
+              className="text-transparent bg-clip-text bg-gradient-to-r from-primary-dark via-primary to-primary-dark mt-2 pb-2 inline-block bg-[length:200%_auto]"
+            >
               Dream Project?
-            </span>
+            </motion.span>
           </h2>
           
           <p className="text-sm sm:text-lg md:text-xl text-gray-500 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed font-light">
@@ -63,7 +72,7 @@ export default function CTASection() {
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center w-full sm:w-auto relative z-20">
             <Link
               href="/contact"
-              className="group relative inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-white transition-all duration-300 bg-primary-dark rounded-xl hover:bg-gray-900 hover:shadow-xl hover:shadow-gray-900/20 w-full sm:w-auto overflow-hidden border border-transparent"
+              className={`group relative inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-black transition-all duration-300 bg-accent rounded-xl hover:bg-accent-light hover:shadow-xl hover:shadow-accent/20 w-full sm:w-auto overflow-hidden border border-transparent ${tier === 'high' && !reducedMotion ? 'liquid-glass-btn-accent-invert' : ''}`}
             >
               <span className="relative z-10 flex items-center gap-2">
                 Get a Quote
@@ -74,7 +83,7 @@ export default function CTASection() {
             
             <a
               href="tel:+919841243345"
-              className="group inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-primary-dark transition-all duration-300 bg-white border-2 border-gray-100 rounded-xl hover:border-accent hover:bg-accent/5 hover:text-accent w-full sm:w-auto"
+              className={`group inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-primary-dark transition-all duration-300 bg-white border-2 border-gray-100 rounded-xl hover:border-accent hover:bg-accent/5 hover:text-accent w-full sm:w-auto ${tier === 'high' && !reducedMotion ? 'liquid-glass-btn-light-invert' : ''}`}
             >
               <span className="flex items-center gap-2">
                 <Phone className="w-5 h-5 group-hover:-translate-y-1 transition-transform duration-300" />
@@ -110,6 +119,7 @@ export default function CTASection() {
               <span>nanchilassociates@gmail.com</span>
             </a>
           </motion.div>
+        </motion.div>
         </motion.div>
       </div>
     </section>

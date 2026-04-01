@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import { BadgeCheck, Clock, Mail, MapPin, Phone } from "lucide-react";
+import { usePerformance } from "../PerformanceProvider";
 
 export default function ContactInfo() {
+  const { tier, reducedMotion } = usePerformance();
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -15,7 +17,7 @@ export default function ContactInfo() {
         damping: 20,
         mass: 0.8
       }}
-      className="bg-gradient-to-br from-gray-50 to-white rounded-[2.5rem] border border-gray-100 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 p-5 sm:p-8 md:p-10 hover:-translate-y-2 hover:border-gray-200"
+      className="bg-gradient-to-br from-gray-50 to-white liquid-glass-card rounded-[2.5rem] border border-gray-100 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 p-5 sm:p-8 md:p-10 hover:-translate-y-2 hover:border-gray-200"
       style={{ willChange: 'transform' }}
     >
       <div className="mb-3 sm:mb-6">
@@ -46,7 +48,7 @@ export default function ContactInfo() {
           style={{ willChange: 'opacity, transform' }}
         >
           <motion.div 
-            className="w-10 h-10 sm:w-14 sm:h-14 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0"
+            className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${tier === 'high' && !reducedMotion ? 'liquid-glass-card-dark !bg-accent/20 !border-accent/30 shadow-none' : 'bg-accent/10'}`}
             whileHover={{ scale: 1.08 }}
             transition={{ 
               type: "spring",
@@ -80,7 +82,7 @@ export default function ContactInfo() {
           style={{ willChange: 'opacity, transform' }}
         >
           <motion.div 
-            className="w-10 h-10 sm:w-14 sm:h-14 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0"
+            className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${tier === 'high' && !reducedMotion ? 'liquid-glass-card-dark !bg-accent/20 !border-accent/30 shadow-none' : 'bg-accent/10'}`}
             whileHover={{ scale: 1.08 }}
             transition={{ 
               type: "spring",
@@ -123,7 +125,7 @@ export default function ContactInfo() {
           style={{ willChange: 'opacity, transform' }}
         >
           <motion.div 
-            className="w-10 h-10 sm:w-14 sm:h-14 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0"
+            className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${tier === 'high' && !reducedMotion ? 'liquid-glass-card-dark !bg-accent/20 !border-accent/30 shadow-none' : 'bg-accent/10'}`}
             whileHover={{ scale: 1.08 }}
             transition={{ 
               type: "spring",
@@ -166,7 +168,7 @@ export default function ContactInfo() {
           style={{ willChange: 'opacity, transform' }}
         >
           <motion.div 
-            className="w-10 h-10 sm:w-14 sm:h-14 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0"
+            className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${tier === 'high' && !reducedMotion ? 'liquid-glass-card-dark !bg-accent/20 !border-accent/30 shadow-none' : 'bg-accent/10'}`}
             whileHover={{ scale: 1.08 }}
             transition={{ 
               type: "spring",

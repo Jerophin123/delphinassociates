@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Play } from "lucide-react";
 import { usePerformance } from "@/components/PerformanceProvider";
+import MagneticButton from "./ui/MagneticButton";
 
 const PARTICLES = [
   { size: 3, x: 10, y: 120, duration: 25, delay: 0 },
@@ -25,6 +26,9 @@ const PARTICLES = [
 export default function Hero() {
   const { tier, reducedMotion } = usePerformance();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const { scrollY } = useScroll();
+  const gridY = useTransform(scrollY, [0, 1000], [0, 250]); // Substantial but buttery depth parallax
+  const orbY = useTransform(scrollY, [0, 1000], [0, -150]);
 
   useEffect(() => {
     if (tier !== 'high' || reducedMotion) return;
@@ -108,14 +112,14 @@ export default function Hero() {
       )}
 
       {/* Optimized grid pattern overlay - GPU accelerated */}
-      <div 
+      <motion.div 
         className="absolute inset-0 opacity-[0.03] md:opacity-[0.05] z-[1] pointer-events-none" 
         style={{ 
-          willChange: 'opacity',
-          transform: 'translateZ(0)',
+          willChange: 'opacity, transform',
           bottom: 0,
           height: '100vh',
           width: '100%',
+          y: tier === 'high' && !reducedMotion ? gridY : 0
         }}
       >
         <div 
@@ -127,11 +131,14 @@ export default function Hero() {
             transform: 'translateZ(0)',
           }}
         />
-      </div>
+      </motion.div>
 
       {/* Optimized floating orbs - conditionally rendered based on hardware tier */}
       {tier !== 'low' && (
-        <>
+        <motion.div 
+          className="absolute inset-0 z-[1] pointer-events-none"
+          style={{ y: tier === 'high' && !reducedMotion ? orbY : 0, willChange: 'transform' }}
+        >
           <div 
             className={`absolute top-16 left-4 sm:top-20 sm:left-10 w-48 h-48 sm:w-72 sm:h-72 md:w-80 md:h-80 bg-accent/8 rounded-full ${tier === 'mid' ? 'blur-xl' : 'blur-2xl sm:blur-3xl'} ${reducedMotion ? '' : 'md:animate-pulse'} z-[1] pointer-events-none`}
             style={{ 
@@ -155,7 +162,7 @@ export default function Hero() {
               transform: 'translateZ(0)',
             }}
           />
-        </>
+        </motion.div>
       )}
 
       {/* Flagship Floating Particles */}
@@ -172,7 +179,7 @@ export default function Hero() {
                 top: `${p.y}%`,
               }}
               animate={{
-                y: [0, -window.innerHeight - 200],
+                y: ["0vh", "-120vh"],
                 x: [0, Math.sin(p.duration) * 50],
                 opacity: [0, 0.8, 0],
               }}
@@ -267,9 +274,10 @@ export default function Hero() {
               className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-5 lg:gap-6 justify-start items-stretch sm:items-center w-full sm:w-auto"
               style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
             >
-              <Link
-                href="/contact"
-                className={`group relative px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 bg-accent text-black rounded-xl font-bold text-sm sm:text-base md:text-lg ${tier === 'low' ? '' : 'shadow-2xl shadow-accent/30 hover:shadow-accent/55'} hover:bg-accent-light transition-[background-color,box-shadow,transform] duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 overflow-hidden w-full sm:w-auto min-h-[44px] sm:min-h-[52px] md:min-h-[56px] will-change-transform ${tier === 'low' ? '' : 'hover:scale-[1.02] active:scale-[0.98]'}`}
+              <MagneticButton className="w-full sm:w-auto">
+                <Link
+                  href="/contact"
+                  className={`group relative px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 rounded-xl font-bold text-sm sm:text-base md:text-lg transition-all duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 overflow-hidden w-full sm:w-auto min-h-[44px] sm:min-h-[52px] md:min-h-[56px] will-change-transform ${tier === 'high' && !reducedMotion ? 'bg-accent/15 backdrop-blur-xl border border-white/20 text-white shadow-[0_8px_20px_rgba(0,0,0,0.15),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:bg-accent/25 hover:border-white/30 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.5)]' : `bg-accent text-black hover:bg-accent-light ${tier === 'low' ? '' : 'shadow-2xl shadow-accent/30 hover:shadow-accent/55 hover:scale-[1.02] active:scale-[0.98]'}`}`}
                 style={{ transform: 'translateZ(0)' }}
               >
                 <span className="relative z-10">Start Your Project</span>
@@ -277,21 +285,24 @@ export default function Hero() {
                   className={`relative z-10 ${tier === 'low' ? '' : 'group-hover:translate-x-1'} transition-transform duration-300 ease-out will-change-transform w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6`}
                   style={{ transform: 'translateZ(0)' }}
                 />
-                {tier !== 'low' && (
+                {tier === 'mid' && (
                   <>
                     <div className="absolute inset-0 bg-gradient-to-r from-accent-light via-accent to-accent-light opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
                     <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
                   </>
                 )}
-              </Link>
-              <Link
-                href="/projects"
-                className={`group px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 ${tier === 'low' ? 'bg-black/60 border-accent text-white' : 'bg-primary-dark/25 backdrop-blur-sm text-white border-accent/60'} border-2 rounded-xl font-bold text-sm sm:text-base md:text-lg hover:bg-accent/10 hover:text-accent transition-[background-color,color,border-color,box-shadow,transform] duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 w-full sm:w-auto min-h-[44px] sm:min-h-[52px] md:min-h-[56px] shadow-xl ${tier === 'low' ? '' : 'hover:shadow-[0_0_30px_rgba(212,175,55,0.12)] hover:scale-[1.02] active:scale-[0.98]'} hover:border-accent/90 will-change-transform`}
+                </Link>
+              </MagneticButton>
+              <MagneticButton className="w-full sm:w-auto">
+                <Link
+                  href="/projects"
+                className={`group px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 border-2 rounded-xl font-bold text-sm sm:text-base md:text-lg transition-all duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 w-full sm:w-auto min-h-[44px] sm:min-h-[52px] md:min-h-[56px] will-change-transform ${tier === 'high' && !reducedMotion ? 'bg-white/5 backdrop-blur-xl text-white border-white/15 shadow-[0_8px_20px_rgba(0,0,0,0.1),inset_0_1px_1px_rgba(255,255,255,0.25)] hover:bg-white/10 hover:border-white/30 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.4)]' : `text-white ${tier === 'low' ? 'bg-black/60 border-accent' : 'bg-primary-dark/25 backdrop-blur-sm border-accent/60 shadow-xl hover:shadow-[0_0_30px_rgba(212,175,55,0.12)] hover:scale-[1.02] active:scale-[0.98]'} hover:bg-accent/10 hover:text-accent hover:border-accent/90`}`}
                 style={{ transform: 'translateZ(0)' }}
               >
                 <Play className={`${tier === 'low' ? '' : 'group-hover:scale-110'} transition-transform duration-300 ease-out will-change-transform w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6`} style={{ transform: 'translateZ(0)' }} />
-                <span>View Portfolio</span>
-              </Link>
+                  <span>View Portfolio</span>
+                </Link>
+              </MagneticButton>
             </motion.div>
           </motion.div>
         </div>
@@ -305,7 +316,7 @@ export default function Hero() {
         className="absolute bottom-6 sm:bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 z-10 hidden md:block pointer-events-none"
         style={{ willChange: 'opacity', transform: 'translateZ(0) translateX(-50%)' }}
       >
-        <div className="w-6 h-10 md:w-7 md:h-11 border-2 border-accent/40 rounded-full flex justify-center backdrop-blur-sm bg-primary-dark/30 shadow-lg" style={{ transform: 'translateZ(0)' }}>
+        <div className={`w-6 h-10 md:w-7 md:h-11 border-2 border-accent/40 rounded-full flex justify-center ${tier === 'low' ? 'bg-primary-dark/80' : 'backdrop-blur-sm bg-primary-dark/30'} shadow-lg`} style={{ transform: 'translateZ(0)' }}>
           <motion.div
             animate={{ y: [0, 14, 0] }}
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}

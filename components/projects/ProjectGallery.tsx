@@ -17,6 +17,7 @@ import {
   Route,
 } from "lucide-react";
 import projectsData from "@/data/projects.json";
+import { usePerformance } from "../PerformanceProvider";
 
 type Project = {
   id: number;
@@ -43,6 +44,7 @@ const getCategoryIcon = (category: string) => {
 };
 
 export default function ProjectGallery() {
+  const { tier } = usePerformance();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [query, setQuery] = useState("");
   const [sortBy, setSortBy] = useState<"newest" | "oldest" | "title">("newest");
@@ -202,7 +204,7 @@ export default function ProjectGallery() {
                 >
                   <Link
                     href={`/projects/${project.id}`}
-                    className="group block h-full rounded-[2.5rem] bg-white border border-gray-200 overflow-hidden shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] hover:-translate-y-2 hover:border-gray-300 transition-all duration-500 will-change-transform focus:outline-none focus:ring-2 focus:ring-accent/40"
+                    className="group block h-full rounded-[2.5rem] bg-white liquid-glass-card border border-gray-200 overflow-hidden shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] hover:-translate-y-2 hover:border-gray-300 transition-all duration-500 will-change-transform focus:outline-none focus:ring-2 focus:ring-accent/40"
                   >
                     <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
                       {project.image ? (
@@ -221,14 +223,14 @@ export default function ProjectGallery() {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/0 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
 
                       <div className="absolute top-4 left-4 z-10">
-                        <span className="inline-flex items-center gap-2 px-2.5 sm:px-3 py-1 rounded-full bg-white/90 backdrop-blur border border-gray-200 text-[10px] sm:text-xs font-semibold text-gray-900">
+                        <span className={`inline-flex items-center gap-2 px-2.5 sm:px-3 py-1 rounded-full ${tier === 'low' ? 'bg-white' : 'bg-white/90 backdrop-blur'} border border-gray-200 text-[10px] sm:text-xs font-semibold text-gray-900`}>
                           <CategoryIcon className="w-3 h-3 sm:w-4 sm:h-4 text-accent" />
                           {project.category}
                         </span>
                       </div>
 
                       <div className="absolute top-4 right-4 z-10">
-                        <span className="inline-flex items-center px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-white/90 backdrop-blur border border-gray-200 text-[10px] sm:text-xs font-semibold text-gray-900">
+                        <span className={`inline-flex items-center px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full ${tier === 'low' ? 'bg-white' : 'bg-white/90 backdrop-blur'} border border-gray-200 text-[10px] sm:text-xs font-semibold text-gray-900`}>
                           <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-accent mr-1" />
                           {project.year ?? "—"}
                         </span>

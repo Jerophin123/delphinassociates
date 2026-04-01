@@ -24,7 +24,7 @@ interface PerformanceContextProps {
 }
 
 const PerformanceContext = createContext<PerformanceContextProps>({
-  tier: "low", // Defaults to low (Progressive Enhancement) for instant mobile hydration
+  tier: "high", // Defaults to high to ensure splash screen has blur on mount
   reducedMotion: false,
   gpuInfo: null,
   coreCount: 4,
@@ -36,7 +36,7 @@ export const usePerformance = () => useContext(PerformanceContext);
 
 export function PerformanceProvider({ children }: { children: ReactNode }) {
   const [metrics, setMetrics] = useState<PerformanceContextProps>({
-    tier: "low",
+    tier: "high",
     reducedMotion: false,
     gpuInfo: null,
     coreCount: 4,
@@ -44,7 +44,7 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
     isInitialized: false,
   });
 
-  const currentTierRef = useRef<PerformanceTier>("low");
+  const currentTierRef = useRef<PerformanceTier>("high");
 
   useEffect(() => {
     try {
@@ -56,20 +56,6 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
       let gpuInfo = "Unknown GPU";
       let maxTextureSize = 0;
       const canvas = document.createElement("canvas");
-      let gl: WebGLRenderingContext | null = null;
-      try {
-        gl = (canvas.getContext("webgl") || canvas.getContext("experimental-webgl")) as WebGLRenderingContext;
-        if (gl) {
-          const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
-          if (debugInfo) {
-            gpuInfo = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) as string;
-          }
-          maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
-        }
-      } catch (e) {}
-
-      // Strip trademarks like (R) or (TM) that break rigid regex matching
-      const renderer = gpuInfo.toLowerCase().replace(/\((r|tm)\)/g, '').replace(/graphics/g, '').trim();
       const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
       let calculatedTier: PerformanceTier = "high";
@@ -80,9 +66,26 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
         estimatedClass: "Unknown",
       };
 
-      // ---------------------------------------------------------
-      // MASSIVE HEURISTIC GPU CLASSIFICATION MATRIX
-      // ---------------------------------------------------------
+      let renderer = "unknown";
+
+      let gl: WebGLRenderingContext | null = null;
+        try {
+          gl = (canvas.getContext("webgl") || canvas.getContext("experimental-webgl")) as WebGLRenderingContext;
+          if (gl) {
+            const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+            if (debugInfo) {
+              gpuInfo = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) as string;
+            }
+            maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+          }
+        } catch (e) {}
+
+        // Strip trademarks like (R) or (TM) that break rigid regex matching
+        renderer = gpuInfo.toLowerCase().replace(/\((r|tm)\)/g, '').replace(/graphics/g, '').trim();
+
+        // ---------------------------------------------------------
+        // MASSIVE HEURISTIC GPU CLASSIFICATION MATRIX
+        // ---------------------------------------------------------
 
       // 1. APPLE SILICON & A-SERIES
       if (renderer.includes("apple")) {
@@ -250,6 +253,13 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
         calculatedTier = "low"; // Mostly entry-level hardware
       }
 
+      // 11. FALLBACK FOR UNKNOWN GPUs
+      if (renderer === "unknown gpu" || renderer === "unknown" || specs.vendor === "Unknown") {
+        specs.estimatedClass = "Budget/Legacy";
+        calculatedTier = "low";
+        specs.architecture = "Unknown (Fallback)";
+      }
+
       // Hard limits and Accessibility Overrides
       if (prefersReducedMotion) {
         calculatedTier = "low";
@@ -264,22 +274,25 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
       }
 
       // Developer/Testing Override via URL parameter e.g., ?forceTier=high
-      const urlParams = new URLSearchParams(window.location.search);
-      const forceTier = urlParams.get('forceTier') as PerformanceTier | null;
-      if (forceTier === 'high' || forceTier === 'mid' || forceTier === 'low') {
-        calculatedTier = forceTier;
-        console.info(`[Hardware Profiler] Tier forcefully overridden to: ${forceTier}`);
+      const matchTier = window.location.search.match(/[?&]forceTier=(high|mid|low)/);
+      if (matchTier) {
+        calculatedTier = matchTier[1] as PerformanceTier;
+        console.info(`[Hardware Profiler] Tier forcefully overridden to: ${calculatedTier}`);
       }
 
       currentTierRef.current = calculatedTier;
       setMetrics({
         tier: calculatedTier,
         reducedMotion: prefersReducedMotion,
-        gpuInfo: renderer !== "unknown gpu" ? gpuInfo : "Hardware Masked",
+        gpuInfo: renderer !== "unknown" && renderer !== "unknown gpu" ? gpuInfo : "Hardware Masked",
         coreCount,
         hardwareSpecs: specs,
-        isInitialized: true,
+        isInitialized: false,
       });
+
+      const initTimeout = setTimeout(() => {
+        setMetrics(prev => ({ ...prev, isInitialized: true }));
+      }, 50);
 
       // ---------------------------------------------------------
       // LIVE V-SYNC DEGRADATION MONITOR (FPS SAFETY NET)
@@ -323,13 +336,24 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
         };
 
         animationFrameId = requestAnimationFrame(measureFPS);
-        return () => cancelAnimationFrame(animationFrameId);
+        return () => {
+          cancelAnimationFrame(animationFrameId);
+          clearTimeout(initTimeout);
+        };
       }
 
+      return () => clearTimeout(initTimeout);
     } catch (e) {
         console.warn("Performance Profiler encountered an error:", e);
     }
   }, []);
+
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.documentElement.dataset.tier = metrics.tier;
+      document.documentElement.dataset.reducedMotion = metrics.reducedMotion.toString();
+    }
+  }, [metrics.tier, metrics.reducedMotion]);
 
   return (
     <PerformanceContext.Provider value={metrics}>
@@ -340,7 +364,7 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-background/95 backdrop-blur-md select-none"
+            className={`fixed inset-0 z-[10000] flex flex-col items-center justify-center ${metrics.tier === 'low' ? 'bg-background' : 'bg-background/95 backdrop-blur-md'} select-none`}
           >
             <div className="relative mb-8 w-32 h-32 md:w-48 md:h-48 overflow-hidden rounded-full shadow-2xl ring-4 ring-primary/10">
               <Image 

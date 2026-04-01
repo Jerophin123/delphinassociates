@@ -3,8 +3,10 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Calendar, MapPin, Sparkles } from "lucide-react";
+import { usePerformance } from "../PerformanceProvider";
 
 export default function ProjectsHero() {
+  const { tier, reducedMotion } = usePerformance();
   return (
     <section
       id="projects-hero"
@@ -71,7 +73,7 @@ export default function ProjectsHero() {
                 ].map((item, idx) => {
                   const Icon = item.icon;
                   return (
-                    <div key={idx} className="group relative rounded-2xl border border-gray-100 bg-white/60 backdrop-blur-md p-5 sm:p-8 transition-transform hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(212,175,55,0.08)] hover:border-accent/20">
+                    <div key={idx} className={`group relative rounded-2xl border border-gray-100 ${tier === 'low' ? 'bg-white/95' : 'bg-white/60 backdrop-blur-md'} p-5 sm:p-8 transition-transform hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(212,175,55,0.08)] hover:border-accent/20`}>
                       <div className="flex items-center gap-3 mb-2">
                         <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-accent group-hover:text-yellow-600 transition-colors" />
                         <div className="text-2xl sm:text-4xl font-black text-primary-dark font-display">{item.value}</div>
@@ -88,7 +90,7 @@ export default function ProjectsHero() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
-              className="relative overflow-hidden rounded-[2.5rem] border border-gray-100 bg-white/95 backdrop-blur-xl shadow-[0_8px_30px_-4px_rgba(0,0,0,0.06),0_4px_12px_-2px_rgba(0,0,0,0.04)] p-6 sm:p-10 lg:p-12 hover:shadow-[0_20px_40px_-8px_rgba(0,0,0,0.1),0_10px_24px_-4px_rgba(0,0,0,0.06)] hover:-translate-y-2 transition-all duration-500"
+              className={`relative overflow-hidden rounded-[2.5rem] border border-gray-100 ${tier === 'low' ? 'bg-white' : 'bg-white/95 backdrop-blur-xl'} shadow-[0_8px_30px_-4px_rgba(0,0,0,0.06),0_4px_12px_-2px_rgba(0,0,0,0.04)] p-6 sm:p-10 lg:p-12 hover:shadow-[0_20px_40px_-8px_rgba(0,0,0,0.1),0_10px_24px_-4px_rgba(0,0,0,0.06)] hover:-translate-y-2 transition-all duration-500`}
             >
               <div className="text-[10px] sm:text-xs uppercase tracking-widest text-gray-500 font-bold mb-3 sm:mb-4">
                 Start your next project
@@ -103,14 +105,14 @@ export default function ProjectsHero() {
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 mb-6 sm:mb-8">
                 <a
                   href="tel:+919841243345"
-                  className="group inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-6 sm:py-4 rounded-xl bg-[#d4af37] text-black font-bold text-sm sm:text-base shadow-[0_8px_30px_rgba(212,175,55,0.25)] hover:bg-[#b0912f] transition-all duration-300 transform hover:-translate-y-0.5"
+                  className={`group inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-6 sm:py-4 rounded-xl bg-[#d4af37] text-black font-bold text-sm sm:text-base shadow-[0_8px_30px_rgba(212,175,55,0.25)] hover:bg-[#b0912f] transition-all duration-300 transform hover:-translate-y-0.5 ${tier === 'high' && !reducedMotion ? 'liquid-glass-btn-accent-invert' : ''}`}
                 >
                   <span>Call Us</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </a>
                 <Link
                   href="/contact"
-                  className="group inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-6 sm:py-4 rounded-xl bg-gray-50 border border-gray-200 text-primary-dark text-sm sm:text-base font-bold hover:bg-white hover:border-gray-300 hover:shadow-sm transition-all duration-300 transform hover:-translate-y-0.5"
+                  className={`group inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-6 sm:py-4 rounded-xl bg-gray-50 border border-gray-200 text-primary-dark text-sm sm:text-base font-bold hover:bg-white hover:border-gray-300 hover:shadow-sm transition-all duration-300 transform hover:-translate-y-0.5 ${tier === 'high' && !reducedMotion ? 'liquid-glass-btn-light-invert' : ''}`}
                 >
                   <span>Get a Quote</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />

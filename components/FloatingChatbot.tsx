@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, X, Send, Bot, User, CheckCircle, AlertCircle } from "lucide-react";
 import { chatbotKnowledge } from "@/data/chatbotKnowledge";
+import { usePerformance } from "./PerformanceProvider";
 
 type Message = {
   id: string;
@@ -82,6 +83,7 @@ const getAnswerFromKnowledgeBase = (question: string) => {
 
 
 export default function FloatingChatbot() {
+  const { tier, reducedMotion } = usePerformance();
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const isOpenRef = useRef(false);
@@ -452,15 +454,15 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
             exit={isMobile ? { opacity: 0, y: 20 } : { opacity: 0, scale: 0.7, y: 40, x: 10 }}
             transition={isMobile ? { type: "tween", duration: 0.25, ease: "easeOut" } : { type: "spring", damping: 25, stiffness: 350 }}
             style={isMobile ? {} : { transformOrigin: "bottom right" }}
-            className={`bg-white sm:rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] w-full sm:w-[400px] flex flex-col overflow-hidden pointer-events-auto h-full sm:h-[600px] sm:max-h-[calc(100vh-120px)] ${isMobile ? "will-change-transform" : ""}`}
+            className={`${tier === 'high' && !reducedMotion ? 'bg-white/85 backdrop-blur-2xl border border-white/30' : 'bg-white'} sm:rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] w-full sm:w-[400px] flex flex-col overflow-hidden pointer-events-auto h-full sm:h-[600px] sm:max-h-[calc(100vh-120px)] ${isMobile ? "will-change-transform" : ""}`}
           >
             {/* Modern Header - Optimized for Mobile */}
-            <div className="bg-white p-5 sm:p-6 flex justify-between items-center relative overflow-hidden shrink-0">
+            <div className={`${tier === 'high' && !reducedMotion ? 'bg-white/10 border-b border-white/20' : 'bg-white'} p-5 sm:p-6 flex justify-between items-center relative overflow-hidden shrink-0`}>
               <div className="absolute -top-10 -right-10 w-32 h-32 bg-accent opacity-10 blur-[50px] rounded-full" />
               
               <div className="flex items-center space-x-3 sm:space-x-3.5 relative z-10">
                 <div className="relative">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-accent/10 backdrop-blur-md flex items-center justify-center border border-accent/20 shadow-inner">
+                  <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl ${tier === 'low' ? 'bg-accent/20' : 'bg-accent/10 backdrop-blur-md'} flex items-center justify-center border border-accent/20 shadow-inner`}>
                     <Bot className="w-6 h-6 sm:w-7 sm:h-7 text-accent" />
                   </div>
                   <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 sm:w-3.5 sm:h-3.5 bg-green-500 rounded-full border-2 border-white" />
@@ -483,7 +485,7 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
             </div>
 
             {/* Revamped Chat Area */}
-            <div className="flex-1 overflow-y-auto px-4 sm:px-5 py-5 sm:py-6 space-y-5 sm:space-y-6 bg-[#fcfcfd] custom-scrollbar">
+            <div className={`flex-1 overflow-y-auto px-4 sm:px-5 py-5 sm:py-6 space-y-5 sm:space-y-6 ${tier === 'high' && !reducedMotion ? 'bg-transparent' : 'bg-[#fcfcfd]'} custom-scrollbar`}>
               {messages.map((msg, index) => (
                 <motion.div
                   initial={{ opacity: 0, y: 15 }}
@@ -495,18 +497,20 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
                   <div className={`flex max-w-[92%] sm:max-w-[90%] ${msg.sender === "user" ? "flex-row-reverse" : "flex-row"} space-x-0`}>
                     <div
                       className={`flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center mt-1 shadow-sm ${
-                        msg.sender === "user" ? "ml-2 sm:ml-2.5 bg-accent text-primary" : "mr-2 sm:mr-2.5 bg-gray-100 text-primary border border-gray-200"
+                        msg.sender === "user" 
+                          ? `ml-2 sm:ml-2.5 ${tier === 'high' && !reducedMotion ? 'liquid-glass-card-light !bg-accent/40 !border-accent/40' : 'bg-accent text-primary'}` 
+                          : `mr-2 sm:mr-2.5 ${tier === 'high' && !reducedMotion ? 'liquid-glass-msg' : 'bg-gray-100 text-primary border border-gray-200'}`
                       }`}
                     >
-                      {msg.sender === "user" ? <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <Bot className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
+                      {msg.sender === "user" ? <User className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${tier === 'high' && !reducedMotion ? 'text-black' : ''}`} /> : <Bot className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${tier === 'high' && !reducedMotion ? 'text-black' : ''}`} />}
                     </div>
                     <div className="flex flex-col space-y-2">
                       {msg.text && (
                         <div
                           className={`px-4 sm:px-5 py-3 sm:py-3.5 rounded-[1.2rem] sm:rounded-[1.5rem] text-[14px] sm:text-[14.5px] leading-relaxed shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] ${
                             msg.sender === "user"
-                              ? "bg-accent text-primary rounded-tr-none font-medium"
-                              : "bg-white text-gray-800 rounded-tl-none border border-gray-100/50"
+                              ? `${tier === 'high' && !reducedMotion ? 'bg-accent/40 backdrop-blur-md border border-accent/30 shadow-none' : 'bg-accent'} text-primary rounded-tr-none font-medium`
+                              : `${tier === 'high' && !reducedMotion ? 'liquid-glass-msg' : 'bg-white'} text-gray-800 rounded-tl-none border border-gray-100/50`
                           }`}
                         >
                           {msg.isHtml ? (
@@ -527,7 +531,11 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
                               transition={{ delay: 0.2 + (i * 0.05) }}
                               key={i}
                               onClick={() => handleOptionClick(opt.value, opt.label)}
-                              className="group text-left px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl text-[13.5px] sm:text-sm font-semibold bg-white border border-gray-200 hover:border-accent hover:bg-accent/[0.03] text-primary transition-all shadow-sm hover:shadow-md active:scale-[0.98] flex items-center justify-between min-h-[48px]"
+                              className={`group text-left px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl text-[13.5px] sm:text-sm font-semibold transition-all shadow-sm hover:shadow-md active:scale-[0.98] flex items-center justify-between min-h-[48px] ${
+                                tier === 'high' && !reducedMotion 
+                                  ? 'liquid-glass-btn-light-invert hover:bg-white/40' 
+                                  : 'bg-white border border-gray-200 hover:border-accent hover:bg-accent/[0.03] text-primary'
+                              }`}
                             >
                               <span>{opt.label}</span>
                               <div className="w-5 h-5 rounded-full bg-gray-50 flex items-center justify-center opacity-0 group-hover:opacity-100 group-hover:bg-accent/20 transition-all">
@@ -571,12 +579,13 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Modern Detached Input Field - Optimized for Mobile */}
-            <div className="px-4 sm:px-5 py-5 sm:py-6 bg-white border-t border-gray-50 relative z-20 pb-safe shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
+            <div className={`px-4 sm:px-5 py-5 sm:py-6 relative z-20 pb-safe shadow-[0_-4px_10px_rgba(0,0,0,0.02)] ${tier === 'high' && !reducedMotion ? 'bg-transparent border-t border-white/20' : 'bg-white border-t border-gray-50'}`}>
               <form 
                 onSubmit={handleSend} 
-                className={`flex items-center space-x-2 p-1 pl-4 sm:pl-5 bg-[#f8f9fb] rounded-full border transition-all duration-300 ${
-                  inputDisabled ? 'opacity-70 grayscale-[0.2]' : 'border-gray-100 shadow-[0_2px_10px_rgba(0,0,0,0.03)] focus-within:border-accent focus-within:shadow-[0_4px_20px_rgba(0,0,0,0.08)] focus-within:bg-white'
+                className={`flex items-center space-x-2 p-1 pl-4 sm:pl-5 rounded-full border transition-all duration-300 ${
+                  tier === 'high' && !reducedMotion 
+                    ? 'bg-white/20 border-white/30 backdrop-blur-md focus-within:bg-white/30 focus-within:border-accent/40' 
+                    : `bg-[#f8f9fb] ${inputDisabled ? 'opacity-70 grayscale-[0.2]' : 'border-gray-100 shadow-[0_2px_10px_rgba(0,0,0,0.03)] focus-within:border-accent focus-within:shadow-[0_4px_20px_rgba(0,0,0,0.08)] focus-within:bg-white'}`
                 }`}
               >
                 <input
@@ -585,12 +594,12 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder={isWaitingForOption ? "Pick an option..." : "Ask anything..."}
                   disabled={inputDisabled}
-                  className="flex-1 bg-transparent py-2.5 sm:py-3 text-[14px] sm:text-[14.5px] text-gray-900 placeholder:text-gray-400 focus:outline-none disabled:cursor-not-allowed font-medium"
+                  className="flex-1 bg-transparent py-2.5 sm:py-3 text-[14px] sm:text-[14.5px] text-gray-900 placeholder:text-gray-500 focus:outline-none disabled:cursor-not-allowed font-medium"
                 />
                 <button
                   type="submit"
                   disabled={inputDisabled || !inputValue.trim()}
-                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-accent text-primary flex items-center justify-center shadow-lg hover:shadow-accent/30 hover:scale-105 active:scale-95 disabled:scale-100 disabled:opacity-30 transition-all duration-300 group overflow-hidden relative"
+                  className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 group overflow-hidden relative ${tier === 'high' && !reducedMotion ? 'liquid-glass-btn-accent-invert' : 'bg-accent text-primary hover:bg-[#b0912f] hover:scale-105 active:scale-95'}`}
                   aria-label="Send message"
                 >
                   <Send className="w-5 h-5 sm:w-4.5 sm:h-4.5 sm:group-hover:translate-x-1 sm:group-hover:-translate-y-1 transition-transform duration-300 ml-0.5" />
@@ -612,7 +621,7 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
           >
             <motion.div 
               whileHover={{ y: -5 }}
-              className="bg-white rounded-[1.5rem] rounded-br-lg shadow-[0_15px_40px_rgba(0,0,0,0.15)] p-4 border border-gray-100 cursor-pointer relative flex items-center space-x-3 sm:space-x-4 max-w-[280px] sm:max-w-sm group"
+              className={`rounded-[1.5rem] rounded-br-lg shadow-[0_15px_40px_rgba(0,0,0,0.15)] p-4 cursor-pointer relative flex items-center space-x-3 sm:space-x-4 max-w-[280px] sm:max-w-sm group ${tier === 'high' && !reducedMotion ? 'liquid-glass-card-light' : 'bg-white border border-gray-100'}`}
               onClick={() => { setIsOpen(true); setShowNotification(false); setHasUnread(false); }}
             >
               <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-accent flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-300 shadow-md shadow-accent/20">
@@ -654,7 +663,7 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => { setIsOpen(!isOpen); setShowNotification(false); if (!isOpen) setHasUnread(false); }}
-            className="w-14 h-14 sm:w-16 sm:h-16 bg-accent rounded-full flex items-center justify-center shadow-[0_8px_25px_rgba(212,175,55,0.3)] text-primary hover:bg-accent/90 transition-all relative z-50 border border-white/20 active:shadow-none"
+            className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-[0_8px_25px_rgba(212,175,55,0.3)] hover:shadow-[0_8px_30px_rgba(212,175,55,0.5)] transition-all relative z-50 active:shadow-none ${tier === 'high' && !reducedMotion ? 'liquid-glass-btn-accent-invert' : 'bg-accent text-primary border border-white/20 hover:bg-accent/90'}`}
             aria-label="Toggle chatbot"
           >
             {/* Badge */}

@@ -76,7 +76,7 @@ export default function ManagementTeam() {
             className={`group relative rounded-[2rem] overflow-hidden shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 will-change-transform hover:-translate-y-2 border p-6 sm:p-8 flex flex-col h-full ${
               member.isFounder 
                 ? "bg-gradient-to-br from-yellow-50/50 to-white border-yellow-300/60" 
-                : "bg-white border-gray-200 hover:border-gray-300"
+                : "bg-white border-gray-200 hover:border-gray-300 liquid-glass-card"
             }`}
           >
             {member.isFounder && (

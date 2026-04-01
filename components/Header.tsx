@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePerformance } from "./PerformanceProvider";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -25,6 +26,7 @@ export default function Header() {
   const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
   const [isLightHomeSection, setIsLightHomeSection] = useState(false);
+  const { tier } = usePerformance();
 
   useEffect(() => {
     const updateViewportHeight = () => {
@@ -150,6 +152,16 @@ export default function Header() {
     }
   }
   // For all other pages, navbar stays white glass
+
+  if (tier === "low") {
+    headerStyle = headerStyle
+      .replace("backdrop-blur-md", "")
+      .replace("bg-white/80", "bg-white/95")
+      .replace("bg-primary-dark/80", "bg-primary-dark/95")
+      .replace("bg-primary-dark/85", "bg-primary-dark/95")
+      .replace("bg-primary-dark/92", "bg-primary-dark/95")
+      .trim();
+  }
 
   return (
     <motion.header

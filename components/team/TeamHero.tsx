@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import { HardHat, ShieldCheck, TrendingUp, Users } from "lucide-react";
+import { usePerformance } from "../PerformanceProvider";
 
 export default function TeamHero() {
+  const { tier, reducedMotion } = usePerformance();
   const stats = [
     { icon: Users, value: "25+", label: "Years of experience" },
     { icon: TrendingUp, value: "100+", label: "Projects delivered" },
@@ -58,13 +60,13 @@ export default function TeamHero() {
           >
             <a
               href="#management-team"
-              className="group inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl bg-accent text-black font-bold text-sm sm:text-base shadow-[0_8px_30px_rgba(212,175,55,0.25)] hover:bg-[#b0912f] transition-all duration-300 transform hover:-translate-y-0.5"
+              className={`group inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl bg-accent text-black font-bold text-sm sm:text-base shadow-[0_8px_30px_rgba(212,175,55,0.25)] hover:bg-[#b0912f] transition-all duration-300 transform hover:-translate-y-0.5 ${tier === 'high' && !reducedMotion ? 'liquid-glass-btn-accent-invert' : ''}`}
             >
               Management Team
             </a>
             <a
               href="#technical-team"
-              className="group inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl bg-white border border-gray-200 text-primary-dark font-bold text-sm sm:text-base hover:border-gray-300 hover:shadow-sm transition-all duration-300 transform hover:-translate-y-0.5"
+              className={`group inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl bg-white border border-gray-200 text-primary-dark font-bold text-sm sm:text-base hover:border-gray-300 hover:shadow-sm transition-all duration-300 transform hover:-translate-y-0.5 ${tier === 'high' && !reducedMotion ? 'liquid-glass-btn-light-invert' : ''}`}
             >
               Technical Team
             </a>
@@ -80,7 +82,7 @@ export default function TeamHero() {
           {stats.map((stat, idx) => {
             const Icon = stat.icon;
             return (
-              <div key={idx} className="group relative rounded-2xl border border-gray-100 bg-white/60 backdrop-blur-md p-4 sm:p-6 transition-transform hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(212,175,55,0.08)] hover:border-accent/20 flex flex-col justify-center">
+              <div key={idx} className={`group relative rounded-2xl border border-gray-100 ${tier === 'low' ? 'bg-white/95' : 'bg-white/60 backdrop-blur-md'} p-4 sm:p-6 transition-transform hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(212,175,55,0.08)] hover:border-accent/20 flex flex-col justify-center`}>
                 <div className="flex items-center gap-4 mb-2">
                   <div className="bg-accent/10 w-10 sm:w-12 h-10 sm:h-12 rounded-xl flex items-center justify-center">
                     <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-accent group-hover:text-yellow-600 transition-colors" />

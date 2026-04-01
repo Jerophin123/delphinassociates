@@ -4,6 +4,9 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, MapPin, Calendar, Church, Home, Factory, GraduationCap, Route, Grid3x3 } from "lucide-react";
+import { usePerformance } from "./PerformanceProvider";
+import SpotlightCard from "./ui/SpotlightCard";
+import Tilt3DContainer from "./ui/Tilt3DContainer";
 
 // Helper function to get icon for category
 const getCategoryIcon = (category: string) => {
@@ -48,6 +51,7 @@ const featuredProjects = [
 ];
 
 export default function ProjectHighlights() {
+  const { tier, reducedMotion } = usePerformance();
   return (
     <section
       id="home-project-highlights"
@@ -90,9 +94,11 @@ export default function ProjectHighlights() {
                 delay: index * 0.1,
                 ease: [0.21, 0.47, 0.32, 0.98]
               }}
-              className="group relative bg-white rounded-3xl sm:rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 will-change-transform hover:-translate-y-2 border border-gray-100 flex flex-col h-full"
+              className="group relative will-change-transform h-full"
             >
-              {/* Image Container */}
+              <Tilt3DContainer maxRotation={12} className="h-full w-full">
+                <SpotlightCard className={`rounded-3xl sm:rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-2 flex flex-col h-full ${tier === 'high' && !reducedMotion ? 'liquid-glass-card-light' : 'bg-white border border-gray-100'}`}>
+                  {/* Image Container */}
               <div className="relative h-56 sm:h-72 w-full overflow-hidden bg-gray-100 flex-shrink-0">
                 {project.image ? (
                   <Image
@@ -119,7 +125,7 @@ export default function ProjectHighlights() {
                 
                 {/* Category Badge */}
                 <div className="absolute top-5 left-5 z-10 transition-transform duration-500 group-hover:translate-y-1">
-                  <div className="backdrop-blur-md bg-white/95 shadow-[0_4px_12px_rgb(0,0,0,0.1)] border border-white/20 px-4 py-2 rounded-full flex items-center gap-2 group-hover:bg-accent group-hover:border-accent transition-colors duration-300">
+                  <div className={`${tier === 'low' ? 'bg-white' : 'backdrop-blur-md bg-white/95'} shadow-[0_4px_12px_rgb(0,0,0,0.1)] border border-white/20 px-4 py-2 rounded-full flex items-center gap-2 group-hover:bg-accent group-hover:border-accent transition-colors duration-300`}>
                     {(() => {
                       const CategoryIcon = getCategoryIcon(project.category);
                       return <CategoryIcon className="w-4 h-4 text-accent group-hover:text-white transition-colors" />;
@@ -169,6 +175,8 @@ export default function ProjectHighlights() {
                   </Link>
                 </div>
               </div>
+                </SpotlightCard>
+              </Tilt3DContainer>
             </motion.div>
           ))}
         </div>
@@ -182,7 +190,7 @@ export default function ProjectHighlights() {
         >
           <Link
             href="/projects"
-            className="group inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-white transition-all duration-300 bg-primary-dark rounded-xl hover:bg-gray-800 hover:shadow-xl hover:shadow-gray-900/20"
+            className={`group inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-black transition-all duration-300 bg-accent rounded-xl hover:bg-accent-light hover:shadow-xl hover:shadow-accent/20 ${tier === 'high' && !reducedMotion ? 'liquid-glass-btn-accent-invert' : ''}`}
           >
             <span className="flex items-center gap-2">
               Explore All Projects

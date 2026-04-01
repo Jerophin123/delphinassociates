@@ -10,7 +10,7 @@ export default function CompanyHistory() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
-        className="relative overflow-hidden rounded-[2.5rem] bg-white border border-gray-200 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-shadow duration-500 p-6 sm:p-12 md:p-16 hover:border-gray-300"
+        className="relative overflow-hidden rounded-[2.5rem] bg-white liquid-glass-card border border-gray-200 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-shadow duration-500 p-6 sm:p-12 md:p-16 hover:border-gray-300"
       >
         {/* Subtle decorative background elements */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-accent/[0.03] to-transparent rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
