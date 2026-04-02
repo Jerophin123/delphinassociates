@@ -454,11 +454,11 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
             exit={isMobile ? { opacity: 0, y: 20 } : { opacity: 0, scale: 0.7, y: 40, x: 10 }}
             transition={isMobile ? { type: "tween", duration: 0.25, ease: "easeOut" } : { type: "spring", damping: 25, stiffness: 350 }}
             style={isMobile ? {} : { transformOrigin: "bottom right" }}
-            className={`${tier === 'high' && !reducedMotion ? 'bg-white/85 backdrop-blur-2xl border border-white/30' : 'bg-white'} sm:rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] w-full sm:w-[400px] flex flex-col overflow-hidden pointer-events-auto h-full sm:h-[600px] sm:max-h-[calc(100vh-120px)] ${isMobile ? "will-change-transform" : ""}`}
+            className={`${tier === 'very-low' ? 'bg-white shadow-lg' : (tier === 'high' && !reducedMotion ? 'bg-white/85 backdrop-blur-2xl border border-white/30' : 'bg-white')} sm:rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)] w-full sm:w-[400px] flex flex-col overflow-hidden pointer-events-auto h-full sm:h-[600px] sm:max-h-[calc(100vh-120px)] ${isMobile ? "will-change-transform" : ""}`}
           >
             {/* Modern Header - Optimized for Mobile */}
-            <div className={`${tier === 'high' && !reducedMotion ? 'bg-white/10 border-b border-white/20' : 'bg-white'} p-5 sm:p-6 flex justify-between items-center relative overflow-hidden shrink-0`}>
-              <div className="absolute -top-10 -right-10 w-32 h-32 bg-accent opacity-10 blur-[50px] rounded-full" />
+            <div className={`${tier === 'very-low' ? 'bg-white border-b border-gray-200' : (tier === 'high' && !reducedMotion ? 'bg-white/10 border-b border-white/20' : 'bg-white')} p-5 sm:p-6 flex justify-between items-center relative overflow-hidden shrink-0`}>
+              {tier !== 'very-low' && <div className="absolute -top-10 -right-10 w-32 h-32 bg-accent opacity-10 blur-[50px] rounded-full" />}
               
               <div className="flex items-center space-x-3 sm:space-x-3.5 relative z-10">
                 <div className="relative">
@@ -470,7 +470,7 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
                 <div>
                   <h3 className="text-gray-900 font-bold text-base sm:text-lg tracking-tight font-display">Delphin Associates</h3>
                   <div className="flex items-center space-x-1 sm:space-x-1.5 mt-0.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                    <div className={`w-1.5 h-1.5 rounded-full bg-green-500 ${tier === 'very-low' ? '' : 'animate-pulse'}`} />
                     <p className="text-[10px] sm:text-[11px] text-gray-500 font-medium uppercase tracking-wider">Online Assistant</p>
                   </div>
                 </div>
@@ -485,7 +485,7 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
             </div>
 
             {/* Revamped Chat Area */}
-            <div className={`flex-1 overflow-y-auto px-4 sm:px-5 py-5 sm:py-6 space-y-5 sm:space-y-6 ${tier === 'high' && !reducedMotion ? 'bg-transparent' : 'bg-[#fcfcfd]'} custom-scrollbar`}>
+            <div className={`flex-1 overflow-y-auto px-4 sm:px-5 py-5 sm:py-6 space-y-5 sm:space-y-6 ${tier === 'very-low' ? 'bg-white' : (tier === 'high' && !reducedMotion ? 'bg-transparent' : 'bg-[#fcfcfd]')} custom-scrollbar`}>
               {messages.map((msg, index) => (
                 <motion.div
                   initial={{ opacity: 0, y: 15 }}
@@ -509,12 +509,12 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
                         <div
                           className={`px-4 sm:px-5 py-3 sm:py-3.5 rounded-[1.2rem] sm:rounded-[1.5rem] text-[14px] sm:text-[14.5px] leading-relaxed shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] ${
                             msg.sender === "user"
-                              ? `${tier === 'high' && !reducedMotion ? 'bg-accent/40 backdrop-blur-md border border-accent/30 shadow-none' : 'bg-accent'} text-primary rounded-tr-none font-medium`
-                              : `${tier === 'high' && !reducedMotion ? 'liquid-glass-msg' : 'bg-white'} text-gray-800 rounded-tl-none border border-gray-100/50`
+                              ? `${tier === 'very-low' ? 'bg-accent text-black font-semibold' : (tier === 'high' && !reducedMotion ? 'bg-accent/40 backdrop-blur-md border border-accent/30 shadow-none' : 'bg-accent')} text-primary rounded-tr-none font-medium`
+                              : `${tier === 'very-low' ? 'bg-gray-50 border-gray-300' : (tier === 'high' && !reducedMotion ? 'liquid-glass-msg' : 'bg-white')} text-gray-800 rounded-tl-none border border-gray-100/50`
                           }`}
                         >
                           {msg.isHtml ? (
-                            <div className="prose-sm" dangerouslySetInnerHTML={{ __html: msg.text }} />
+                            <div className="prose-sm text-gray-800" dangerouslySetInnerHTML={{ __html: msg.text }} />
                           ) : (
                             msg.text
                           )}
@@ -532,9 +532,11 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
                               key={i}
                               onClick={() => handleOptionClick(opt.value, opt.label)}
                               className={`group text-left px-4 sm:px-5 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl text-[13.5px] sm:text-sm font-semibold transition-all shadow-sm hover:shadow-md active:scale-[0.98] flex items-center justify-between min-h-[48px] ${
-                                tier === 'high' && !reducedMotion 
-                                  ? 'liquid-glass-btn-light-invert hover:bg-white/40' 
-                                  : 'bg-white border border-gray-200 hover:border-accent hover:bg-accent/[0.03] text-primary'
+                                tier === 'very-low' 
+                                  ? 'bg-white border-gray-300 hover:bg-gray-100 active:scale-100 text-gray-900'
+                                  : (tier === 'high' && !reducedMotion 
+                                    ? 'liquid-glass-btn-light-invert hover:bg-white/40' 
+                                    : 'bg-white border border-gray-200 hover:border-accent hover:bg-accent/[0.03] text-primary')
                               }`}
                             >
                               <span>{opt.label}</span>
@@ -583,9 +585,11 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
               <form 
                 onSubmit={handleSend} 
                 className={`flex items-center space-x-2 p-1 pl-4 sm:pl-5 rounded-full border transition-all duration-300 ${
-                  tier === 'high' && !reducedMotion 
-                    ? 'bg-white/20 border-white/30 backdrop-blur-md focus-within:bg-white/30 focus-within:border-accent/40' 
-                    : `bg-[#f8f9fb] ${inputDisabled ? 'opacity-70 grayscale-[0.2]' : 'border-gray-100 shadow-[0_2px_10px_rgba(0,0,0,0.03)] focus-within:border-accent focus-within:shadow-[0_4px_20px_rgba(0,0,0,0.08)] focus-within:bg-white'}`
+                  tier === 'very-low'
+                    ? 'bg-white border-gray-300'
+                    : (tier === 'high' && !reducedMotion 
+                        ? 'bg-white/20 border-white/30 backdrop-blur-md focus-within:bg-white/30 focus-within:border-accent/40' 
+                        : `bg-[#f8f9fb] ${inputDisabled ? 'opacity-70 grayscale-[0.2]' : 'border-gray-100 shadow-[0_2px_10px_rgba(0,0,0,0.03)] focus-within:border-accent focus-within:shadow-[0_4px_20px_rgba(0,0,0,0.08)] focus-within:bg-white'}`)
                 }`}
               >
                 <input
@@ -599,10 +603,10 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
                 <button
                   type="submit"
                   disabled={inputDisabled || !inputValue.trim()}
-                  className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 group overflow-hidden relative ${tier === 'high' && !reducedMotion ? 'liquid-glass-btn-accent-invert' : 'bg-accent text-primary hover:bg-[#b0912f] hover:scale-105 active:scale-95'}`}
+                  className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 group overflow-hidden relative ${tier === 'very-low' ? 'bg-accent' : (tier === 'high' && !reducedMotion ? 'liquid-glass-btn-accent-invert' : 'bg-accent text-primary hover:bg-[#b0912f] hover:scale-105 active:scale-95')}`}
                   aria-label="Send message"
                 >
-                  <Send className="w-5 h-5 sm:w-4.5 sm:h-4.5 sm:group-hover:translate-x-1 sm:group-hover:-translate-y-1 transition-transform duration-300 ml-0.5" />
+                  <Send className={`w-5 h-5 sm:w-4.5 sm:h-4.5 ${tier === 'very-low' ? '' : 'sm:group-hover:translate-x-1 sm:group-hover:-translate-y-1'} transition-transform duration-300 ml-0.5`} />
                 </button>
               </form>
             </div>
@@ -620,8 +624,8 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
             className="absolute bottom-[88px] right-0 flex flex-col items-end space-y-3 mb-0 z-40 w-max pointer-events-auto pr-3 sm:pr-2"
           >
             <motion.div 
-              whileHover={{ y: -5 }}
-              className={`rounded-[1.5rem] rounded-br-lg shadow-[0_15px_40px_rgba(0,0,0,0.15)] p-4 cursor-pointer relative flex items-center space-x-3 sm:space-x-4 max-w-[280px] sm:max-w-sm group ${tier === 'high' && !reducedMotion ? 'liquid-glass-card-light' : 'bg-white border border-gray-100'}`}
+              whileHover={tier === 'very-low' ? {} : { y: -5 }}
+              className={`rounded-[1.5rem] rounded-br-lg shadow-[0_15px_40px_rgba(0,0,0,0.15)] p-4 cursor-pointer relative flex items-center space-x-3 sm:space-x-4 max-w-[280px] sm:max-w-sm group ${tier === 'very-low' ? 'bg-white border-gray-200 shadow-none' : (tier === 'high' && !reducedMotion ? 'bg-white/95 backdrop-blur-xl border border-white/50' : 'bg-white border border-gray-100')}`}
               onClick={() => { setIsOpen(true); setShowNotification(false); setHasUnread(false); }}
             >
               <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-accent flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-300 shadow-md shadow-accent/20">
@@ -646,24 +650,26 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
       {/* Floating Toggle Button */}
       {!isOpen && (
         <div className="pointer-events-auto h-16 w-16 relative mb-4 mr-4 sm:mb-0 sm:mr-0">
-          <motion.div
-            animate={{
-              scale: [1, 1.1, 1],
-              opacity: [0, 0.2, 0]
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            className="absolute inset-0 bg-accent rounded-full blur-md"
-          />
+          {tier !== 'very-low' && (
+            <motion.div
+              animate={{
+                scale: [1, 1.1, 1],
+                opacity: [0, 0.2, 0]
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute inset-0 bg-accent rounded-full blur-md"
+            />
+          )}
           
           <motion.button
-            whileHover={{ scale: 1.05, y: -2 }}
+            whileHover={tier === 'very-low' ? {} : { scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => { setIsOpen(!isOpen); setShowNotification(false); if (!isOpen) setHasUnread(false); }}
-            className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-[0_8px_25px_rgba(212,175,55,0.3)] hover:shadow-[0_8px_30px_rgba(212,175,55,0.5)] transition-all relative z-50 active:shadow-none ${tier === 'high' && !reducedMotion ? 'liquid-glass-btn-accent-invert' : 'bg-accent text-primary border border-white/20 hover:bg-accent/90'}`}
+            className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-[0_8px_25px_rgba(212,175,55,0.3)] hover:shadow-[0_8px_30px_rgba(212,175,55,0.5)] transition-all relative z-50 active:shadow-none ${tier === 'very-low' ? 'bg-accent text-black scale-100 shadow-none' : (tier === 'high' && !reducedMotion ? 'liquid-glass-btn-accent-invert' : 'bg-accent text-primary border border-white/20 hover:bg-accent/90')}`}
             aria-label="Toggle chatbot"
           >
             {/* Badge */}

@@ -10,11 +10,15 @@ export default function CTASection() {
   return (
     <section
       id="home-cta-section"
-      className="relative z-10 py-12 sm:py-20 md:py-28 bg-gradient-to-br from-white via-gray-50 to-white text-primary-dark overflow-hidden border-y border-black/5"
+      className={`relative z-10 py-12 sm:py-20 md:py-28 ${tier === 'very-low' ? 'bg-white' : 'bg-gradient-to-br from-white/95 via-gray-50/95 to-white/95'} text-primary-dark overflow-hidden border-y border-black/5`}
     >
       {/* Background decorations */}
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[50px] sm:blur-[100px] -translate-x-1/4 -translate-y-1/4 pointer-events-none"></div>
-      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[40px] sm:blur-[80px] translate-x-1/4 translate-y-1/4 pointer-events-none"></div>
+      {tier !== 'very-low' && (
+        <>
+          <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[50px] sm:blur-[100px] -translate-x-1/4 -translate-y-1/4 pointer-events-none"></div>
+          <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[40px] sm:blur-[80px] translate-x-1/4 translate-y-1/4 pointer-events-none"></div>
+        </>
+      )}
       
       {/* Grid pattern overlay */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
@@ -37,19 +41,19 @@ export default function CTASection() {
             className="w-full"
         >
           <motion.div
-            className={`relative rounded-2xl sm:rounded-[2.5rem] ${tier === 'low' ? 'bg-white' : (tier === 'mid' ? 'bg-white/80 backdrop-blur-md' : 'liquid-glass-card-light')} border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:shadow-[0_16px_60px_rgb(0,0,0,0.12)] transition-shadow duration-500 p-5 sm:p-10 md:p-16 lg:p-20 overflow-hidden`}
+            className={`relative rounded-2xl sm:rounded-[2.5rem] ${tier === 'very-low' ? 'bg-white shadow-none' : (tier === 'low' ? 'bg-white' : (tier === 'mid' ? 'bg-white/80 backdrop-blur-md' : 'liquid-glass-card-light'))} border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:shadow-[0_16px_60px_rgb(0,0,0,0.12)] transition-shadow duration-500 p-5 sm:p-10 md:p-16 lg:p-20 overflow-hidden`}
           >
             {/* Inner subtle glow */}
-          <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent pointer-events-none"></div>
+          {tier !== 'very-low' && <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent pointer-events-none"></div>}
 
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-accent/10 text-accent rounded-full text-xs sm:text-sm font-bold tracking-[0.2em] uppercase mb-6 sm:mb-8 border border-accent/20"
+            className={`inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 ${tier === 'very-low' ? 'bg-accent text-black' : 'bg-accent/10 text-accent'} rounded-full text-xs sm:text-sm font-bold tracking-[0.2em] uppercase mb-6 sm:mb-8 border border-accent/20`}
           >
-            <span className="w-2 h-2 rounded-full bg-accent animate-[pulse_2s_ease-in-out_infinite]"></span>
+            <span className={`w-2 h-2 rounded-full ${tier === 'very-low' ? 'bg-black' : 'bg-accent animate-[pulse_2s_ease-in-out_infinite]'}`}></span>
             Get Started Today
           </motion.div>
 
@@ -58,7 +62,7 @@ export default function CTASection() {
             <motion.span 
               animate={tier === 'high' && !reducedMotion ? { backgroundPosition: ["0% center", "200% center"] } : {}}
               transition={{ repeat: Infinity, ease: "linear", duration: 15 }}
-              className="text-transparent bg-clip-text bg-gradient-to-r from-primary-dark via-primary to-primary-dark mt-2 pb-2 inline-block bg-[length:200%_auto]"
+              className={`${tier === 'very-low' ? 'text-primary-dark' : 'text-transparent bg-clip-text bg-gradient-to-r from-primary-dark via-primary to-primary-dark bg-[length:200%_auto]'} mt-2 pb-2 inline-block`}
             >
               Dream Project?
             </motion.span>
@@ -78,7 +82,7 @@ export default function CTASection() {
                 Get a Quote
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-300" />
               </span>
-              <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+              {tier !== 'very-low' && <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />}
             </Link>
             
             <a

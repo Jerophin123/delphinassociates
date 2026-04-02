@@ -55,7 +55,7 @@ export default function ProjectHighlights() {
   return (
     <section
       id="home-project-highlights"
-      className="relative z-10 py-12 sm:py-20 md:py-28 bg-gradient-to-b from-white to-gray-50 overflow-hidden border-y border-black/5"
+      className={`relative z-10 py-12 sm:py-20 md:py-28 ${tier === 'very-low' ? 'bg-white' : 'bg-gradient-to-b from-white/95 to-gray-50/95'} overflow-hidden border-y border-black/5`}
     >
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
 
@@ -97,10 +97,10 @@ export default function ProjectHighlights() {
               className="group relative will-change-transform h-full"
             >
               <Tilt3DContainer maxRotation={12} className="h-full w-full">
-                <SpotlightCard className={`rounded-3xl sm:rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-2 flex flex-col h-full ${tier === 'high' && !reducedMotion ? 'liquid-glass-card-light' : 'bg-white border border-gray-100'}`}>
+                <SpotlightCard className={`rounded-3xl sm:rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-2 flex flex-col h-full ${tier === 'very-low' ? 'bg-white' : (tier === 'high' && !reducedMotion ? 'liquid-glass-card-light' : 'bg-white border border-gray-100')}`}>
                   {/* Image Container */}
               <div className="relative h-56 sm:h-72 w-full overflow-hidden bg-gray-100 flex-shrink-0">
-                {project.image ? (
+                  {project.image ? (
                   <Image
                     src={project.image}
                     alt={`${project.title} - ${project.category} construction project by Delphin Associates in ${project.location}`}
@@ -121,11 +121,13 @@ export default function ProjectHighlights() {
                 )}
                 
                 {/* Subtle gradient overlay to make image vibrant */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                {tier !== 'very-low' && (
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                )}
                 
                 {/* Category Badge */}
                 <div className="absolute top-5 left-5 z-10 transition-transform duration-500 group-hover:translate-y-1">
-                  <div className={`${tier === 'low' ? 'bg-white' : 'backdrop-blur-md bg-white/95'} shadow-[0_4px_12px_rgb(0,0,0,0.1)] border border-white/20 px-4 py-2 rounded-full flex items-center gap-2 group-hover:bg-accent group-hover:border-accent transition-colors duration-300`}>
+                  <div className={`${tier === 'very-low' ? 'bg-white' : (tier === 'low' ? 'bg-white' : 'backdrop-blur-md bg-white/95')} shadow-[0_4px_12px_rgb(0,0,0,0.1)] border border-white/20 px-4 py-2 rounded-full flex items-center gap-2 group-hover:bg-accent group-hover:border-accent transition-colors duration-300`}>
                     {(() => {
                       const CategoryIcon = getCategoryIcon(project.category);
                       return <CategoryIcon className="w-4 h-4 text-accent group-hover:text-white transition-colors" />;

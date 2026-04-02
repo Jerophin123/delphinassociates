@@ -35,6 +35,7 @@
 6. [Detailed Folder & File Structure](#6-detailed-folder--file-structure)
 7. [Comprehensive Component Documentation](#7-comprehensive-component-documentation)
    - [Floating Rule-Based Chatbot](#floating-rule-based-chatbot)
+   - [Heuristic Page Optimization Engine (HPOE)](#heuristic-page-optimization-engine-hpoe)
    - [SEO Structured Data Injection](#seo-structured-data-injection)
    - [Global Layouts & Error Boundaries](#global-layouts--error-boundaries)
    - [Dynamic User Interfaces](#dynamic-user-interfaces)
@@ -322,37 +323,30 @@ To dominate Chennai's local SEO for "Civil Construction", standard `<title>` and
 - **`LocalBusiness` Schema**: Includes hyper-specific metadata such as `geo` coordinates (Latitude 12.958168, Longitude 80.203867), `openingHoursSpecification`, `priceRange`, and an exhaustive `hasOfferCatalog` listing our specific services. 
 - **Google Knowledge Graph**: Automatically binds our social networks (Instagram, X, LinkedIn, Threads) in the `sameAs` array, ensuring Google parses Delphin Associates as a verified, multi-platform corporaton.
 
-### Dynamic Hardware Performance Engine (`components/PerformanceProvider.tsx`)
+### Heuristic Page Optimization Engine (HPOE) (`components/PerformanceProvider.tsx`)
 
-Because civil architecture demands an uncompromising, cinematic web presence containing heavy glassmorphism, overlapping CSS filters, and massive radial blurs (`backdrop-filter: blur(120px)`), rendering the site natively on lower-end devices would cause severe layout thrashing and scrolling lag. We engineered a highly sophisticated algorithmic workaround.
+Because civil architecture demands an uncompromising, cinematic web presence containing heavy glassmorphism, overlapping CSS filters, and massive radial blurs (`backdrop-filter: blur(120px)`), rendering the site natively on lower-end devices would cause severe layout thrashing and scrolling lag. We engineered a highly sophisticated, real-time algorithmic workaround known as the **Heuristic Page Optimization Engine (HPOE)**.
 
-#### Exhaustive GPU & SoC Architecture Matrix
-Our custom `usePerformance` Context taps into WebGL contexts to extract exact Unmasked Renderer Strings (e.g., `GeForce RTX`, `Adreno 610`, or `Mali-G710`). It parses these strings through a massive, multi-vendor RegExp Engine targeting both Desktop and Mobile ecosystems:
-- **Apple Ecosystem**: Categorizes M-Series Silicon (Pro/Max/Ultra to High Tier) and A-Series SoC (Mid Tier).
-- **Desktop Discrete & Integrated GPUs**: 
-  - **NVIDIA**: Separates RTX/High-end GTX (High Tier) from Legacy GT/MX series (Low Tier).
-  - **AMD Radeon**: Sorts RDNA/Vega (High Tier) from older Polaris and Legacy GCN APUs (Low Tier).
-  - **Intel**: Identifies Arc Alchemist and Iris Xe (Mid Tier) vs legacy HD/UHD graphics (Low Tier).
-- **Comprehensive Mobile SoC Detection**: 
-  - **Qualcomm Snapdragon / Adreno**: Identifies flagship 7/8 series and modern 8-core Adrenos (Mid Tier) vs legacy processors (Low Tier).
-  - **Samsung Exynos / Xclipse**: Distinguishes between AMD RDNA-powered Xclipse GPUs (Mid Tier) and standard or legacy Exynos configurations (Low Tier).
-  - **MediaTek Dimensity / Helio**: Caps high-end Dimensity/Helio G9 chips at Mid Tier, while dropping standard Helio entry SOCs to Low.
-  - **ARM Mali & PowerVR**: Parses Valhall/Immortalis architectures (Mid Tier) vs older Legacy Mali and PowerVR/Rogue logic (Low Tier).
-  - **Unisoc / Spreadtrum**: Hardcoded to safely deploy the Low tier for the vast majority of budget devices worldwide.
+#### Phase 1: The "Deep Scan" (Hardware Heuristics)
+Unlike standard media queries, HPOE performs a multi-dimensional analysis of the device's internal specifications on every load:
+- **GPU Signature Unmasking**: Using a hidden WebGL canvas, HPOE unmasks generic renderer strings to identify the raw hardware vendor and renderer (e.g., `Apple M2`, `Nvidia RTX`, `Adreno 740`).
+- **Memory & Compute Density**: Queries `navigator.deviceMemory` and `navigator.hardwareConcurrency` to classify the machine’s multitasking and multi-core processing capability.
+- **Regex Signature Matrix**: A massive, proprietary RegExp engine targets all major Desktop and Mobile ecosystems (Apple, NVIDIA, AMD, Intel, Qualcomm, Samsung, MediaTek, ARM Mali, PowerVR).
 
-#### Mobile Restriction Sandbox & Thermal Throttling Prevention
-Despite the raw benchmark power of modern mobile flagships (iPhone 17 Pro Max, Samsung S26 Ultra), absolutely zero mobile devices are granted "High" tier UI effects. Rendering 6 full-viewport layers of CSS blending and massive radial blurs causes severe thermal throttling on passively cooled mobile devices. By sandboxing all premium mobile processors exclusively to the "Mid-Range", we guarantee flawless 60 FPS scrolling and protect battery life while retaining premium transitions.
+#### Phase 2: Tier Classification (Fidelity Mapping)
+HPOE maps the hardware results into four distinct visual fidelity tiers:
+- **HIGH (Flagship)**: Unlocks full cinematic interactivity including Geometric Particle Fields, 3D Tilts, and "Liquid Glass" (frosted glass blurs).
+- **MID (Performance)**: Retains premium layouts but disables expensive backdrop-filters to ensure perfect 60fps scrolling on mid-range laptops and phones.
+- **LOW (Balanced)**: Enforces flat, opaque aesthetics and strips heavy animations for budget/legacy devices.
+- **VERY LOW (Ultra-Low Spec)**: "Rock-bottom" reliability mode using pure solid colors and zero gradients for ultra-low-spec hardware (<= 2GB RAM).
 
-#### Dynamic Micro-Benchmark Fallback
-If the WebGL parsing engine fails to identify a recognized GPU string (frequent with Safari's privacy anti-fingerprinting and Tor browsers), the engine does not default to the lowest tier blindly. It seamlessly executes a lightning-fast, non-blocking `requestAnimationFrame` canvas drawing test. By rendering 500 translucent geometric shapes with heavy drop shadows, the engine simulates CSS compositing pressure and measures the raw execution speed to assign a tailored "High", "Mid", or "Low" tier in under 50 milliseconds.
+#### Phase 3: The Sustained FPS Guard (Real-Time Safety Net)
+This is the "living" part of the engine. HPOE monitors the actual frame rate (FPS) during user interaction:
+- **Thermal Throttling Detection**: If the device begins to overheat or background processes cause the FPS to drop below **45 FPS** for 3 consecutive seconds, HPOE triggers an **Emergency Downgrade**.
+- **Real-Time UI Adaptation**: The engine gracefully strips heavy DOM elements and filters in real-time without requiring a page refresh, ensuring the user experience remains fluid regardless of environmental changes.
 
-#### Zero-Latency Profile Persistence
-Performing WebGL string extraction, executing RegExp parsing, and running canvas benchmarks cost compute baseline. Once the engine calculates a tier, it strictly commits this profile exclusively into `localStorage`. On all subsequent return visits or page navigations, the engine bypasses the entire hardware detection pipeline to instantly enforce the tailored UI tier, resulting in true zero-latency hydration.
-
-#### Live V-Sync Degradation & Throttling Persistence
-- Static parsing and initial benchmarks are inherently limited. Our lightweight `requestAnimationFrame` monitor continuously calculates precise framerate (FPS) measurements under continuous load. 
-- If a GPU lies about its performance capabilities or begins to passively overheat and thermal throttle (dropping below 45 FPS for 3 consecutive seconds), the engine triggers an automatic **Emergency Downgrade**. It gracefully kills the heavy overlapping DOM elements in real-time without needing to reload the DOM layout.
-- Crucially, this UI degradation immediately overwrites the `localStorage` key. If a user's phone struggles, we persist their downgraded profile locally, guaranteeing permanent protection against future UI freezing.
+#### Zero-Latency Execution
+HPOE is architected to be exceptionally lightweight, executing its full hardware scan and benchmark in under 50ms upon initialization. By bypassing caching, HPOE ensures that system changes (like entering Battery Saver mode or plugging in a high-res monitor) are respected immediately upon the next visit.
 
 ### Global Layouts & Error Boundaries
 

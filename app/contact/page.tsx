@@ -41,11 +41,11 @@ export default function ContactPage() {
   return (
     <>
       <SEOStructuredData type="LocalBusiness" />
-      <div className="pt-20 bg-white text-primary-dark min-h-screen">
+      <div className="pt-20 bg-white/95 text-primary-dark min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 sm:pt-6 sm:pb-10 md:pt-8 md:pb-12">
           <ContactHero />
 
-          <div className="mt-2">
+          <div className="mt-8 sm:mt-12 md:mt-16">
             <div className="grid md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 mb-8 sm:mb-10 md:mb-12">
               <ContactForm />
               <ContactInfo />

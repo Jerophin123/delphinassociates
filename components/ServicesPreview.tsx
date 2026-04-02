@@ -83,7 +83,7 @@ const ServiceCard = ({ service, index, tier, reducedMotion }: any) => {
         transformPerspective: 1000,
       }}
       style={{ willChange: "transform, opacity" }}
-      className={`group relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 overflow-hidden ${tier === 'high' ? 'liquid-glass-card-dark' : (tier === 'mid' ? 'backdrop-blur-sm bg-white/[0.03]' : 'bg-[#0a0a0a]')} border border-white/10 hover:border-accent/40 transition-[border-color,box-shadow,transform] duration-500 hover:shadow-2xl hover:shadow-accent/10 ${tier === 'high' ? '' : 'hover:-translate-y-2'}`}
+      className={`group relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 overflow-hidden ${tier === 'very-low' ? 'bg-black shadow-none scale-100 hover:scale-100' : (tier === 'high' ? 'liquid-glass-card-dark' : (tier === 'mid' ? 'backdrop-blur-sm bg-white/[0.03]' : 'bg-[#0a0a0a]'))} border border-white/10 hover:border-accent/40 transition-[border-color,box-shadow,transform] duration-500 hover:shadow-2xl hover:shadow-accent/10 ${tier === 'high' ? '' : (tier === 'very-low' ? '' : 'hover:-translate-y-2')}`}
     >
       {tier === 'high' && isHovered && !reducedMotion && (
         <div
@@ -106,7 +106,7 @@ const ServiceCard = ({ service, index, tier, reducedMotion }: any) => {
         </div>
       )}
 
-      {tier !== 'low' && (
+      {tier !== 'low' && tier !== 'very-low' && (
         <>
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-accent/10 via-transparent to-transparent pointer-events-none" style={{ transform: "translate3d(0,0,0)", willChange: "opacity" }} />
           <div className="absolute -right-12 -top-12 w-48 h-48 bg-accent/20 rounded-full blur-[40px] sm:blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ transform: "translate3d(0,0,0)", willChange: "opacity" }}></div>
@@ -114,7 +114,7 @@ const ServiceCard = ({ service, index, tier, reducedMotion }: any) => {
       )}
 
       <div className={`relative z-10 flex flex-col h-full transform-gpu ${tier === 'high' && isHovered && !reducedMotion ? 'translate-z-10' : ''}`}>
-        <div className={`mb-6 sm:mb-8 w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl ${tier === 'high' && !reducedMotion ? 'liquid-glass-card-dark' : `bg-gradient-to-br ${service.color}`} flex items-center justify-center shadow-lg shadow-black/50 group-hover:scale-110 transition-all duration-500 ease-out`}>
+        <div className={`mb-6 sm:mb-8 w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl ${tier === 'high' && !reducedMotion ? 'liquid-glass-card-dark' : (tier === 'very-low' ? 'bg-accent' : `bg-gradient-to-br ${service.color}`)} flex items-center justify-center shadow-lg shadow-black/50 group-hover:scale-110 transition-all duration-500 ease-out`}>
           <Icon className={`w-6 h-6 sm:w-8 sm:h-8 ${tier === 'high' && !reducedMotion ? 'text-white group-hover:text-accent' : 'text-black'} transition-colors duration-300`} />
         </div>
 
@@ -135,10 +135,10 @@ export default function ServicesPreview() {
   return (
     <section
       id="home-services-preview"
-      className="relative z-10 py-12 sm:py-20 md:py-28 bg-gradient-to-b from-primary-dark to-primary overflow-hidden border-y border-white/5"
+      className={`relative z-10 py-12 sm:py-20 md:py-28 ${tier === 'very-low' ? 'bg-primary-dark' : 'bg-gradient-to-b from-primary-dark/95 to-primary/95'} overflow-hidden border-y border-white/5`}
     >
       {/* Background decoration - dynamically optimized based on hardware */}
-      {tier !== 'low' && (
+      {tier !== 'low' && tier !== 'very-low' && (
         <>
           <div 
             className={`absolute top-0 left-0 w-[500px] h-[500px] bg-accent/10 rounded-full ${tier === 'mid' ? 'blur-[40px] sm:blur-[60px]' : 'blur-[60px] sm:blur-[120px]'} pointer-events-none`}
@@ -197,7 +197,7 @@ export default function ServicesPreview() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </span>
-            <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+            {tier !== 'very-low' && <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />}
           </Link>
         </motion.div>
       </div>

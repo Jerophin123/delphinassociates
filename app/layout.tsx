@@ -13,6 +13,7 @@ import FloatingChatbot from "@/components/FloatingChatbot";
 import ScrollToTop from "@/components/ScrollToTop";
 import { PerformanceProvider } from "@/components/PerformanceProvider";
 import CustomCursor from "@/components/ui/CustomCursor";
+import GlobalParticleNetwork from "@/components/GlobalParticleNetwork";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -186,6 +187,7 @@ export default function RootLayout({
           <Header />
           <main className="min-h-screen">{children}</main>
           <CustomCursor />
+          <GlobalParticleNetwork />
           <FloatingChatbot />
           <ScrollToTop />
           <Footer />

@@ -7,12 +7,17 @@ import { usePerformance } from "../PerformanceProvider";
 export default function ContactHero() {
   const { tier, reducedMotion } = usePerformance();
   return (
-    <div className="relative overflow-hidden rounded-[2.5rem] border border-gray-100 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.08)_0%,transparent_55%),linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(250,250,250,1)_100%)] shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-5 pt-8 pb-12 sm:px-12 sm:pt-14 sm:pb-20 xl:pt-16 xl:pb-24 mb-12 sm:mb-20 md:mb-24">
+    <div className={`relative overflow-hidden rounded-[2.5rem] border border-gray-100 ${tier === 'very-low' ? 'bg-white' : 'bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.08)_0%,transparent_55%),linear-gradient(180deg,rgba(255,255,255,0.95)_0%,rgba(250,250,250,0.95)_100%)]'} shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-5 pt-8 pb-12 sm:px-12 sm:pt-14 sm:pb-20 xl:pt-16 xl:pb-24 mb-12 sm:mb-20 md:mb-24`}>
       {/* Decorative dots pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
 
-      <div className="pointer-events-none absolute -top-32 -right-32 w-96 h-96 rounded-full bg-accent/5 blur-[100px]" />
-      <div className="pointer-events-none absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-accent/5 blur-[100px]" />
+      {/* Subtle glowing orbs */}
+      {tier !== 'very-low' && (
+        <>
+          <div className="pointer-events-none absolute -top-32 -right-32 w-96 h-96 rounded-full bg-accent/5 blur-[100px]" />
+          <div className="pointer-events-none absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-accent/5 blur-[100px]" />
+        </>
+      )}
 
       <div className="relative z-10 grid lg:grid-cols-[1fr_minmax(auto,400px)] gap-12 lg:gap-16 items-center max-w-6xl mx-auto">
         <div className="text-left">
@@ -75,7 +80,7 @@ export default function ContactHero() {
           transition={{ duration: 0.6, delay: 0.4, ease: [0.21, 0.47, 0.32, 0.98] }}
           className="grid gap-3 sm:gap-5 mt-6 sm:mt-0"
         >
-          <div className={`group relative rounded-2xl border border-gray-100 ${tier === 'low' ? 'bg-white/95' : 'bg-white/60 backdrop-blur-md'} p-4 sm:p-6 flex flex-col justify-center transition-transform hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(212,175,55,0.08)] hover:border-accent/20`}>
+          <div className={`group relative rounded-2xl border border-gray-100 ${tier === 'very-low' ? 'bg-white' : (tier === 'low' ? 'bg-white/95' : 'bg-white/60 backdrop-blur-md')} p-4 sm:p-6 flex flex-col justify-center transition-transform hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(212,175,55,0.08)] hover:border-accent/20`}>
             <div className="flex items-center gap-4 mb-2">
               <div className="bg-accent/10 w-10 sm:w-12 h-10 sm:h-12 rounded-xl flex items-center justify-center border border-accent/10">
                 <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-accent group-hover:text-yellow-600 transition-colors" />
@@ -85,7 +90,7 @@ export default function ContactHero() {
             <div className="text-[10px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">Quick call support</div>
           </div>
 
-          <div className={`group relative rounded-2xl border border-gray-100 ${tier === 'low' ? 'bg-white/95' : 'bg-white/60 backdrop-blur-md'} p-4 sm:p-6 flex flex-col justify-center transition-transform hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(212,175,55,0.08)] hover:border-accent/20`}>
+          <div className={`group relative rounded-2xl border border-gray-100 ${tier === 'very-low' ? 'bg-white' : (tier === 'low' ? 'bg-white/95' : 'bg-white/60 backdrop-blur-md')} p-4 sm:p-6 flex flex-col justify-center transition-transform hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(212,175,55,0.08)] hover:border-accent/20`}>
             <div className="flex items-center gap-4 mb-2">
               <div className="bg-accent/10 w-10 sm:w-12 h-10 sm:h-12 rounded-xl flex items-center justify-center border border-accent/10">
                 <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-accent group-hover:text-yellow-600 transition-colors" />

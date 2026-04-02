@@ -11,6 +11,7 @@ import {
   CheckCircle,
   ArrowRight,
 } from "lucide-react";
+import { usePerformance } from "../PerformanceProvider";
 
 const services = [
   {
@@ -64,6 +65,7 @@ const services = [
 ];
 
 export default function ServicesList() {
+  const { tier } = usePerformance();
   return (
     <div className="grid md:grid-cols-2 gap-6 sm:gap-10">
       {services.map((service, index) => {
@@ -80,18 +82,20 @@ export default function ServicesList() {
               delay: index * 0.1,
               ease: [0.21, 0.47, 0.32, 0.98]
             }}
-            className="group relative bg-white liquid-glass-card rounded-[2.5rem] overflow-hidden border border-gray-200 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 will-change-transform hover:-translate-y-2 flex flex-col h-full hover:border-gray-300"
+            className={`group relative ${tier === 'very-low' ? 'bg-white shadow-none hover:translate-y-0' : 'bg-white/95 liquid-glass-card'} rounded-[2.5rem] overflow-hidden border border-gray-200 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 will-change-transform hover:-translate-y-2 flex flex-col h-full hover:border-gray-300`}
           >
             {/* Soft Hover Overlay Effect */}
-            <div className="absolute inset-0 bg-gradient-to-br from-accent/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            {tier !== 'very-low' && <div className="absolute inset-0 bg-gradient-to-br from-accent/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />}
 
             {/* Gradient Header Section */}
-            <div className={`relative h-24 sm:h-40 bg-gray-50/50 border-b border-gray-100 p-5 sm:p-8 flex items-center justify-center overflow-hidden group-hover:bg-accent/5 transition-colors duration-500`}>
+            <div className={`relative h-24 sm:h-40 ${tier === 'very-low' ? 'bg-gray-50' : 'bg-gray-50/50'} border-b border-gray-100 p-5 sm:p-8 flex items-center justify-center overflow-hidden ${tier === 'very-low' ? '' : 'group-hover:bg-accent/5'} transition-colors duration-500`}>
               {/* Subtle pattern */}
-              <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: `radial-gradient(circle at 1px 1px, black 1px, transparent 0)`, backgroundSize: '24px 24px' }} />
+              {tier !== 'very-low' && (
+                <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: `radial-gradient(circle at 1px 1px, black 1px, transparent 0)`, backgroundSize: '24px 24px' }} />
+              )}
               
               {/* Icon Container */}
-              <div className="relative z-10 w-14 h-14 sm:w-20 sm:h-20 bg-white border border-gray-100/60 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] group-hover:shadow-[0_8px_30px_rgba(212,175,55,0.15)] group-hover:scale-110 transition-all duration-500">
+              <div className={`relative z-10 w-14 h-14 sm:w-20 sm:h-20 bg-white border border-gray-100/60 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] ${tier === 'very-low' ? '' : 'group-hover:shadow-[0_8px_30px_rgba(212,175,55,0.15)] group-hover:scale-110'} transition-all duration-500`}>
                 <Icon className="w-6 h-6 sm:w-10 sm:h-10 text-gray-700 group-hover:text-accent transition-colors duration-500" />
               </div>
             </div>
@@ -124,10 +128,10 @@ export default function ServicesList() {
               <div>
                 <Link
                   href="/contact"
-                  className="group/btn inline-flex items-center justify-center w-full px-5 py-3 sm:px-6 sm:py-4 bg-gray-50 hover:bg-accent border border-gray-100 rounded-xl font-bold text-sm sm:text-base text-gray-700 hover:text-black transition-all duration-300 shadow-sm hover:shadow-[0_8px_30px_rgba(212,175,55,0.25)]"
+                  className={`group/btn inline-flex items-center justify-center w-full px-5 py-3 sm:px-6 sm:py-4 ${tier === 'very-low' ? 'bg-white' : 'bg-gray-50 hover:bg-accent'} border border-gray-100 rounded-xl font-bold text-sm sm:text-base text-gray-700 hover:text-black transition-all duration-300 shadow-sm ${tier === 'very-low' ? '' : 'hover:shadow-[0_8px_30px_rgba(212,175,55,0.25)]'}`}
                 >
                   <span>Discuss This Service</span>
-                  <div className="ml-2 group-hover/btn:translate-x-1.5 transition-transform duration-300">
+                  <div className={`ml-2 ${tier === 'very-low' ? '' : 'group-hover/btn:translate-x-1.5'} transition-transform duration-300`}>
                     <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
                 </Link>

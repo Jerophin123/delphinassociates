@@ -5,7 +5,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 
-export type PerformanceTier = "high" | "mid" | "low";
+export type PerformanceTier = "high" | "mid" | "low" | "very-low";
 
 interface HardwareSpecs {
   vendor: string;
@@ -263,7 +263,9 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
       // Hard limits and Accessibility Overrides
       if (prefersReducedMotion) {
         calculatedTier = "low";
-      } else if (coreCount <= 2 || memory <= 2) {
+      } else if (coreCount <= 2 && memory <= 2) {
+        calculatedTier = "very-low";
+      } else if (coreCount <= 4 || memory <= 4) {
         calculatedTier = "low";
       }
       
@@ -274,7 +276,7 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
       }
 
       // Developer/Testing Override via URL parameter e.g., ?forceTier=high
-      const matchTier = window.location.search.match(/[?&]forceTier=(high|mid|low)/);
+      const matchTier = window.location.search.match(/[?&]forceTier=(high|mid|low|very-low)/);
       if (matchTier) {
         calculatedTier = matchTier[1] as PerformanceTier;
         console.info(`[Hardware Profiler] Tier forcefully overridden to: ${calculatedTier}`);
@@ -314,15 +316,21 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
                sustainedDropTicks = Math.max(0, sustainedDropTicks - 1);
             }
 
-            // 3 consecutive seconds of < 45 FPS triggers an emergency downgrade
-            if (sustainedDropTicks >= 3) {
-              const downgradeTarget = currentTierRef.current === "high" ? "mid" : "low";
+            const disableDowngrade = window.location.search.includes("disableDowngrade=true");
+
+            // 3 consecutive seconds of < 45 FPS triggers an emergency downgrade (unless disabled)
+            if (sustainedDropTicks >= 3 && !disableDowngrade) {
+              let downgradeTarget: PerformanceTier = "low";
+              if (currentTierRef.current === "high") downgradeTarget = "mid";
+              else if (currentTierRef.current === "mid") downgradeTarget = "low";
+              else if (currentTierRef.current === "low") downgradeTarget = "very-low";
+
               console.warn(`[Hardware Profiler] Thermal Throttling / Resource Limit Detected (${fps} FPS). Emergency Downgrading to Tier: ${downgradeTarget}.`);
               
               currentTierRef.current = downgradeTarget;
               setMetrics(prev => ({ ...prev, tier: downgradeTarget }));
               
-              if (downgradeTarget === "low") {
+              if (downgradeTarget === "very-low") {
                 cancelAnimationFrame(animationFrameId);
                 return; // Reached rock bottom, stop measuring
               }

@@ -81,7 +81,7 @@ export default function ProjectGallery() {
   return (
     <div>
       <div className="mb-8 sm:mb-10 md:mb-12">
-        <div className="rounded-[2.5rem] border border-gray-100 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-3 py-4 sm:px-6 sm:py-6">
+        <div className={`rounded-[2.5rem] border border-gray-100 ${tier === 'very-low' ? 'bg-white' : 'bg-white/95'} shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-3 py-4 sm:px-6 sm:py-6`}>
           <div className="grid gap-3 lg:gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -130,13 +130,13 @@ export default function ProjectGallery() {
                 return (
                   <motion.button
                     key={category.name}
-                    initial={{ opacity: 0, y: -10 }}
+                    initial={tier === 'very-low' ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.25, delay: index * 0.02 }}
                     onClick={() => setSelectedCategory(category.name)}
                     className={`group relative px-4 sm:px-5 py-1.5 sm:py-2 rounded-2xl font-semibold text-xs sm:text-sm transition-all duration-300 flex items-center gap-2 ${
                       isActive
-                        ? `bg-gradient-to-r ${category.gradient} text-white shadow-lg shadow-accent/25 scale-105`
+                        ? `${tier === 'very-low' ? 'bg-accent text-black' : `bg-gradient-to-r ${category.gradient} text-white`} shadow-lg shadow-accent/25 scale-105`
                         : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-gray-300 shadow-sm"
                     }`}
                     whileHover={{ scale: 1.03 }}
@@ -204,7 +204,7 @@ export default function ProjectGallery() {
                 >
                   <Link
                     href={`/projects/${project.id}`}
-                    className="group block h-full rounded-[2.5rem] bg-white liquid-glass-card border border-gray-200 overflow-hidden shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] hover:-translate-y-2 hover:border-gray-300 transition-all duration-500 will-change-transform focus:outline-none focus:ring-2 focus:ring-accent/40"
+                    className={`group block h-full rounded-[2.5rem] ${tier === 'very-low' ? 'bg-white' : 'bg-white/95 liquid-glass-card'} border border-gray-200 overflow-hidden shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] hover:-translate-y-2 hover:border-gray-300 transition-all duration-500 will-change-transform focus:outline-none focus:ring-2 focus:ring-accent/40`}
                   >
                     <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
                       {project.image ? (
@@ -217,20 +217,22 @@ export default function ProjectGallery() {
                           priority={index === 0}
                         />
                       ) : (
-                        <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-primary/10" />
+                        <div className={`absolute inset-0 ${tier === 'very-low' ? 'bg-gray-200' : 'bg-gradient-to-br from-accent/20 to-primary/10'}`} />
                       )}
 
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/0 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+                      {tier !== 'very-low' && (
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/0 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+                      )}
 
                       <div className="absolute top-4 left-4 z-10">
-                        <span className={`inline-flex items-center gap-2 px-2.5 sm:px-3 py-1 rounded-full ${tier === 'low' ? 'bg-white' : 'bg-white/90 backdrop-blur'} border border-gray-200 text-[10px] sm:text-xs font-semibold text-gray-900`}>
+                        <span className={`inline-flex items-center gap-2 px-2.5 sm:px-3 py-1 rounded-full ${tier === 'very-low' || tier === 'low' ? 'bg-white' : 'bg-white/90 backdrop-blur'} border border-gray-200 text-[10px] sm:text-xs font-semibold text-gray-900`}>
                           <CategoryIcon className="w-3 h-3 sm:w-4 sm:h-4 text-accent" />
                           {project.category}
                         </span>
                       </div>
 
                       <div className="absolute top-4 right-4 z-10">
-                        <span className={`inline-flex items-center px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full ${tier === 'low' ? 'bg-white' : 'bg-white/90 backdrop-blur'} border border-gray-200 text-[10px] sm:text-xs font-semibold text-gray-900`}>
+                        <span className={`inline-flex items-center px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full ${tier === 'very-low' || tier === 'low' ? 'bg-white' : 'bg-white/90 backdrop-blur'} border border-gray-200 text-[10px] sm:text-xs font-semibold text-gray-900`}>
                           <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-accent mr-1" />
                           {project.year ?? "—"}
                         </span>

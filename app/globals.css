@@ -176,6 +176,35 @@ body::-webkit-scrollbar {
     border: 1px solid rgba(255, 255, 255, 0.4) !important;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
   }
+
+  /* PREMIUM TEXT SHINE & GLOW - FOR HIGH TIER HARDWARE */
+  @keyframes text-gradient-flow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes text-glow-pulse {
+    0%, 100% { 
+      filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.45));
+    }
+    50% { 
+      filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.75));
+    }
+  }
+
+  .hero-text-premium {
+    position: relative;
+    background-size: 300% 300% !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    animation: text-gradient-flow 8s ease infinite !important;
+    will-change: background-position, filter;
+  }
+
+  .hero-text-premium-glow {
+    animation: text-glow-pulse 4s ease-in-out infinite !important;
+  }
 }
 
 .youtube-bg {

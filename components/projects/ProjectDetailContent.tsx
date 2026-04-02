@@ -66,7 +66,7 @@ export default function ProjectDetailContent({
   project,
   detail,
 }: ProjectDetailContentProps) {
-  const { tier } = usePerformance();
+  const { tier, reducedMotion } = usePerformance();
   return (
     <motion.div
       variants={containerVariants}
@@ -75,10 +75,10 @@ export default function ProjectDetailContent({
       className="mt-4 sm:mt-8 md:mt-10 grid lg:grid-cols-[1fr_1fr] gap-5 sm:gap-8 md:gap-10 items-start"
     >
       <motion.div variants={itemVariants} className="w-full">
-        <div className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-gray-100 bg-gradient-to-br from-gray-50 to-white shadow-sm">
+        <div className={`relative w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-gray-100 ${tier === 'very-low' ? 'bg-white shadow-none' : 'bg-gradient-to-br from-gray-50 to-white shadow-sm'}`}>
           {project.image ? (
             <motion.div
-              initial={{ scale: 0.98, opacity: 0 }}
+              initial={reducedMotion ? { scale: 1, opacity: 1 } : { scale: 0.98, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
@@ -94,7 +94,7 @@ export default function ProjectDetailContent({
             </motion.div>
           ) : (
             <motion.div
-              className="flex aspect-[4/3] items-center justify-center bg-gradient-to-br from-accent/20 to-primary/10 text-7xl text-white/70"
+              className={`flex aspect-[4/3] items-center justify-center ${tier === 'very-low' ? 'bg-gray-100' : 'bg-gradient-to-br from-accent/20 to-primary/10'} text-7xl text-white/70`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
@@ -109,12 +109,14 @@ export default function ProjectDetailContent({
           )}
 
           {/* Subtle readability gradient (helps on busy images) */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/18 via-black/0 to-transparent" />
+          {tier !== 'very-low' && (
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/18 via-black/0 to-transparent" />
+          )}
         </div>
       </motion.div>
 
       <motion.div variants={itemVariants} className="w-full">
-        <div className={`rounded-2xl sm:rounded-3xl border border-gray-100 ${tier === 'low' ? 'bg-white/95' : 'bg-white/80 backdrop-blur-sm'} shadow-sm p-4 sm:p-7`}>
+        <div className={`rounded-2xl sm:rounded-3xl border border-gray-100 ${tier === 'very-low' ? 'bg-white shadow-none' : (tier === 'low' ? 'bg-white/95' : 'bg-white/80 backdrop-blur-sm')} shadow-sm p-4 sm:p-7`}>
           <span className="inline-flex rounded-full bg-accent/10 px-2 sm:px-4 py-0.5 sm:py-1 text-[10px] sm:text-sm font-semibold text-accent items-center gap-1.5 w-fit">
             {(() => {
               const CategoryIcon = getCategoryIcon(project.category);
