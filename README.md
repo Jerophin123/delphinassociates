@@ -1,7 +1,7 @@
 <div align="center">
   <img src="public/logo.jpg" alt="Delphin Associates Logo" width="250" />
 
-  # Delphin Associates - Enterprise Web Application
+  # Delphin Associates - Enterprise Commercial Website
   
   **"You Dream We Build. Building Trust Through Quality Since 1999."**
 
