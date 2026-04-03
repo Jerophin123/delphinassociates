@@ -33,12 +33,21 @@ export default function GeometricParticleField({
     if (canvasRef.current) {
       context.current = canvasRef.current.getContext("2d");
     }
+    
+    let animationFrameId: number;
+    
+    const renderLoop = () => {
+      animate();
+      animationFrameId = requestAnimationFrame(renderLoop);
+    };
+    
     initCanvas();
-    animate();
+    animationFrameId = requestAnimationFrame(renderLoop);
     window.addEventListener("resize", initCanvas);
 
     return () => {
       window.removeEventListener("resize", initCanvas);
+      cancelAnimationFrame(animationFrameId);
     };
   }, [tier]);
 
@@ -196,14 +205,12 @@ export default function GeometricParticleField({
 
         drawCircle(circle, true);
 
-        // Draw connections for high and mid tiers
+        // Draw connections only for high tier
         const isHigh = tier === "high";
-        const isMid = tier === "mid";
         
-        if (isHigh || isMid) {
-          // Increase distance and opacity significantly for high tier to make links cleanly visible
-          const maxDistance = isHigh ? 220 : 80;
-          const lineOpacityFactor = isHigh ? 0.5 : 0.08;
+        if (isHigh) {
+          const maxDistance = 220;
+          const lineOpacityFactor = 0.5;
 
           for (let j = i + 1; j < circles.current.length; j++) {
             const other = circles.current[j];
@@ -216,17 +223,13 @@ export default function GeometricParticleField({
               context.current!.moveTo(circle.x + circle.translateX, circle.y + circle.translateY);
               context.current!.lineTo(other.x + other.translateX, other.y + other.translateY);
               const opacity = (1 - distance / maxDistance) * lineOpacityFactor * circle.alpha;
-              context.current!.strokeStyle = `${color}${Math.floor(opacity * 255)
-                .toString(16)
-                .padStart(2, "0")}`;
-              // Make line thicker for high tier
-              context.current!.lineWidth = isHigh ? 1.2 : 0.4;
+              context.current!.strokeStyle = `${color}${Math.floor(opacity * 255).toString(16).padStart(2, "0")}`;
+              context.current!.lineWidth = 1.2;
               context.current!.stroke();
             }
           }
         }
       });
-      requestAnimationFrame(animate);
     }
   };
 

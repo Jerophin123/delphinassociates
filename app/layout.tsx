@@ -30,15 +30,19 @@ const montserrat = Montserrat({
 
 // Get base URL safely
 const getBaseUrl = () => {
-  if (process.env.NEXT_PUBLIC_SITE_URL) {
-    return new URL(process.env.NEXT_PUBLIC_SITE_URL);
-  }
-  if (process.env.VERCEL_URL) {
-    const vercelHost = process.env.VERCEL_URL;
-    // Never use vercel.app hosts as canonical; fall back to production domain
-    if (!/vercel\.app$/i.test(vercelHost)) {
-      return new URL(`https://${vercelHost}`);
+  try {
+    if (process.env.NEXT_PUBLIC_SITE_URL) {
+      return new URL(process.env.NEXT_PUBLIC_SITE_URL);
     }
+    if (process.env.VERCEL_URL) {
+      const vercelHost = process.env.VERCEL_URL;
+      // Never use vercel.app hosts as canonical; fall back to production domain
+      if (!/vercel\.app$/i.test(vercelHost)) {
+        return new URL(`https://${vercelHost}`);
+      }
+    }
+  } catch (error) {
+    console.error("[Config Error] Invalid NEXT_PUBLIC_SITE_URL or VERCEL_URL fallback triggered.", error);
   }
   return new URL("https://www.delphinassociates.com");
 };
@@ -179,6 +183,11 @@ export default function RootLayout({
                 })(window, document, "clarity", "script", "u4ed5jx0fg");
               `,
             }}
+          />
+          <Script
+            id="device-detector-script"
+            src="https://cdn.jsdelivr.net/npm/device-detector-js@2.2.10/dist/device-detector.min.js"
+            strategy="afterInteractive"
           />
           <Suspense fallback={null}>
             <GA />

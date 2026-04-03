@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Building2, Factory, School, Church, Wrench, CheckCircle, ArrowRight } from "lucide-react";
 import { usePerformance } from "@/components/PerformanceProvider";
+import GeometricParticleField from "@/components/ui/GeometricParticleField";
 
 const services = [
   {
@@ -83,7 +84,7 @@ const ServiceCard = ({ service, index, tier, reducedMotion }: any) => {
         transformPerspective: 1000,
       }}
       style={{ willChange: "transform, opacity" }}
-      className={`group relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 overflow-hidden ${tier === 'very-low' ? 'bg-black shadow-none scale-100 hover:scale-100' : (tier === 'high' ? 'liquid-glass-card-dark' : (tier === 'mid' ? 'backdrop-blur-sm bg-white/[0.03]' : 'bg-[#0a0a0a]'))} border border-white/10 hover:border-accent/40 transition-[border-color,box-shadow,transform] duration-500 hover:shadow-2xl hover:shadow-accent/10 ${tier === 'high' ? '' : (tier === 'very-low' ? '' : 'hover:-translate-y-2')}`}
+      className={`group relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 overflow-hidden ${tier === 'very-low' ? 'bg-black shadow-none scale-100 hover:scale-100' : (tier === 'high' ? 'liquid-glass-card-dark' : (tier === 'mid' ? 'bg-white/[0.05]' : 'bg-[#0a0a0a]'))} border border-white/10 hover:border-accent/40 transition-[border-color,box-shadow,transform] duration-500 hover:shadow-2xl hover:shadow-accent/10 ${tier === 'high' ? '' : (tier === 'very-low' ? '' : 'hover:-translate-y-2')}`}
     >
       {tier === 'high' && isHovered && !reducedMotion && (
         <div
@@ -141,14 +142,25 @@ export default function ServicesPreview() {
       {tier !== 'low' && tier !== 'very-low' && (
         <>
           <div 
-            className={`absolute top-0 left-0 w-[500px] h-[500px] bg-accent/10 rounded-full ${tier === 'mid' ? 'blur-[40px] sm:blur-[60px]' : 'blur-[60px] sm:blur-[120px]'} pointer-events-none`}
+            className={`absolute top-0 left-0 w-[500px] h-[500px] bg-accent/10 rounded-full ${tier === 'mid' ? 'blur-[30px] sm:blur-[40px]' : 'blur-[60px] sm:blur-[120px]'} pointer-events-none`}
             style={{ transform: "translate3d(-25%, -50%, 0)", willChange: "transform" }}
           ></div>
           <div 
-            className={`absolute bottom-0 right-0 w-[400px] h-[400px] bg-accent-light/5 rounded-full ${tier === 'mid' ? 'blur-[40px] sm:blur-[60px]' : 'blur-[50px] sm:blur-[100px]'} pointer-events-none`}
+            className={`absolute bottom-0 right-0 w-[400px] h-[400px] bg-accent-light/5 rounded-full ${tier === 'mid' ? 'blur-[30px] sm:blur-[40px]' : 'blur-[50px] sm:blur-[100px]'} pointer-events-none`}
             style={{ transform: "translate3d(25%, 33%, 0)", willChange: "transform" }}
           ></div>
         </>
+      )}
+
+      {/* Structural Network Particle Field - High Tier */}
+      {tier === 'high' && !reducedMotion && (
+        <GeometricParticleField 
+          quantity={70} 
+          color="#D4AF37"
+          className="z-[1]"
+          staticity={50}
+          ease={40}
+        />
       )}
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

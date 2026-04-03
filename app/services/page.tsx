@@ -41,7 +41,7 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   return (
-    <div className="pt-20 bg-white/95 text-primary-dark pb-16 sm:pb-20 md:pb-24">
+    <div className="pt-20 bg-white/95 text-primary-dark pb-16 sm:pb-20 md:pb-24 relative z-10">
       <ServicesHero />
 
       {/* Services List Section */}

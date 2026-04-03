@@ -8,7 +8,6 @@ import { usePerformance } from "./PerformanceProvider";
 import SpotlightCard from "./ui/SpotlightCard";
 import Tilt3DContainer from "./ui/Tilt3DContainer";
 
-// Helper function to get icon for category
 const getCategoryIcon = (category: string) => {
   const categoryIcons: Record<string, typeof Church> = {
     Church,
@@ -52,6 +51,8 @@ const featuredProjects = [
 
 export default function ProjectHighlights() {
   const { tier, reducedMotion } = usePerformance();
+  const isHigh = tier === 'high' && !reducedMotion;
+
   return (
     <section
       id="home-project-highlights"
@@ -96,87 +97,82 @@ export default function ProjectHighlights() {
               }}
               className="group relative will-change-transform h-full"
             >
-              <Tilt3DContainer maxRotation={12} className="h-full w-full">
-                <SpotlightCard className={`rounded-3xl sm:rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-2 flex flex-col h-full ${tier === 'very-low' ? 'bg-white' : (tier === 'high' && !reducedMotion ? 'liquid-glass-card-light' : 'bg-white border border-gray-100')}`}>
-                  {/* Image Container */}
-              <div className="relative h-56 sm:h-72 w-full overflow-hidden bg-gray-100 flex-shrink-0">
-                  {project.image ? (
-                  <Image
-                    src={project.image}
-                    alt={`${project.title} - ${project.category} construction project by Delphin Associates in ${project.location}`}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    priority={index === 0}
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200"></div>
-                )}
-                
-                {/* Fallback emoji if no image */}
-                {!project.image && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-8xl opacity-20 group-hover:opacity-30 group-hover:scale-110 transition-all duration-500">🏗️</div>
-                  </div>
-                )}
-                
-                {/* Subtle gradient overlay to make image vibrant */}
-                {tier !== 'very-low' && (
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                )}
-                
-                {/* Category Badge */}
-                <div className="absolute top-5 left-5 z-10 transition-transform duration-500 group-hover:translate-y-1">
-                  <div className={`${tier === 'very-low' ? 'bg-white' : (tier === 'low' ? 'bg-white' : 'backdrop-blur-md bg-white/95')} shadow-[0_4px_12px_rgb(0,0,0,0.1)] border border-white/20 px-4 py-2 rounded-full flex items-center gap-2 group-hover:bg-accent group-hover:border-accent transition-colors duration-300`}>
-                    {(() => {
-                      const CategoryIcon = getCategoryIcon(project.category);
-                      return <CategoryIcon className="w-4 h-4 text-accent group-hover:text-white transition-colors" />;
-                    })()}
-                    <span className="text-xs font-bold uppercase tracking-wider text-gray-900 group-hover:text-white transition-colors">{project.category}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-5 sm:p-8 flex flex-col flex-grow">
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-5 group-hover:text-accent transition-colors duration-300 leading-tight">
-                  {project.title}
-                </h3>
-                
-                <div className="space-y-4 mb-6">
-                  <div className="flex items-center text-gray-500 text-sm font-medium">
-                    <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-accent/10 group-hover:text-accent transition-colors shrink-0">
-                      <MapPin className="w-4 h-4 text-gray-400 group-hover:text-accent transition-colors" />
+              <Tilt3DContainer maxRotation={6} className="h-full w-full">
+                <SpotlightCard className={`rounded-3xl sm:rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 flex flex-col h-full ${tier === 'very-low' ? 'bg-white' : (isHigh ? 'liquid-glass-card-light premium-border-glow' : 'bg-white border border-gray-100 hover:-translate-y-2')}`}>
+                  <div className="relative h-56 sm:h-72 w-full overflow-hidden bg-gray-100 flex-shrink-0">
+                    {project.image ? (
+                      <Image
+                        src={project.image}
+                        alt={`${project.title} - ${project.category} construction project by Delphin Associates in ${project.location}`}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        priority={index === 0}
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200"></div>
+                    )}
+                    
+                    {!project.image && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-8xl opacity-20 group-hover:opacity-30 group-hover:scale-110 transition-all duration-500">🏗️</div>
+                      </div>
+                    )}
+                    
+                    {tier !== 'very-low' && (
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                    )}
+                    
+                    <div className="absolute top-5 left-5 z-10 transition-transform duration-500 group-hover:translate-y-1">
+                      <div className={`${tier === 'very-low' ? 'bg-white' : (tier === 'low' ? 'bg-white' : 'backdrop-blur-md bg-white/95')} shadow-[0_4px_12px_rgb(0,0,0,0.1)] border border-white/20 px-4 py-2 rounded-full flex items-center gap-2 group-hover:bg-accent group-hover:border-accent transition-colors duration-300`}>
+                        {(() => {
+                          const CategoryIcon = getCategoryIcon(project.category);
+                          return <CategoryIcon className="w-4 h-4 text-accent group-hover:text-white transition-colors" />;
+                        })()}
+                        <span className="text-xs font-bold uppercase tracking-wider text-gray-900 group-hover:text-white transition-colors">{project.category}</span>
+                      </div>
                     </div>
-                    <span className="break-words line-clamp-1">{project.location}</span>
                   </div>
-                  <div className="flex items-center text-gray-500 text-sm font-medium">
-                    <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-accent/10 group-hover:text-accent transition-colors shrink-0">
-                      <Calendar className="w-4 h-4 text-gray-400 group-hover:text-accent transition-colors" />
+
+                  <div className="p-5 sm:p-8 flex flex-col flex-grow relative z-10">
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-5 group-hover:text-accent transition-colors duration-300 leading-tight">
+                      {project.title}
+                    </h3>
+                    
+                    <div className="space-y-4 mb-6">
+                      <div className="flex items-center text-gray-500 text-sm font-medium">
+                        <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-accent/10 group-hover:text-accent transition-colors shrink-0">
+                          <MapPin className="w-4 h-4 text-gray-400 group-hover:text-accent transition-colors" />
+                        </div>
+                        <span className="break-words line-clamp-1 font-light">{project.location}</span>
+                      </div>
+                      <div className="flex items-center text-gray-500 text-sm font-medium">
+                        <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-accent/10 group-hover:text-accent transition-colors shrink-0">
+                          <Calendar className="w-4 h-4 text-gray-400 group-hover:text-accent transition-colors" />
+                        </div>
+                        <span className="font-light">{project.year}</span>
+                      </div>
                     </div>
-                    <span>{project.year}</span>
+
+                    <p className="text-sm sm:text-base text-gray-500 mb-6 sm:mb-8 leading-relaxed font-light flex-grow">
+                      {project.description}
+                    </p>
+
+                    <div className="mt-auto">
+                      <Link
+                        href={`/projects#project-${project.id}`}
+                        className="inline-flex items-center gap-3 text-primary-dark font-semibold text-sm group/link hover:text-accent transition-colors duration-300 uppercase tracking-widest mt-auto w-fit"
+                      >
+                        <span className="relative">
+                          View Project
+                          <span className="absolute left-0 -bottom-1 w-full h-[2px] bg-accent scale-x-0 group-hover/link:scale-x-100 transition-transform origin-left duration-300 ease-out"></span>
+                        </span>
+                        <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover/link:bg-accent group-hover/link:text-white transition-all duration-300 group-hover/link:translate-x-1">
+                          <ArrowRight className="w-4 h-4" />
+                        </div>
+                      </Link>
+                    </div>
                   </div>
-                </div>
-
-                <p className="text-sm sm:text-base text-gray-500 mb-6 sm:mb-8 leading-relaxed font-light flex-grow">
-                  {project.description}
-                </p>
-
-                <div className="mt-auto">
-                  <Link
-                    href={`/projects#project-${project.id}`}
-                    className="inline-flex items-center gap-3 text-primary-dark font-semibold text-sm group/link hover:text-accent transition-colors duration-300 uppercase tracking-widest mt-auto w-fit"
-                  >
-                    <span className="relative">
-                      View Project
-                      <span className="absolute left-0 -bottom-1 w-full h-[2px] bg-accent scale-x-0 group-hover/link:scale-x-100 transition-transform origin-left duration-300 ease-out"></span>
-                    </span>
-                    <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover/link:bg-accent group-hover/link:text-white transition-all duration-300 group-hover/link:translate-x-1">
-                      <ArrowRight className="w-4 h-4" />
-                    </div>
-                  </Link>
-                </div>
-              </div>
                 </SpotlightCard>
               </Tilt3DContainer>
             </motion.div>
@@ -192,7 +188,7 @@ export default function ProjectHighlights() {
         >
           <Link
             href="/projects"
-            className={`group inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-black transition-all duration-300 bg-accent rounded-xl hover:bg-accent-light hover:shadow-xl hover:shadow-accent/20 ${tier === 'high' && !reducedMotion ? 'liquid-glass-btn-accent-invert' : ''}`}
+            className={`group inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-black transition-all duration-300 bg-accent rounded-xl hover:bg-accent-light hover:shadow-xl hover:shadow-accent/20 ${isHigh ? 'liquid-glass-btn-accent-invert' : ''}`}
           >
             <span className="flex items-center gap-2">
               Explore All Projects

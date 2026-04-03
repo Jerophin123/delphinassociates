@@ -43,10 +43,14 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
     hardwareSpecs: null,
     isInitialized: false,
   });
+  
+  const [isMounted, setIsMounted] = useState(false);
 
   const currentTierRef = useRef<PerformanceTier>("high");
 
   useEffect(() => {
+    setIsMounted(true);
+    
     try {
       const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const coreCount = navigator.hardwareConcurrency || 4;
@@ -265,8 +269,13 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
         calculatedTier = "low";
       } else if (coreCount <= 2 && memory <= 2) {
         calculatedTier = "very-low";
-      } else if (coreCount <= 4 || memory <= 4) {
+      } else if (coreCount <= 2 || memory <= 2) {
+        // Only demote on extremely constrained hardware (2 cores OR 2GB).
+        // 4-core / 4GB machines with capable integrated GPUs (Iris Xe, etc.) stay at their GPU-classified tier.
         calculatedTier = "low";
+      } else if (memory <= 4 && calculatedTier === "high") {
+        // 4GB memory can't sustain high-tier backdrop-blur stacks; cap at mid
+        calculatedTier = "mid";
       }
       
       // Absolute fail-safe: Mobile devices NEVER get "High" tier effects
@@ -298,43 +307,54 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
 
       // ---------------------------------------------------------
       // LIVE V-SYNC DEGRADATION MONITOR (FPS SAFETY NET)
+      // Tuned to avoid false-positive downgrades on mid-tier hardware
       // ---------------------------------------------------------
-      if (calculatedTier !== "low" && !prefersReducedMotion) {
+      if (calculatedTier !== "low" && calculatedTier !== "very-low" && !prefersReducedMotion) {
         let frameCount = 0;
         let lastTime = performance.now();
+        const startTime = performance.now();
         let animationFrameId: number;
         let sustainedDropTicks = 0;
 
+        // Adaptive thresholds: mid-tier naturally runs 40-55 FPS; only react to genuine sustained drops
+        const fpsFloor = calculatedTier === "high" ? 45 : 38;
+        const requiredDropTicks = calculatedTier === "high" ? 4 : 6; // mid gets more grace
+        const gracePeriodMs = 3000; // Ignore first 3 seconds (page-load jank)
+
         const measureFPS = (currentTime: number) => {
           frameCount++;
-          if (currentTime - lastTime >= 1000) { 
+          if (currentTime - lastTime >= 1000) {
             const fps = frameCount;
-            // A perfect scrolling state is 60fps. < 45fps means visible stutter.
-            if (fps < 45) {
-               sustainedDropTicks++;
-            } else {
-               sustainedDropTicks = Math.max(0, sustainedDropTicks - 1);
-            }
+            const elapsed = currentTime - startTime;
 
-            const disableDowngrade = window.location.search.includes("disableDowngrade=true");
-
-            // 3 consecutive seconds of < 45 FPS triggers an emergency downgrade (unless disabled)
-            if (sustainedDropTicks >= 3 && !disableDowngrade) {
-              let downgradeTarget: PerformanceTier = "low";
-              if (currentTierRef.current === "high") downgradeTarget = "mid";
-              else if (currentTierRef.current === "mid") downgradeTarget = "low";
-              else if (currentTierRef.current === "low") downgradeTarget = "very-low";
-
-              console.warn(`[Hardware Profiler] Thermal Throttling / Resource Limit Detected (${fps} FPS). Emergency Downgrading to Tier: ${downgradeTarget}.`);
-              
-              currentTierRef.current = downgradeTarget;
-              setMetrics(prev => ({ ...prev, tier: downgradeTarget }));
-              
-              if (downgradeTarget === "very-low") {
-                cancelAnimationFrame(animationFrameId);
-                return; // Reached rock bottom, stop measuring
+            // Skip measurement during grace period (page-load hydration causes natural jank)
+            if (elapsed > gracePeriodMs) {
+              if (fps < fpsFloor) {
+                sustainedDropTicks++;
+              } else {
+                // Recover faster than we degrade — 2 good seconds erases 1 bad second
+                sustainedDropTicks = Math.max(0, sustainedDropTicks - 2);
               }
-              sustainedDropTicks = 0; // reset for next tick
+
+              const disableDowngrade = window.location.search.includes("disableDowngrade=true");
+
+              if (sustainedDropTicks >= requiredDropTicks && !disableDowngrade) {
+                let downgradeTarget: PerformanceTier = "low";
+                if (currentTierRef.current === "high") downgradeTarget = "mid";
+                else if (currentTierRef.current === "mid") downgradeTarget = "low";
+                else if (currentTierRef.current === "low") downgradeTarget = "very-low";
+
+                console.warn(`[Hardware Profiler] Thermal Throttling / Resource Limit Detected (${fps} FPS, floor ${fpsFloor}, ${sustainedDropTicks}/${requiredDropTicks} ticks). Emergency Downgrading to Tier: ${downgradeTarget}.`);
+
+                currentTierRef.current = downgradeTarget;
+                setMetrics(prev => ({ ...prev, tier: downgradeTarget }));
+
+                if (downgradeTarget === "very-low") {
+                  cancelAnimationFrame(animationFrameId);
+                  return; // Reached rock bottom, stop measuring
+                }
+                sustainedDropTicks = 0;
+              }
             }
 
             frameCount = 0;
@@ -372,7 +392,7 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
-            className={`fixed inset-0 z-[10000] flex flex-col items-center justify-center ${metrics.tier === 'low' ? 'bg-background' : 'bg-background/95 backdrop-blur-md'} select-none`}
+            className={`fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-background select-none`}
           >
             <div className="relative mb-8 w-32 h-32 md:w-48 md:h-48 overflow-hidden rounded-full shadow-2xl ring-4 ring-primary/10">
               <Image 

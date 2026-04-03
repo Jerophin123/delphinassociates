@@ -12,6 +12,8 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { usePerformance } from "../PerformanceProvider";
+import SpotlightCard from "../ui/SpotlightCard";
+import Tilt3DContainer from "../ui/Tilt3DContainer";
 
 const services = [
   {
@@ -65,7 +67,9 @@ const services = [
 ];
 
 export default function ServicesList() {
-  const { tier } = usePerformance();
+  const { tier, reducedMotion } = usePerformance();
+  const isHigh = tier === 'high' && !reducedMotion;
+
   return (
     <div className="grid md:grid-cols-2 gap-6 sm:gap-10">
       {services.map((service, index) => {
@@ -82,61 +86,67 @@ export default function ServicesList() {
               delay: index * 0.1,
               ease: [0.21, 0.47, 0.32, 0.98]
             }}
-            className={`group relative ${tier === 'very-low' ? 'bg-white shadow-none hover:translate-y-0' : 'bg-white/95 liquid-glass-card'} rounded-[2.5rem] overflow-hidden border border-gray-200 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 will-change-transform hover:-translate-y-2 flex flex-col h-full hover:border-gray-300`}
           >
-            {/* Soft Hover Overlay Effect */}
-            {tier !== 'very-low' && <div className="absolute inset-0 bg-gradient-to-br from-accent/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />}
+            <Tilt3DContainer maxRotation={6} className="h-full">
+              <SpotlightCard className={`group relative ${tier === 'very-low' ? 'bg-white shadow-none hover:translate-y-0' : 'bg-white/95 liquid-glass-card'} rounded-[2.5rem] overflow-hidden border border-gray-200 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 will-change-transform flex flex-col h-full hover:border-gray-300 ${isHigh ? 'premium-card-hover-shine premium-border-glow' : 'hover:-translate-y-2'}`}>
+                {/* Soft Hover Overlay Effect */}
+                {tier !== 'very-low' && <div className="absolute inset-0 bg-gradient-to-br from-accent/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />}
 
-            {/* Gradient Header Section */}
-            <div className={`relative h-24 sm:h-40 ${tier === 'very-low' ? 'bg-gray-50' : 'bg-gray-50/50'} border-b border-gray-100 p-5 sm:p-8 flex items-center justify-center overflow-hidden ${tier === 'very-low' ? '' : 'group-hover:bg-accent/5'} transition-colors duration-500`}>
-              {/* Subtle pattern */}
-              {tier !== 'very-low' && (
-                <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: `radial-gradient(circle at 1px 1px, black 1px, transparent 0)`, backgroundSize: '24px 24px' }} />
-              )}
-              
-              {/* Icon Container */}
-              <div className={`relative z-10 w-14 h-14 sm:w-20 sm:h-20 bg-white border border-gray-100/60 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] ${tier === 'very-low' ? '' : 'group-hover:shadow-[0_8px_30px_rgba(212,175,55,0.15)] group-hover:scale-110'} transition-all duration-500`}>
-                <Icon className="w-6 h-6 sm:w-10 sm:h-10 text-gray-700 group-hover:text-accent transition-colors duration-500" />
-              </div>
-            </div>
-
-            {/* Content Section */}
-            <div className="p-6 sm:p-10 flex-1 flex flex-col">
-              <h3 className="text-xl sm:text-3xl font-bold mb-3 sm:mb-4 text-primary-dark font-display group-hover:text-accent transition-colors duration-300">
-                {service.title}
-              </h3>
-              
-              <p className="text-gray-500 font-light mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
-                {service.description}
-              </p>
-              
-              {/* Features Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-auto mb-8 sm:mb-10">
-                {service.features.map((feature) => (
-                  <div key={feature} className="flex items-start space-x-3 group/feature">
-                    <div className="mt-1 flex-shrink-0">
-                      <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-accent/80 group-hover/feature:text-accent transition-colors" />
-                    </div>
-                    <span className="text-sm sm:text-base text-gray-600 font-medium group-hover/feature:text-gray-900 transition-colors">
-                      {feature}
-                    </span>
+                {/* Gradient Header Section */}
+                <div className={`relative h-24 sm:h-40 ${tier === 'very-low' ? 'bg-gray-50' : 'bg-gray-50/50'} border-b border-gray-100 p-5 sm:p-8 flex items-center justify-center overflow-hidden ${tier === 'very-low' ? '' : 'group-hover:bg-accent/5'} transition-colors duration-500`}>
+                  {/* Subtle pattern */}
+                  {tier !== 'very-low' && (
+                    <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: `radial-gradient(circle at 1px 1px, black 1px, transparent 0)`, backgroundSize: '24px 24px' }} />
+                  )}
+                  
+                  {/* Icon Container */}
+                  <div className={`relative z-10 w-14 h-14 sm:w-20 sm:h-20 bg-white border border-gray-100/60 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] ${tier === 'very-low' ? '' : 'group-hover:shadow-[0_8px_30px_rgba(212,175,55,0.15)] group-hover:scale-110'} transition-all duration-500`}>
+                    {isHigh && (
+                      <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-accent/10 animate-[pulse-ring_3s_ease-in-out_infinite] pointer-events-none" />
+                    )}
+                    <Icon className="w-6 h-6 sm:w-10 sm:h-10 text-gray-700 group-hover:text-accent transition-colors duration-500" />
                   </div>
-                ))}
-              </div>
+                </div>
 
-              {/* Action Button */}
-              <div>
-                <Link
-                  href="/contact"
-                  className={`group/btn inline-flex items-center justify-center w-full px-5 py-3 sm:px-6 sm:py-4 ${tier === 'very-low' ? 'bg-white' : 'bg-gray-50 hover:bg-accent'} border border-gray-100 rounded-xl font-bold text-sm sm:text-base text-gray-700 hover:text-black transition-all duration-300 shadow-sm ${tier === 'very-low' ? '' : 'hover:shadow-[0_8px_30px_rgba(212,175,55,0.25)]'}`}
-                >
-                  <span>Discuss This Service</span>
-                  <div className={`ml-2 ${tier === 'very-low' ? '' : 'group-hover/btn:translate-x-1.5'} transition-transform duration-300`}>
-                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                {/* Content Section */}
+                <div className="p-6 sm:p-10 flex-1 flex flex-col relative z-10">
+                  <h3 className="text-xl sm:text-3xl font-bold mb-3 sm:mb-4 text-primary-dark font-display group-hover:text-accent transition-colors duration-300">
+                    {service.title}
+                  </h3>
+                  
+                  <p className="text-gray-500 font-light mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
+                    {service.description}
+                  </p>
+                  
+                  {/* Features Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-auto mb-8 sm:mb-10">
+                    {service.features.map((feature) => (
+                      <div key={feature} className="flex items-start space-x-3 group/feature">
+                        <div className="mt-1 flex-shrink-0">
+                          <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-accent/80 group-hover/feature:text-accent transition-colors" />
+                        </div>
+                        <span className="text-sm sm:text-base text-gray-600 font-medium group-hover/feature:text-gray-900 transition-colors">
+                          {feature}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                </Link>
-              </div>
-            </div>
+
+                  {/* Action Button */}
+                  <div>
+                    <Link
+                      href="/contact"
+                      className={`group/btn inline-flex items-center justify-center w-full px-5 py-3 sm:px-6 sm:py-4 ${tier === 'very-low' ? 'bg-white' : 'bg-gray-50 hover:bg-accent'} border border-gray-100 rounded-xl font-bold text-sm sm:text-base text-gray-700 hover:text-black transition-all duration-300 shadow-sm ${tier === 'very-low' ? '' : 'hover:shadow-[0_8px_30px_rgba(212,175,55,0.25)]'} ${isHigh ? 'liquid-glass-btn-accent-invert !bg-accent/10 hover:!bg-accent' : ''}`}
+                    >
+                      <span>Discuss This Service</span>
+                      <div className={`ml-2 ${tier === 'very-low' ? '' : 'group-hover/btn:translate-x-1.5'} transition-transform duration-300`}>
+                        <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              </SpotlightCard>
+            </Tilt3DContainer>
           </motion.div>
         );
       })}

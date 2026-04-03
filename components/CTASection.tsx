@@ -4,9 +4,12 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Phone, Mail, ArrowRight } from "lucide-react";
 import { usePerformance } from "./PerformanceProvider";
+import GeometricParticleField from "./ui/GeometricParticleField";
 
 export default function CTASection() {
   const { tier, reducedMotion } = usePerformance();
+  const isHigh = tier === "high" && !reducedMotion;
+
   return (
     <section
       id="home-cta-section"
@@ -41,34 +44,115 @@ export default function CTASection() {
             className="w-full"
         >
           <motion.div
-            className={`relative rounded-2xl sm:rounded-[2.5rem] ${tier === 'very-low' ? 'bg-white shadow-none' : (tier === 'low' ? 'bg-white' : (tier === 'mid' ? 'bg-white/80 backdrop-blur-md' : 'liquid-glass-card-light'))} border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:shadow-[0_16px_60px_rgb(0,0,0,0.12)] transition-shadow duration-500 p-5 sm:p-10 md:p-16 lg:p-20 overflow-hidden`}
+            className={`relative rounded-2xl sm:rounded-[2.5rem] ${tier === 'very-low' ? 'bg-white shadow-none' : (tier === 'low' ? 'bg-white' : (tier === 'mid' ? 'bg-white/[0.97]' : 'liquid-glass-card-light'))} border ${isHigh ? 'border-accent/20' : 'border-white/60'} shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:shadow-[0_16px_60px_rgb(0,0,0,0.12)] transition-shadow duration-500 p-5 sm:p-10 md:p-16 lg:p-20 overflow-hidden`}
           >
             {/* Inner subtle glow */}
-          {tier !== 'very-low' && <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent pointer-events-none"></div>}
+            {tier !== 'very-low' && <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent pointer-events-none"></div>}
+
+            {/* Animated Golden Border Sweep - High Tier */}
+            {isHigh && (
+              <motion.div
+                className="absolute inset-0 rounded-2xl sm:rounded-[2.5rem] pointer-events-none z-[2]"
+                style={{
+                  background: `linear-gradient(90deg, transparent 0%, rgba(212,175,55,0.12) 50%, transparent 100%)`,
+                  backgroundSize: '200% 100%',
+                }}
+                animate={{ backgroundPosition: ['200% 0%', '-200% 0%'] }}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+              />
+            )}
+
+            {/* Animated Floating Orbs - High Tier */}
+            {isHigh && (
+              <>
+                <motion.div
+                  className="pointer-events-none absolute -top-20 -right-20 w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-accent/8 blur-[80px]"
+                  animate={{
+                    x: [0, 30, -20, 0],
+                    y: [0, -25, 15, 0],
+                    scale: [1, 1.15, 0.9, 1],
+                    opacity: [0.6, 0.9, 0.5, 0.6],
+                  }}
+                  transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <motion.div
+                  className="pointer-events-none absolute -bottom-20 -left-20 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-accent/6 blur-[80px]"
+                  animate={{
+                    x: [0, -25, 20, 0],
+                    y: [0, 20, -30, 0],
+                    scale: [1, 0.9, 1.1, 1],
+                    opacity: [0.5, 0.8, 0.4, 0.5],
+                  }}
+                  transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+                />
+              </>
+            )}
+
+            {/* Floating Diamond Accents - High Tier */}
+            {isHigh && (
+              <>
+                <motion.div
+                  className="absolute top-8 right-12 w-4 h-4 sm:w-5 sm:h-5 border border-accent/30 pointer-events-none z-[2]"
+                  style={{ rotate: 45 }}
+                  animate={{ y: [0, -15, 0], opacity: [0.4, 0.8, 0.4], rotate: [45, 90, 45] }}
+                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <motion.div
+                  className="absolute bottom-12 left-8 w-3 h-3 sm:w-4 sm:h-4 border border-accent/25 pointer-events-none z-[2]"
+                  style={{ rotate: 45 }}
+                  animate={{ y: [0, 12, 0], opacity: [0.3, 0.7, 0.3], rotate: [45, 0, 45] }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                />
+                <motion.div
+                  className="absolute top-1/2 right-20 w-2.5 h-2.5 bg-accent/15 pointer-events-none z-[2]"
+                  style={{ rotate: 45 }}
+                  animate={{ y: [0, -10, 5, 0], opacity: [0.2, 0.5, 0.3, 0.2] }}
+                  transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+                />
+              </>
+            )}
+
+            {/* Structural Network Particle Field - High Tier */}
+            {isHigh && (
+              <GeometricParticleField 
+                quantity={70} 
+                color="#D4AF37"
+                className="z-[1]"
+                staticity={50}
+                ease={40}
+              />
+            )}
 
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className={`inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 ${tier === 'very-low' ? 'bg-accent text-black' : 'bg-accent/10 text-accent'} rounded-full text-xs sm:text-sm font-bold tracking-[0.2em] uppercase mb-6 sm:mb-8 border border-accent/20`}
+            className={`relative z-10 inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 ${tier === 'very-low' ? 'bg-accent text-black' : 'bg-accent/10 text-accent'} rounded-full text-xs sm:text-sm font-bold tracking-[0.2em] uppercase mb-6 sm:mb-8 border border-accent/20`}
           >
             <span className={`w-2 h-2 rounded-full ${tier === 'very-low' ? 'bg-black' : 'bg-accent animate-[pulse_2s_ease-in-out_infinite]'}`}></span>
             Get Started Today
           </motion.div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 xl:mb-8 font-display tracking-tight leading-[1.1]">
-            Ready to Start Your <br className="hidden md:block"/>
-            <motion.span 
-              animate={tier === 'high' && !reducedMotion ? { backgroundPosition: ["0% center", "200% center"] } : {}}
-              transition={{ repeat: Infinity, ease: "linear", duration: 15 }}
-              className={`${tier === 'very-low' ? 'text-primary-dark' : 'text-transparent bg-clip-text bg-gradient-to-r from-primary-dark via-primary to-primary-dark bg-[length:200%_auto]'} mt-2 pb-2 inline-block`}
+          {isHigh ? (
+            <motion.h2
+              animate={{ backgroundPosition: ["0% center", "200% center"] }}
+              transition={{ repeat: Infinity, ease: "linear", duration: 8 }}
+              className="relative z-10 text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 xl:mb-8 font-display tracking-tight leading-[1.1] text-transparent bg-clip-text bg-gradient-to-r from-primary-dark via-accent to-primary-dark bg-[length:200%_auto]"
             >
+              Ready to Start Your <br className="hidden md:block"/>
               Dream Project?
-            </motion.span>
-          </h2>
+            </motion.h2>
+          ) : (
+            <h2 className="relative z-10 text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 xl:mb-8 font-display tracking-tight leading-[1.1]">
+              Ready to Start Your <br className="hidden md:block"/>
+              <span className={`${tier === 'very-low' ? 'text-primary-dark' : 'text-transparent bg-clip-text bg-gradient-to-r from-primary-dark via-primary to-primary-dark bg-[length:200%_auto]'} mt-2 pb-2 inline-block`}>
+                Dream Project?
+              </span>
+            </h2>
+          )}
           
-          <p className="text-sm sm:text-lg md:text-xl text-gray-500 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed font-light">
+          <p className="relative z-10 text-sm sm:text-lg md:text-xl text-gray-500 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed font-light">
             Let us help you build your dream project with transparency, quality,
             and timely completion. Experience excellence in construction.
           </p>
@@ -76,7 +160,7 @@ export default function CTASection() {
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center w-full sm:w-auto relative z-20">
             <Link
               href="/contact"
-              className={`group relative inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-black transition-all duration-300 bg-accent rounded-xl hover:bg-accent-light hover:shadow-xl hover:shadow-accent/20 w-full sm:w-auto overflow-hidden border border-transparent ${tier === 'high' && !reducedMotion ? 'liquid-glass-btn-accent-invert' : ''}`}
+              className={`group relative inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-black transition-all duration-300 bg-accent rounded-xl hover:bg-accent-light hover:shadow-xl hover:shadow-accent/20 w-full sm:w-auto overflow-hidden border border-transparent ${isHigh ? 'liquid-glass-btn-accent-invert' : ''}`}
             >
               <span className="relative z-10 flex items-center gap-2">
                 Get a Quote
@@ -87,7 +171,7 @@ export default function CTASection() {
             
             <a
               href="tel:+919841243345"
-              className={`group inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-primary-dark transition-all duration-300 bg-white border-2 border-gray-100 rounded-xl hover:border-accent hover:bg-accent/5 hover:text-accent w-full sm:w-auto ${tier === 'high' && !reducedMotion ? 'liquid-glass-btn-light-invert' : ''}`}
+              className={`group inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-primary-dark transition-all duration-300 bg-white border-2 border-gray-100 rounded-xl hover:border-accent hover:bg-accent/5 hover:text-accent w-full sm:w-auto ${isHigh ? 'liquid-glass-btn-light-invert' : ''}`}
             >
               <span className="flex items-center gap-2">
                 <Phone className="w-5 h-5 group-hover:-translate-y-1 transition-transform duration-300" />
@@ -101,7 +185,7 @@ export default function CTASection() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-200/50 flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center items-center text-gray-500"
+            className="relative z-10 mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-200/50 flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center items-center text-gray-500"
           >
             <a
               href="mailto:delphinassociates@gmail.com"

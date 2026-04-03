@@ -22,8 +22,6 @@ function AnimatedCounter({
   isInView: boolean;
 }) {
   const nodeRef = useRef<HTMLSpanElement>(null);
-
-  // Extract numeric value and suffix
   const numericValue = parseInt(value.replace(/[^0-9]/g, ''));
   const suffix = value.replace(/[0-9]/g, '');
 
@@ -31,7 +29,7 @@ function AnimatedCounter({
     if (!isInView || !nodeRef.current) return;
 
     let startTime: number | null = null;
-    const duration = 2000; // 2 seconds
+    const duration = 2000;
     let animationFrameId: number;
 
     const easeOutQuart = (x: number): number => 1 - Math.pow(1 - x, 4);
@@ -40,7 +38,6 @@ function AnimatedCounter({
       if (!startTime) startTime = timestamp;
       const progress = timestamp - startTime;
       const percent = Math.min(progress / duration, 1);
-
       const currentVal = Math.floor(numericValue * easeOutQuart(percent));
 
       if (nodeRef.current) {
@@ -53,7 +50,6 @@ function AnimatedCounter({
     };
 
     animationFrameId = requestAnimationFrame(animate);
-
     return () => cancelAnimationFrame(animationFrameId);
   }, [isInView, numericValue, suffix]);
 
@@ -76,6 +72,7 @@ export default function QuickIntro() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const { tier, reducedMotion } = usePerformance();
+  const isHigh = tier === 'high' && !reducedMotion;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -105,20 +102,18 @@ export default function QuickIntro() {
       id="home-quickintro"
       className={`relative z-10 py-12 sm:py-20 md:py-28 ${tier === 'very-low' ? 'bg-primary-dark' : 'bg-primary-dark/95'} overflow-hidden border-y border-white/5`}
     >
-      {/* Background decoration - dynamically optimized based on hardware */}
       {tier !== 'low' && tier !== 'very-low' && (
         <>
           <div
-            className={`absolute top-0 right-0 w-[500px] h-[500px] bg-accent/10 rounded-full ${tier === 'mid' ? 'blur-[40px] sm:blur-[60px]' : 'blur-[60px] sm:blur-[120px]'} pointer-events-none`}
+            className={`absolute top-0 right-0 w-[500px] h-[500px] bg-accent/10 rounded-full ${tier === 'mid' ? 'blur-[30px] sm:blur-[40px]' : 'blur-[60px] sm:blur-[120px]'} pointer-events-none`}
             style={{ transform: "translate3d(33%, -50%, 0)", willChange: "transform" }}
           ></div>
           <div
-            className={`absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent-light/5 rounded-full ${tier === 'mid' ? 'blur-[40px] sm:blur-[60px]' : 'blur-[50px] sm:blur-[100px]'} pointer-events-none`}
+            className={`absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent-light/5 rounded-full ${tier === 'mid' ? 'blur-[30px] sm:blur-[40px]' : 'blur-[50px] sm:blur-[100px]'} pointer-events-none`}
             style={{ transform: "translate3d(-25%, 33%, 0)", willChange: "transform" }}
           ></div>
           
-          {/* Professional Engineering Particle Network - High Tier Exclusive */}
-          {tier === 'high' && !reducedMotion && (
+          {isHigh && (
             <GeometricParticleField 
               quantity={40} 
               color="#D4AF37"
@@ -167,7 +162,7 @@ export default function QuickIntro() {
             <motion.div variants={itemVariants}>
               <Link
                 href="/about"
-                className={`group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-white transition-all duration-300 bg-primary-dark rounded-xl border border-gray-800 hover:bg-gray-900 overflow-hidden ${tier === 'high' && !reducedMotion ? 'liquid-glass-btn-dark' : ''}`}
+                className={`group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-white transition-all duration-300 bg-primary-dark rounded-xl border border-gray-800 hover:bg-gray-900 overflow-hidden ${isHigh ? 'liquid-glass-btn-dark !bg-white/5' : ''}`}
               >
                 <span className="relative z-10 flex items-center gap-2">
                   Learn More About Us
@@ -180,7 +175,6 @@ export default function QuickIntro() {
             </motion.div>
           </motion.div>
 
-          {/* Stats Grid */}
           <motion.div
             initial={reducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 100 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -202,19 +196,18 @@ export default function QuickIntro() {
                       ease: [0.21, 0.47, 0.32, 0.98]
                     }}
                     style={{ willChange: "transform, opacity" }}
-                    className={`group relative rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-8 overflow-hidden ${tier === 'very-low' ? 'bg-black opacity-100' : (tier === 'high' ? 'liquid-glass-card-dark' : (tier === 'mid' ? 'backdrop-blur-sm bg-white/[0.03]' : 'bg-black/50'))} border border-white/10 hover:border-accent/40 transition-[transform,box-shadow,background-color] duration-500 ${tier !== 'low' && tier !== 'very-low' ? 'hover:shadow-2xl hover:shadow-accent/10 hover:-translate-y-1.5 hover:scale-[1.02]' : ''}`}
+                    className={`group relative rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-8 overflow-hidden ${tier === 'very-low' ? 'bg-black opacity-100' : (tier === 'high' ? 'liquid-glass-card-dark' : (tier === 'mid' ? 'bg-white/[0.05]' : 'bg-black/50'))} border border-white/10 hover:border-accent/40 transition-all duration-500 ${tier !== 'very-low' ? 'hover:shadow-2xl hover:shadow-accent/10 hover:-translate-y-1.5 hover:scale-[1.02]' : ''} ${isHigh ? 'premium-card-hover-shine premium-border-glow' : ''}`}
                   >
-                    {/* Hover Glow - GPU Optimized */}
                     {tier !== 'low' && tier !== 'very-low' && (
-                      <>
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-accent/10 via-transparent to-transparent pointer-events-none" style={{ transform: "translate3d(0,0,0)", willChange: "opacity" }} />
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-accent/20 rounded-full blur-[30px] sm:blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ transform: "translate3d(0,0,0)", willChange: "opacity" }}></div>
-                      </>
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-accent/10 via-transparent to-transparent pointer-events-none" style={{ transform: "translate3d(0,0,0)", willChange: "opacity" }} />
                     )}
 
                     <div className="relative z-10 flex flex-col items-start gap-y-4">
                       {/* Icon */}
-                      <div className="p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 group-hover:border-accent/40 group-hover:bg-accent/10 transition-colors duration-500 shadow-inner">
+                      <div className="relative p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 group-hover:border-accent/40 group-hover:bg-accent/10 transition-colors duration-500 shadow-inner">
+                        {isHigh && (
+                          <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-accent/10 animate-[pulse-ring_3s_ease-in-out_infinite] pointer-events-none" />
+                        )}
                         <Icon className="w-5 h-5 sm:w-8 sm:h-8 text-white group-hover:text-accent transition-colors duration-300" />
                       </div>
 
@@ -223,7 +216,7 @@ export default function QuickIntro() {
                         <span className={`text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold ${tier === 'very-low' ? 'text-white' : 'text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 group-hover:from-accent group-hover:to-accent-light'} tracking-tight transition-all duration-500`}>
                           <AnimatedCounter value={stat.value} isInView={isInView} />
                         </span>
-                        <div className="mt-1 sm:mt-2 text-xs sm:text-base text-gray-400 font-medium tracking-wide group-hover:text-gray-300 transition-colors duration-300">
+                        <div className="mt-1 sm:mt-2 text-xs sm:text-base text-gray-400 font-medium tracking-wide group-hover:text-gray-300 transition-colors duration-300 font-light">
                           {stat.label}
                         </div>
                       </div>
@@ -233,8 +226,7 @@ export default function QuickIntro() {
               })}
             </div>
 
-            {/* Soft backdrop glow behind the grid */}
-            {tier !== 'low' && tier !== 'very-low' && (
+            {isHigh && (
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-accent/5 rounded-full blur-[60px] sm:blur-[100px] -z-10 pointer-events-none" style={{ transform: "translateZ(0)" }}></div>
             )}
           </motion.div>

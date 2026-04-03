@@ -2,6 +2,7 @@ import { google } from 'googleapis';
 import crypto from 'crypto';
 
 export async function appendToGoogleSheet(data: any, emailStatus: string = 'Sent') {
+  const timeout = 15000; // 15 second timeout
   try {
     // We only execute this if the env vars exist
     if (!process.env.GOOGLE_CLIENT_EMAIL || !process.env.GOOGLE_PRIVATE_KEY || !process.env.GOOGLE_SHEET_ID) {
@@ -58,8 +59,8 @@ export async function appendToGoogleSheet(data: any, emailStatus: string = 'Sent
     console.log("✅ Successfully logged to Google Sheets");
     return { success: true, documentId };
   } catch (error: any) {
-    console.error('❌ Error appending to Google Sheet:', error.message);
-    return { success: false, error: error.message };
+    console.error('❌ Error appending to Google Sheet:', error.message || error);
+    return { success: false, error: error.message || 'Unknown error' };
   }
 }
 
@@ -164,7 +165,7 @@ export async function logVisitorToGoogleSheet(data: any) {
 
     return { success: true };
   } catch (error: any) {
-    console.error('❌ Error appending visitor to Google Sheet:', error.message);
-    return { success: false, error: error.message };
+    console.error('❌ Error appending visitor to Google Sheet:', error.message || error);
+    return { success: false, error: error.message || 'Unknown error' };
   }
 }

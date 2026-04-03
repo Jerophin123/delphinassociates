@@ -153,15 +153,15 @@ export default function Header() {
   }
   // For all other pages, navbar stays white glass
 
-  if (tier === "low" || tier === "very-low") {
-    headerStyle = headerStyle
-      .replace("backdrop-blur-md", "")
-      .replace("bg-white/80", tier === "very-low" ? "bg-white" : "bg-white/95")
-      .replace("bg-primary-dark/80", tier === "very-low" ? "bg-primary-dark" : "bg-primary-dark/95")
-      .replace("bg-primary-dark/85", tier === "very-low" ? "bg-primary-dark" : "bg-primary-dark/95")
-      .replace("bg-primary-dark/92", tier === "very-low" ? "bg-primary-dark" : "bg-primary-dark/95")
-      .trim();
-  }
+   if (tier === "low" || tier === "very-low" || tier === "mid") {
+     headerStyle = headerStyle
+       .replace("backdrop-blur-md", "")
+       .replace("bg-white/80", tier === "very-low" ? "bg-white" : "bg-white/[0.97]")
+       .replace("bg-primary-dark/80", tier === "very-low" ? "bg-primary-dark" : "bg-primary-dark/[0.97]")
+       .replace("bg-primary-dark/85", tier === "very-low" ? "bg-primary-dark" : "bg-primary-dark/[0.97]")
+       .replace("bg-primary-dark/92", tier === "very-low" ? "bg-primary-dark" : "bg-primary-dark/[0.97]")
+       .trim();
+   }
 
   return (
     <motion.header

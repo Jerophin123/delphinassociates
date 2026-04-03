@@ -54,7 +54,7 @@ export default function ProjectsPage() {
   const uniqueCategories = Array.from(new Set(projects.map((p) => p.category))).length;
 
   return (
-    <div className="pt-20 bg-white/95 text-primary-dark pb-16 sm:pb-20 md:pb-24">
+    <div className="pt-20 bg-white/95 text-primary-dark pb-16 sm:pb-20 md:pb-24 relative z-10">
       <ProjectsHero />
 
       <section className="relative mt-8 sm:mt-12 md:mt-16 bg-white/95 pt-8 pb-16 sm:pb-20 md:pb-24 overflow-hidden">

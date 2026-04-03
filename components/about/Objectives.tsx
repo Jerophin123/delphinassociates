@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { Ruler, Handshake, Home } from "lucide-react";
 import { usePerformance } from "../PerformanceProvider";
+import SpotlightCard from "../ui/SpotlightCard";
+import Tilt3DContainer from "../ui/Tilt3DContainer";
 
 const objectives = [
   {
@@ -26,7 +28,9 @@ const objectives = [
 ];
 
 export default function Objectives() {
-  const { tier } = usePerformance();
+  const { tier, reducedMotion } = usePerformance();
+  const isHigh = tier === 'high' && !reducedMotion;
+
   return (
     <section className="mb-12 sm:mb-20 md:mb-24">
       <motion.div
@@ -59,24 +63,30 @@ export default function Objectives() {
               delay: index * 0.1,
               ease: [0.21, 0.47, 0.32, 0.98]
             }}
-            className={`group relative ${tier === 'very-low' ? 'bg-white' : 'bg-white/95 liquid-glass-card'} rounded-[2rem] overflow-hidden border border-gray-200 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 will-change-transform hover:-translate-y-2 p-6 sm:p-8 flex flex-col h-full hover:border-gray-300`}
           >
-            {/* Subtle Gradient background on hover */}
-            <div className="absolute inset-0 bg-gradient-to-br from-accent/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            
-            <div className="relative z-10 flex flex-col items-start h-full">
-              <div className="mb-6 p-3 sm:p-4 rounded-2xl bg-gray-50 group-hover:bg-accent/10 transition-colors duration-500 shadow-sm border border-black/5">
-                <objective.icon className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-accent transition-colors duration-500" />
-              </div>
-              
-              <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-gray-900 group-hover:text-accent transition-colors duration-300">
-                {objective.title}
-              </h3>
-              
-              <p className="text-sm sm:text-base text-gray-500 leading-relaxed font-light mt-auto">
-                {objective.description}
-              </p>
-            </div>
+            <Tilt3DContainer maxRotation={8} className="h-full">
+              <SpotlightCard className={`group relative ${tier === 'very-low' ? 'bg-white' : 'bg-white/95 liquid-glass-card'} rounded-[2rem] overflow-hidden border border-gray-200 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 will-change-transform hover:-translate-y-2 p-6 sm:p-8 flex flex-col h-full hover:border-gray-300 ${isHigh ? 'premium-card-hover-shine premium-border-glow' : ''}`}>
+                {/* Subtle Gradient background on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-accent/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                <div className="relative z-10 flex flex-col items-start h-full">
+                  <div className="relative mb-6 p-3 sm:p-4 rounded-2xl bg-gray-50 group-hover:bg-accent/10 transition-colors duration-500 shadow-sm border border-black/5">
+                    {isHigh && (
+                      <div className="absolute inset-0 rounded-2xl bg-accent/10 animate-[pulse-ring_3s_ease-in-out_infinite] pointer-events-none" />
+                    )}
+                    <objective.icon className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-accent transition-colors duration-500" />
+                  </div>
+                  
+                  <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-gray-900 group-hover:text-accent transition-colors duration-300">
+                    {objective.title}
+                  </h3>
+                  
+                  <p className="text-sm sm:text-base text-gray-500 leading-relaxed font-light mt-auto">
+                    {objective.description}
+                  </p>
+                </div>
+              </SpotlightCard>
+            </Tilt3DContainer>
           </motion.div>
         ))}
       </div>

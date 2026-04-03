@@ -81,7 +81,12 @@ export async function POST(request: Request) {
     }
 
     // Google Sheets Logger - Log it regardless of email success/failure
-    await appendToGoogleSheet(data, emailStatus);
+    // Wrapped in try-catch so a Sheets API failure doesn't crash the whole request
+    try {
+      await appendToGoogleSheet(data, emailStatus);
+    } catch (sheetErr) {
+      console.error('Google Sheets logging failed (non-fatal):', sheetErr);
+    }
 
     if (emailStatus === 'Failed to Send') {
       return NextResponse.json(

@@ -129,14 +129,14 @@ export default function Hero() {
           style={{ y: tier === 'high' && !reducedMotion ? orbY : 0, willChange: 'transform' }}
         >
           <div 
-            className={`absolute top-16 left-4 sm:top-20 sm:left-10 w-48 h-48 sm:w-72 sm:h-72 md:w-80 md:h-80 bg-accent/8 rounded-full ${tier === 'mid' ? 'blur-xl' : 'blur-2xl sm:blur-3xl'} ${reducedMotion ? '' : 'md:animate-pulse'} z-[1] pointer-events-none`}
+            className={`absolute top-16 left-4 sm:top-20 sm:left-10 w-48 h-48 sm:w-72 sm:h-72 md:w-80 md:h-80 bg-accent/8 rounded-full ${tier === 'mid' ? 'blur-lg' : 'blur-2xl sm:blur-3xl'} ${reducedMotion || tier === 'mid' ? '' : 'md:animate-pulse'} z-[1] pointer-events-none`}
             style={{ 
               willChange: 'opacity, transform',
               transform: 'translateZ(0)',
             }}
           />
           <div 
-            className={`absolute bottom-16 right-4 sm:bottom-20 sm:right-10 w-64 h-64 sm:w-96 sm:h-96 md:w-[28rem] md:h-[28rem] bg-primary-light/8 rounded-full ${tier === 'mid' ? 'blur-xl' : 'blur-2xl sm:blur-3xl'} ${reducedMotion ? '' : 'md:animate-pulse'} z-[1] pointer-events-none`}
+            className={`absolute bottom-16 right-4 sm:bottom-20 sm:right-10 w-64 h-64 sm:w-96 sm:h-96 md:w-[28rem] md:h-[28rem] bg-primary-light/8 rounded-full ${tier === 'mid' ? 'blur-lg' : 'blur-2xl sm:blur-3xl'} ${reducedMotion || tier === 'mid' ? '' : 'md:animate-pulse'} z-[1] pointer-events-none`}
             style={{ 
               animationDelay: '1s',
               willChange: 'opacity, transform',
@@ -144,7 +144,7 @@ export default function Hero() {
             }}
           />
           <div 
-            className={`absolute top-1/2 left-1/4 w-32 h-32 sm:w-48 sm:h-48 bg-accent-light/5 rounded-full ${tier === 'mid' ? 'blur-lg' : 'blur-xl sm:blur-2xl'} ${reducedMotion ? '' : 'md:animate-pulse'} z-[1] pointer-events-none`}
+            className={`absolute top-1/2 left-1/4 w-32 h-32 sm:w-48 sm:h-48 bg-accent-light/5 rounded-full ${tier === 'mid' ? 'blur-md' : 'blur-xl sm:blur-2xl'} ${reducedMotion || tier === 'mid' ? '' : 'md:animate-pulse'} z-[1] pointer-events-none`}
             style={{ 
               animationDelay: '2s',
               willChange: 'opacity, transform',
@@ -258,7 +258,7 @@ export default function Hero() {
               <MagneticButton className="w-full sm:w-auto">
                 <Link
                   href="/projects"
-                className={`group px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 border-2 rounded-xl font-bold text-sm sm:text-base md:text-lg transition-all duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 w-full sm:w-auto min-h-[44px] sm:min-h-[52px] md:min-h-[56px] will-change-transform ${tier === 'high' && !reducedMotion ? 'bg-white/5 backdrop-blur-xl text-white border-white/15 shadow-[0_8px_20px_rgba(0,0,0,0.1),inset_0_1px_1px_rgba(255,255,255,0.25)] hover:bg-white/10 hover:border-white/30 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.4)]' : `text-white ${tier === 'low' ? 'bg-black/60 border-accent' : 'bg-primary-dark/25 backdrop-blur-sm border-accent/60 shadow-xl hover:shadow-[0_0_30px_rgba(212,175,55,0.12)] hover:scale-[1.02] active:scale-[0.98]'} hover:bg-accent/10 hover:text-accent hover:border-accent/90`}`}
+                className={`group px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 border-2 rounded-xl font-bold text-sm sm:text-base md:text-lg transition-all duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 w-full sm:w-auto min-h-[44px] sm:min-h-[52px] md:min-h-[56px] will-change-transform ${tier === 'high' && !reducedMotion ? 'bg-white/5 backdrop-blur-xl text-white border-white/15 shadow-[0_8px_20px_rgba(0,0,0,0.1),inset_0_1px_1px_rgba(255,255,255,0.25)] hover:bg-white/10 hover:border-white/30 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.4)]' : `text-white ${tier === 'low' || tier === 'mid' ? 'bg-black/60 border-accent' : 'bg-primary-dark/25 backdrop-blur-sm border-accent/60 shadow-xl hover:shadow-[0_0_30px_rgba(212,175,55,0.12)] hover:scale-[1.02] active:scale-[0.98]'} hover:bg-accent/10 hover:text-accent hover:border-accent/90`}`}
                 style={{ transform: 'translateZ(0)' }}
               >
                 <Play className={`${tier === 'low' ? '' : 'group-hover:scale-110'} transition-transform duration-300 ease-out will-change-transform w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6`} style={{ transform: 'translateZ(0)' }} />
@@ -278,7 +278,7 @@ export default function Hero() {
         className="absolute bottom-6 sm:bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 z-10 hidden md:block pointer-events-none"
         style={{ willChange: 'opacity', transform: 'translateZ(0) translateX(-50%)' }}
       >
-        <div className={`w-6 h-10 md:w-7 md:h-11 border-2 border-accent/40 rounded-full flex justify-center ${tier === 'low' ? 'bg-primary-dark/80' : 'backdrop-blur-sm bg-primary-dark/30'} shadow-lg`} style={{ transform: 'translateZ(0)' }}>
+        <div className={`w-6 h-10 md:w-7 md:h-11 border-2 border-accent/40 rounded-full flex justify-center ${tier === 'low' || tier === 'mid' ? 'bg-primary-dark/80' : 'backdrop-blur-sm bg-primary-dark/30'} shadow-lg`} style={{ transform: 'translateZ(0)' }}>
           <motion.div
             animate={{ y: [0, 14, 0] }}
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
