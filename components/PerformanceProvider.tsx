@@ -102,9 +102,14 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
         } else {
           specs.architecture = "A-Series Silicon";
           specs.type = "Mobile";
-          specs.estimatedClass = "Mid-Range"; 
-          calculatedTier = "mid"; 
-        }
+          if (coreCount >= 6 && maxTextureSize >= 8192) {
+            specs.estimatedClass = "High-End";
+            calculatedTier = "high";
+          } else {
+            specs.estimatedClass = "Mid-Range";
+            calculatedTier = "mid";
+          }
+        } 
       } 
       // 2. NVIDIA DESKTOP & LAPTOP
       else if (renderer.includes("nvidia") || renderer.includes("geforce") || renderer.includes("quadro")) {
@@ -180,9 +185,17 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
         const match = renderer.match(/adreno\s*([0-9]{3})/);
         const series = match ? parseInt(match[1]) : 0;
         
-        if (series >= 700 || series >= 650 || renderer.includes("snapdragon 8") || renderer.includes("snapdragon 7")) {
+        if (series >= 800 || renderer.includes("snapdragon 8 elite") || renderer.includes("elite")) {
+          specs.architecture = series ? `Adreno ${series}` : "Snapdragon 8 Elite Flagship";
+          specs.estimatedClass = "High-End";
+          calculatedTier = "high"; // Will be capped to mid by fail-safe for thermals
+        } else if (series >= 730 || renderer.includes("snapdragon 8 gen")) {
+          specs.architecture = series ? `Adreno ${series}` : "Snapdragon 8 Gen Flagship";
+          specs.estimatedClass = "High-End";
+          calculatedTier = "high";
+        } else if (series >= 650 || renderer.includes("snapdragon 8") || renderer.includes("snapdragon 7")) {
           specs.architecture = series ? `Adreno ${series}` : "Snapdragon 7/8 Series";
-          specs.estimatedClass = "Mid-Range"; // Mobile GPUs never get 'High' to prevent thermal throttling on 120px CSS blurs
+          specs.estimatedClass = "Mid-Range";
           calculatedTier = "mid";
         } else if ((series === 0 && coreCount >= 8 && maxTextureSize >= 8192) || renderer.includes("snapdragon")) {
           // Fallback logic! If browser scrubbed the Adreno version number from string
@@ -200,7 +213,11 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
       else if (renderer.includes("mali")) {
         specs.vendor = "ARM";
         specs.type = "Mobile";
-        if (/g[7-9][0-9]/.test(renderer) || /immortalis/.test(renderer)) {
+        if (/immortalis/.test(renderer) || /g[7-9][1-9][0-9]/.test(renderer) || /g7[7-9]/.test(renderer)) {
+          specs.architecture = "Mali Valhall / Immortalis Flagship";
+          specs.estimatedClass = "High-End";
+          calculatedTier = "high";
+        } else if (/g[7-9][0-9]/.test(renderer)) {
           specs.architecture = "Mali Valhall / Immortalis";
           specs.estimatedClass = "Mid-Range";
           calculatedTier = "mid";
@@ -224,21 +241,37 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
         specs.type = "Mobile";
         if (renderer.includes("xclipse")) {
           const match = renderer.match(/xclipse\s*([0-9]{3})/);
-          const series = match ? match[1] : "";
-          specs.architecture = `Xclipse ${series} (RDNA)`.trim();
-          specs.estimatedClass = "Mid-Range"; 
-          calculatedTier = "mid";
+          const series = match && match[1] ? parseInt(match[1], 10) : 0;
+          if (series >= 920) {
+            specs.architecture = `Xclipse ${series} (RDNA Flagship)`.trim();
+            specs.estimatedClass = "High-End"; 
+            calculatedTier = "high";
+          } else {
+            specs.architecture = `Xclipse ${series} (RDNA)`.trim();
+            specs.estimatedClass = "Mid-Range"; 
+            calculatedTier = "mid";
+          }
         } else {
-          specs.architecture = "Exynos Legacy/Masked";
-          specs.estimatedClass = "Budget/Legacy";
-          calculatedTier = "low";
+          if (coreCount >= 8 && maxTextureSize >= 8192) {
+            specs.architecture = "Exynos Flagship";
+            specs.estimatedClass = "High-End";
+            calculatedTier = "high";
+          } else {
+            specs.architecture = "Exynos Legacy/Masked";
+            specs.estimatedClass = "Budget/Legacy";
+            calculatedTier = "low";
+          }
         }
       }
       // 9. MEDIATEK (DIMENSITY / HELIO)
       else if (renderer.includes("mediatek") || renderer.includes("dimensity") || renderer.includes("helio")) {
         specs.vendor = "MediaTek";
         specs.type = "Mobile";
-        if (renderer.includes("dimensity") || renderer.includes("helio g9") || (coreCount >= 8 && maxTextureSize >= 8192)) {
+        if (renderer.includes("dimensity 9") || renderer.includes("dimensity 8")) {
+          specs.architecture = "Dimensity 8000/9000 Flagship";
+          specs.estimatedClass = "High-End";
+          calculatedTier = "high";
+        } else if (renderer.includes("dimensity") || renderer.includes("helio g9") || (coreCount >= 8 && maxTextureSize >= 8192)) {
           specs.architecture = "Dimensity / High-End Helio";
           specs.estimatedClass = "Mid-Range";
           calculatedTier = "mid";
@@ -273,13 +306,14 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
         // Only demote on extremely constrained hardware (2 cores OR 2GB).
         // 4-core / 4GB machines with capable integrated GPUs (Iris Xe, etc.) stay at their GPU-classified tier.
         calculatedTier = "low";
-      } else if (memory <= 4 && calculatedTier === "high") {
-        // 4GB memory can't sustain high-tier backdrop-blur stacks; cap at mid
+      } else if (memory <= 3 && calculatedTier === "high") {
+        // <=3GB memory can't sustain high-tier backdrop-blur stacks; cap at mid
         calculatedTier = "mid";
       }
       
-      // Absolute fail-safe: Mobile devices NEVER get "High" tier effects
-      // Glassmorphism over multiple layers brings even an iPhone 15 Pro to its knees in mobile Safari.
+      // Absolute fail-safe: Mobile devices NEVER get "High" tier effects.
+      // Even with elite processors (Snapdragon 8 Elite, Exynos 2400), complex CSS blurs
+      // will aggressively thermal throttle the mobile chip. We strictly cap them at Mid.
       if (isMobileDevice && calculatedTier === "high") {
         calculatedTier = "mid";
       }

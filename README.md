@@ -343,10 +343,54 @@ HPOE maps the hardware results into four distinct visual fidelity tiers:
 #### Phase 3: The Sustained FPS Guard (Real-Time Safety Net)
 This is the "living" part of the engine. HPOE monitors the actual frame rate (FPS) during user interaction:
 - **Thermal Throttling Detection**: If the device begins to overheat or background processes cause the FPS to drop below **45 FPS** for 3 consecutive seconds, HPOE triggers an **Emergency Downgrade**.
+- **Mid-Session Battery Saver Detection**: Uniquely identifies when the OS or user forcefully caps the refresh rate to 30Hz. By verifying stable pacing (averaging ~30fps with `< 45ms` frame delta jitter), the engine dynamically re-calibrates downgrade thresholds (e.g., dropping the acceptable floor down to 22 FPS) rather than aggressively stripping premium animations. This ensures laptops and phones on battery saver retain the "Liquid Glass" aesthetics while honoring the OS-level frame limits.
 - **Real-Time UI Adaptation**: The engine gracefully strips heavy DOM elements and filters in real-time without requiring a page refresh, ensuring the user experience remains fluid regardless of environmental changes.
 
 #### Zero-Latency Execution
 HPOE is architected to be exceptionally lightweight, executing its full hardware scan and benchmark in under 50ms upon initialization. By bypassing caching, HPOE ensures that system changes (like entering Battery Saver mode or plugging in a high-res monitor) are respected immediately upon the next visit.
+
+#### Pseudocode Architecture
+For developers needing a high-level understanding of the engine's control flow, here is the simplified pseudocode:
+
+```text
+FUNCTION Initialize_HPOE():
+  1. Extract core_count = navigator.hardwareConcurrency
+  2. Extract memory = navigator.deviceMemory
+  3. Detect is_mobile = Regex(UserAgent)
+  4. Detect is_reduced_motion = Window.matchMedia("prefers-reduced-motion")
+  
+  5. Try:
+       canvas_context = create(WebGL_Context)
+       gpu_renderer_string = canvas_context.getExtension("WEBGL_debug_renderer_info").UNMASKED_RENDERER
+       max_texture_size = canvas_context.getParameter(MAX_TEXTURE_SIZE)
+     Catch:
+       gpu_renderer_string = "unknown"
+       
+  6. Calculate Hardware Tier (HIGH, MID, LOW, VERY_LOW):
+       IF gpu_renderer_string MATCHES "Apple M[1-9] (Max|Pro|Ultra)": Return HIGH
+       IF gpu_renderer_string MATCHES "NVIDIA RTX|GTX High": Return HIGH
+       IF gpu_renderer_string MATCHES "AMD RDNA|Vega High": Return HIGH
+       IF gpu_renderer_string MATCHES "Snapdragon 8|Adreno 700|Apple A-Series": Return MID
+       IF gpu_renderer_string MATCHES "Intel Iris|Arc": Return MID
+       
+       IF IS_MOBILE AND Calculated_Tier == HIGH: 
+           Calculated_Tier = MID // Hard cap for mobile thermals
+           
+       IF core_count <= 2 OR memory <= 2: Return VERY_LOW
+       
+  7. Apply Calculated Tier to Document Root (e.g., data-tier="mid")
+  
+  8. Start Sustained FPS Guard (Only if Tier != LOW/VERY_LOW):
+       LOOP every RequestAnimationFrame:
+         Calculate current_FPS and max_frame_delta
+         
+         IF stable 30fps pacing detected (avg=30 AND max_frame_delta < 45ms):
+             Activate Battery Saver Mode -> dynamically lower threshold_FPS (e.g., from 45 to 22)
+         
+         IF current_FPS < threshold_FPS for N consecutive ticks:
+             Trigger Emergency Downgrade (e.g., HIGH -> MID)
+             Apply new Tier State (drops heavy DOM elements deferentially)
+```
 
 ### Global Layouts & Error Boundaries
 
