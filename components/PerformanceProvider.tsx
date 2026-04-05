@@ -317,48 +317,109 @@ export function PerformanceProvider({ children }: { children: ReactNode }) {
         let sustainedDropTicks = 0;
 
         // Adaptive thresholds: mid-tier naturally runs 40-55 FPS; only react to genuine sustained drops
-        const fpsFloor = calculatedTier === "high" ? 45 : 38;
-        const requiredDropTicks = calculatedTier === "high" ? 4 : 6; // mid gets more grace
         const gracePeriodMs = 3000; // Ignore first 3 seconds (page-load jank)
+        
+        let baselineFpsMeasurements: number[] = [];
+        let detectedBaselineFps = 60; // Assume standard 60fps by default
+        let midSessionBatterySaverTicks = 0;
+        
+        let previousFrameTime = performance.now();
+        let maxFrameDelta = 0; // Tracks maximum MS between consecutive frames
 
         const measureFPS = (currentTime: number) => {
           frameCount++;
+          
+          const frameDelta = currentTime - previousFrameTime;
+          if (frameDelta > maxFrameDelta) {
+             maxFrameDelta = frameDelta;
+          }
+          previousFrameTime = currentTime;
           if (currentTime - lastTime >= 1000) {
             const fps = frameCount;
             const elapsed = currentTime - startTime;
 
-            // Skip measurement during grace period (page-load hydration causes natural jank)
-            if (elapsed > gracePeriodMs) {
-              if (fps < fpsFloor) {
+            if (elapsed <= gracePeriodMs) {
+              // Wait for initial hydration to clear, then sample naturally achievable FPS
+              if (elapsed > 1000 && fps > 0) {
+                baselineFpsMeasurements.push(fps);
+              }
+            } else {
+              // Lock in baseline detection once grace period concludes
+              if (baselineFpsMeasurements.length > 0 && detectedBaselineFps === 60) {
+                const avg = baselineFpsMeasurements.reduce((a, b) => a + b, 0) / baselineFpsMeasurements.length;
+                // Accurately verify 30fps: average ~30 AND frame pacing is universally stable (max delta < 45ms proves it's an OS hardcap, not wild lag) 
+                if (avg >= 28 && avg <= 34 && maxFrameDelta < 45) {
+                  detectedBaselineFps = 30;
+                  console.info("[Hardware Profiler] Stable 30fps pacing with low jitter detected (Battery Saver/30Hz). Re-calibrating.");
+                }
+              }
+
+              // Dynamic MID-SESSION Battery Saver Detection (User toggles mode on/off after loading)
+              if (detectedBaselineFps === 60 && fps >= 28 && fps <= 33 && maxFrameDelta < 45) {
+                 midSessionBatterySaverTicks++;
+                 if (midSessionBatterySaverTicks >= 2) {
+                    detectedBaselineFps = 30;
+                    console.info("[Hardware Profiler] Mid-session Battery Saver activated. Stable 30fps pacing detected. Modifying limits.");
+                    sustainedDropTicks = 0; // Wipe lag penalties incurred during the detection phase
+                 }
+              } else if (detectedBaselineFps === 30 && fps >= 45) {
+                 detectedBaselineFps = 60;
+                 console.info("[Hardware Profiler] Mid-session Battery Saver disabled. 60fps cap restored.");
+                 sustainedDropTicks = 0;
+                 midSessionBatterySaverTicks = 0;
+              } else {
+                 if (detectedBaselineFps === 60 && (fps < 28 || fps > 33 || maxFrameDelta >= 45)) {
+                   midSessionBatterySaverTicks = Math.max(0, midSessionBatterySaverTicks - 1);
+                 }
+              }
+
+              const currentTier = currentTierRef.current;
+              let currentFpsFloor;
+              
+              if (detectedBaselineFps === 30) {
+                // Battery Saver Mode active: Re-assign the thresholds to avoid aggressively killing animations
+                // The device can easily handle mid-tier glass, it is just artificially clipped by the OS.
+                currentFpsFloor = currentTier === "high" ? 22 : 18; 
+              } else {
+                currentFpsFloor = currentTier === "high" ? 45 : 38;
+              }
+              
+              const currentRequiredDropTicks = currentTier === "high" ? 4 : 6;
+
+              if (fps < currentFpsFloor) {
                 sustainedDropTicks++;
               } else {
-                // Recover faster than we degrade — 2 good seconds erases 1 bad second
                 sustainedDropTicks = Math.max(0, sustainedDropTicks - 2);
               }
 
               const disableDowngrade = window.location.search.includes("disableDowngrade=true");
 
-              if (sustainedDropTicks >= requiredDropTicks && !disableDowngrade) {
+              if (sustainedDropTicks >= currentRequiredDropTicks && !disableDowngrade) {
                 let downgradeTarget: PerformanceTier = "low";
-                if (currentTierRef.current === "high") downgradeTarget = "mid";
-                else if (currentTierRef.current === "mid") downgradeTarget = "low";
-                else if (currentTierRef.current === "low") downgradeTarget = "very-low";
+                if (currentTier === "high") downgradeTarget = "mid";
+                else if (currentTier === "mid") downgradeTarget = "low";
+                else if (currentTier === "low") downgradeTarget = "very-low";
 
-                console.warn(`[Hardware Profiler] Thermal Throttling / Resource Limit Detected (${fps} FPS, floor ${fpsFloor}, ${sustainedDropTicks}/${requiredDropTicks} ticks). Emergency Downgrading to Tier: ${downgradeTarget}.`);
+                console.warn(`[Hardware Profiler] Thermal Throttling / Resource Limit Detected (${fps} FPS, floor ${currentFpsFloor}, ${sustainedDropTicks}/${currentRequiredDropTicks} ticks). Emergency Downgrading to Tier: ${downgradeTarget}.`);
 
                 currentTierRef.current = downgradeTarget;
-                setMetrics(prev => ({ ...prev, tier: downgradeTarget }));
+                
+                // Defer state update to prevent Next.js/React re-render conflict inside requestAnimationFrame
+                setTimeout(() => {
+                  setMetrics(prev => ({ ...prev, tier: downgradeTarget }));
+                }, 0);
+
+                sustainedDropTicks = 0;
 
                 if (downgradeTarget === "very-low") {
-                  cancelAnimationFrame(animationFrameId);
                   return; // Reached rock bottom, stop measuring
                 }
-                sustainedDropTicks = 0;
               }
             }
 
             frameCount = 0;
             lastTime = currentTime;
+            maxFrameDelta = 0; // Reset jitter tracking for the next second
           }
           animationFrameId = requestAnimationFrame(measureFPS);
         };
