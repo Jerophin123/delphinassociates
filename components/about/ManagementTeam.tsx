@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { BadgeCheck, Medal } from "lucide-react";
-import { usePerformance } from "../PerformanceProvider";
+import { useHPOE } from "../HPOE";
 import SpotlightCard from "../ui/SpotlightCard";
 import Tilt3DContainer from "../ui/Tilt3DContainer";
 
@@ -41,7 +41,7 @@ function getInitials(name: string) {
 }
 
 export default function ManagementTeam() {
-  const { tier, reducedMotion } = usePerformance();
+  const { tier, reducedMotion } = useHPOE();
   const isHigh = tier === 'high' && !reducedMotion;
 
   return (
@@ -59,7 +59,7 @@ export default function ManagementTeam() {
             Management Team
           </span>
         </div>
-        <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold font-display text-primary-dark tracking-tight">
+        <h2 className="text-[26px] sm:text-3xl md:text-4xl lg:text-5xl font-bold font-display text-primary-dark tracking-tight">
           Leaders who keep projects on track
         </h2>
         <p className="mt-4 text-sm sm:text-base text-gray-500 max-w-2xl leading-relaxed font-light">
@@ -149,3 +149,4 @@ export default function ManagementTeam() {
     </section>
   );
 }
+

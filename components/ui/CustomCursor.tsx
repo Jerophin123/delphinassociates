@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
-import { usePerformance } from "../PerformanceProvider";
+import { useHPOE } from "../HPOE";
 
 export default function CustomCursor() {
-  const { tier, reducedMotion, isInitialized } = usePerformance();
+  const { tier, reducedMotion, isInitialized } = useHPOE();
   const [isVisible, setIsVisible] = useState(false);
   
   // Start off-screen

@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 
 export default function TeamPage() {
   return (
-    <div className="pt-20 bg-white/95 text-primary-dark min-h-screen relative z-10">
+    <div className="pt-20 bg-white/95 text-primary-dark min-h-[100dvh] relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 sm:pt-6 sm:pb-10 md:pt-8 md:pb-12">
         <TeamHero />
         <div className="mt-8 sm:mt-16 md:mt-24">
@@ -51,3 +51,4 @@ export default function TeamPage() {
     </div>
   );
 }
+

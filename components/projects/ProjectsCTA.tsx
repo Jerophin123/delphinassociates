@@ -3,11 +3,11 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Phone, ArrowRight } from "lucide-react";
-import { usePerformance } from "../PerformanceProvider";
+import { useHPOE } from "../HPOE";
 import GeometricParticleField from "../ui/GeometricParticleField";
 
 export default function ProjectsCTA() {
-  const { tier, reducedMotion } = usePerformance();
+  const { tier, reducedMotion } = useHPOE();
   const isHigh = tier === "high" && !reducedMotion;
 
   return (
@@ -146,7 +146,7 @@ export default function ProjectsCTA() {
           >
             <a
               href="tel:+919841243345"
-              className={`group inline-flex items-center justify-center space-x-2 px-8 py-4 bg-accent text-black rounded-xl font-bold text-base hover:bg-accent-light transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:shadow-[0_20px_50px_-10px_rgba(212,175,55,0.4)] hover:-translate-y-1 ${isHigh ? 'liquid-glass-btn-accent-invert' : ''}`}
+              className={`group inline-flex items-center justify-center space-x-2 px-8 py-4 bg-accent text-black rounded-xl font-bold text-base hover:bg-accent-light transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:shadow-[0_20px_50px_-10px_rgba(212,175,55,0.4)] hover:-translate-y-1 ${isHigh ? 'liquid-glass-btn-accent-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-accent-invert' : ''}`}
             >
               <Phone className="w-5 h-5" />
               <span>Call Us Now</span>
@@ -157,7 +157,7 @@ export default function ProjectsCTA() {
 
             <Link
               href="/contact"
-              className={`group inline-flex items-center justify-center space-x-2 px-8 py-4 ${tier === 'very-low' ? 'bg-white border-gray-300' : 'bg-white/60 backdrop-blur-md hover:bg-white'} text-primary-dark rounded-xl font-bold text-base transition-all duration-300 border border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:border-accent/30 ${isHigh ? 'liquid-glass-btn-light-invert' : ''}`}
+              className={`group inline-flex items-center justify-center space-x-2 px-8 py-4 ${tier === 'very-low' ? 'bg-white border-gray-300' : 'bg-white/60 backdrop-blur-md hover:bg-white'} text-primary-dark rounded-xl font-bold text-base transition-all duration-300 border border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:border-accent/30 ${isHigh ? 'liquid-glass-btn-light-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-light-invert' : ''}`}
             >
               <span>Get a Quote</span>
               <span className="ml-2 inline-block transition-transform duration-300 group-hover:translate-x-1.5">

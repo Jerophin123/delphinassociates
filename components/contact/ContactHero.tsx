@@ -2,11 +2,11 @@
 
 import { motion } from "framer-motion";
 import { Mail, Phone, Sparkles } from "lucide-react";
-import { usePerformance } from "../PerformanceProvider";
+import { useHPOE } from "../HPOE";
 import GeometricParticleField from "../ui/GeometricParticleField";
 
 export default function ContactHero() {
-  const { tier, reducedMotion } = usePerformance();
+  const { tier, reducedMotion } = useHPOE();
   const isHigh = tier === "high" && !reducedMotion;
 
   return (
@@ -128,7 +128,7 @@ export default function ContactHero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="mt-4 text-3xl sm:text-5xl md:text-6xl font-bold font-display tracking-tight mb-4 sm:mb-6"
+            className="mt-4 text-[28px] sm:text-4xl md:text-5xl lg:text-6xl font-bold font-display tracking-tight mb-4 sm:mb-6"
           >
             {isHigh ? (
               <motion.span
@@ -160,14 +160,14 @@ export default function ContactHero() {
           >
             <a
               href="tel:+919841243345"
-              className={`group inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl bg-accent text-black text-sm sm:text-base font-bold shadow-[0_8px_30px_rgba(212,175,55,0.25)] hover:bg-[#b0912f] transition-all duration-300 transform hover:-translate-y-0.5 ${isHigh ? 'liquid-glass-btn-accent-invert' : ''}`}
+              className={`group inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl bg-accent text-black text-sm sm:text-base font-bold shadow-[0_8px_30px_rgba(212,175,55,0.25)] hover:bg-[#b0912f] transition-all duration-300 transform hover:-translate-y-0.5 ${isHigh ? 'liquid-glass-btn-accent-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-accent-invert' : ''}`}
             >
               <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
               Call Now
             </a>
             <a
               href="mailto:delphinassociates@gmail.com"
-              className={`group inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl bg-white border border-gray-200 text-primary-dark text-sm sm:text-base font-bold hover:border-gray-300 hover:shadow-sm transition-all duration-300 transform hover:-translate-y-0.5 ${isHigh ? 'liquid-glass-btn-light-invert' : ''}`}
+              className={`group inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl bg-white border border-gray-200 text-primary-dark text-sm sm:text-base font-bold hover:border-gray-300 hover:shadow-sm transition-all duration-300 transform hover:-translate-y-0.5 ${isHigh ? 'liquid-glass-btn-light-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-light-invert' : ''}`}
             >
               <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
               Send Email
@@ -226,3 +226,4 @@ export default function ContactHero() {
     </div>
   );
 }
+

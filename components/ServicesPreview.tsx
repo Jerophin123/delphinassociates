@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Building2, Factory, School, Church, Wrench, CheckCircle, ArrowRight } from "lucide-react";
-import { usePerformance } from "@/components/PerformanceProvider";
+import { useHPOE } from "@/components/HPOE";
 import GeometricParticleField from "@/components/ui/GeometricParticleField";
 
 const services = [
@@ -84,7 +84,7 @@ const ServiceCard = ({ service, index, tier, reducedMotion }: any) => {
         transformPerspective: 1000,
       }}
       style={{ willChange: "transform, opacity" }}
-      className={`group relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 overflow-hidden ${tier === 'very-low' ? 'bg-black shadow-none scale-100 hover:scale-100' : (tier === 'high' ? 'liquid-glass-card-dark' : (tier === 'mid' ? 'bg-white/[0.05]' : 'bg-[#0a0a0a]'))} border border-white/10 hover:border-accent/40 transition-[border-color,box-shadow,transform] duration-500 hover:shadow-2xl hover:shadow-accent/10 ${tier === 'high' ? '' : (tier === 'very-low' ? '' : 'hover:-translate-y-2')}`}
+      className={`group relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 overflow-hidden ${tier === 'very-low' ? 'bg-black shadow-none scale-100 hover:scale-100' : (tier === 'high' ? 'liquid-glass-card-dark' : (tier === 'mid' ? 'bg-white/[0.05]' : 'bg-[#0a0a0a]'))} border border-white/10 hover:border-accent/40 transition-[border-color,box-shadow,transform] duration-500 hover:shadow-2xl ${tier === 'low' || tier === 'very-low' ? '' : 'hover:shadow-accent/10'} ${tier === 'high' ? '' : (tier === 'very-low' ? '' : 'hover:-translate-y-2')}`}
     >
       {tier === 'high' && isHovered && !reducedMotion && (
         <div
@@ -131,7 +131,7 @@ const ServiceCard = ({ service, index, tier, reducedMotion }: any) => {
 };
 
 export default function ServicesPreview() {
-  const { tier, reducedMotion } = usePerformance();
+  const { tier, reducedMotion } = useHPOE();
 
   return (
     <section

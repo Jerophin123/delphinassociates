@@ -18,7 +18,7 @@ export default function GlobalError({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
-        <div className="min-h-screen pt-32 pb-20 flex items-center justify-center px-4 bg-gray-50 font-sans">
+        <div className="min-h-[100dvh] pt-32 pb-20 flex items-center justify-center px-4 bg-gray-50 font-sans">
           <div className="max-w-2xl w-full text-center space-y-8">
             <div className="flex flex-col justify-center items-center gap-4">
               <div className="w-24 h-24 sm:w-32 sm:h-32 bg-white rounded-full shadow-lg flex items-center justify-center mx-auto border-4 border-red-50">
@@ -60,3 +60,4 @@ export default function GlobalError({
     </html>
   );
 }
+

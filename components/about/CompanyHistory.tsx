@@ -1,10 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { usePerformance } from "../PerformanceProvider";
+import { useHPOE } from "../HPOE";
 
 export default function CompanyHistory() {
-  const { tier } = usePerformance();
+  const { tier } = useHPOE();
   return (
     <section className="mb-12 sm:mb-20 md:mb-24">
       <motion.div
@@ -30,7 +30,7 @@ export default function CompanyHistory() {
             </span>
           </div>
 
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-8 sm:mb-10 font-display text-primary-dark tracking-tight">
+          <h2 className="text-[26px] sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-8 sm:mb-10 font-display text-primary-dark tracking-tight">
             Our History
           </h2>
 
@@ -44,7 +44,7 @@ export default function CompanyHistory() {
             >
               <div className="rounded-[2rem] border border-gray-100 bg-gray-50/50 p-6 sm:p-8">
                 <div className="text-sm font-semibold text-gray-500 tracking-wider uppercase mb-2">Since</div>
-                <div className="text-4xl sm:text-5xl lg:text-6xl font-black text-primary-dark font-display mb-4">1999</div>
+                <div className="text-3xl sm:text-4xl lg:text-6xl font-black text-primary-dark font-display mb-4">1999</div>
                 <div className="text-gray-500 leading-relaxed font-light mt-4">
                   Building trust through quality, delivered by an experienced civil
                   construction team.
@@ -102,3 +102,5 @@ export default function CompanyHistory() {
     </section>
   );
 }
+
+

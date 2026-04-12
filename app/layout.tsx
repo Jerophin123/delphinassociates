@@ -11,7 +11,7 @@ import GA from "@/components/GA";
 import VisitorTracking from "@/components/VisitorTracking";
 import FloatingChatbot from "@/components/FloatingChatbot";
 import ScrollToTop from "@/components/ScrollToTop";
-import { PerformanceProvider } from "@/components/PerformanceProvider";
+import { HPOE } from "@/components/HPOE";
 import CustomCursor from "@/components/ui/CustomCursor";
 import GlobalParticleNetwork from "@/components/GlobalParticleNetwork";
 
@@ -152,7 +152,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${montserrat.variable} font-sans antialiased`}
       >
-        <PerformanceProvider>
+        <HPOE>
           <SEOStructuredData type="Organization" />
           <SEOStructuredData type="WebSite" />
           <Script
@@ -194,15 +194,16 @@ export default function RootLayout({
           </Suspense>
           <VisitorTracking />
           <Header />
-          <main className="min-h-screen">{children}</main>
+          <main className="min-h-[100dvh]">{children}</main>
           <CustomCursor />
           <GlobalParticleNetwork />
           <FloatingChatbot />
           <ScrollToTop />
           <Footer />
           <Analytics />
-        </PerformanceProvider>
+        </HPOE>
       </body>
     </html>
   );
 }
+

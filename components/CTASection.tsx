@@ -3,11 +3,11 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Phone, Mail, ArrowRight } from "lucide-react";
-import { usePerformance } from "./PerformanceProvider";
+import { useHPOE } from "./HPOE";
 import GeometricParticleField from "./ui/GeometricParticleField";
 
 export default function CTASection() {
-  const { tier, reducedMotion } = usePerformance();
+  const { tier, reducedMotion } = useHPOE();
   const isHigh = tier === "high" && !reducedMotion;
 
   return (
@@ -138,13 +138,13 @@ export default function CTASection() {
             <motion.h2
               animate={{ backgroundPosition: ["0% center", "200% center"] }}
               transition={{ repeat: Infinity, ease: "linear", duration: 8 }}
-              className="relative z-10 text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 xl:mb-8 font-display tracking-tight leading-[1.1] text-transparent bg-clip-text bg-gradient-to-r from-primary-dark via-accent to-primary-dark bg-[length:200%_auto]"
+              className="relative z-10 text-[28px] leading-tight sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 xl:mb-8 font-display tracking-tight leading-[1.1] text-transparent bg-clip-text bg-gradient-to-r from-primary-dark via-accent to-primary-dark bg-[length:200%_auto]"
             >
               Ready to Start Your <br className="hidden md:block"/>
               Dream Project?
             </motion.h2>
           ) : (
-            <h2 className="relative z-10 text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 xl:mb-8 font-display tracking-tight leading-[1.1]">
+            <h2 className="relative z-10 text-[28px] leading-tight sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 xl:mb-8 font-display tracking-tight leading-[1.1]">
               Ready to Start Your <br className="hidden md:block"/>
               <span className={`${tier === 'very-low' ? 'text-primary-dark' : 'text-transparent bg-clip-text bg-gradient-to-r from-primary-dark via-primary to-primary-dark bg-[length:200%_auto]'} mt-2 pb-2 inline-block`}>
                 Dream Project?
@@ -160,7 +160,7 @@ export default function CTASection() {
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center w-full sm:w-auto relative z-20">
             <Link
               href="/contact"
-              className={`group relative inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-black transition-all duration-300 bg-accent rounded-xl hover:bg-accent-light hover:shadow-xl hover:shadow-accent/20 w-full sm:w-auto overflow-hidden border border-transparent ${isHigh ? 'liquid-glass-btn-accent-invert' : ''}`}
+              className={`group relative inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-black transition-all duration-300 bg-accent rounded-xl hover:bg-accent-light hover:shadow-xl ${tier === 'low' || tier === 'very-low' ? '' : 'hover:shadow-accent/20'} w-full sm:w-auto overflow-hidden border border-transparent ${isHigh ? 'liquid-glass-btn-accent-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-accent-invert' : ''}`}
             >
               <span className="relative z-10 flex items-center gap-2">
                 Get a Quote
@@ -171,7 +171,7 @@ export default function CTASection() {
             
             <a
               href="tel:+919841243345"
-              className={`group inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-primary-dark transition-all duration-300 bg-white border-2 border-gray-100 rounded-xl hover:border-accent hover:bg-accent/5 hover:text-accent w-full sm:w-auto ${isHigh ? 'liquid-glass-btn-light-invert' : ''}`}
+              className={`group inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-primary-dark transition-all duration-300 bg-white border-2 border-gray-100 rounded-xl hover:border-accent hover:bg-accent/5 hover:text-accent w-full sm:w-auto ${isHigh ? 'liquid-glass-btn-light-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-light-invert' : ''}`}
             >
               <span className="flex items-center gap-2">
                 <Phone className="w-5 h-5 group-hover:-translate-y-1 transition-transform duration-300" />
@@ -213,3 +213,4 @@ export default function CTASection() {
     </section>
   );
 }
+

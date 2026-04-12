@@ -2,7 +2,7 @@
 
 import { useRef, useState, ReactNode } from "react";
 import { motion } from "framer-motion";
-import { usePerformance } from "../PerformanceProvider";
+import { useHPOE } from "../HPOE";
 
 interface MagneticButtonProps {
   children: ReactNode;
@@ -11,7 +11,7 @@ interface MagneticButtonProps {
 }
 
 export default function MagneticButton({ children, className = "", pullScale = 0.15 }: MagneticButtonProps) {
-  const { tier, reducedMotion } = usePerformance();
+  const { tier, reducedMotion } = useHPOE();
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 

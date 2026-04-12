@@ -6,7 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { usePerformance } from "./PerformanceProvider";
+import { useHPOE } from "./HPOE";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -26,7 +26,7 @@ export default function Header() {
   const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
   const [isLightHomeSection, setIsLightHomeSection] = useState(false);
-  const { tier } = usePerformance();
+  const { tier } = useHPOE();
 
   useEffect(() => {
     const updateViewportHeight = () => {

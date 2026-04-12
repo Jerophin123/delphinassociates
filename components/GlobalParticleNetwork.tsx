@@ -1,10 +1,10 @@
 "use client";
 
-import { usePerformance } from "@/components/PerformanceProvider";
+import { useHPOE } from "@/components/HPOE";
 import GeometricParticleField from "@/components/ui/GeometricParticleField";
 
 export default function GlobalParticleNetwork() {
-  const { tier, reducedMotion } = usePerformance();
+  const { tier, reducedMotion } = useHPOE();
 
   if (tier !== "high" || reducedMotion) return null;
 

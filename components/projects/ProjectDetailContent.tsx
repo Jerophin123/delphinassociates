@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { MapPin, Calendar, Church, Home, Factory, GraduationCap, Route, Grid3x3 } from "lucide-react";
-import { usePerformance } from "../PerformanceProvider";
+import { useHPOE } from "../HPOE";
 
 type Project = {
   id: number;
@@ -66,7 +66,7 @@ export default function ProjectDetailContent({
   project,
   detail,
 }: ProjectDetailContentProps) {
-  const { tier, reducedMotion } = usePerformance();
+  const { tier, reducedMotion } = useHPOE();
   return (
     <motion.div
       variants={containerVariants}

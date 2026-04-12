@@ -11,7 +11,7 @@ import {
   CheckCircle,
   ArrowRight,
 } from "lucide-react";
-import { usePerformance } from "../PerformanceProvider";
+import { useHPOE } from "../HPOE";
 import SpotlightCard from "../ui/SpotlightCard";
 import Tilt3DContainer from "../ui/Tilt3DContainer";
 
@@ -67,7 +67,7 @@ const services = [
 ];
 
 export default function ServicesList() {
-  const { tier, reducedMotion } = usePerformance();
+  const { tier, reducedMotion } = useHPOE();
   const isHigh = tier === 'high' && !reducedMotion;
 
   return (
@@ -136,7 +136,7 @@ export default function ServicesList() {
                   <div>
                     <Link
                       href="/contact"
-                      className={`group/btn inline-flex items-center justify-center w-full px-5 py-3 sm:px-6 sm:py-4 ${tier === 'very-low' ? 'bg-white' : 'bg-gray-50 hover:bg-accent'} border border-gray-100 rounded-xl font-bold text-sm sm:text-base text-gray-700 hover:text-black transition-all duration-300 shadow-sm ${tier === 'very-low' ? '' : 'hover:shadow-[0_8px_30px_rgba(212,175,55,0.25)]'} ${isHigh ? 'liquid-glass-btn-accent-invert !bg-accent/10 hover:!bg-accent' : ''}`}
+                      className={`group/btn inline-flex items-center justify-center w-full px-5 py-3 sm:px-6 sm:py-4 ${tier === 'very-low' ? 'bg-white' : 'bg-gray-50 hover:bg-accent'} border border-gray-100 rounded-xl font-bold text-sm sm:text-base text-gray-700 hover:text-black transition-all duration-300 shadow-sm ${tier === 'very-low' ? '' : 'hover:shadow-[0_8px_30px_rgba(212,175,55,0.25)]'} ${isHigh ? 'liquid-glass-btn-accent-invert !bg-accent/10 hover:!bg-accent' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-accent-invert !bg-accent/10 hover:!bg-accent' : ''}`}
                     >
                       <span>Discuss This Service</span>
                       <div className={`ml-2 ${tier === 'very-low' ? '' : 'group-hover/btn:translate-x-1.5'} transition-transform duration-300`}>

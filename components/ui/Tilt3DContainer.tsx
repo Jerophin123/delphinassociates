@@ -2,7 +2,7 @@
 
 import { useRef, ReactNode } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { usePerformance } from "../PerformanceProvider";
+import { useHPOE } from "../HPOE";
 
 interface Tilt3DContainerProps {
   children: ReactNode;
@@ -11,7 +11,7 @@ interface Tilt3DContainerProps {
 }
 
 export default function Tilt3DContainer({ children, className = "", maxRotation = 2 }: Tilt3DContainerProps) {
-  const { tier, reducedMotion } = usePerformance();
+  const { tier, reducedMotion } = useHPOE();
   const ref = useRef<HTMLDivElement>(null);
 
   const x = useMotionValue(0);

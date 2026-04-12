@@ -14,6 +14,11 @@
   }
 }
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
@@ -175,6 +180,75 @@ body::-webkit-scrollbar {
     -webkit-backdrop-filter: blur(8px) !important;
     border: 1px solid rgba(255, 255, 255, 0.4) !important;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* MID TIER: 135DEG GRADIENT FALLBACKS (Replaces High-Tier Glass) */
+  /* ---------------------------------------------------------------------- */
+  html[data-tier="mid"]:not([data-reduced-motion="true"]) [class*="mid-glass-card-light"] {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 245, 245, 0.88) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.7) !important;
+    box-shadow: 0 16px 32px -8px rgba(0,0,0,0.03) !important;
+  }
+
+  html[data-tier="mid"]:not([data-reduced-motion="true"]) [class*="mid-glass-card-dark"] {
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(10, 10, 10, 0.9) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 0 16px 40px -8px rgba(0,0,0,0.2) !important;
+  }
+
+  html[data-tier="mid"]:not([data-reduced-motion="true"]) [class*="mid-glass-btn-light-invert"] {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 240, 240, 0.9) 100%) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.5) !important;
+    box-shadow: 0 4px 12px -2px rgba(0,0,0,0.05), 0 0 12px rgba(255, 255, 255, 0.6) !important;
+    color: #0A0A0A !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  html[data-tier="mid"]:not([data-reduced-motion="true"]) [class*="mid-glass-btn-light-invert"]:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(248, 248, 248, 0.95) 100%) !important;
+    box-shadow: 0 8px 20px -4px rgba(0,0,0,0.08), 0 0 22px rgba(255, 255, 255, 0.9), inset 0 0 15px rgba(255,255,255,0.7) !important;
+  }
+
+  html[data-tier="mid"]:not([data-reduced-motion="true"]) [class*="mid-glass-btn-accent-invert"] {
+    background: linear-gradient(135deg, rgba(240, 210, 100, 0.95) 0%, rgba(212, 175, 55, 0.85) 100%) !important;
+    border: 1px solid rgba(212, 175, 55, 0.3) !important;
+    border-top: 1px solid rgba(212, 175, 55, 0.5) !important;
+    box-shadow: 0 4px 12px -2px rgba(212,175,55,0.2), 0 0 15px rgba(212, 175, 55, 0.6) !important;
+    color: #0A0A0A !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  html[data-tier="mid"]:not([data-reduced-motion="true"]) [class*="mid-glass-btn-accent-invert"]:hover {
+    background: linear-gradient(135deg, rgba(248, 222, 120, 1) 0%, rgba(225, 190, 75, 0.95) 100%) !important;
+    box-shadow: 0 8px 24px -4px rgba(212,175,55,0.4), 0 0 25px rgba(212, 175, 55, 0.9), inset 0 0 20px rgba(255, 220, 140, 0.6) !important;
+  }
+
+  html[data-tier="mid"]:not([data-reduced-motion="true"]) [class*="mid-glass-btn-dark"] {
+    background: linear-gradient(135deg, rgba(40, 40, 40, 0.95) 0%, rgba(20, 20, 20, 0.9) 100%) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 4px 12px -2px rgba(0,0,0,0.3), 0 0 12px rgba(255, 255, 255, 0.3) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  html[data-tier="mid"]:not([data-reduced-motion="true"]) [class*="mid-glass-btn-dark"]:hover {
+    background: linear-gradient(135deg, rgba(50, 50, 50, 1) 0%, rgba(30, 30, 30, 1) 100%) !important;
+    box-shadow: 0 8px 24px -4px rgba(0,0,0,0.5), 0 0 20px rgba(255, 255, 255, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.05) !important;
+  }
+
+  /* Universal Fallback for hardcoded tailwind backdrop-blurs strictly in MID tier */
+  html[data-tier="mid"]:not([data-reduced-motion="true"]) .backdrop-blur-md,
+  html[data-tier="mid"]:not([data-reduced-motion="true"]) .backdrop-blur,
+  html[data-tier="mid"]:not([data-reduced-motion="true"]) .backdrop-blur-lg,
+  html[data-tier="mid"]:not([data-reduced-motion="true"]) .backdrop-blur-sm,
+  html[data-tier="mid"]:not([data-reduced-motion="true"]) .backdrop-blur-xl {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(245, 245, 245, 0.88) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
   }
 
   /* PREMIUM TEXT SHINE & GLOW - FOR HIGH TIER HARDWARE */

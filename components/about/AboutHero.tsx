@@ -1,11 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { usePerformance } from "../PerformanceProvider";
+import { useHPOE } from "../HPOE";
 import GeometricParticleField from "../ui/GeometricParticleField";
 
 export default function AboutHero() {
-  const { tier, reducedMotion } = usePerformance();
+  const { tier, reducedMotion } = useHPOE();
   const isHigh = tier === "high" && !reducedMotion;
 
   return (
@@ -133,7 +133,7 @@ export default function AboutHero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-display tracking-tight mb-4 sm:mb-6"
+          className="text-[28px] leading-tight sm:text-4xl md:text-5xl lg:text-7xl font-bold font-display tracking-tight mb-4 sm:mb-6"
         >
           {isHigh ? (
             <motion.span
@@ -186,3 +186,5 @@ export default function AboutHero() {
     </div>
   );
 }
+
+

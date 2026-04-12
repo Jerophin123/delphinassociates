@@ -5,11 +5,11 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Play } from "lucide-react";
-import { usePerformance } from "@/components/PerformanceProvider";
+import { useHPOE } from "@/components/HPOE";
 import MagneticButton from "./ui/MagneticButton";
 
 export default function Hero() {
-  const { tier, reducedMotion } = usePerformance();
+  const { tier, reducedMotion } = useHPOE();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { scrollY } = useScroll();
   const gridY = useTransform(scrollY, [0, 1000], [0, 250]); // Substantial but buttery depth parallax
@@ -35,7 +35,7 @@ export default function Hero() {
   }, [tier, reducedMotion]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pb-12 sm:pb-8 md:pb-6 lg:pb-0" style={{ marginBottom: 0 }}>
+    <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden pb-12 sm:pb-8 md:pb-6 lg:pb-0" style={{ marginBottom: 0 }}>
       {/* Hero Image Background - covers full viewport including header area */}
       <div className="fixed inset-0 w-full h-full z-0" style={{ transform: 'translateZ(0)', bottom: 0, height: '100vh', backgroundColor: tier === 'very-low' ? '#0A0A0A' : 'transparent' }}>
         {tier !== 'very-low' && (
@@ -170,7 +170,7 @@ export default function Hero() {
             }}
             style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
           >
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-8xl 2xl:text-8xl font-bold mb-4 sm:mb-5 md:mb-6 lg:mb-8 font-display leading-[1.1] md:leading-tight tracking-[0.02em]">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-8xl 2xl:text-8xl font-bold mb-4 sm:mb-5 md:mb-6 lg:mb-8 font-display leading-[1.1] md:leading-tight tracking-[0.02em]">
               <motion.span 
                 className={`block ${tier === 'very-low' ? 'text-white' : `text-transparent bg-clip-text ${tier === 'high' ? 'bg-[linear-gradient(110deg,#D4AF37_0%,#C5A46D_15%,#FFF2B3_30%,#FFFFFF_50%,#FFF2B3_70%,#C5A46D_85%,#D4AF37_100%)] hero-text-premium hero-text-premium-glow' : 'bg-gradient-to-l from-[#FFFFFF] via-[#FFF2B3] to-[#D4AF37]'}`} ${tier === 'low' || tier === 'very-low' ? '' : 'drop-shadow-[0_0_22px_rgba(212,175,55,0.65)]'}`}
                 initial={reducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -15 }}
@@ -239,26 +239,20 @@ export default function Hero() {
               <MagneticButton className="w-full sm:w-auto">
                 <Link
                   href="/contact"
-                  className={`group relative px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 rounded-xl font-bold text-sm sm:text-base md:text-lg transition-all duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 overflow-hidden w-full sm:w-auto min-h-[44px] sm:min-h-[52px] md:min-h-[56px] will-change-transform ${tier === 'high' && !reducedMotion ? 'bg-accent/15 backdrop-blur-xl border border-white/20 text-white shadow-[0_8px_20px_rgba(0,0,0,0.15),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:bg-accent/25 hover:border-white/30 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.5)]' : `bg-accent text-black hover:bg-accent-light ${tier === 'low' ? '' : 'shadow-2xl shadow-accent/30 hover:shadow-accent/55 hover:scale-[1.02] active:scale-[0.98]'}`}`}
+                  className={`group relative px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 rounded-xl font-bold text-sm sm:text-base md:text-lg transition-all duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 overflow-hidden w-full sm:w-auto min-h-[44px] sm:min-h-[52px] md:min-h-[56px] will-change-transform ${tier === 'high' && !reducedMotion ? 'bg-accent/15 backdrop-blur-xl border border-white/20 text-white shadow-[0_8px_20px_rgba(0,0,0,0.15),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:bg-accent/25 hover:border-white/30 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.5)]' : (tier === 'mid' && !reducedMotion) ? 'mid-glass-btn-accent-invert' : `bg-accent text-black hover:bg-accent-light ${tier === 'low' || tier === 'very-low' ? '' : 'shadow-2xl shadow-accent/30 hover:shadow-accent/55 hover:scale-[1.02] active:scale-[0.98]'}`}`}
                 style={{ transform: 'translateZ(0)' }}
               >
                 <span className="relative z-10">Start Your Project</span>
                 <ArrowRight
-                  className={`relative z-10 ${tier === 'low' ? '' : 'group-hover:translate-x-1'} transition-transform duration-300 ease-out will-change-transform w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6`}
+                  className={`relative z-10 ${tier === 'low' || tier === 'very-low' ? '' : 'group-hover:translate-x-1'} transition-transform duration-300 ease-out will-change-transform w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6`}
                   style={{ transform: 'translateZ(0)' }}
                 />
-                {tier === 'mid' && (
-                  <>
-                    <div className="absolute inset-0 bg-gradient-to-r from-accent-light via-accent to-accent-light opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
-                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
-                  </>
-                )}
                 </Link>
               </MagneticButton>
               <MagneticButton className="w-full sm:w-auto">
                 <Link
                   href="/projects"
-                className={`group px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 border-2 rounded-xl font-bold text-sm sm:text-base md:text-lg transition-all duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 w-full sm:w-auto min-h-[44px] sm:min-h-[52px] md:min-h-[56px] will-change-transform ${tier === 'high' && !reducedMotion ? 'bg-white/5 backdrop-blur-xl text-white border-white/15 shadow-[0_8px_20px_rgba(0,0,0,0.1),inset_0_1px_1px_rgba(255,255,255,0.25)] hover:bg-white/10 hover:border-white/30 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.4)]' : `text-white ${tier === 'low' || tier === 'mid' ? 'bg-black/60 border-accent' : 'bg-primary-dark/25 backdrop-blur-sm border-accent/60 shadow-xl hover:shadow-[0_0_30px_rgba(212,175,55,0.12)] hover:scale-[1.02] active:scale-[0.98]'} hover:bg-accent/10 hover:text-accent hover:border-accent/90`}`}
+                className={`group px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 border-2 rounded-xl font-bold text-sm sm:text-base md:text-lg transition-all duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 w-full sm:w-auto min-h-[44px] sm:min-h-[52px] md:min-h-[56px] will-change-transform ${tier === 'high' && !reducedMotion ? 'bg-white/5 backdrop-blur-xl text-white border-white/15 shadow-[0_8px_20px_rgba(0,0,0,0.1),inset_0_1px_1px_rgba(255,255,255,0.25)] hover:bg-white/10 hover:border-white/30 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.4)]' : (tier === 'mid' && !reducedMotion) ? 'mid-glass-btn-dark' : `text-white ${tier === 'low' ? 'bg-black/60 border-accent' : 'bg-primary-dark/25 backdrop-blur-sm border-accent/60 shadow-xl hover:shadow-[0_0_30px_rgba(212,175,55,0.12)] hover:scale-[1.02] active:scale-[0.98]'} hover:bg-accent/10 hover:text-accent hover:border-accent/90`}`}
                 style={{ transform: 'translateZ(0)' }}
               >
                 <Play className={`${tier === 'low' ? '' : 'group-hover:scale-110'} transition-transform duration-300 ease-out will-change-transform w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6`} style={{ transform: 'translateZ(0)' }} />
@@ -271,22 +265,26 @@ export default function Hero() {
       </div>
 
       {/* Optimized Scroll Indicator - GPU accelerated */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.8, repeat: Infinity, repeatType: "reverse", duration: 2.5 }}
-        className="absolute bottom-6 sm:bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 z-10 hidden md:block pointer-events-none"
-        style={{ willChange: 'opacity', transform: 'translateZ(0) translateX(-50%)' }}
-      >
-        <div className={`w-6 h-10 md:w-7 md:h-11 border-2 border-accent/40 rounded-full flex justify-center ${tier === 'low' || tier === 'mid' ? 'bg-primary-dark/80' : 'backdrop-blur-sm bg-primary-dark/30'} shadow-lg`} style={{ transform: 'translateZ(0)' }}>
-          <motion.div
-            animate={{ y: [0, 14, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            className="w-1.5 h-3 md:h-3.5 bg-accent rounded-full mt-2"
-            style={{ willChange: 'transform', transform: 'translateZ(0)' }}
-          />
-        </div>
-      </motion.div>
+      {tier !== 'very-low' && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.8, repeat: Infinity, repeatType: "reverse", duration: 2.5 }}
+          className="absolute bottom-6 sm:bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 z-10 hidden md:block pointer-events-none"
+          style={{ willChange: 'opacity', transform: 'translateZ(0) translateX(-50%)' }}
+        >
+          <div className={`w-6 h-10 md:w-7 md:h-11 border-2 border-accent/40 rounded-full flex justify-center ${tier === 'low' || tier === 'mid' ? 'bg-primary-dark/80' : 'backdrop-blur-sm bg-primary-dark/30'} shadow-lg`} style={{ transform: 'translateZ(0)' }}>
+            <motion.div
+              animate={{ y: [0, 14, 0] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+              className="w-1.5 h-3 md:h-3.5 bg-accent rounded-full mt-2"
+              style={{ willChange: 'transform', transform: 'translateZ(0)' }}
+            />
+          </div>
+        </motion.div>
+      )}
     </section>
   );
 }
+
+

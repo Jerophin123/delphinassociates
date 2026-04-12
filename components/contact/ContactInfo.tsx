@@ -2,12 +2,12 @@
 
 import { motion } from "framer-motion";
 import { BadgeCheck, Clock, Mail, MapPin, Phone } from "lucide-react";
-import { usePerformance } from "../PerformanceProvider";
+import { useHPOE } from "../HPOE";
 import SpotlightCard from "../ui/SpotlightCard";
 import Tilt3DContainer from "../ui/Tilt3DContainer";
 
 export default function ContactInfo() {
-  const { tier, reducedMotion } = usePerformance();
+  const { tier, reducedMotion } = useHPOE();
   const isHigh = tier === 'high' && !reducedMotion;
 
   return (

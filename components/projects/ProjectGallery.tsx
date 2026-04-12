@@ -17,7 +17,7 @@ import {
   Route,
 } from "lucide-react";
 import projectsData from "@/data/projects.json";
-import { usePerformance } from "../PerformanceProvider";
+import { useHPOE } from "../HPOE";
 
 type Project = {
   id: number;
@@ -44,7 +44,7 @@ const getCategoryIcon = (category: string) => {
 };
 
 export default function ProjectGallery() {
-  const { tier } = usePerformance();
+  const { tier } = useHPOE();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [query, setQuery] = useState("");
   const [sortBy, setSortBy] = useState<"newest" | "oldest" | "title">("newest");
@@ -136,7 +136,7 @@ export default function ProjectGallery() {
                     onClick={() => setSelectedCategory(category.name)}
                     className={`group relative px-4 sm:px-5 py-1.5 sm:py-2 rounded-2xl font-semibold text-xs sm:text-sm transition-all duration-300 flex items-center gap-2 ${
                       isActive
-                        ? `${tier === 'very-low' ? 'bg-accent text-black' : `bg-gradient-to-r ${category.gradient} text-white`} shadow-lg shadow-accent/25 scale-105`
+                        ? `${tier === 'very-low' ? 'bg-accent text-black' : `bg-gradient-to-r ${category.gradient} text-white`} shadow-lg ${(tier === 'low' || tier === 'very-low') ? '' : 'shadow-accent/25'} scale-105`
                         : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-gray-300 shadow-sm"
                     }`}
                     whileHover={{ scale: 1.03 }}

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, MapPin, Calendar, Church, Home, Factory, GraduationCap, Route, Grid3x3 } from "lucide-react";
-import { usePerformance } from "./PerformanceProvider";
+import { useHPOE } from "./HPOE";
 import SpotlightCard from "./ui/SpotlightCard";
 import Tilt3DContainer from "./ui/Tilt3DContainer";
 
@@ -50,7 +50,7 @@ const featuredProjects = [
 ];
 
 export default function ProjectHighlights() {
-  const { tier, reducedMotion } = usePerformance();
+  const { tier, reducedMotion } = useHPOE();
   const isHigh = tier === 'high' && !reducedMotion;
 
   return (
@@ -75,7 +75,7 @@ export default function ProjectHighlights() {
             </span>
             <span className="h-[2px] w-8 bg-accent"></span>
           </div>
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6 font-display text-primary-dark tracking-tight">
+          <h2 className="text-[28px] sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 font-display text-primary-dark tracking-tight">
             Featured Projects
           </h2>
           <p className="text-sm sm:text-lg md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed font-light">
@@ -188,7 +188,7 @@ export default function ProjectHighlights() {
         >
           <Link
             href="/projects"
-            className={`group inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-black transition-all duration-300 bg-accent rounded-xl hover:bg-accent-light hover:shadow-xl hover:shadow-accent/20 ${isHigh ? 'liquid-glass-btn-accent-invert' : ''}`}
+            className={`group inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-black transition-all duration-300 bg-accent rounded-xl hover:bg-accent-light hover:shadow-xl ${tier === 'low' || tier === 'very-low' ? '' : 'hover:shadow-accent/20'} ${isHigh ? 'liquid-glass-btn-accent-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-accent-invert' : ''}`}
           >
             <span className="flex items-center gap-2">
               Explore All Projects
@@ -200,3 +200,4 @@ export default function ProjectHighlights() {
     </section>
   );
 }
+

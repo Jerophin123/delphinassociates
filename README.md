@@ -272,7 +272,7 @@ delphin-associates/
 │   ├── FloatingChatbot.tsx        # BEHEMOTH component handling rule-based AI & 'Liquid Glass' UI
 │   ├── Footer.tsx                 # Standardized global footer with 12-column grid compliance
 │   ├── Navigation.tsx             # Responsive header, handles scroll locking and hamburger menus
-│   ├── PerformanceProvider.tsx    # Hardware-aware environment profiler & tier manager
+│   ├── HPOE.tsx                   # Hardware-aware environment profiler & tier manager
 │   ├── SEOStructuredData.tsx      # Headless component pumping dynamic JSON-LD into the <head>
 │   └── services/
 │       └── ServicesCTA.tsx         # Standardized 'Liquid Glass' call-to-action component
@@ -323,7 +323,9 @@ To dominate Chennai's local SEO for "Civil Construction", standard `<title>` and
 - **`LocalBusiness` Schema**: Includes hyper-specific metadata such as `geo` coordinates (Latitude 12.958168, Longitude 80.203867), `openingHoursSpecification`, `priceRange`, and an exhaustive `hasOfferCatalog` listing our specific services. 
 - **Google Knowledge Graph**: Automatically binds our social networks (Instagram, X, LinkedIn, Threads) in the `sameAs` array, ensuring Google parses Delphin Associates as a verified, multi-platform corporaton.
 
-### Heuristic Page Optimization Engine (HPOE) (`components/PerformanceProvider.tsx`)
+### Heuristic Page Optimization Engine (HPOE) (`components/HPOE.tsx`)
+
+*Architected and developed by Jerophin D R.*
 
 Because civil architecture demands an uncompromising, cinematic web presence containing heavy glassmorphism, overlapping CSS filters, and massive radial blurs (`backdrop-filter: blur(120px)`), rendering the site natively on lower-end devices would cause severe layout thrashing and scrolling lag. We engineered a highly sophisticated, real-time algorithmic workaround known as the **Heuristic Page Optimization Engine (HPOE)**.
 
@@ -335,16 +337,20 @@ Unlike standard media queries, HPOE performs a multi-dimensional analysis of the
 
 #### Phase 2: Tier Classification (Fidelity Mapping)
 HPOE maps the hardware results into four distinct visual fidelity tiers:
-- **HIGH (Flagship)**: Unlocks full cinematic interactivity including Geometric Particle Fields, 3D Tilts, and "Liquid Glass" (frosted glass blurs).
-- **MID (Performance)**: Retains premium layouts but disables expensive backdrop-filters to ensure perfect 60fps scrolling on mid-range laptops and phones.
-- **LOW (Balanced)**: Enforces flat, opaque aesthetics and strips heavy animations for budget/legacy devices.
-- **VERY LOW (Ultra-Low Spec)**: "Rock-bottom" reliability mode using pure solid colors and zero gradients for ultra-low-spec hardware (<= 2GB RAM).
+- **HIGH (Flagship)**: Unlocks full cinematic interactivity including Geometric Particle Fields, 3D tilts, dynamic ambient button glows, and "Liquid Glass" (frosted glass blurs).
+- **MID (Performance)**: Retains premium layouts and ambient CSS glow systems, but disables expensive structural backdrop-filters to ensure perfect smoothness on mid-range laptops and high-end phones.
+- **LOW (Balanced)**: Enforces flat, opaque aesthetics. Strips completely heavy glows (`shadow-accent`), structural blurs, and physics-heavy animations to guarantee a 60fps baseline for budget/legacy devices.
+- **VERY LOW (Ultra-Low Spec)**: "Rock-bottom" reliability mode specifically forced on any device with **less than 3GB RAM** or **less than 3 CPU Cores**. Activating this tier performs aggressive structural changes:
+  - Artificially triggers `reducedMotion=true` across the root physics engine to instantly eliminate all framer-motion parallax and hover scaling.
+  - Mathematically sweeps away all CSS gradients replacing them with solid, single-hex background fills elements.
+  - Dynamically unmounts entire background components (e.g., `FloatingChatbot`, `Scroll Indicators`) saving megabytes of RAM.
+  - Severes audio hook bindings entirely to prevent OS-level media resource scheduling memory leaks.
 
 #### Phase 3: The Sustained FPS Guard (Real-Time Safety Net)
 This is the "living" part of the engine. HPOE monitors the actual frame rate (FPS) during user interaction:
-- **Thermal Throttling Detection**: If the device begins to overheat or background processes cause the FPS to drop below **45 FPS** for 3 consecutive seconds, HPOE triggers an **Emergency Downgrade**.
+- **Uncapped High Refresh Rate Support**: Intelligently locks in baselines infinitely scaled to the display's maximum output capability (144Hz, 240Hz, 360Hz, 500Hz, 700Hz+).
+- **Thermal Throttling Detection**: If the device begins to overheat or background processes cause the FPS to drop below **40 FPS** for 3 consecutive seconds, HPOE triggers an **Emergency Downgrade**. This rule is enforced predictably regardless of what display type is used.
 - **Mid-Session Battery Saver Detection**: Uniquely identifies when the OS or user forcefully caps the refresh rate to 30Hz. By verifying stable pacing (averaging ~30fps with `< 45ms` frame delta jitter), the engine dynamically re-calibrates downgrade thresholds (e.g., dropping the acceptable floor down to 22 FPS) rather than aggressively stripping premium animations. This ensures laptops and phones on battery saver retain the "Liquid Glass" aesthetics while honoring the OS-level frame limits.
-- **Real-Time UI Adaptation**: The engine gracefully strips heavy DOM elements and filters in real-time without requiring a page refresh, ensuring the user experience remains fluid regardless of environmental changes.
 
 #### Zero-Latency Execution
 HPOE is architected to be exceptionally lightweight, executing its full hardware scan and benchmark in under 50ms upon initialization. By bypassing caching, HPOE ensures that system changes (like entering Battery Saver mode or plugging in a high-res monitor) are respected immediately upon the next visit.
@@ -367,6 +373,9 @@ FUNCTION Initialize_HPOE():
        gpu_renderer_string = "unknown"
        
   6. Calculate Hardware Tier (HIGH, MID, LOW, VERY_LOW):
+       IF memory < 3 OR core_count < 3: Return VERY_LOW
+       IF is_reduced_motion: Return LOW
+       
        IF gpu_renderer_string MATCHES "Apple M[1-9] (Max|Pro|Ultra)": Return HIGH
        IF gpu_renderer_string MATCHES "NVIDIA RTX|GTX High": Return HIGH
        IF gpu_renderer_string MATCHES "AMD RDNA|Vega High": Return HIGH
@@ -376,8 +385,6 @@ FUNCTION Initialize_HPOE():
        IF IS_MOBILE AND Calculated_Tier == HIGH: 
            Calculated_Tier = MID // Hard cap for mobile thermals
            
-       IF core_count <= 2 OR memory <= 2: Return VERY_LOW
-       
   7. Apply Calculated Tier to Document Root (e.g., data-tier="mid")
   
   8. Start Sustained FPS Guard (Only if Tier != LOW/VERY_LOW):

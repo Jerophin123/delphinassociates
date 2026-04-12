@@ -9,7 +9,7 @@ import {
   ClipboardCheck,
   LifeBuoy,
 } from "lucide-react";
-import { usePerformance } from "../PerformanceProvider";
+import { useHPOE } from "../HPOE";
 import SpotlightCard from "../ui/SpotlightCard";
 import Tilt3DContainer from "../ui/Tilt3DContainer";
 
@@ -53,7 +53,7 @@ const strengths = [
 ];
 
 export default function OrganizationStrengths() {
-  const { tier, reducedMotion } = usePerformance();
+  const { tier, reducedMotion } = useHPOE();
   const isHigh = tier === 'high' && !reducedMotion;
 
   return (
@@ -71,7 +71,7 @@ export default function OrganizationStrengths() {
             Why Choose Us
           </span>
         </div>
-        <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold font-display text-primary-dark tracking-tight">
+        <h2 className="text-[26px] sm:text-3xl md:text-4xl lg:text-5xl font-bold font-display text-primary-dark tracking-tight">
           Organization Strengths
         </h2>
       </motion.div>
@@ -118,3 +118,4 @@ export default function OrganizationStrengths() {
     </section>
   );
 }
+

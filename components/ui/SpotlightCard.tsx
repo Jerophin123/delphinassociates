@@ -2,7 +2,7 @@
 
 import { useRef, useState, ReactNode } from "react";
 import { motion } from "framer-motion";
-import { usePerformance } from "../PerformanceProvider";
+import { useHPOE } from "../HPOE";
 
 interface SpotlightCardProps {
   children: ReactNode;
@@ -15,7 +15,7 @@ export default function SpotlightCard({
   className = "", 
   spotlightColor = "rgba(212, 175, 55, 0.07)" 
 }: SpotlightCardProps) {
-  const { tier, reducedMotion } = usePerformance();
+  const { tier, reducedMotion } = useHPOE();
   const boxRef = useRef<HTMLDivElement>(null);
   
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
