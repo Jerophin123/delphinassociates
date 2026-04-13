@@ -333,7 +333,7 @@ Because civil architecture demands an uncompromising, cinematic web presence con
 Unlike standard media queries, HPOE performs a multi-dimensional analysis of the device's internal specifications on every load:
 - **GPU Signature Unmasking**: Using a hidden WebGL canvas, HPOE unmasks generic renderer strings to identify the raw hardware vendor and renderer (e.g., `Apple M2`, `Nvidia RTX`, `Adreno 740`).
 - **Memory & Compute Density**: Queries `navigator.deviceMemory` and `navigator.hardwareConcurrency` to classify the machine’s multitasking and multi-core processing capability.
-- **Regex Signature Matrix**: A massive, proprietary RegExp engine targets all major Desktop and Mobile ecosystems (Apple, NVIDIA, AMD, Intel, Qualcomm, Samsung, MediaTek, ARM Mali, PowerVR).
+- **Regex Signature Matrix**: A massive, proprietary RegExp engine targets all major Desktop and Mobile ecosystems, explicitly supporting Apple, NVIDIA, AMD, Intel, Qualcomm (including ARM PCs like Snapdragon X Series), Samsung, MediaTek, ARM Mali (Desktop & Mobile), PowerVR, and Broadcom/VideoCore (Raspberry Pi).
 
 #### Phase 2: Tier Classification (Fidelity Mapping)
 HPOE maps the hardware results into four distinct visual fidelity tiers:
@@ -379,8 +379,10 @@ FUNCTION Initialize_HPOE():
        IF gpu_renderer_string MATCHES "Apple M[1-9] (Max|Pro|Ultra)": Return HIGH
        IF gpu_renderer_string MATCHES "NVIDIA RTX|GTX High": Return HIGH
        IF gpu_renderer_string MATCHES "AMD RDNA|Vega High": Return HIGH
+       IF gpu_renderer_string MATCHES "Snapdragon X Series (ARM PC)": Return HIGH
        IF gpu_renderer_string MATCHES "Snapdragon 8|Adreno 700|Apple A-Series": Return MID
        IF gpu_renderer_string MATCHES "Intel Iris|Arc": Return MID
+       IF gpu_renderer_string MATCHES "VideoCore (Raspberry Pi)": Return LOW/VERY_LOW
        
        IF IS_MOBILE AND Calculated_Tier == HIGH: 
            Calculated_Tier = MID // Hard cap for mobile thermals

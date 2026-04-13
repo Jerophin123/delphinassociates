@@ -178,41 +178,48 @@ export function HPOE({ children }: { children: ReactNode }) {
           calculatedTier = "low"; 
         }
       }
-      // 5. QUALCOMM ADRENO / SNAPDRAGON (ANDROID)
+      // 5. QUALCOMM ADRENO / SNAPDRAGON (ANDROID & ARM PC)
       else if (renderer.includes("adreno") || renderer.includes("snapdragon")) {
         specs.vendor = "Qualcomm";
-        specs.type = "Mobile";
         const match = renderer.match(/adreno\s*([0-9]{3})/);
         const series = match ? parseInt(match[1]) : 0;
         
-        if (series >= 800 || renderer.includes("snapdragon 8 elite") || renderer.includes("elite")) {
-          specs.architecture = series ? `Adreno ${series}` : "Snapdragon 8 Elite Flagship";
-          specs.estimatedClass = "High-End";
-          calculatedTier = "high"; // Will be capped to mid by fail-safe for thermals
-        } else if (series >= 730 || renderer.includes("snapdragon 8 gen")) {
-          specs.architecture = series ? `Adreno ${series}` : "Snapdragon 8 Gen Flagship";
+        if (renderer.includes("snapdragon x") || renderer.includes("x elite") || renderer.includes("x plus") || (series >= 900)) {
+          specs.type = "Integrated";
+          specs.architecture = "Snapdragon X Series (ARM Desktop)";
           specs.estimatedClass = "High-End";
           calculatedTier = "high";
-        } else if (series >= 650 || renderer.includes("snapdragon 8") || renderer.includes("snapdragon 7")) {
-          specs.architecture = series ? `Adreno ${series}` : "Snapdragon 7/8 Series";
-          specs.estimatedClass = "Mid-Range";
-          calculatedTier = "mid";
-        } else if ((series === 0 && coreCount >= 8 && maxTextureSize >= 8192) || renderer.includes("snapdragon")) {
-          // Fallback logic! If browser scrubbed the Adreno version number from string
-          // but phone has 8 cores and supports heavy textures, it's a modern Snapdragon (Mid Tier).
-          specs.architecture = `Modern Adreno/Snapdragon (Masked)`;
-          specs.estimatedClass = "Mid-Range";
-          calculatedTier = "mid";
         } else {
-          specs.architecture = `Adreno ${series || "Legacy"}`;
-          specs.estimatedClass = "Budget/Legacy";
-          calculatedTier = "low";
+          specs.type = isMobileDevice ? "Mobile" : "Integrated";
+          if (series >= 800 || renderer.includes("snapdragon 8 elite") || renderer.includes("elite")) {
+            specs.architecture = series ? `Adreno ${series}` : "Snapdragon 8 Elite Flagship";
+            specs.estimatedClass = "High-End";
+            calculatedTier = "high"; // Will be capped to mid by fail-safe for thermals
+          } else if (series >= 730 || renderer.includes("snapdragon 8 gen")) {
+            specs.architecture = series ? `Adreno ${series}` : "Snapdragon 8 Gen Flagship";
+            specs.estimatedClass = "High-End";
+            calculatedTier = "high";
+          } else if (series >= 650 || renderer.includes("snapdragon 8") || renderer.includes("snapdragon 7")) {
+            specs.architecture = series ? `Adreno ${series}` : "Snapdragon 7/8 Series";
+            specs.estimatedClass = "Mid-Range";
+            calculatedTier = "mid";
+          } else if ((series === 0 && coreCount >= 8 && maxTextureSize >= 8192) || renderer.includes("snapdragon")) {
+            // Fallback logic! If browser scrubbed the Adreno version number from string
+            // but phone has 8 cores and supports heavy textures, it's a modern Snapdragon (Mid Tier).
+            specs.architecture = `Modern Adreno/Snapdragon (Masked)`;
+            specs.estimatedClass = "Mid-Range";
+            calculatedTier = "mid";
+          } else {
+            specs.architecture = `Adreno ${series || "Legacy"}`;
+            specs.estimatedClass = "Budget/Legacy";
+            calculatedTier = "low";
+          }
         }
       }
-      // 6. ARM MALI (ANDROID)
+      // 6. ARM MALI (MOBILE & ARM DESKTOP)
       else if (renderer.includes("mali")) {
         specs.vendor = "ARM";
-        specs.type = "Mobile";
+        specs.type = isMobileDevice ? "Mobile" : "Integrated";
         if (/immortalis/.test(renderer) || /g[7-9][1-9][0-9]/.test(renderer) || /g7[7-9]/.test(renderer)) {
           specs.architecture = "Mali Valhall / Immortalis Flagship";
           specs.estimatedClass = "High-End";
@@ -289,8 +296,22 @@ export function HPOE({ children }: { children: ReactNode }) {
         specs.estimatedClass = "Budget/Legacy";
         calculatedTier = "low"; // Mostly entry-level hardware
       }
+      // 11. BROADCOM / RASPBERRY PI
+      else if (renderer.includes("videocore") || renderer.includes("v3d") || renderer.includes("broadcom") || renderer.includes("raspberry")) {
+        specs.vendor = "Broadcom";
+        specs.type = "Integrated";
+        if (renderer.includes("v3d 4") || renderer.includes("v3d 4.2") || renderer.includes("videocore vi") || renderer.includes("videocore vii")) {
+          specs.architecture = "VideoCore VI/VII (Raspberry Pi 4/5)";
+          specs.estimatedClass = "Budget/Legacy";
+          calculatedTier = "low"; // Pi 4/5 are capable but struggle with high-end blurs
+        } else {
+          specs.architecture = "VideoCore IV/V (Raspberry Pi Legacy)";
+          specs.estimatedClass = "Budget/Legacy";
+          calculatedTier = "very-low";
+        }
+      }
 
-      // 11. FALLBACK FOR UNKNOWN GPUs
+      // 12. FALLBACK FOR UNKNOWN GPUs
       if (renderer === "unknown gpu" || renderer === "unknown" || specs.vendor === "Unknown") {
         specs.estimatedClass = "Budget/Legacy";
         calculatedTier = "low";
