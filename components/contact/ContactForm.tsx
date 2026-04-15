@@ -84,7 +84,7 @@ export default function ContactForm() {
       className="h-full"
     >
       <SpotlightCard
-        className={`${tier === 'very-low' ? 'bg-white' : 'bg-white/95 liquid-glass-card'} rounded-[2.5rem] border border-gray-100 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 p-5 sm:p-8 md:p-10 will-change-transform ${isHigh ? 'premium-border-glow hover:border-gray-200' : 'hover:-translate-y-2 hover:border-gray-200'}`}
+        className={`h-full flex flex-col ${tier === 'very-low' ? 'bg-white' : 'bg-white/95 liquid-glass-card'} rounded-[2.5rem] border border-gray-100 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 p-5 sm:p-8 md:p-10 will-change-transform ${isHigh ? 'premium-border-glow hover:border-gray-200' : 'hover:-translate-y-2 hover:border-gray-200'}`}
       >
         <div className="mb-3 sm:mb-6 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 sm:px-5 py-1.5 sm:py-2 rounded-full border border-accent/25 bg-accent/10 text-accent font-semibold text-[10px] sm:text-sm">
@@ -112,7 +112,7 @@ export default function ContactForm() {
           )}
         </AnimatePresence>
 
-        <div className="relative z-10">
+        <div className="relative z-10 flex flex-col flex-1">
           {isSubmitted ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
@@ -134,8 +134,8 @@ export default function ContactForm() {
             </motion.div>
           ) : (
             <>
-              <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-5 md:space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5">
+              <form onSubmit={handleSubmit} className="flex flex-col flex-1 space-y-3 sm:space-y-5 md:space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5 shrink-0">
                   <div>
                     <label htmlFor="name" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                       Full Name *
@@ -168,7 +168,7 @@ export default function ContactForm() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5 shrink-0">
                   <div>
                     <label htmlFor="phone" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                       Phone Number *
@@ -215,19 +215,19 @@ export default function ContactForm() {
                   </div>
                 </div>
 
-                <div>
-                  <label htmlFor="message" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                <div className="flex flex-col flex-1">
+                  <label htmlFor="message" className="block shrink-0 text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
                     Message *
                   </label>
                   <textarea
                     id="message"
                     name="message"
                     required
-                    rows={4}
+                    rows={6}
                     autoComplete="off"
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-sm border border-gray-200/80 bg-gray-50/50 rounded-xl focus:bg-white focus:ring-2 focus:ring-accent/50 focus:border-accent hover:border-gray-300 transition-all duration-300 disabled:bg-gray-100 disabled:cursor-not-allowed resize-y font-light"
+                    className="flex-1 min-h-[140px] w-full px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-sm border border-gray-200/80 bg-gray-50/50 rounded-xl focus:bg-white focus:ring-2 focus:ring-accent/50 focus:border-accent hover:border-gray-300 transition-all duration-300 disabled:bg-gray-100 disabled:cursor-not-allowed resize-none font-light"
                   />
                 </div>
 
@@ -236,7 +236,7 @@ export default function ContactForm() {
                   disabled={isSubmitting}
                   whileHover={isHigh ? { scale: 1.02 } : {}}
                   transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                  className={`w-full mt-2 group inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl bg-accent text-black text-sm sm:text-base font-bold shadow-[0_8px_30px_rgba(212,175,55,0.25)] hover:bg-[#b0912f] transition-all duration-300 disabled:bg-accent/40 disabled:hover:translate-y-0 disabled:shadow-none disabled:cursor-not-allowed ${isHigh ? 'liquid-glass-btn-accent-invert' : 'hover:-translate-y-0.5'}`}
+                  className={`shrink-0 w-full mt-2 group inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl bg-accent text-black text-sm sm:text-base font-bold shadow-[0_8px_30px_rgba(212,175,55,0.25)] hover:bg-[#b0912f] transition-all duration-300 disabled:bg-accent/40 disabled:hover:translate-y-0 disabled:shadow-none disabled:cursor-not-allowed ${isHigh ? 'liquid-glass-btn-accent-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-accent-invert' : 'hover:-translate-y-0.5'}`}
                 >
                   <span>{isSubmitting ? "Submitting..." : "Send Message"}</span>
                   {!isSubmitting && (
@@ -250,7 +250,7 @@ export default function ContactForm() {
                 </motion.button>
               </form>
 
-              <p className="mt-4 text-[11px] sm:text-xs text-gray-500 font-light">
+              <p className="shrink-0 mt-4 text-[11px] sm:text-xs text-gray-500 font-light">
                 By submitting, you agree that we may contact you regarding your inquiry.
               </p>
             </>

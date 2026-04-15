@@ -13,7 +13,7 @@ export default function ContactInfo() {
   return (
     <Tilt3DContainer maxRotation={4} className="h-full">
       <SpotlightCard
-        className={`bg-gradient-to-br from-gray-50/95 to-white/95 liquid-glass-card rounded-[2.5rem] border border-gray-100 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 p-5 sm:p-8 md:p-10 will-change-transform ${isHigh ? 'premium-border-glow hover:border-gray-200' : 'hover:-translate-y-2 hover:border-gray-200'}`}
+        className={`h-full flex flex-col bg-gradient-to-br from-gray-50/95 to-white/95 liquid-glass-card rounded-[2.5rem] border border-gray-100 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 p-5 sm:p-8 md:p-10 will-change-transform ${isHigh ? 'premium-border-glow hover:border-gray-200' : 'hover:-translate-y-2 hover:border-gray-200'}`}
       >
         <div className="mb-3 sm:mb-6 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 sm:px-5 py-1.5 sm:py-2 rounded-full border border-accent/25 bg-accent/10 text-accent font-semibold text-[10px] sm:text-sm">
@@ -43,7 +43,7 @@ export default function ContactInfo() {
             style={{ willChange: 'opacity, transform' }}
           >
             <motion.div 
-              className={`relative w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${isHigh ? 'liquid-glass-card-dark !bg-accent/20 !border-accent/30 shadow-none' : 'bg-accent/10'}`}
+              className={`relative w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${isHigh ? 'liquid-glass-card-light !bg-accent/10 !border-accent/30 shadow-[0_8px_16px_-4px_rgba(212,175,55,0.2)]' : 'bg-accent/10'}`}
               whileHover={{ scale: 1.08 }}
               transition={{ 
                 type: "spring",
@@ -53,9 +53,9 @@ export default function ContactInfo() {
               style={{ willChange: 'transform' }}
             >
               {isHigh && (
-                <div className="absolute inset-0 rounded-xl bg-accent/20 animate-[pulse-ring_3s_ease-in-out_infinite] pointer-events-none" />
+                <div className="absolute inset-0 rounded-xl bg-accent/10 animate-[pulse-ring_3s_ease-in-out_infinite] pointer-events-none" />
               )}
-              <MapPin className="w-4 h-4 sm:w-6 sm:h-6 text-accent" />
+              <MapPin className="w-4 h-4 sm:w-6 sm:h-6 text-accent z-10" />
             </motion.div>
             <div>
               <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-0.5 sm:mb-1">Address</h3>
@@ -80,7 +80,7 @@ export default function ContactInfo() {
             style={{ willChange: 'opacity, transform' }}
           >
             <motion.div 
-              className={`relative w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${isHigh ? 'liquid-glass-card-dark !bg-accent/20 !border-accent/30 shadow-none' : 'bg-accent/10'}`}
+              className={`relative w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${isHigh ? 'liquid-glass-card-light !bg-accent/10 !border-accent/30 shadow-[0_8px_16px_-4px_rgba(212,175,55,0.2)]' : 'bg-accent/10'}`}
               whileHover={{ scale: 1.08 }}
               transition={{ 
                 type: "spring",
@@ -90,9 +90,9 @@ export default function ContactInfo() {
               style={{ willChange: 'transform' }}
             >
               {isHigh && (
-                <div className="absolute inset-0 rounded-xl bg-accent/20 animate-[pulse-ring_3s_ease-in-out_infinite] pointer-events-none" />
+                <div className="absolute inset-0 rounded-xl bg-accent/10 animate-[pulse-ring_3s_ease-in-out_infinite] pointer-events-none" />
               )}
-              <Phone className="w-4 h-4 sm:w-6 sm:h-6 text-accent" />
+              <Phone className="w-4 h-4 sm:w-6 sm:h-6 text-accent z-10" />
             </motion.div>
             <div>
               <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-0.5 sm:mb-1">Phone</h3>
@@ -126,7 +126,7 @@ export default function ContactInfo() {
             style={{ willChange: 'opacity, transform' }}
           >
             <motion.div 
-              className={`relative w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${isHigh ? 'liquid-glass-card-dark !bg-accent/20 !border-accent/30 shadow-none' : 'bg-accent/10'}`}
+              className={`relative w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${isHigh ? 'liquid-glass-card-light !bg-accent/10 !border-accent/30 shadow-[0_8px_16px_-4px_rgba(212,175,55,0.2)]' : 'bg-accent/10'}`}
               whileHover={{ scale: 1.08 }}
               transition={{ 
                 type: "spring",
@@ -136,9 +136,9 @@ export default function ContactInfo() {
               style={{ willChange: 'transform' }}
             >
               {isHigh && (
-                <div className="absolute inset-0 rounded-xl bg-accent/20 animate-[pulse-ring_3s_ease-in-out_infinite] pointer-events-none" />
+                <div className="absolute inset-0 rounded-xl bg-accent/10 animate-[pulse-ring_3s_ease-in-out_infinite] pointer-events-none" />
               )}
-              <Mail className="w-4 h-4 sm:w-6 sm:h-6 text-accent" />
+              <Mail className="w-4 h-4 sm:w-6 sm:h-6 text-accent z-10" />
             </motion.div>
             <div>
               <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-0.5 sm:mb-1">Email</h3>
@@ -172,7 +172,7 @@ export default function ContactInfo() {
             style={{ willChange: 'opacity, transform' }}
           >
             <motion.div 
-              className={`relative w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${isHigh ? 'liquid-glass-card-dark !bg-accent/20 !border-accent/30 shadow-none' : 'bg-accent/10'}`}
+              className={`relative w-10 h-10 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${isHigh ? 'liquid-glass-card-light !bg-accent/10 !border-accent/30 shadow-[0_8px_16px_-4px_rgba(212,175,55,0.2)]' : 'bg-accent/10'}`}
               whileHover={{ scale: 1.08 }}
               transition={{ 
                 type: "spring",
@@ -182,9 +182,9 @@ export default function ContactInfo() {
               style={{ willChange: 'transform' }}
             >
               {isHigh && (
-                <div className="absolute inset-0 rounded-xl bg-accent/20 animate-[pulse-ring_3s_ease-in-out_infinite] pointer-events-none" />
+                <div className="absolute inset-0 rounded-xl bg-accent/10 animate-[pulse-ring_3s_ease-in-out_infinite] pointer-events-none" />
               )}
-              <Clock className="w-4 h-4 sm:w-6 sm:h-6 text-accent" />
+              <Clock className="w-4 h-4 sm:w-6 sm:h-6 text-accent z-10" />
             </motion.div>
             <div>
               <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-0.5 sm:mb-1">Business Hours</h3>

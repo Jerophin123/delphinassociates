@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState, ReactNode, useRef } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import { Loader2 } from "lucide-react";
 
 export type HPOETier = "high" | "mid" | "low" | "very-low";
@@ -77,9 +77,16 @@ export function HPOE({ children }: { children: ReactNode }) {
           gl = (canvas.getContext("webgl") || canvas.getContext("experimental-webgl")) as WebGLRenderingContext;
           if (gl) {
             const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+            let unmaskedRenderer = "";
             if (debugInfo) {
-              gpuInfo = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) as string;
+              unmaskedRenderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) as string || "";
             }
+            
+            const standardRenderer = gl.getParameter(gl.RENDERER) as string || "";
+            
+            // Keep both WEBGL_debug_renderer_info and standard RENDERER working at the same time
+            gpuInfo = `${unmaskedRenderer} ${standardRenderer}`.trim() || "Unknown GPU";
+            
             maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
           }
         } catch (e) {}
@@ -510,40 +517,42 @@ export function HPOE({ children }: { children: ReactNode }) {
 
   return (
     <HPOEContext.Provider value={metrics}>
-      <AnimatePresence>
-        {!metrics.isInitialized && (
-          <motion.div
-            key="performance-splash"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className={`fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-background select-none`}
-          >
-            <div className="relative mb-8 w-32 h-32 md:w-48 md:h-48 overflow-hidden rounded-full shadow-2xl ring-4 ring-primary/10">
-              <Image 
-                src="/splash.png" 
-                alt="Delphin Associates Splash" 
-                fill 
-                className="object-cover"
-                priority
-              />
-            </div>
-            
-            <div className="flex flex-col items-center gap-4">
-              <motion.div 
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-              >
-                <Loader2 className="w-8 h-8 text-primary" />
-              </motion.div>
-              <p className="text-sm font-medium tracking-widest text-muted-foreground uppercase opacity-80 animate-pulse">
-                Optimizing Experience
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      {children}
+      <MotionConfig reducedMotion={metrics.tier === 'very-low' ? 'always' : 'user'}>
+        <AnimatePresence>
+          {!metrics.isInitialized && (
+            <motion.div
+              key="performance-splash"
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+              className={`fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-background select-none`}
+            >
+              <div className="relative mb-8 w-32 h-32 md:w-48 md:h-48 overflow-hidden rounded-full shadow-2xl ring-4 ring-primary/10">
+                <Image 
+                  src="/splash.png" 
+                  alt="Delphin Associates Splash" 
+                  fill 
+                  className="object-cover"
+                  priority
+                />
+              </div>
+              
+              <div className="flex flex-col items-center gap-4">
+                <motion.div 
+                  animate={{ rotate: 360 }}
+                  transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                >
+                  <Loader2 className="w-8 h-8 text-primary" />
+                </motion.div>
+                <p className="text-sm font-medium tracking-widest text-muted-foreground uppercase opacity-80 animate-pulse">
+                  Optimizing Experience
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        {children}
+      </MotionConfig>
     </HPOEContext.Provider>
   );
 }

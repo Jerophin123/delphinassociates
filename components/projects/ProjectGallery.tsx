@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
@@ -15,9 +15,12 @@ import {
   MapPin,
   Search,
   Route,
+  ChevronDown,
+  ArrowUpDown,
 } from "lucide-react";
 import projectsData from "@/data/projects.json";
 import { useHPOE } from "../HPOE";
+import ParticleNetwork from "./ParticleNetwork";
 
 type Project = {
   id: number;
@@ -44,12 +47,58 @@ const getCategoryIcon = (category: string) => {
 };
 
 export default function ProjectGallery() {
-  const { tier } = useHPOE();
+  const { tier, reducedMotion } = useHPOE();
+  const isHigh = tier === 'high' && !reducedMotion;
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [query, setQuery] = useState("");
   const [sortBy, setSortBy] = useState<"newest" | "oldest" | "title">("newest");
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const categoryRef = useRef<HTMLDivElement>(null);
+  const sortRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (categoryRef.current && !categoryRef.current.contains(event.target as Node)) {
+        setIsCategoryOpen(false);
+      }
+      if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
+        setIsSortOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const projects = projectsData as Project[];
+
+  // HPOE Visual Escalation Matrix for Input Elements
+  const hpoeInputClasses = 
+    isHigh ? 'bg-gradient-to-br from-white/60 to-white/20 backdrop-blur-xl border border-white/60 border-b-white/20 border-r-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.06),inset_0_2px_4px_rgba(255,255,255,0.6)] transition-all duration-300 hover:shadow-[0_12px_48px_rgba(0,0,0,0.12),inset_0_2px_4px_rgba(255,255,255,0.8)] hover:from-white/70 hover:to-white/30 hover:-translate-y-0.5 rounded-2xl' :
+    tier === 'mid' ? 'bg-gradient-to-r from-gray-50 to-white border border-gray-200 shadow-sm transition-all duration-300 rounded-2xl' :
+    tier === 'low' ? 'bg-white border border-gray-200 shadow-sm rounded-2xl hover:bg-gray-50 transition-colors duration-200' :
+    'bg-gray-200 border-transparent shadow-none rounded-2xl transition-none';
+
+  // HPOE Visual Escalation Matrix for Floating Windows/Dropdowns
+  const hpoeDropdownClasses = 
+    isHigh ? 'bg-gradient-to-br from-white/70 to-white/40 backdrop-blur-2xl border border-white/60 border-b-white/30 border-r-white/30 shadow-[0_16px_60px_rgba(0,0,0,0.15),inset_0_2px_4px_rgba(255,255,255,0.8)] rounded-2xl' :
+    tier === 'mid' ? 'bg-gradient-to-b from-white to-gray-50 border border-gray-200 shadow-lg rounded-2xl' :
+    tier === 'low' ? 'bg-white border border-gray-200 shadow-md rounded-2xl' :
+    'bg-white border-2 border-gray-800 shadow-none rounded-2xl';
+
+  // HPOE Visual Escalation Matrix for Outer Wrappers
+  const hpoeGalleryWrapperClasses = 
+    isHigh ? 'bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-3xl border border-white/60 border-b-white/30 border-r-white/30 shadow-[0_24px_80px_rgba(0,0,0,0.07),inset_0_2px_4px_rgba(255,255,255,0.6)] rounded-[2.5rem]' :
+    tier === 'mid' ? 'bg-white/[0.97] border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-[2.5rem]' :
+    tier === 'low' ? 'bg-white border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.04)] rounded-[2.5rem]' :
+    'bg-transparent shadow-none border-0 rounded-none transition-none';
+
+  // HPOE Visual Escalation Matrix for Project Cards
+  const hpoeProjectCardClasses = 
+    isHigh ? 'bg-gradient-to-br from-white/70 to-white/30 backdrop-blur-2xl border border-white/60 border-b-white/20 border-r-white/20 shadow-[0_16px_40px_rgba(0,0,0,0.08),inset_0_2px_4px_rgba(255,255,255,0.7)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.15),inset_0_2px_4px_rgba(255,255,255,0.9)] rounded-[2.5rem]' :
+    tier === 'mid' ? 'bg-white/[0.97] border border-gray-200 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12)] hover:shadow-[0_24px_48px_-12px_rgba(0,0,0,0.2)] rounded-[2.5rem]' :
+    tier === 'low' ? 'bg-white border border-gray-200 shadow-md hover:shadow-lg rounded-[2.5rem]' :
+    'bg-gray-50 shadow-none border-0 rounded-[2.5rem] transition-none';
 
   const filteredProjects = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -81,82 +130,127 @@ export default function ProjectGallery() {
   return (
     <div>
       <div className="mb-8 sm:mb-10 md:mb-12">
-        <div className={`rounded-[2.5rem] border border-gray-100 ${tier === 'very-low' ? 'bg-white' : 'bg-white/95'} shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-3 py-4 sm:px-6 sm:py-6`}>
-          <div className="grid gap-3 lg:gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+        <div className={`${hpoeGalleryWrapperClasses} px-3 py-4 sm:px-6 sm:py-6`}>
+          <div className="flex flex-col lg:flex-row gap-3 lg:gap-4">
+            <div className="relative flex-grow">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 z-10 pointer-events-none" />
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search by project name or location..."
-                className="w-full rounded-2xl border border-gray-200 bg-white px-10 py-2.5 sm:py-3 text-sm sm:text-base text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40"
+                className={`w-full pl-12 pr-12 py-3 sm:py-4 text-[13px] sm:text-base focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent font-light text-gray-900 placeholder-gray-400 ${hpoeInputClasses}`}
               />
+              {query.trim().length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1.5 sm:p-2 bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700 transition-colors"
+                  aria-label="Clear search"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+              )}
             </div>
 
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 justify-between lg:justify-end">
-              <div className="flex items-center gap-3">
-                {query.trim().length > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => setQuery("")}
-                    className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs sm:text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
-                  >
-                    Clear
-                  </button>
-                )}
-                <label className="sr-only" htmlFor="project-sort">
-                  Sort
-                </label>
-                <select
-                  id="project-sort"
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-                  className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs sm:text-sm font-semibold text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/40"
+            <div className="flex flex-row items-center gap-2 sm:gap-3 w-full lg:w-auto shrink-0">
+              <div className="relative flex-grow sm:w-56 z-20" ref={categoryRef}>
+                <button
+                  type="button"
+                  onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                  className={`w-full flex items-center justify-between pl-4 pr-4 py-3 sm:py-4 text-[13px] sm:text-base font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent ${hpoeInputClasses}`}
                 >
-                  <option value="newest">Newest</option>
-                  <option value="oldest">Oldest</option>
-                  <option value="title">Title (A-Z)</option>
-                </select>
+                  <div className="flex items-center gap-2">
+                    {(() => {
+                      const ActiveIcon = getCategoryIcon(selectedCategory);
+                      return <ActiveIcon className="w-4 h-4 text-accent flex-shrink-0" />;
+                    })()}
+                    <span className="truncate">{selectedCategory === "All" ? "All Categories" : selectedCategory}</span>
+                  </div>
+                  <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${isCategoryOpen ? 'rotate-180' : ''} flex-shrink-0`} />
+                </button>
+
+                <AnimatePresence>
+                  {isCategoryOpen && (
+                    <motion.div
+                      initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
+                      transition={{ duration: 0.15 }}
+                      className={`absolute top-full left-0 right-0 mt-2 p-2 z-30 ${hpoeDropdownClasses}`}
+                    >
+                      {categoryConfig.map((category) => {
+                        const Icon = category.icon;
+                        const isSelected = selectedCategory === category.name;
+                        return (
+                          <button
+                            key={category.name}
+                            onClick={() => {
+                              setSelectedCategory(category.name);
+                              setIsCategoryOpen(false);
+                            }}
+                            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${isSelected ? 'bg-accent/10 text-primary-dark' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
+                          >
+                            <Icon className={`w-4 h-4 ${isSelected ? 'text-accent' : 'text-gray-400'} flex-shrink-0`} />
+                            <span className="whitespace-nowrap">{category.name === "All" ? "All Categories" : category.name}</span>
+                          </button>
+                        );
+                      })}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              <div className="relative z-10 sm:w-48" ref={sortRef}>
+                <button
+                  type="button"
+                  onClick={() => setIsSortOpen(!isSortOpen)}
+                  className={`flex items-center justify-center sm:justify-between w-[46px] h-[46px] sm:w-full sm:h-auto sm:pl-4 sm:pr-4 sm:py-4 text-[13px] sm:text-base font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent ${hpoeInputClasses}`}
+                  aria-label="Sort projects"
+                >
+                  <div className="flex items-center sm:gap-2">
+                    <ArrowUpDown className="w-5 h-5 sm:w-4 sm:h-4 text-accent flex-shrink-0" />
+                    <span className="hidden sm:inline truncate">
+                      {sortBy === 'newest' ? 'Sort by: Newest' : sortBy === 'oldest' ? 'Sort by: Oldest' : 'Sort by: Title (A-Z)'}
+                    </span>
+                  </div>
+                  <ChevronDown className={`hidden sm:block w-4 h-4 text-gray-400 transition-transform duration-300 ${isSortOpen ? 'rotate-180' : ''} flex-shrink-0`} />
+                </button>
+
+                <AnimatePresence>
+                  {isSortOpen && (
+                    <motion.div
+                      initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
+                      transition={{ duration: 0.15 }}
+                      className={`absolute top-full right-0 sm:left-0 mt-2 w-48 p-2 z-30 ${hpoeDropdownClasses}`}
+                    >
+                      {[
+                        { value: 'newest', label: 'Newest' },
+                        { value: 'oldest', label: 'Oldest' },
+                        { value: 'title', label: 'Title (A-Z)' }
+                      ].map((option) => (
+                        <button
+                          key={option.value}
+                          onClick={() => {
+                            setSortBy(option.value as "newest" | "oldest" | "title");
+                            setIsSortOpen(false);
+                          }}
+                          className={`w-full flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${sortBy === option.value ? 'bg-accent/10 text-primary-dark' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </div>
 
-          <div className="mt-3 sm:mt-4">
-            <div className="flex flex-nowrap gap-2 sm:gap-3 overflow-x-auto pb-1">
-              {categoryConfig.map((category, index) => {
-                const Icon = category.icon;
-                const isActive = selectedCategory === category.name;
-
-                return (
-                  <motion.button
-                    key={category.name}
-                    initial={tier === 'very-low' ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.25, delay: index * 0.02 }}
-                    onClick={() => setSelectedCategory(category.name)}
-                    className={`group relative px-4 sm:px-5 py-1.5 sm:py-2 rounded-2xl font-semibold text-xs sm:text-sm transition-all duration-300 flex items-center gap-2 ${
-                      isActive
-                        ? `${tier === 'very-low' ? 'bg-accent text-black' : `bg-gradient-to-r ${category.gradient} text-white`} shadow-lg ${(tier === 'low' || tier === 'very-low') ? '' : 'shadow-accent/25'} scale-105`
-                        : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-gray-300 shadow-sm"
-                    }`}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Icon
-                      className={`h-3 w-3 sm:h-4 sm:w-4 transition-all duration-300 ${
-                        isActive ? "text-white" : "text-gray-600 group-hover:text-accent"
-                      }`}
-                    />
-                    <span className="whitespace-nowrap">{category.name}</span>
-                  </motion.button>
-                );
-              })}
-            </div>
-
-            <div className="mt-2 text-xs sm:text-sm text-gray-600 flex items-center justify-between">
-              <span>Filter by category & search</span>
-              <span className="hidden sm:inline">Try “church”, “Chengalpattu”, or a year like “2021”.</span>
-            </div>
+          <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] sm:text-xs text-gray-500 font-light">
+            <span>Use dropdowns or search to filter projects</span>
+            <span className="hidden sm:inline-block">Hint: Try searching "Chennai" or "2023"</span>
           </div>
         </div>
       </div>
@@ -190,23 +284,35 @@ export default function ProjectGallery() {
               return (
                 <motion.div
                   key={project.id}
-                  initial={{ opacity: 0, y: 18 }}
+                  initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
                     type: "spring",
                     stiffness: 120,
                     damping: 18,
                     mass: 0.75,
-                    delay: index * 0.02,
+                    delay: reducedMotion ? 0 : index * 0.02,
                   }}
                   className="h-full"
                   style={{ willChange: "opacity, transform" }}
                 >
                   <Link
                     href={`/projects/${project.id}`}
-                    className={`group block h-full rounded-[2.5rem] ${tier === 'very-low' ? 'bg-white' : 'bg-white/95 liquid-glass-card'} border border-gray-200 overflow-hidden shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] hover:-translate-y-2 hover:border-gray-300 transition-all duration-500 will-change-transform focus:outline-none focus:ring-2 focus:ring-accent/40`}
+                    className={`group relative flex flex-col h-full overflow-hidden ${hpoeProjectCardClasses} ${reducedMotion ? '' : 'hover:-translate-y-2'} hover:border-gray-300 transition-all duration-500 will-change-transform focus:outline-none focus:ring-2 focus:ring-accent/40`}
                   >
-                    <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
+                    {isHigh && (
+                      <motion.div
+                        className="absolute inset-0 rounded-[2.5rem] pointer-events-none z-[1]"
+                        style={{
+                          background: `linear-gradient(90deg, transparent 0%, rgba(212,175,55,0.08) 50%, transparent 100%)`,
+                          backgroundSize: '200% 100%',
+                        }}
+                        animate={{ backgroundPosition: ['200% 0%', '-200% 0%'] }}
+                        transition={{ duration: 7, repeat: Infinity, ease: "linear" }}
+                      />
+                    )}
+                    <ParticleNetwork />
+                    <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden z-10">
                       {project.image ? (
                         <Image
                           src={project.image}
@@ -238,35 +344,36 @@ export default function ProjectGallery() {
                         </span>
                       </div>
 
-                      <div className="absolute inset-x-4 bottom-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span className="inline-flex items-center justify-center gap-2 w-full rounded-xl bg-accent px-3 py-2 text-black font-bold text-sm">
-                          View details <ArrowRight className="w-4 h-4" />
-                        </span>
-                      </div>
                     </div>
 
-                    <div className="p-4 sm:p-5">
-                      <div className="flex items-start justify-between gap-3">
-                        <h3 className="text-base sm:text-xl font-bold text-primary-dark">
+                    <div className="p-4 sm:p-5 flex flex-col flex-grow">
+                      <div>
+                        <h3 className="text-base sm:text-xl font-bold text-primary-dark group-hover:text-accent-dark transition-colors duration-300">
                           {project.title}
                         </h3>
+
+                        <div className="mt-2 flex items-center gap-2 text-gray-500 text-xs sm:text-sm font-medium">
+                          <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent flex-shrink-0" />
+                          <span className="truncate">{project.location}</span>
+                        </div>
+
+                        <p className="mt-3 text-[13px] sm:text-sm text-gray-600 line-clamp-2 leading-relaxed">
+                          {project.description}
+                        </p>
+                      </div>
+
+                      <div className="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between mt-auto">
+                        <span className="text-xs sm:text-sm font-bold tracking-wide uppercase text-gray-400 group-hover:text-primary-dark transition-colors duration-300 flex items-center gap-2">
+                          Explore Project
+                        </span>
                         <motion.div
-                          whileHover={{ x: 2 }}
+                          whileHover={reducedMotion ? {} : { x: 4 }}
                           transition={{ duration: 0.2 }}
-                          className="hidden sm:flex items-center justify-center w-9 h-9 rounded-2xl bg-accent/10 border border-accent/20 text-accent"
+                          className={`flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300 ${tier === 'very-low' ? 'bg-gray-100 text-gray-500' : 'bg-gray-50 group-hover:bg-accent/10 border border-transparent group-hover:border-accent/40 text-gray-400 group-hover:text-accent'}`}
                         >
                           <ArrowRight className="w-4 h-4" />
                         </motion.div>
                       </div>
-
-                      <div className="mt-2 flex items-center gap-2 text-gray-600 text-xs sm:text-sm">
-                        <MapPin className="w-3 h-3 sm:w-4 sm:h-4 text-accent" />
-                        <span className="break-words">{project.location}</span>
-                      </div>
-
-                      <p className="mt-2 sm:mt-3 text-[13px] sm:text-base text-gray-700">
-                        <span className="line-clamp-3">{project.description}</span>
-                      </p>
                     </div>
                   </Link>
                 </motion.div>

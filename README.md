@@ -367,7 +367,9 @@ FUNCTION Initialize_HPOE():
   
   5. Try:
        canvas_context = create(WebGL_Context)
-       gpu_renderer_string = canvas_context.getExtension("WEBGL_debug_renderer_info").UNMASKED_RENDERER
+       unmasked_renderer = canvas_context.getExtension("WEBGL_debug_renderer_info").UNMASKED_RENDERER
+       standard_renderer = canvas_context.getParameter(RENDERER)
+       gpu_renderer_string = Combine(unmasked_renderer, standard_renderer)
        max_texture_size = canvas_context.getParameter(MAX_TEXTURE_SIZE)
      Catch:
        gpu_renderer_string = "unknown"

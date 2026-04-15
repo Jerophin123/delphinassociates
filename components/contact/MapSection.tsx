@@ -6,16 +6,12 @@ export default function MapSection() {
   const address =
     "No. 261A, 6th Main road, LIC nagar, Madipakkam, Chennai- 600 091.";
 
-  // Use exact coordinates so the pin is centered precisely.
-  const latitude = "12.951826";
-  const longitude = "80.201932";
-
-  const mapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(
-    `${latitude},${longitude}`
-  )}&hl=en&z=15&output=embed`;
-  const mapsAppUrl = `https://www.google.com/maps?q=${encodeURIComponent(
-    `${latitude},${longitude}`
-  )}`;
+  // By using the full address string with the business name instead of raw coordinates,
+  // Google Maps will natively enforce a dropped red pin in the center of the embed.
+  const mapQuery = `Delphin Associates, ${address}`;
+  const mapEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+  
+  const mapsAppUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
 
   return (
     <motion.section
@@ -58,15 +54,6 @@ export default function MapSection() {
             allowFullScreen
           />
 
-          {/* Overlay CTA so the map always fills the card area */}
-          <a
-            href={mapsAppUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="absolute bottom-3 right-3 z-10 inline-flex items-center justify-center px-4 py-2 rounded-xl bg-white/90 border border-accent/20 text-primary-dark font-bold text-[11px] sm:text-xs hover:bg-accent/15 hover:text-accent transition-colors shadow-sm"
-          >
-            Open in Google Maps
-          </a>
         </div>
       </div>
     </motion.section>

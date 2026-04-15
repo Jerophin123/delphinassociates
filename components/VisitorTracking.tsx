@@ -142,31 +142,57 @@ export default function VisitorTracking() {
       const results = await Promise.allSettled([
         fetch("https://ipapi.co/json/").then(r => r.json()),
         fetch("https://ipinfo.io/json?token=4dbd09d944c7db").then(r => r.json()),
-        fetch("https://api.ipify.org?format=json").then(r => r.json())
+        fetch("https://get.geojs.io/v1/ip/geo.json").then(r => r.json()),
+        fetch("https://api.db-ip.com/v2/free/self").then(r => r.json())
       ]);
 
       let ipData: any = {};
       let ipv4Address = "Unknown";
 
       results.forEach(res => {
-        if (res.status === 'fulfilled' && res.value && !res.value.error) {
-          const ip = extractIPv4(res.value.ip || res.value.query);
-          if (ip) ipv4Address = ip;
-          if (res.value.city) ipData = res.value;
+        if (res.status === 'fulfilled' && res.value && !res.value.error && !res.value.message) {
+          const val = res.value;
+          const ip = extractIPv4(val.ip || val.query || val.ipAddress);
+          if (ip && (ipv4Address === "Unknown" || ip.length > 5)) ipv4Address = ip;
+          
+          if (val.city || val.cityName) {
+             if (!ipData.city) ipData.city = val.city || val.cityName;
+             if (!ipData.region) ipData.region = val.region || val.regionName || val.region_name || val.stateProv;
+             if (!ipData.country) ipData.country = val.country_name || val.countryName || val.country;
+             if (!ipData.postal) ipData.postal = val.postal || val.zipCode || val.zip;
+             if (!ipData.timezone) ipData.timezone = val.timezone || val.timeZone;
+             if (!ipData.org) ipData.org = val.org || val.isp || val.asn_organization || val.organization;
+             if (!ipData.loc) ipData.loc = val.loc;
+             if (!ipData.latitude && val.latitude) ipData.latitude = val.latitude;
+             if (!ipData.longitude && val.longitude) ipData.longitude = val.longitude;
+          }
         }
       });
 
       const nav: any = navigator;
       const connection = nav.connection || nav.mozConnection || nav.webkitConnection;
 
+      let mapLink = "Unknown";
+      if (ipData.loc) {
+        mapLink = `https://www.google.com/maps?q=${ipData.loc}`;
+      } else if (ipData.latitude && ipData.longitude) {
+        mapLink = `https://www.google.com/maps?q=${ipData.latitude},${ipData.longitude}`;
+      } else if (ipData.city && ipData.country) {
+        mapLink = `https://www.google.com/maps?q=${encodeURIComponent(`${ipData.city}, ${ipData.country}`)}`;
+      }
+
       const visitorData = {
         ip: ipv4Address,
         city: ipData.city || "Unknown",
-        region: ipData.region || ipData.region_code || "Unknown",
-        country: ipData.country_name || ipData.country || "Unknown",
+        region: ipData.region || "Unknown",
+        country: ipData.country || "Unknown",
         postalcode: ipData.postal || "Unknown",
         timezone: ipData.timezone || "Unknown",
         isp: ipData.org || "Unavailable",
+        maplink: mapLink,
+        colorDepth: window.screen ? `${window.screen.colorDepth}-bit` : "Unknown",
+        pixelRatio: window.devicePixelRatio || "Unknown",
+        urlParameters: window.location.search || "None",
         deviceBrand: baseInfo.deviceBrand,
         deviceModel: baseInfo.deviceModel,
         os: baseInfo.os,

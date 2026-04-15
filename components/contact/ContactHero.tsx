@@ -179,7 +179,7 @@ export default function ContactHero() {
           initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.4, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="grid gap-3 sm:gap-5 mt-6 sm:mt-0"
+          className="grid gap-3 sm:gap-5 mt-6 sm:mt-0 lg:-ml-8"
         >
           {[
             {
@@ -211,13 +211,15 @@ export default function ContactHero() {
                     className="absolute inset-0 rounded-2xl border-2 border-accent/0 group-hover:border-accent/20 transition-colors duration-500 pointer-events-none"
                   />
                 )}
-                <div className="flex items-center gap-4 mb-2">
-                  <div className="bg-accent/10 w-10 sm:w-12 h-10 sm:h-12 rounded-xl flex items-center justify-center border border-accent/10">
+                <div className="flex items-center gap-4 sm:gap-5">
+                  <div className="bg-accent/10 w-12 sm:w-14 h-12 sm:h-14 shrink-0 rounded-xl flex items-center justify-center border border-accent/10">
                     <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-accent group-hover:text-yellow-600 transition-colors" />
                   </div>
-                  <div className={`${item.valueClass} font-black text-primary-dark font-display`}>{item.value}</div>
+                  <div className="flex flex-col">
+                    <div className={`${item.valueClass} font-black text-primary-dark font-display`}>{item.value}</div>
+                    <div className="text-[10px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider mt-0.5">{item.label}</div>
+                  </div>
                 </div>
-                <div className="text-[10px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">{item.label}</div>
               </motion.div>
             );
           })}
