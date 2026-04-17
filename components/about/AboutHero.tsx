@@ -9,7 +9,7 @@ export default function AboutHero() {
   const isHigh = tier === "high" && !reducedMotion;
 
   return (
-    <div className={`relative overflow-hidden rounded-[2.5rem] border ${isHigh ? 'border-accent/20' : 'border-gray-100'} ${tier === 'very-low' ? 'bg-gray-50' : 'bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.08)_0%,transparent_55%),linear-gradient(180deg,rgba(255,255,255,0.95)_0%,rgba(250,250,250,0.95)_100%)]'} shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-5 pt-8 pb-12 sm:px-12 sm:pt-10 sm:pb-20 xl:pt-12 xl:pb-24 mb-12 sm:mb-20 md:mb-24`}>
+    <div className={`relative overflow-hidden rounded-[2.5rem] border ${isHigh ? 'border-accent/20' : 'border-gray-100'} ${tier === 'very-low' ? 'bg-[#fdfbf4]' : 'bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.08)_0%,transparent_55%),linear-gradient(180deg,rgba(255,255,255,0.95)_0%,rgba(250,250,250,0.95)_100%)]'} shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-5 pt-8 pb-12 sm:px-12 sm:pt-10 sm:pb-20 xl:pt-12 xl:pb-24 mb-12 sm:mb-20 md:mb-24`}>
       {/* Decorative dots pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
       
@@ -175,7 +175,7 @@ export default function AboutHero() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.5 + idx * 0.12, ease: [0.21, 0.47, 0.32, 0.98] }}
               whileHover={isHigh ? { scale: 1.05, y: -4, boxShadow: "0 20px 40px -8px rgba(212,175,55,0.15)" } : { y: -4 }}
-              className={`rounded-2xl border border-gray-100 ${tier === 'very-low' ? 'bg-white' : (tier === 'low' ? 'bg-white/95' : 'bg-white/60 backdrop-blur-md')} p-5 sm:p-8 transition-colors hover:border-accent/20 ${isHigh ? 'cursor-default' : ''}`}
+              className={`rounded-2xl border border-gray-100 ${tier === 'very-low' ? 'bg-[#fdfbf4]' : (tier === 'low' ? 'bg-[#fdfbf4]/95' : 'bg-[#fdfbf4]/60 backdrop-blur-md')} p-5 sm:p-8 transition-colors hover:border-accent/20 ${isHigh ? 'cursor-default' : ''}`}
             >
               <div className="text-2xl sm:text-4xl font-black text-primary-dark mb-2 font-display">{stat.value}</div>
               <div className="text-xs sm:text-sm font-semibold text-gray-500 uppercase tracking-wider">{stat.label}</div>

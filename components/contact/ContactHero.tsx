@@ -10,7 +10,7 @@ export default function ContactHero() {
   const isHigh = tier === "high" && !reducedMotion;
 
   return (
-    <div className={`relative overflow-hidden rounded-[2.5rem] border ${isHigh ? 'border-accent/20' : 'border-gray-100'} ${tier === 'very-low' ? 'bg-white' : 'bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.08)_0%,transparent_55%),linear-gradient(180deg,rgba(255,255,255,0.95)_0%,rgba(250,250,250,0.95)_100%)]'} shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-5 pt-8 pb-12 sm:px-12 sm:pt-14 sm:pb-20 xl:pt-16 xl:pb-24 mb-12 sm:mb-20 md:mb-24`}>
+    <div className={`relative overflow-hidden rounded-[2.5rem] border ${isHigh ? 'border-accent/20' : 'border-gray-100'} ${tier === 'very-low' ? 'bg-[#fdfbf4]' : 'bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.08)_0%,transparent_55%),linear-gradient(180deg,rgba(255,255,255,0.95)_0%,rgba(250,250,250,0.95)_100%)]'} shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-5 pt-8 pb-12 sm:px-12 sm:pt-14 sm:pb-20 xl:pt-16 xl:pb-24 mb-12 sm:mb-20 md:mb-24`}>
       {/* Decorative dots pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
 
@@ -167,7 +167,7 @@ export default function ContactHero() {
             </a>
             <a
               href="mailto:delphinassociates@gmail.com"
-              className={`group inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl bg-white border border-gray-200 text-primary-dark text-sm sm:text-base font-bold hover:border-gray-300 hover:shadow-sm transition-all duration-300 transform hover:-translate-y-0.5 ${isHigh ? 'liquid-glass-btn-light-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-light-invert' : ''}`}
+              className={`group inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl bg-[#fdfbf4] border border-gray-200 text-primary-dark text-sm sm:text-base font-bold hover:border-gray-300 hover:shadow-sm transition-all duration-300 transform hover:-translate-y-0.5 ${isHigh ? 'liquid-glass-btn-light-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-light-invert' : ''}`}
             >
               <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
               Send Email
@@ -203,7 +203,7 @@ export default function ContactHero() {
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.5 + idx * 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
                 whileHover={isHigh ? { scale: 1.03, x: -4, boxShadow: "0 20px 40px -8px rgba(212,175,55,0.15)" } : { y: -4 }}
-                className={`group relative rounded-2xl border border-gray-100 ${tier === 'very-low' ? 'bg-white' : (tier === 'low' ? 'bg-white/95' : 'bg-white/60 backdrop-blur-md')} p-4 sm:p-6 flex flex-col justify-center transition-colors hover:border-accent/20`}
+                className={`group relative rounded-2xl border border-gray-100 ${tier === 'very-low' ? 'bg-[#fdfbf4]' : (tier === 'low' ? 'bg-[#fdfbf4]/95' : 'bg-[#fdfbf4]/60 backdrop-blur-md')} p-4 sm:p-6 flex flex-col justify-center transition-colors hover:border-accent/20`}
               >
                 {/* Animated accent border on hover - High Tier */}
                 {isHigh && (

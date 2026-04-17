@@ -12,7 +12,7 @@ export default function CompanyHistory() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
-        className={`relative overflow-hidden rounded-[2.5rem] ${tier === 'very-low' ? 'bg-white' : 'bg-white/95 liquid-glass-card'} border border-gray-200 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-shadow duration-500 p-6 sm:p-12 md:p-16 hover:border-gray-300`}
+        className={`relative overflow-hidden rounded-[2.5rem] ${tier === 'very-low' ? 'bg-[#fdfbf4]' : 'bg-[#fdfbf4]/95 liquid-glass-card'} border border-gray-200 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-shadow duration-500 p-6 sm:p-12 md:p-16 hover:border-gray-300`}
       >
         {/* Subtle decorative background elements */}
         {tier !== 'very-low' && (
@@ -42,7 +42,7 @@ export default function CompanyHistory() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="lg:col-span-5 xl:col-span-4"
             >
-              <div className="rounded-[2rem] border border-gray-100 bg-gray-50/50 p-6 sm:p-8">
+              <div className="rounded-[2rem] border border-gray-100 bg-[#fdfbf4]/50 p-6 sm:p-8">
                 <div className="text-sm font-semibold text-gray-500 tracking-wider uppercase mb-2">Since</div>
                 <div className="text-3xl sm:text-4xl lg:text-6xl font-black text-primary-dark font-display mb-4">1999</div>
                 <div className="text-gray-500 leading-relaxed font-light mt-4">
@@ -59,7 +59,7 @@ export default function CompanyHistory() {
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.4 + i * 0.1, duration: 0.4 }}
                         viewport={{ once: true }}
-                        className="px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium border border-gray-200 bg-white text-gray-600 shadow-sm"
+                        className="px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium border border-gray-200 bg-[#fdfbf4] text-gray-600 shadow-sm"
                       >
                         {s}
                       </motion.span>

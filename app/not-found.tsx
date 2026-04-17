@@ -9,14 +9,14 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <div className="min-h-[85vh] flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 bg-gray-50 pt-24 lg:pt-32 pb-12 lg:pb-16">
+    <div className="min-h-[85vh] flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 bg-[#fdfbf4] pt-24 lg:pt-32 pb-12 lg:pb-16">
       <div className="max-w-6xl w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           
           {/* Left Side: Illustration Area */}
           <div className="order-1 lg:order-none flex flex-col justify-center items-center lg:items-end lg:pr-12 border-b lg:border-b-0 lg:border-r border-gray-200 pb-8 lg:pb-0">
             <div className="flex flex-col justify-center items-center gap-4">
-              <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-white rounded-full shadow-lg flex items-center justify-center mx-auto border-[4px] border-gray-50">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-[#fdfbf4] rounded-full shadow-lg flex items-center justify-center mx-auto border-[4px] border-gray-50">
                 <span className="text-5xl sm:text-6xl lg:text-7xl font-black text-accent">!</span>
               </div>
               <div className="text-[120px] sm:text-[140px] lg:text-[160px] xl:text-[200px] font-black text-gray-200 leading-none select-none tracking-tighter">
@@ -49,7 +49,7 @@ export default function NotFound() {
               </Link>
               <Link
                 href="/contact"
-                className="w-full sm:w-auto px-8 py-3.5 xl:px-10 xl:py-4 bg-white text-gray-700 font-bold text-base xl:text-lg rounded-xl border-2 border-gray-200 hover:bg-gray-50 transition-all duration-300 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
+                className="w-full sm:w-auto px-8 py-3.5 xl:px-10 xl:py-4 bg-[#fdfbf4] text-gray-700 font-bold text-base xl:text-lg rounded-xl border-2 border-gray-200 hover:bg-[#fdfbf4] transition-all duration-300 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
               >
                 <Phone className="w-5 h-5 xl:w-6 xl:h-6" />
                 <span>Contact Us</span>

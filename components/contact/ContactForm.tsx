@@ -84,7 +84,7 @@ export default function ContactForm() {
       className="h-full"
     >
       <SpotlightCard
-        className={`h-full flex flex-col ${tier === 'very-low' ? 'bg-white' : 'bg-white/95 liquid-glass-card'} rounded-[2.5rem] border border-gray-100 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 p-5 sm:p-8 md:p-10 will-change-transform ${isHigh ? 'premium-border-glow hover:border-gray-200' : 'hover:-translate-y-2 hover:border-gray-200'}`}
+        className={`h-full flex flex-col ${tier === 'very-low' ? 'bg-[#fdfbf4]' : 'bg-[#fdfbf4]/95 liquid-glass-card'} rounded-[2.5rem] border border-gray-100 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 p-5 sm:p-8 md:p-10 will-change-transform ${isHigh ? 'premium-border-glow hover:border-gray-200' : 'hover:-translate-y-2 hover:border-gray-200'}`}
       >
         <div className="mb-3 sm:mb-6 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 sm:px-5 py-1.5 sm:py-2 rounded-full border border-accent/25 bg-accent/10 text-accent font-semibold text-[10px] sm:text-sm">
@@ -148,7 +148,7 @@ export default function ContactForm() {
                       autoComplete="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-sm border border-gray-200/80 bg-gray-50/50 rounded-xl focus:bg-white focus:ring-2 focus:ring-accent/50 focus:border-accent hover:border-gray-300 transition-all duration-300 disabled:bg-gray-100 disabled:cursor-not-allowed font-light"
+                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-sm border border-gray-200/80 bg-[#fdfbf4]/50 rounded-xl focus:bg-[#fdfbf4] focus:ring-2 focus:ring-accent/50 focus:border-accent hover:border-gray-300 transition-all duration-300 disabled:bg-gray-100 disabled:cursor-not-allowed font-light"
                     />
                   </div>
                   <div>
@@ -163,7 +163,7 @@ export default function ContactForm() {
                       autoComplete="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-sm border border-gray-200/80 bg-gray-50/50 rounded-xl focus:bg-white focus:ring-2 focus:ring-accent/50 focus:border-accent hover:border-gray-300 transition-all duration-300 disabled:bg-gray-100 disabled:cursor-not-allowed font-light"
+                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-sm border border-gray-200/80 bg-[#fdfbf4]/50 rounded-xl focus:bg-[#fdfbf4] focus:ring-2 focus:ring-accent/50 focus:border-accent hover:border-gray-300 transition-all duration-300 disabled:bg-gray-100 disabled:cursor-not-allowed font-light"
                     />
                   </div>
                 </div>
@@ -182,7 +182,7 @@ export default function ContactForm() {
                       inputMode="tel"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-sm border border-gray-200/80 bg-gray-50/50 rounded-xl focus:bg-white focus:ring-2 focus:ring-accent/50 focus:border-accent hover:border-gray-300 transition-all duration-300 disabled:bg-gray-100 disabled:cursor-not-allowed font-light"
+                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-sm border border-gray-200/80 bg-[#fdfbf4]/50 rounded-xl focus:bg-[#fdfbf4] focus:ring-2 focus:ring-accent/50 focus:border-accent hover:border-gray-300 transition-all duration-300 disabled:bg-gray-100 disabled:cursor-not-allowed font-light"
                     />
                   </div>
                   <div>
@@ -196,7 +196,7 @@ export default function ContactForm() {
                         required
                         value={formData.subject}
                         onChange={handleChange}
-                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-sm border border-gray-200/80 bg-gray-50/50 rounded-xl focus:bg-white focus:ring-2 focus:ring-accent/50 focus:border-accent hover:border-gray-300 transition-all duration-300 disabled:bg-gray-100 disabled:cursor-not-allowed appearance-none font-light"
+                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-sm border border-gray-200/80 bg-[#fdfbf4]/50 rounded-xl focus:bg-[#fdfbf4] focus:ring-2 focus:ring-accent/50 focus:border-accent hover:border-gray-300 transition-all duration-300 disabled:bg-gray-100 disabled:cursor-not-allowed appearance-none font-light"
                       >
                         <option value="">Select a subject</option>
                         <option value="residential">Residential Construction</option>
@@ -227,7 +227,7 @@ export default function ContactForm() {
                     autoComplete="off"
                     value={formData.message}
                     onChange={handleChange}
-                    className="flex-1 min-h-[140px] w-full px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-sm border border-gray-200/80 bg-gray-50/50 rounded-xl focus:bg-white focus:ring-2 focus:ring-accent/50 focus:border-accent hover:border-gray-300 transition-all duration-300 disabled:bg-gray-100 disabled:cursor-not-allowed resize-none font-light"
+                    className="flex-1 min-h-[140px] w-full px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-sm border border-gray-200/80 bg-[#fdfbf4]/50 rounded-xl focus:bg-[#fdfbf4] focus:ring-2 focus:ring-accent/50 focus:border-accent hover:border-gray-300 transition-all duration-300 disabled:bg-gray-100 disabled:cursor-not-allowed resize-none font-light"
                   />
                 </div>
 

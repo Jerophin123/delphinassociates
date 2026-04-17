@@ -83,10 +83,10 @@ export default function ManagementTeam() {
             <Tilt3DContainer maxRotation={6} className="h-full">
               <SpotlightCard className={`group relative rounded-[2rem] overflow-hidden shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 will-change-transform hover:-translate-y-2 border p-6 sm:p-8 flex flex-col h-full ${
                 tier === 'very-low'
-                  ? (member.isFounder ? "bg-yellow-50 border-yellow-300" : "bg-white border-gray-200")
+                  ? (member.isFounder ? "bg-yellow-50 border-yellow-300" : "bg-[#fdfbf4] border-gray-200")
                   : (member.isFounder 
                       ? "bg-gradient-to-br from-yellow-50/45 to-white/95 border-yellow-300/60" 
-                      : "bg-white/95 border-gray-200 hover:border-gray-300 liquid-glass-card")
+                      : "bg-[#fdfbf4]/95 border-gray-200 hover:border-gray-300 liquid-glass-card")
               } ${isHigh ? 'premium-card-hover-shine premium-border-glow' : ''}`}>
                 {member.isFounder && (
                   <span className="absolute top-6 right-6 hidden md:inline-flex items-center gap-1.5 rounded-full bg-yellow-100 border border-yellow-200/50 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-yellow-800">
@@ -100,7 +100,7 @@ export default function ManagementTeam() {
 
                 <div className="relative z-10 flex items-start space-x-5 h-full">
                   <div 
-                    className={`relative w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center flex-shrink-0 border border-black/5 transition-colors duration-500 shadow-sm ${member.isFounder ? 'bg-yellow-50 group-hover:bg-yellow-100/50' : 'bg-gray-50 group-hover:bg-accent/10'}`}
+                    className={`relative w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center flex-shrink-0 border border-black/5 transition-colors duration-500 shadow-sm ${member.isFounder ? 'bg-yellow-50 group-hover:bg-yellow-100/50' : 'bg-[#fdfbf4] group-hover:bg-accent/10'}`}
                   >
                     {/* Pulse ring on avatar - High Tier */}
                     {isHigh && (
@@ -118,7 +118,7 @@ export default function ManagementTeam() {
                     
                     {member.qualifications && (
                       <div className="flex flex-wrap items-center gap-2 mb-3">
-                        <span className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-2.5 py-1 text-xs font-semibold text-gray-600">
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-[#fdfbf4] px-2.5 py-1 text-xs font-semibold text-gray-600">
                           <BadgeCheck className="w-3.5 h-3.5 text-gray-400" />
                           {member.qualifications}
                         </span>

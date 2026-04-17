@@ -83,7 +83,7 @@ export default async function ProjectDetailPage({
   }
 
   return (
-    <div className="pt-20 bg-white text-primary-dark min-h-[100dvh]">
+    <div className="pt-20 bg-[#fdfbf4] text-primary-dark min-h-[100dvh]">
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
         <Link
           href="/projects"

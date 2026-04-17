@@ -14,6 +14,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import { HPOE } from "@/components/HPOE";
 import CustomCursor from "@/components/ui/CustomCursor";
 import GlobalParticleNetwork from "@/components/GlobalParticleNetwork";
+import FrontendSecurity from "@/components/FrontendSecurity";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -201,6 +202,7 @@ export default function RootLayout({
           <ScrollToTop />
           <Footer />
           <Analytics />
+          <FrontendSecurity />
         </HPOE>
       </body>
     </html>

@@ -13,7 +13,7 @@ export default function CTASection() {
   return (
     <section
       id="home-cta-section"
-      className={`relative z-10 py-12 sm:py-20 md:py-28 ${tier === 'very-low' ? 'bg-white' : 'bg-gradient-to-br from-white/95 via-gray-50/95 to-white/95'} text-primary-dark overflow-hidden border-y border-black/5`}
+      className={`relative z-10 py-12 sm:py-20 md:py-28 ${tier === 'very-low' ? 'bg-[#fdfbf4]' : 'bg-gradient-to-br from-white/95 via-gray-50/95 to-white/95'} text-primary-dark overflow-hidden border-y border-black/5`}
     >
       {/* Background decorations */}
       {tier !== 'very-low' && (
@@ -44,7 +44,7 @@ export default function CTASection() {
             className="w-full"
         >
           <motion.div
-            className={`relative rounded-2xl sm:rounded-[2.5rem] ${tier === 'very-low' ? 'bg-white shadow-none' : (tier === 'low' ? 'bg-white' : (tier === 'mid' ? 'bg-white/[0.97]' : 'liquid-glass-card-light'))} border ${isHigh ? 'border-accent/20' : 'border-white/60'} shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:shadow-[0_16px_60px_rgb(0,0,0,0.12)] transition-shadow duration-500 p-5 sm:p-10 md:p-16 lg:p-20 overflow-hidden`}
+            className={`relative rounded-2xl sm:rounded-[2.5rem] ${tier === 'very-low' ? 'bg-[#fdfbf4] shadow-none' : (tier === 'low' ? 'bg-[#fdfbf4]' : (tier === 'mid' ? 'bg-[#fdfbf4]/[0.97]' : 'liquid-glass-card-light'))} border ${isHigh ? 'border-accent/20' : 'border-white/60'} shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:shadow-[0_16px_60px_rgb(0,0,0,0.12)] transition-shadow duration-500 p-5 sm:p-10 md:p-16 lg:p-20 overflow-hidden`}
           >
             {/* Inner subtle glow */}
             {tier !== 'very-low' && <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent pointer-events-none"></div>}
@@ -171,7 +171,7 @@ export default function CTASection() {
             
             <a
               href="tel:+919841243345"
-              className={`group inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-primary-dark transition-all duration-300 bg-white border-2 border-gray-100 rounded-xl hover:border-accent hover:bg-accent/5 hover:text-accent w-full sm:w-auto ${isHigh ? 'liquid-glass-btn-light-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-light-invert' : ''}`}
+              className={`group inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-primary-dark transition-all duration-300 bg-[#fdfbf4] border-2 border-gray-100 rounded-xl hover:border-accent hover:bg-accent/5 hover:text-accent w-full sm:w-auto ${isHigh ? 'liquid-glass-btn-light-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-light-invert' : ''}`}
             >
               <span className="flex items-center gap-2">
                 <Phone className="w-5 h-5 group-hover:-translate-y-1 transition-transform duration-300" />
@@ -191,7 +191,7 @@ export default function CTASection() {
               href="mailto:delphinassociates@gmail.com"
               className="group flex items-center gap-2 hover:text-accent transition-colors text-xs sm:text-sm md:text-base font-medium"
             >
-              <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
+              <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-[#fdfbf4] flex items-center justify-center group-hover:bg-accent/10 transition-colors">
                 <Mail className="w-3 h-3 sm:w-4 sm:h-4 group-hover:text-accent transition-colors" />
               </div>
               <span>delphinassociates@gmail.com</span>
@@ -201,7 +201,7 @@ export default function CTASection() {
               href="mailto:nanchilassociates@gmail.com"
               className="group flex items-center gap-2 hover:text-accent transition-colors text-xs sm:text-sm md:text-base font-medium"
             >
-              <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
+              <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-[#fdfbf4] flex items-center justify-center group-hover:bg-accent/10 transition-colors">
                 <Mail className="w-3 h-3 sm:w-4 sm:h-4 group-hover:text-accent transition-colors" />
               </div>
               <span>nanchilassociates@gmail.com</span>

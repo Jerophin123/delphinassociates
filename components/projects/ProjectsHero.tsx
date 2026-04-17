@@ -21,7 +21,7 @@ export default function ProjectsHero() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className={`relative overflow-hidden rounded-[2.5rem] border ${isHigh ? 'border-accent/20' : 'border-gray-100'} ${tier === 'very-low' ? 'bg-gray-50' : 'bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.08)_0%,transparent_55%),linear-gradient(180deg,rgba(255,255,255,0.95)_0%,rgba(250,250,250,0.95)_100%)]'} shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-5 pt-8 pb-12 sm:px-12 sm:pt-10 sm:pb-20 xl:pt-12 xl:pb-24`}
+          className={`relative overflow-hidden rounded-[2.5rem] border ${isHigh ? 'border-accent/20' : 'border-gray-100'} ${tier === 'very-low' ? 'bg-[#fdfbf4]' : 'bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.08)_0%,transparent_55%),linear-gradient(180deg,rgba(255,255,255,0.95)_0%,rgba(250,250,250,0.95)_100%)]'} shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-5 pt-8 pb-12 sm:px-12 sm:pt-10 sm:pb-20 xl:pt-12 xl:pb-24`}
         >
           {/* Decorative dots pattern */}
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
@@ -169,7 +169,7 @@ export default function ProjectsHero() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       transition={{ duration: 0.5, delay: 0.5 + idx * 0.12, ease: [0.21, 0.47, 0.32, 0.98] }}
                       whileHover={isHigh ? { scale: 1.05, y: -4, boxShadow: "0 20px 40px -8px rgba(212,175,55,0.15)" } : { y: -4 }}
-                      className={`group relative rounded-2xl border border-gray-100 ${tier === 'very-low' ? 'bg-white' : (tier === 'low' ? 'bg-white/95' : 'bg-white/60 backdrop-blur-md')} p-5 sm:p-8 transition-colors hover:border-accent/20`}
+                      className={`group relative rounded-2xl border border-gray-100 ${tier === 'very-low' ? 'bg-[#fdfbf4]' : (tier === 'low' ? 'bg-[#fdfbf4]/95' : 'bg-[#fdfbf4]/60 backdrop-blur-md')} p-5 sm:p-8 transition-colors hover:border-accent/20`}
                     >
                       <div className="flex items-center gap-3 mb-2">
                         <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-accent group-hover:text-yellow-600 transition-colors" />
@@ -188,7 +188,7 @@ export default function ProjectsHero() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
               whileHover={isHigh ? { y: -8, boxShadow: "0 30px 60px -12px rgba(212,175,55,0.15), 0 18px 36px -18px rgba(0,0,0,0.1)" } : { y: -8 }}
-              className={`relative overflow-hidden rounded-[2.5rem] border border-gray-100 ${tier === 'very-low' ? 'bg-white' : (tier === 'low' ? 'bg-white' : 'bg-white/95 backdrop-blur-xl')} shadow-[0_8px_30px_-4px_rgba(0,0,0,0.06),0_4px_12px_-2px_rgba(0,0,0,0.04)] p-6 sm:p-10 lg:p-12 transition-all duration-500`}
+              className={`relative overflow-hidden rounded-[2.5rem] border border-gray-100 ${tier === 'very-low' ? 'bg-[#fdfbf4]' : (tier === 'low' ? 'bg-[#fdfbf4]' : 'bg-[#fdfbf4]/95 backdrop-blur-xl')} shadow-[0_8px_30px_-4px_rgba(0,0,0,0.06),0_4px_12px_-2px_rgba(0,0,0,0.04)] p-6 sm:p-10 lg:p-12 transition-all duration-500`}
             >
               {/* Shimmer overlay on hover - High Tier */}
               {isHigh && (
@@ -215,7 +215,7 @@ export default function ProjectsHero() {
                 </a>
                 <Link
                   href="/contact"
-                  className={`group inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-6 sm:py-4 rounded-xl bg-gray-50 border border-gray-200 text-primary-dark text-sm sm:text-base font-bold hover:bg-white hover:border-gray-300 hover:shadow-sm transition-all duration-300 transform hover:-translate-y-0.5 ${isHigh ? 'liquid-glass-btn-light-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-light-invert' : ''}`}
+                  className={`group inline-flex items-center justify-center gap-2 px-5 py-3 sm:px-6 sm:py-4 rounded-xl bg-[#fdfbf4] border border-gray-200 text-primary-dark text-sm sm:text-base font-bold hover:bg-[#fdfbf4] hover:border-gray-300 hover:shadow-sm transition-all duration-300 transform hover:-translate-y-0.5 ${isHigh ? 'liquid-glass-btn-light-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-light-invert' : ''}`}
                 >
                   <span>Get a Quote</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />

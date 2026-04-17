@@ -107,7 +107,7 @@ export default function Header() {
   }, [isHomePage]);
   
   let headerStyle =
-    "bg-white/80 backdrop-blur-md shadow-sm border-b border-accent/20";
+    "bg-[#fdfbf4]/80 backdrop-blur-md shadow-sm border-b border-accent/20";
   let textStyle = "text-gray-700";
 
   // Only apply video/scroll-based styling on home page
@@ -130,7 +130,7 @@ export default function Header() {
       // Past the hero section - white background to match content sections
       headerStyle =
         isLightHomeSection
-          ? "bg-white/80 backdrop-blur-md shadow-sm border-b border-accent/20"
+          ? "bg-[#fdfbf4]/80 backdrop-blur-md shadow-sm border-b border-accent/20"
           : "bg-primary-dark/92 backdrop-blur-md shadow-lg border-b border-accent/20";
       textStyle = isLightHomeSection ? "text-primary-dark" : "text-[#B0B0B0]";
     } else if (isAtHeroEnd) {
@@ -142,7 +142,7 @@ export default function Header() {
       // Scrolling up from lower part of hero section - white background
       headerStyle =
         isLightHomeSection
-          ? "bg-white/80 backdrop-blur-md shadow-sm border-b border-accent/20"
+          ? "bg-[#fdfbf4]/80 backdrop-blur-md shadow-sm border-b border-accent/20"
           : "bg-primary-dark/92 backdrop-blur-md shadow-lg border-b border-accent/20";
       textStyle = isLightHomeSection ? "text-primary-dark" : "text-[#B0B0B0]";
     } else {
@@ -156,7 +156,7 @@ export default function Header() {
    if (tier === "low" || tier === "very-low" || tier === "mid") {
      headerStyle = headerStyle
        .replace("backdrop-blur-md", "")
-       .replace("bg-white/80", tier === "very-low" ? "bg-white" : "bg-white/[0.97]")
+       .replace("bg-[#fdfbf4]/80", tier === "very-low" ? "bg-[#fdfbf4]" : "bg-[#fdfbf4]/[0.97]")
        .replace("bg-primary-dark/80", tier === "very-low" ? "bg-primary-dark" : "bg-primary-dark/[0.97]")
        .replace("bg-primary-dark/85", tier === "very-low" ? "bg-primary-dark" : "bg-primary-dark/[0.97]")
        .replace("bg-primary-dark/92", tier === "very-low" ? "bg-primary-dark" : "bg-primary-dark/[0.97]")

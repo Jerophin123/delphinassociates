@@ -56,7 +56,7 @@ export default function ProjectHighlights() {
   return (
     <section
       id="home-project-highlights"
-      className={`relative z-10 py-12 sm:py-20 md:py-28 ${tier === 'very-low' ? 'bg-white' : 'bg-gradient-to-b from-white/95 to-gray-50/95'} overflow-hidden border-y border-black/5`}
+      className={`relative z-10 py-12 sm:py-20 md:py-28 ${tier === 'very-low' ? 'bg-[#fdfbf4]' : 'bg-gradient-to-b from-white/95 to-gray-50/95'} overflow-hidden border-y border-black/5`}
     >
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
 
@@ -98,7 +98,7 @@ export default function ProjectHighlights() {
               className="group relative will-change-transform h-full"
             >
               <Tilt3DContainer maxRotation={6} className="h-full w-full">
-                <SpotlightCard className={`rounded-3xl sm:rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 flex flex-col h-full ${tier === 'very-low' ? 'bg-white' : (isHigh ? 'liquid-glass-card-light premium-border-glow' : 'bg-white border border-gray-100 hover:-translate-y-2')}`}>
+                <SpotlightCard className={`rounded-3xl sm:rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 flex flex-col h-full ${tier === 'very-low' ? 'bg-[#fdfbf4]' : (isHigh ? 'liquid-glass-card-light premium-border-glow' : 'bg-[#fdfbf4] border border-gray-100 hover:-translate-y-2')}`}>
                   <div className="relative h-56 sm:h-72 w-full overflow-hidden bg-gray-100 flex-shrink-0">
                     {project.image ? (
                       <Image
@@ -124,7 +124,7 @@ export default function ProjectHighlights() {
                     )}
                     
                     <div className="absolute top-5 left-5 z-10 transition-transform duration-500 group-hover:translate-y-1">
-                      <div className={`${tier === 'very-low' ? 'bg-white' : (tier === 'low' ? 'bg-white' : 'backdrop-blur-md bg-white/95')} shadow-[0_4px_12px_rgb(0,0,0,0.1)] border border-white/20 px-4 py-2 rounded-full flex items-center gap-2 group-hover:bg-accent group-hover:border-accent transition-colors duration-300`}>
+                      <div className={`${tier === 'very-low' ? 'bg-[#fdfbf4]' : (tier === 'low' ? 'bg-[#fdfbf4]' : 'backdrop-blur-md bg-[#fdfbf4]/95')} shadow-[0_4px_12px_rgb(0,0,0,0.1)] border border-white/20 px-4 py-2 rounded-full flex items-center gap-2 group-hover:bg-accent group-hover:border-accent transition-colors duration-300`}>
                         {(() => {
                           const CategoryIcon = getCategoryIcon(project.category);
                           return <CategoryIcon className="w-4 h-4 text-accent group-hover:text-white transition-colors" />;
@@ -141,13 +141,13 @@ export default function ProjectHighlights() {
                     
                     <div className="space-y-4 mb-6">
                       <div className="flex items-center text-gray-500 text-sm font-medium">
-                        <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-accent/10 group-hover:text-accent transition-colors shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-[#fdfbf4] flex items-center justify-center mr-3 group-hover:bg-accent/10 group-hover:text-accent transition-colors shrink-0">
                           <MapPin className="w-4 h-4 text-gray-400 group-hover:text-accent transition-colors" />
                         </div>
                         <span className="break-words line-clamp-1 font-light">{project.location}</span>
                       </div>
                       <div className="flex items-center text-gray-500 text-sm font-medium">
-                        <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-accent/10 group-hover:text-accent transition-colors shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-[#fdfbf4] flex items-center justify-center mr-3 group-hover:bg-accent/10 group-hover:text-accent transition-colors shrink-0">
                           <Calendar className="w-4 h-4 text-gray-400 group-hover:text-accent transition-colors" />
                         </div>
                         <span className="font-light">{project.year}</span>
@@ -167,7 +167,7 @@ export default function ProjectHighlights() {
                           View Project
                           <span className="absolute left-0 -bottom-1 w-full h-[2px] bg-accent scale-x-0 group-hover/link:scale-x-100 transition-transform origin-left duration-300 ease-out"></span>
                         </span>
-                        <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover/link:bg-accent group-hover/link:text-white transition-all duration-300 group-hover/link:translate-x-1">
+                        <div className="w-8 h-8 rounded-full bg-[#fdfbf4] flex items-center justify-center group-hover/link:bg-accent group-hover/link:text-white transition-all duration-300 group-hover/link:translate-x-1">
                           <ArrowRight className="w-4 h-4" />
                         </div>
                       </Link>

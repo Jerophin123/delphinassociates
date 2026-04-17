@@ -18,10 +18,10 @@ export default function GlobalError({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
-        <div className="min-h-[100dvh] pt-32 pb-20 flex items-center justify-center px-4 bg-gray-50 font-sans">
+        <div className="min-h-[100dvh] pt-32 pb-20 flex items-center justify-center px-4 bg-[#fdfbf4] font-sans">
           <div className="max-w-2xl w-full text-center space-y-8">
             <div className="flex flex-col justify-center items-center gap-4">
-              <div className="w-24 h-24 sm:w-32 sm:h-32 bg-white rounded-full shadow-lg flex items-center justify-center mx-auto border-4 border-red-50">
+              <div className="w-24 h-24 sm:w-32 sm:h-32 bg-[#fdfbf4] rounded-full shadow-lg flex items-center justify-center mx-auto border-4 border-red-50">
                 <AlertTriangle className="w-12 h-12 sm:w-16 sm:h-16 text-red-500" />
               </div>
               <div className="text-[80px] sm:text-[120px] font-bold text-gray-200 leading-none select-none">
@@ -48,7 +48,7 @@ export default function GlobalError({
               </button>
               <button
                 onClick={() => window.location.href = '/'}
-                className="w-full sm:w-auto px-8 py-3.5 bg-white text-gray-700 font-semibold rounded-xl border border-gray-200 hover:bg-gray-50 transition-all duration-300 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
+                className="w-full sm:w-auto px-8 py-3.5 bg-[#fdfbf4] text-gray-700 font-semibold rounded-xl border border-gray-200 hover:bg-[#fdfbf4] transition-all duration-300 flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
               >
                 <Home className="w-5 h-5" />
                 <span>Back to Home</span>

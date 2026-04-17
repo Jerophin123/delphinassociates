@@ -84,7 +84,7 @@ const ServiceCard = ({ service, index, tier, reducedMotion }: any) => {
         transformPerspective: 1000,
       }}
       style={{ willChange: "transform, opacity" }}
-      className={`group relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 overflow-hidden ${tier === 'very-low' ? 'bg-black shadow-none scale-100 hover:scale-100' : (tier === 'high' ? 'liquid-glass-card-dark' : (tier === 'mid' ? 'bg-white/[0.05]' : 'bg-[#0a0a0a]'))} border border-white/10 hover:border-accent/40 transition-[border-color,box-shadow,transform] duration-500 hover:shadow-2xl ${tier === 'low' || tier === 'very-low' ? '' : 'hover:shadow-accent/10'} ${tier === 'high' ? '' : (tier === 'very-low' ? '' : 'hover:-translate-y-2')}`}
+      className={`group relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 overflow-hidden ${tier === 'very-low' ? 'bg-black shadow-none scale-100 hover:scale-100' : (tier === 'high' ? 'liquid-glass-card-dark' : (tier === 'mid' ? 'bg-[#fdfbf4]/[0.05]' : 'bg-[#0a0a0a]'))} border border-white/10 hover:border-accent/40 transition-[border-color,box-shadow,transform] duration-500 hover:shadow-2xl ${tier === 'low' || tier === 'very-low' ? '' : 'hover:shadow-accent/10'} ${tier === 'high' ? '' : (tier === 'very-low' ? '' : 'hover:-translate-y-2')}`}
     >
       {tier === 'high' && isHovered && !reducedMotion && (
         <div

@@ -13,7 +13,7 @@ export default function ContactInfo() {
   return (
     <Tilt3DContainer maxRotation={4} className="h-full">
       <SpotlightCard
-        className={`h-full flex flex-col bg-gradient-to-br from-gray-50/95 to-white/95 liquid-glass-card rounded-[2.5rem] border border-gray-100 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 p-5 sm:p-8 md:p-10 will-change-transform ${isHigh ? 'premium-border-glow hover:border-gray-200' : 'hover:-translate-y-2 hover:border-gray-200'}`}
+        className={`h-full flex flex-col bg-gradient-to-br from-[#fdfbf4]/95 to-[#faf7ec]/95 liquid-glass-card rounded-[2.5rem] border border-[#f0ead6] shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 p-5 sm:p-8 md:p-10 will-change-transform ${isHigh ? 'premium-border-glow hover:border-[#e6dfc8]' : 'hover:-translate-y-2 hover:border-[#e6dfc8]'}`}
       >
         <div className="mb-3 sm:mb-6 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 sm:px-5 py-1.5 sm:py-2 rounded-full border border-accent/25 bg-accent/10 text-accent font-semibold text-[10px] sm:text-sm">

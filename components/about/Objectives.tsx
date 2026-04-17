@@ -65,12 +65,12 @@ export default function Objectives() {
             }}
           >
             <Tilt3DContainer maxRotation={8} className="h-full">
-              <SpotlightCard className={`group relative ${tier === 'very-low' ? 'bg-white' : 'bg-white/95 liquid-glass-card'} rounded-[2rem] overflow-hidden border border-gray-200 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 will-change-transform hover:-translate-y-2 p-6 sm:p-8 flex flex-col h-full hover:border-gray-300 ${isHigh ? 'premium-card-hover-shine premium-border-glow' : ''}`}>
+              <SpotlightCard className={`group relative ${tier === 'very-low' ? 'bg-[#fdfbf4]' : 'bg-[#fdfbf4]/95 liquid-glass-card'} rounded-[2rem] overflow-hidden border border-gray-200 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 will-change-transform hover:-translate-y-2 p-6 sm:p-8 flex flex-col h-full hover:border-gray-300 ${isHigh ? 'premium-card-hover-shine premium-border-glow' : ''}`}>
                 {/* Subtle Gradient background on hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-accent/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 
                 <div className="relative z-10 flex flex-col items-start h-full">
-                  <div className="relative mb-6 p-3 sm:p-4 rounded-2xl bg-gray-50 group-hover:bg-accent/10 transition-colors duration-500 shadow-sm border border-black/5">
+                  <div className="relative mb-6 p-3 sm:p-4 rounded-2xl bg-[#fdfbf4] group-hover:bg-accent/10 transition-colors duration-500 shadow-sm border border-black/5">
                     {isHigh && (
                       <div className="absolute inset-0 rounded-2xl bg-accent/10 animate-[pulse-ring_3s_ease-in-out_infinite] pointer-events-none" />
                     )}

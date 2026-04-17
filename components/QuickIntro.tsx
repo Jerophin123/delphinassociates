@@ -162,7 +162,7 @@ export default function QuickIntro() {
             <motion.div variants={itemVariants}>
               <Link
                 href="/about"
-                className={`group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-white transition-all duration-300 bg-primary-dark rounded-xl border border-gray-800 hover:bg-gray-900 overflow-hidden ${isHigh ? 'liquid-glass-btn-dark !bg-white/5' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-dark !bg-white/5' : ''}`}
+                className={`group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-white transition-all duration-300 bg-primary-dark rounded-xl border border-gray-800 hover:bg-gray-900 overflow-hidden ${isHigh ? 'liquid-glass-btn-dark !bg-[#fdfbf4]/5' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-dark !bg-[#fdfbf4]/5' : ''}`}
               >
                 <span className="relative z-10 flex items-center gap-2">
                   Learn More About Us
@@ -196,7 +196,7 @@ export default function QuickIntro() {
                       ease: [0.21, 0.47, 0.32, 0.98]
                     }}
                     style={{ willChange: "transform, opacity" }}
-                    className={`group relative rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-8 overflow-hidden ${tier === 'very-low' ? 'bg-black opacity-100' : (tier === 'high' ? 'liquid-glass-card-dark' : (tier === 'mid' ? 'bg-white/[0.05]' : 'bg-black/50'))} border border-white/10 hover:border-accent/40 transition-all duration-500 ${tier === 'high' || tier === 'mid' ? 'hover:shadow-2xl hover:shadow-accent/10 hover:-translate-y-1.5 hover:scale-[1.02]' : ''} ${isHigh ? 'premium-card-hover-shine premium-border-glow' : ''}`}
+                    className={`group relative rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-8 overflow-hidden ${tier === 'very-low' ? 'bg-black opacity-100' : (tier === 'high' ? 'liquid-glass-card-dark' : (tier === 'mid' ? 'bg-[#fdfbf4]/[0.05]' : 'bg-black/50'))} border border-white/10 hover:border-accent/40 transition-all duration-500 ${tier === 'high' || tier === 'mid' ? 'hover:shadow-2xl hover:shadow-accent/10 hover:-translate-y-1.5 hover:scale-[1.02]' : ''} ${isHigh ? 'premium-card-hover-shine premium-border-glow' : ''}`}
                   >
                     {tier !== 'low' && tier !== 'very-low' && (
                       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-accent/10 via-transparent to-transparent pointer-events-none" style={{ transform: "translate3d(0,0,0)", willChange: "opacity" }} />
@@ -204,7 +204,7 @@ export default function QuickIntro() {
 
                     <div className="relative z-10 flex flex-col items-start gap-y-4">
                       {/* Icon */}
-                      <div className="relative p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 group-hover:border-accent/40 group-hover:bg-accent/10 transition-colors duration-500 shadow-inner">
+                      <div className="relative p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-[#fdfbf4]/5 border border-white/10 group-hover:border-accent/40 group-hover:bg-accent/10 transition-colors duration-500 shadow-inner">
                         {isHigh && (
                           <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-accent/10 animate-[pulse-ring_3s_ease-in-out_infinite] pointer-events-none" />
                         )}

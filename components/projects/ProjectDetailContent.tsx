@@ -75,7 +75,7 @@ export default function ProjectDetailContent({
       className="mt-4 sm:mt-8 md:mt-10 grid lg:grid-cols-[1fr_1fr] gap-5 sm:gap-8 md:gap-10 items-start"
     >
       <motion.div variants={itemVariants} className="w-full">
-        <div className={`relative w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-gray-100 ${tier === 'very-low' ? 'bg-white shadow-none' : 'bg-gradient-to-br from-gray-50 to-white shadow-sm'}`}>
+        <div className={`relative w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-gray-100 ${tier === 'very-low' ? 'bg-[#fdfbf4] shadow-none' : 'bg-gradient-to-br from-gray-50 to-white shadow-sm'}`}>
           {project.image ? (
             <motion.div
               initial={reducedMotion ? { scale: 1, opacity: 1 } : { scale: 0.98, opacity: 0 }}
@@ -116,7 +116,7 @@ export default function ProjectDetailContent({
       </motion.div>
 
       <motion.div variants={itemVariants} className="w-full">
-        <div className={`rounded-2xl sm:rounded-3xl border border-gray-100 ${tier === 'very-low' ? 'bg-white shadow-none' : (tier === 'low' ? 'bg-white/95' : 'bg-white/80 backdrop-blur-sm')} shadow-sm p-4 sm:p-7`}>
+        <div className={`rounded-2xl sm:rounded-3xl border border-gray-100 ${tier === 'very-low' ? 'bg-[#fdfbf4] shadow-none' : (tier === 'low' ? 'bg-[#fdfbf4]/95' : 'bg-[#fdfbf4]/80 backdrop-blur-sm')} shadow-sm p-4 sm:p-7`}>
           <span className="inline-flex rounded-full bg-accent/10 px-2 sm:px-4 py-0.5 sm:py-1 text-[10px] sm:text-sm font-semibold text-accent items-center gap-1.5 w-fit">
             {(() => {
               const CategoryIcon = getCategoryIcon(project.category);
@@ -167,7 +167,7 @@ export default function ProjectDetailContent({
               {detail.highlights.map((item) => (
                 <div
                   key={item.label}
-                  className="rounded-xl border border-gray-100 bg-white p-3 sm:p-4 shadow-sm hover:shadow-md transition-shadow"
+                  className="rounded-xl border border-gray-100 bg-[#fdfbf4] p-3 sm:p-4 shadow-sm hover:shadow-md transition-shadow"
                 >
                   <p className="text-[10px] sm:text-xs uppercase tracking-wide text-gray-500">{item.label}</p>
                   <p className="mt-1 text-base sm:text-lg font-semibold text-accent">{item.value}</p>
@@ -179,7 +179,7 @@ export default function ProjectDetailContent({
           {detail?.scopeOfWork?.length ? (
             <motion.div
               variants={itemVariants}
-              className="mt-8 rounded-2xl bg-white border border-gray-100 p-5 sm:p-6"
+              className="mt-8 rounded-2xl bg-[#fdfbf4] border border-gray-100 p-5 sm:p-6"
             >
               <h2 className="text-lg sm:text-xl font-semibold text-primary-dark">
                 Scope of Work
