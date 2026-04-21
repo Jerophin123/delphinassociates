@@ -147,9 +147,13 @@ body::-webkit-scrollbar {
   }
   
   html[data-tier="high"]:not([data-reduced-motion="true"]) .liquid-glass-btn-light,
-  html[data-tier="high"]:not([data-reduced-motion="true"]) .liquid-glass-btn-light-invert,
-  html[data-tier="high"]:not([data-reduced-motion="true"]) .liquid-glass-btn-accent-invert {
+  html[data-tier="high"]:not([data-reduced-motion="true"]) .liquid-glass-btn-light-invert {
     color: #0A0A0A !important;
+  }
+
+  html[data-tier="high"]:not([data-reduced-motion="true"]) .liquid-glass-btn-accent,
+  html[data-tier="high"]:not([data-reduced-motion="true"]) .liquid-glass-btn-accent-invert {
+    color: #d4af37 !important;
   }
 
   html[data-tier="high"]:not([data-reduced-motion="true"]) .liquid-glass-btn-accent {

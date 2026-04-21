@@ -45,6 +45,7 @@ export default function Hero() {
               alt="Hero background"
               fill
               priority
+              unoptimized
               quality={85}
               className="object-cover hidden sm:block"
               sizes="100vw"
@@ -58,6 +59,7 @@ export default function Hero() {
               alt="Hero background mobile"
               fill
               priority
+              unoptimized
               quality={85}
               className="object-cover sm:hidden"
               sizes="100vw"
@@ -239,7 +241,7 @@ export default function Hero() {
               <MagneticButton className="w-full sm:w-auto">
                 <Link
                   href="/contact"
-                  className={`group relative px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 rounded-xl font-bold text-sm sm:text-base md:text-lg transition-all duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 overflow-hidden w-full sm:w-auto min-h-[44px] sm:min-h-[52px] md:min-h-[56px] will-change-transform ${tier === 'high' && !reducedMotion ? 'bg-accent/15 backdrop-blur-xl border border-white/20 text-white shadow-[0_8px_20px_rgba(0,0,0,0.15),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:bg-accent/25 hover:border-white/30 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.5)]' : (tier === 'mid' && !reducedMotion) ? 'mid-glass-btn-accent-invert' : `bg-accent text-black hover:bg-accent-light ${tier === 'low' || tier === 'very-low' ? '' : 'shadow-2xl shadow-accent/30 hover:shadow-accent/55 hover:scale-[1.02] active:scale-[0.98]'}`}`}
+                  className={`group relative px-5 sm:px-6 md:px-7 lg:px-8 xl:px-10 py-3 sm:py-3.5 md:py-4 lg:py-5 rounded-xl font-bold text-sm sm:text-base md:text-lg transition-all duration-300 ease-out flex items-center justify-center space-x-2 sm:space-x-2.5 md:space-x-3 overflow-hidden w-full sm:w-auto min-h-[44px] sm:min-h-[52px] md:min-h-[56px] will-change-transform ${tier === 'high' && !reducedMotion ? 'bg-accent/15 backdrop-blur-xl border border-white/20 !text-accent shadow-[0_8px_20px_rgba(0,0,0,0.15),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:bg-accent/25 hover:border-white/30 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.5)]' : (tier === 'mid' && !reducedMotion) ? 'mid-glass-btn-accent-invert' : `bg-accent text-black hover:bg-accent-light ${tier === 'low' || tier === 'very-low' ? '' : 'shadow-2xl shadow-accent/30 hover:shadow-accent/55 hover:scale-[1.02] active:scale-[0.98]'}`}`}
                 style={{ transform: 'translateZ(0)' }}
               >
                 <span className="relative z-10">Start Your Project</span>

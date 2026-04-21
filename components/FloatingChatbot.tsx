@@ -749,7 +749,7 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
                 animate={{ rotate: 0, opacity: 1 }}
                 exit={{ rotate: -45, opacity: 0 }}
               >
-                <MessageSquare className="w-6 h-6 sm:w-7 sm:h-7" />
+                <MessageSquare className={`w-6 h-6 sm:w-7 sm:h-7 ${tier === 'high' && !reducedMotion ? '!text-accent' : ''}`} />
               </motion.div>
             </AnimatePresence>
           </motion.button>

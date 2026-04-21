@@ -164,7 +164,7 @@ export default function QuickIntro() {
                 href="/about"
                 className={`group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-white transition-all duration-300 bg-primary-dark rounded-xl border border-gray-800 hover:bg-gray-900 overflow-hidden ${isHigh ? 'liquid-glass-btn-dark !bg-[#fdfbf4]/5' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-dark !bg-[#fdfbf4]/5' : ''}`}
               >
-                <span className="relative z-10 flex items-center gap-2">
+                <span className={`relative z-10 flex items-center gap-2 ${isHigh ? '!text-accent' : ''}`}>
                   Learn More About Us
                   <svg className="w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useHPOE } from "./HPOE";
 
@@ -26,7 +26,8 @@ export default function Header() {
   const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
   const [isLightHomeSection, setIsLightHomeSection] = useState(false);
-  const { tier } = useHPOE();
+  const { tier, reducedMotion } = useHPOE();
+  const isHigh = tier === "high" && !reducedMotion;
 
   useEffect(() => {
     const updateViewportHeight = () => {
@@ -108,7 +109,7 @@ export default function Header() {
   
   let headerStyle =
     "bg-[#fdfbf4]/80 backdrop-blur-md shadow-sm border-b border-accent/20";
-  let textStyle = "text-gray-700";
+  let textStyle = "text-gray-900";
 
   // Only apply video/scroll-based styling on home page
   if (isHomePage) {
@@ -132,7 +133,7 @@ export default function Header() {
         isLightHomeSection
           ? "bg-[#fdfbf4]/80 backdrop-blur-md shadow-sm border-b border-accent/20"
           : "bg-primary-dark/92 backdrop-blur-md shadow-lg border-b border-accent/20";
-      textStyle = isLightHomeSection ? "text-primary-dark" : "text-[#B0B0B0]";
+      textStyle = isLightHomeSection ? "text-gray-900" : "text-gray-100";
     } else if (isAtHeroEnd) {
       // At the end of hero section - blend with video overlay (dark blue)
       headerStyle =
@@ -144,7 +145,7 @@ export default function Header() {
         isLightHomeSection
           ? "bg-[#fdfbf4]/80 backdrop-blur-md shadow-sm border-b border-accent/20"
           : "bg-primary-dark/92 backdrop-blur-md shadow-lg border-b border-accent/20";
-      textStyle = isLightHomeSection ? "text-primary-dark" : "text-[#B0B0B0]";
+      textStyle = isLightHomeSection ? "text-gray-900" : "text-gray-100";
     } else {
       // Default: scrolling down within hero - transparent
       headerStyle = "bg-transparent";
@@ -170,8 +171,8 @@ export default function Header() {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${headerStyle}`}
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          <Link href="/" className="flex items-center">
+        <div className="flex items-center justify-between h-20 relative">
+          <Link href="/" className="flex items-center z-10">
             <Image
               src="/logo.jpg"
               alt="Delphin Associates Logo"
@@ -183,13 +184,13 @@ export default function Header() {
             />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
+          {/* Desktop Navigation - Centered */}
+          <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center space-x-8">
+            {navItems.filter(item => item.name !== "Contact").map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`group relative text-sm font-medium transition-colors duration-300 ease-out ${
+                className={`group relative text-[13px] font-bold uppercase tracking-[0.15em] transition-colors duration-300 ease-out ${
                   pathname === item.href
                     ? "text-accent"
                     : `${textStyle} hover:text-accent`
@@ -206,45 +207,87 @@ export default function Header() {
             ))}
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className={`md:hidden w-10 h-10 flex items-center justify-center ${textStyle} hover:text-accent transition-colors`}
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            <motion.div
-              animate={isMobileMenuOpen ? { rotate: 90 } : { rotate: 0 }}
-              transition={{ duration: 0.3 }}
+          <div className="flex items-center space-x-4 z-10">
+            {/* Desktop Contact Nav */}
+            <div className="hidden md:flex items-center">
+              <Link
+                href="/contact"
+                className={`group relative inline-flex items-center justify-center px-5 py-2.5 font-bold text-sm text-black transition-all duration-300 bg-accent rounded-xl hover:bg-accent-light hover:shadow-xl ${tier === 'low' || tier === 'very-low' ? '' : 'hover:shadow-accent/20'} overflow-hidden border border-transparent ${isHigh ? 'liquid-glass-btn-accent-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-accent-invert' : ''}`}
+                style={{ transform: 'translateZ(0)' }}
+              >
+                <span className={`relative z-10 flex items-center gap-2 uppercase tracking-wider ${isHigh ? '!text-accent' : ''}`}>
+                  <Phone className={`w-4 h-4 ${tier === 'low' || tier === 'very-low' ? '' : 'group-hover:scale-110 group-hover:-rotate-3'} transition-transform duration-300 ease-out`} />
+                  Contact us
+                </span>
+                {isHigh && <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out z-0" />}
+              </Link>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              className={`md:hidden w-10 h-10 flex items-center justify-center ${textStyle} hover:text-accent transition-colors`}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
             >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </motion.div>
-          </button>
+              <motion.div
+                animate={isMobileMenuOpen ? { rotate: 90 } : { rotate: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </motion.div>
+            </button>
+          </div>
         </div>
 
-        {/* Mobile Navigation */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden pb-4"
+              className={`md:hidden overflow-hidden mt-4 pt-2 pb-6 border-t ${tier === 'high' ? 'border-white/10' : 'border-black/5'}`}
             >
-              <div className="flex flex-col space-y-4">
-                {navItems.map((item) => (
-                  <Link
+              <div className="flex flex-col space-y-1">
+                {navItems.filter((item) => item.name !== "Contact").map((item, i) => (
+                  <motion.div
                     key={item.href}
-                    href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`text-base font-medium ${
-                      pathname === item.href
-                        ? "text-accent"
-                        : textStyle
-                    }`}
+                    initial={reducedMotion ? { opacity: 1 } : { opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: reducedMotion ? 0 : i * 0.05 + 0.1 }}
                   >
-                    {item.name}
-                  </Link>
+                    <Link
+                      href={item.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`block px-4 py-3.5 text-[13px] font-bold uppercase tracking-[0.15em] rounded-xl transition-all ${
+                        pathname === item.href
+                          ? "bg-accent/10 text-accent"
+                          : `${textStyle} hover:bg-black/5 hover:text-accent`
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
                 ))}
+                
+                <motion.div
+                  initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: reducedMotion ? 0 : 0.3 }}
+                  className="pt-4 px-2"
+                >
+                  <Link
+                    href="/contact"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`group relative flex items-center justify-center w-full px-5 py-3 font-bold text-sm text-black transition-all duration-300 bg-accent rounded-xl hover:bg-accent-light hover:shadow-xl ${tier === 'low' || tier === 'very-low' ? '' : 'shadow-lg shadow-accent/20 hover:shadow-accent/40'} overflow-hidden border border-transparent ${isHigh ? 'liquid-glass-btn-accent-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-accent-invert' : ''}`}
+                    style={{ transform: 'translateZ(0)' }}
+                  >
+                    <span className={`relative z-10 flex items-center gap-2 uppercase tracking-wider ${isHigh ? '!text-accent' : ''}`}>
+                      <Phone className={`w-4 h-4 ${tier === 'low' || tier === 'very-low' ? '' : 'group-hover:scale-110 group-hover:-rotate-3'} transition-transform duration-300 ease-out`} />
+                      Contact us
+                    </span>
+                    {isHigh && <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out z-0" />}
+                  </Link>
+                </motion.div>
               </div>
             </motion.div>
           )}
