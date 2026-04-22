@@ -532,6 +532,7 @@ export function HPOE({ children }: { children: ReactNode }) {
                   src="/splash.png" 
                   alt="Delphin Associates Splash" 
                   fill 
+                  sizes="(max-width: 768px) 128px, 192px"
                   className="object-cover"
                   priority
                 />
