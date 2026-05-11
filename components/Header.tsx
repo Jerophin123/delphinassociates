@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, HardHat } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useHPOE } from "./HPOE";
 
@@ -209,7 +209,28 @@ export default function Header() {
 
           <div className="flex items-center space-x-4 z-10">
             {/* Desktop Contact Nav */}
-            <div className="hidden md:flex items-center">
+            <div className="hidden md:flex items-center space-x-3">
+              <Link
+                href="https://delphinassociates-app.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`group relative inline-flex items-center justify-center px-5 py-2.5 font-bold text-sm transition-all duration-300 rounded-xl hover:shadow-xl overflow-hidden border ${
+                  isHigh 
+                    ? 'liquid-glass-btn-accent-invert' 
+                    : (tier === 'mid' && !reducedMotion)
+                      ? 'mid-glass-btn-accent-invert'
+                      : 'bg-primary-dark text-accent border-accent/20 hover:bg-primary-light'
+                }`}
+                style={{ transform: 'translateZ(0)' }}
+                title="Engineer Login"
+              >
+                <span className={`relative z-10 flex items-center gap-2 uppercase tracking-wider ${isHigh ? 'text-accent' : ''}`}>
+                  <HardHat className={`w-4 h-4 ${tier === 'low' || tier === 'very-low' ? '' : 'group-hover:scale-110 group-hover:rotate-3'} transition-transform duration-300 ease-out ${isHigh ? 'text-accent' : ''}`} />
+                  Login
+                </span>
+                {isHigh && <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-accent/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out z-0" />}
+              </Link>
+
               <Link
                 href="/contact"
                 className={`group relative inline-flex items-center justify-center px-5 py-2.5 font-bold text-sm text-black transition-all duration-300 bg-accent rounded-xl hover:bg-accent-light hover:shadow-xl ${tier === 'low' || tier === 'very-low' ? '' : 'hover:shadow-accent/20'} overflow-hidden border border-transparent ${isHigh ? 'liquid-glass-btn-accent-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-accent-invert' : ''}`}
@@ -273,8 +294,28 @@ export default function Header() {
                   initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: reducedMotion ? 0 : 0.3 }}
-                  className="pt-4 px-2"
+                  className="pt-4 px-2 space-y-3"
                 >
+                  <Link
+                    href="https://delphinassociates-app.vercel.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`group relative flex items-center justify-center w-full px-5 py-3 font-bold text-sm transition-all duration-300 rounded-xl hover:shadow-xl overflow-hidden border ${
+                      isHigh 
+                        ? 'liquid-glass-btn-accent-invert' 
+                        : (tier === 'mid' && !reducedMotion)
+                          ? 'mid-glass-btn-accent-invert'
+                          : 'bg-primary-dark text-accent border-accent/20 hover:bg-primary-light'
+                    }`}
+                    style={{ transform: 'translateZ(0)' }}
+                  >
+                    <span className={`relative z-10 flex items-center gap-2 uppercase tracking-wider ${isHigh ? 'text-accent' : ''}`}>
+                      <HardHat className={`w-4 h-4 ${tier === 'low' || tier === 'very-low' ? '' : 'group-hover:scale-110 group-hover:rotate-3'} transition-transform duration-300 ease-out ${isHigh ? 'text-accent' : ''}`} />
+                      Engineer Login
+                    </span>
+                  </Link>
+
                   <Link
                     href="/contact"
                     onClick={() => setIsMobileMenuOpen(false)}
