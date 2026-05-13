@@ -35,7 +35,15 @@ export default function Hero() {
   }, [tier, reducedMotion]);
 
   return (
-    <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden pb-12 sm:pb-8 md:pb-6 lg:pb-0" style={{ marginBottom: 0 }}>
+    <section 
+      id="home-hero"
+      itemScope 
+      itemType="https://schema.org/CreativeWork"
+      className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden pb-12 sm:pb-8 md:pb-6 lg:pb-0" 
+      style={{ marginBottom: 0 }}
+      role="banner"
+      aria-label="Welcome to Delphin Associates"
+    >
       {/* Hero Image Background - covers full viewport including header area */}
       <div className="fixed inset-0 w-full h-full z-0" style={{ transform: 'translateZ(0)', bottom: 0, height: '100vh', backgroundColor: tier === 'very-low' ? '#0A0A0A' : 'transparent' }}>
         {tier !== 'very-low' && (

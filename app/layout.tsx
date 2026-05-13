@@ -157,6 +157,35 @@ export default function RootLayout({
           <SEOStructuredData type="Organization" />
           <SEOStructuredData type="WebSite" />
           <Script
+            id="site-navigation-schema"
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "ItemList",
+                "name": "Main Navigation",
+                "itemListElement": [
+                  { "@type": "SiteNavigationElement", "position": 1, "name": "Home", "url": "https://www.delphinassociates.com/" },
+                  { "@type": "SiteNavigationElement", "position": 2, "name": "About Us", "url": "https://www.delphinassociates.com/about" },
+                  { "@type": "SiteNavigationElement", "position": 3, "name": "Services", "url": "https://www.delphinassociates.com/services" },
+                  { "@type": "SiteNavigationElement", "position": 4, "name": "Projects", "url": "https://www.delphinassociates.com/projects" },
+                  { "@type": "SiteNavigationElement", "position": 5, "name": "Team", "url": "https://www.delphinassociates.com/team" },
+                  { "@type": "SiteNavigationElement", "position": 6, "name": "Contact", "url": "https://www.delphinassociates.com/contact" }
+                ]
+              })
+            }}
+          />
+          <nav className="sr-only" aria-label="Breadcrumb">
+            <ol itemScope itemType="https://schema.org/BreadcrumbList">
+              <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+                <a itemProp="item" href="https://www.delphinassociates.com/">
+                  <span itemProp="name">Home</span>
+                </a>
+                <meta itemProp="position" content="1" />
+              </li>
+            </ol>
+          </nav>
+          <Script
             src="https://www.googletagmanager.com/gtag/js?id=G-2JT8PG47WJ"
             strategy="afterInteractive"
           />

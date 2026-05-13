@@ -15,25 +15,27 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8">
           {/* Company Info */}
-          <div className="col-span-1 md:col-span-2">
+          <div className="col-span-1 md:col-span-2" itemScope itemType="https://schema.org/Organization">
+            <meta itemProp="name" content="Delphin Associates" />
             <div className="mb-3 sm:mb-4">
               <Image
                 src="/logo.jpg"
-                alt="Delphin Associates Logo"
+                alt="Delphin Associates - Leading Civil Engineers and Contractors in Chennai, Tamil Nadu - Official Logo"
                 width={200}
                 height={70}
                 className="h-10 sm:h-12 md:h-14 w-auto object-contain"
                 unoptimized
+                itemProp="logo"
               />
             </div>
-            <p className="mb-3 sm:mb-4 text-sm sm:text-base text-[#B0B0B0]">
+            <p className="mb-3 sm:mb-4 text-sm sm:text-base text-[#B0B0B0]" itemProp="description">
               You Dream We Build. Building Trust Through Quality Since 1999. Leading civil
               construction company in Chennai, Tamil Nadu, specializing in
               residential, industrial, commercial, institutional, and church
               projects.
             </p>
             <div className="space-y-1.5 sm:space-y-2">
-              <div className="flex items-start sm:items-center space-x-2">
+              <div className="flex items-start sm:items-center space-x-2" itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.2 }}
@@ -41,7 +43,7 @@ export default function Footer() {
                 >
                   <MapPin className="w-4 h-4 sm:w-5 sm:h-5" />
                 </motion.div>
-                <span className="text-xs sm:text-sm break-words">
+                <span className="text-xs sm:text-sm break-words" itemProp="streetAddress">
                   No. 261A, 6th Main road, LIC nagar, Madipakkam, Chennai- 600 091.
                 </span>
               </div>
@@ -56,6 +58,7 @@ export default function Footer() {
                 <a
                   href="tel:+919841243345"
                   className="hover:text-white transition-colors text-xs sm:text-sm"
+                  itemProp="telephone"
                 >
                   +91 98412 43345
                 </a>
@@ -63,6 +66,7 @@ export default function Footer() {
                 <a
                   href="tel:+919940306399"
                   className="hover:text-white transition-colors text-xs sm:text-sm"
+                  itemProp="telephone"
                 >
                   +91 99403 06399
                 </a>
@@ -78,6 +82,7 @@ export default function Footer() {
                 <a
                   href="mailto:delphinassociates@gmail.com"
                   className="hover:text-white transition-colors text-xs sm:text-sm break-all sm:break-normal"
+                  itemProp="email"
                 >
                   delphinassociates@gmail.com
                 </a>
@@ -93,6 +98,7 @@ export default function Footer() {
                 <a
                   href="mailto:nanchilassociates@gmail.com"
                   className="hover:text-white transition-colors text-xs sm:text-sm break-all sm:break-normal"
+                  itemProp="email"
                 >
                   nanchilassociates@gmail.com
                 </a>
@@ -107,9 +113,10 @@ export default function Footer() {
                 <motion.a
                   href="https://www.instagram.com/delphinassociatesofficial/"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer me"
                   className="text-[#B0B0B0] hover:text-accent transition-colors"
                   aria-label="Instagram"
+                  itemProp="sameAs"
                   whileHover={{ scale: 1.15 }}
                   transition={{ duration: 0.2 }}
                 >
@@ -118,9 +125,10 @@ export default function Footer() {
                 <motion.a
                   href="https://x.com/delphin75358"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer me"
                   className="text-[#B0B0B0] hover:text-accent transition-colors"
                   aria-label="X (formerly Twitter)"
+                  itemProp="sameAs"
                   whileHover={{ scale: 1.15 }}
                   transition={{ duration: 0.2 }}
                 >
@@ -129,9 +137,10 @@ export default function Footer() {
                 <motion.a
                   href="https://www.linkedin.com/company/delphin-associates-official/"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer me"
                   className="text-[#B0B0B0] hover:text-accent transition-colors"
                   aria-label="LinkedIn"
+                  itemProp="sameAs"
                   whileHover={{ scale: 1.15 }}
                   transition={{ duration: 0.2 }}
                 >
@@ -140,9 +149,10 @@ export default function Footer() {
                 <motion.a
                   href="https://www.threads.com/@delphinassociatesofficial"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer me"
                   className="text-[#B0B0B0] hover:text-accent transition-colors"
                   aria-label="Threads"
+                  itemProp="sameAs"
                   whileHover={{ scale: 1.15 }}
                   transition={{ duration: 0.2 }}
                 >

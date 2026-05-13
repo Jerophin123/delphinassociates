@@ -28,29 +28,22 @@ export default function Header() {
   const [isLightHomeSection, setIsLightHomeSection] = useState(false);
   const { tier, reducedMotion } = useHPOE();
   const isHigh = tier === "high" && !reducedMotion;
+  
+  const isHomePage = pathname === "/";
 
   useEffect(() => {
-    const updateViewportHeight = () => {
-      setViewportHeight(window.innerHeight);
-    };
-    
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768); // md breakpoint
-    };
-    
-    const handleResize = () => {
-      updateViewportHeight();
-      checkMobile();
-    };
+    const updateViewportHeight = () => setViewportHeight(window.innerHeight);
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
     
     updateViewportHeight();
     checkMobile();
-    window.addEventListener("resize", handleResize);
-    
+
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      const vh = window.innerHeight;
       
       setScrollY(currentScrollY);
+      setViewportHeight(vh);
       
       // Detect scroll direction
       if (currentScrollY < lastScrollY && currentScrollY > 50) {
@@ -58,111 +51,73 @@ export default function Header() {
       } else if (currentScrollY > lastScrollY) {
         setIsScrollingUp(false);
       }
-      
       setLastScrollY(currentScrollY);
+
+      // Light section detection (Direct check)
+      if (isHomePage) {
+        const lightIds = ["home-project-highlights", "home-cta-section", "home-faq"];
+        const isLight = lightIds.some((id) => {
+          const el = document.getElementById(id);
+          if (!el) return false;
+          const rect = el.getBoundingClientRect();
+          // Header height is roughly 80px. Check if header overlaps this section.
+          return rect.top <= 80 && rect.bottom >= 20;
+        });
+        setIsLightHomeSection(isLight);
+      }
     };
     
-    // Initial check
     handleScroll();
-    
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", () => {
+        updateViewportHeight();
+        checkMobile();
+    });
+    
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", updateViewportHeight);
     };
-  }, [lastScrollY]);
+  }, [lastScrollY, isHomePage]);
 
-  // Determine header style based on scroll state and current page
-  const isHomePage = pathname === "/";
-  const isInHeroSection = scrollY < viewportHeight * 1.1;
-
-  useEffect(() => {
-    if (!isHomePage) return;
-
-    const lightIds = new Set(["home-project-highlights", "home-cta-section"]);
-    const ratiosById: Record<string, number> = {};
-
-    const targets = Array.from(lightIds)
-      .map((id) => document.getElementById(id))
-      .filter(Boolean) as HTMLElement[];
-
-    if (!targets.length) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          const id = (entry.target as HTMLElement).id;
-          ratiosById[id] = entry.isIntersecting ? entry.intersectionRatio : 0;
-        }
-
-        const nextIsLight = Array.from(lightIds).some((id) => (ratiosById[id] ?? 0) >= 0.18);
-        setIsLightHomeSection(nextIsLight);
-      },
-      {
-        threshold: [0, 0.12, 0.18, 0.25, 0.35, 0.5],
-      }
-    );
-
-    targets.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, [isHomePage]);
-  
-  let headerStyle =
-    "bg-[#fdfbf4]/80 backdrop-blur-md shadow-sm border-b border-accent/20";
+  let headerStyle = "bg-[#fdfbf4]/80 backdrop-blur-md shadow-sm border-b border-accent/20";
   let textStyle = "text-gray-900";
 
-  // Only apply video/scroll-based styling on home page
   if (isHomePage) {
     const isAtTop = scrollY < 50;
-    const isAtHeroEnd = scrollY >= viewportHeight * 0.7 && scrollY <= viewportHeight * 1.1;
-    const isPastHero = scrollY > viewportHeight * 1.1;
+    const isPastHero = scrollY > viewportHeight * 0.9;
 
-    // Check if mobile menu is open on mobile in hero section
-    if (isMobile && isMobileMenuOpen && isInHeroSection) {
-      // Mobile menu open in hero section - translucent background
-      headerStyle =
-        "bg-primary-dark/80 backdrop-blur-md shadow-lg border-b border-accent/20";
+    if (isMobile && isMobileMenuOpen && scrollY < viewportHeight) {
+      headerStyle = "bg-primary-dark/80 backdrop-blur-md shadow-lg border-b border-accent/20";
       textStyle = "text-white";
     } else if (isAtTop) {
-      // At the very top of the page - fully transparent
       headerStyle = "bg-transparent";
       textStyle = "text-accent";
+    } else if (isLightHomeSection) {
+      // Force light style if we are in a light section
+      headerStyle = "bg-[#fdfbf4]/80 backdrop-blur-md shadow-sm border-b border-accent/20";
+      textStyle = "text-gray-900";
     } else if (isPastHero) {
-      // Past the hero section - white background to match content sections
-      headerStyle =
-        isLightHomeSection
-          ? "bg-[#fdfbf4]/80 backdrop-blur-md shadow-sm border-b border-accent/20"
-          : "bg-primary-dark/92 backdrop-blur-md shadow-lg border-b border-accent/20";
-      textStyle = isLightHomeSection ? "text-gray-900" : "text-gray-100";
-    } else if (isAtHeroEnd) {
-      // At the end of hero section - blend with video overlay (dark blue)
-      headerStyle =
-        "bg-primary-dark/85 backdrop-blur-md shadow-lg border-b border-accent/20";
-      textStyle = "text-accent";
-    } else if (isScrollingUp && scrollY > viewportHeight * 0.5) {
-      // Scrolling up from lower part of hero section - white background
-      headerStyle =
-        isLightHomeSection
-          ? "bg-[#fdfbf4]/80 backdrop-blur-md shadow-sm border-b border-accent/20"
-          : "bg-primary-dark/92 backdrop-blur-md shadow-lg border-b border-accent/20";
-      textStyle = isLightHomeSection ? "text-gray-900" : "text-gray-100";
+      // General dark style for non-light sections past hero
+      headerStyle = "bg-primary-dark/92 backdrop-blur-md shadow-lg border-b border-accent/20";
+      textStyle = "text-gray-100";
     } else {
-      // Default: scrolling down within hero - transparent
-      headerStyle = "bg-transparent";
+      // Still in hero but not at top
+      headerStyle = "bg-primary-dark/85 backdrop-blur-md shadow-lg border-b border-accent/20";
       textStyle = "text-accent";
     }
   }
-  // For all other pages, navbar stays white glass
 
-   if (tier === "low" || tier === "very-low" || tier === "mid") {
-     headerStyle = headerStyle
-       .replace("backdrop-blur-md", "")
-       .replace("bg-[#fdfbf4]/80", tier === "very-low" ? "bg-[#fdfbf4]" : "bg-[#fdfbf4]/[0.97]")
-       .replace("bg-primary-dark/80", tier === "very-low" ? "bg-primary-dark" : "bg-primary-dark/[0.97]")
-       .replace("bg-primary-dark/85", tier === "very-low" ? "bg-primary-dark" : "bg-primary-dark/[0.97]")
-       .replace("bg-primary-dark/92", tier === "very-low" ? "bg-primary-dark" : "bg-primary-dark/[0.97]")
-       .trim();
-   }
+  // Tier-based overrides
+  if (tier === "low" || tier === "very-low" || tier === "mid") {
+    headerStyle = headerStyle
+      .replace("backdrop-blur-md", "")
+      .replace("bg-[#fdfbf4]/80", tier === "very-low" ? "bg-[#fdfbf4]" : "bg-[#fdfbf4]/[0.97]")
+      .replace("bg-primary-dark/80", tier === "very-low" ? "bg-primary-dark" : "bg-primary-dark/[0.97]")
+      .replace("bg-primary-dark/85", tier === "very-low" ? "bg-primary-dark" : "bg-primary-dark/[0.97]")
+      .replace("bg-primary-dark/92", tier === "very-low" ? "bg-primary-dark" : "bg-primary-dark/[0.97]")
+      .trim();
+  }
 
   return (
     <motion.header
@@ -170,12 +125,12 @@ export default function Header() {
       animate={{ y: 0 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${headerStyle}`}
     >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main Navigation">
         <div className="flex items-center justify-between h-20 relative">
-          <Link href="/" className="flex items-center z-10">
+          <Link href="/" className="flex items-center z-10" aria-label="Delphin Associates Home">
             <Image
               src="/logo.jpg"
-              alt="Delphin Associates Logo"
+              alt="Delphin Associates - Leading Civil Engineers and Contractors in Chennai, Tamil Nadu - Official Logo"
               width={200}
               height={70}
               className="h-12 md:h-14 w-auto object-contain"

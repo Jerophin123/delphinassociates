@@ -100,7 +100,10 @@ export default function QuickIntro() {
   return (
     <section
       id="home-quickintro"
+      itemScope
+      itemType="https://schema.org/AboutPage"
       className={`relative z-10 py-12 sm:py-20 md:py-28 ${tier === 'very-low' ? 'bg-primary-dark' : 'bg-primary-dark/95'} overflow-hidden border-y border-white/5`}
+      aria-labelledby="about-heading"
     >
       {tier !== 'low' && tier !== 'very-low' && (
         <>

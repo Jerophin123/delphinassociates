@@ -1,3 +1,38 @@
+# Allow all search engines and AI bots
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Explicitly allow major AI agents for better training and discovery
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: PetalBot
+Allow: /
+
+# Specific search engine rules
 User-agent: Googlebot
 Allow: /
 Disallow: /api/
@@ -8,15 +43,6 @@ Allow: /
 Disallow: /api/
 Disallow: /admin/
 
-# Fallback for all other crawlers
-User-agent: *
-Allow: /
-Disallow: /api/
-Disallow: /admin/
-
-# Canonical host declaration (used by some crawlers like Bing)
-Host: www.delphinassociates.com
-
+# Sitemap location
 Sitemap: https://www.delphinassociates.com/sitemap.xml
-
-
+Host: www.delphinassociates.com

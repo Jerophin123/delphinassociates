@@ -4,6 +4,7 @@ import QuickIntro from "@/components/QuickIntro";
 import ProjectHighlights from "@/components/ProjectHighlights";
 import ServicesPreview from "@/components/ServicesPreview";
 import CTASection from "@/components/CTASection";
+import FAQ from "@/components/FAQ";
 
 export const metadata: Metadata = {
   title: {
@@ -50,6 +51,7 @@ export default function Home() {
       <ProjectHighlights />
       <ServicesPreview />
       <CTASection />
+      <FAQ />
     </>
   );
 }
