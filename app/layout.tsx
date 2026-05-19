@@ -110,6 +110,7 @@ export const metadata: Metadata = {
   verification: {
     other: {
       "msvalidate.01": "C63DE252D84E4F2847C50CE603ADB4B6",
+      "breachme-verify": "breachme-verify=f3a218e7e6b32ebf2b4518ebb1c5904a",
     },
   },
   robots: {
