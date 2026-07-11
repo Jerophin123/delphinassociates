@@ -1,10 +1,11 @@
 import { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
 import projectsData from "@/data/projects.json";
 import projectDetails from "@/data/projectDetails";
 import ProjectDetailContent from "@/components/projects/ProjectDetailContent";
+import SheetWatermark from "@/components/ui/SheetWatermark";
+import ArrowLink from "@/components/ui/ArrowLink";
+import ArchPlans from "@/components/ui/ArchPlans";
 
 type Project = {
   id: number;
@@ -82,19 +83,39 @@ export default async function ProjectDetailPage({
     notFound();
   }
 
-  return (
-    <div className="pt-20 bg-[#fdfbf4] text-primary-dark min-h-[100dvh]">
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <Link
-          href="/projects"
-          className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-4 py-2 text-sm font-semibold text-accent transition hover:bg-accent/15"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to projects
-        </Link>
+  const code = `P-${String(project.id).padStart(2, "0")}`;
 
-        <ProjectDetailContent project={project} detail={detail} />
-      </div>
+  return (
+    <div className="pt-20 bg-[#fdfbf4] text-primary-dark min-h-[100dvh] relative z-10">
+      <section data-header-theme="light" className="relative overflow-hidden">
+        {/* Drafting-paper ruling */}
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: `linear-gradient(to right, rgba(18,18,18,0.045) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(18,18,18,0.045) 1px, transparent 1px)`,
+            backgroundSize: "32px 32px",
+          }}
+        />
+        {/* Drafting margin rule */}
+        <span aria-hidden className="absolute left-6 sm:left-12 top-0 bottom-0 w-px bg-accent/25 pointer-events-none" />
+
+        {/* Background cross-section drawing */}
+        <ArchPlans tone="light" variant="section" />
+
+        {/* Drawing-code watermark */}
+        <SheetWatermark text={code} tone="dark" />
+
+        <div className="relative z-10 mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 sm:py-14">
+          {/* Back to register */}
+          <ArrowLink href="/projects" tone="onLight" direction="back">
+            Back to Register
+          </ArrowLink>
+
+          <ProjectDetailContent project={project} detail={detail} />
+        </div>
+      </section>
     </div>
   );
 }

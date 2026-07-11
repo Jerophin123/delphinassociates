@@ -1,25 +1,29 @@
 "use client";
 
+import ArchPlans from "../ui/ArchPlans";
+import SheetWatermark from "../ui/SheetWatermark";
 import { motion } from "framer-motion";
 import { Ruler, Handshake, Home } from "lucide-react";
 import { useHPOE } from "../HPOE";
 import SpotlightCard from "../ui/SpotlightCard";
-import Tilt3DContainer from "../ui/Tilt3DContainer";
 
 const objectives = [
   {
+    code: "O-01",
     icon: Ruler,
     title: "Design Economical & High-Quality Buildings",
     description:
       "Create structures that balance cost-effectiveness with superior quality, ensuring durability and structural excellence while adhering to client budgets.",
   },
   {
+    code: "O-02",
     icon: Handshake,
     title: "Meet Client Expectations",
     description:
       "Deliver projects that exceed client expectations through precision planning, innovative design, and quality-driven execution for individuals and organizations.",
   },
   {
+    code: "O-03",
     icon: Home,
     title: "Promote Excellence in Residential Projects",
     description:
@@ -30,67 +34,111 @@ const objectives = [
 export default function Objectives() {
   const { tier, reducedMotion } = useHPOE();
   const isHigh = tier === 'high' && !reducedMotion;
+  const isStatic = tier === 'low' || tier === 'very-low' || reducedMotion;
+  const noReveal = tier === "very-low" || reducedMotion;
 
   return (
-    <section className="mb-12 sm:mb-20 md:mb-24">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
-        className="mb-8 sm:mb-12"
-      >
-        <div className="flex items-center gap-3 mb-4">
-          <span className="h-[2px] w-8 bg-accent"></span>
-          <span className="text-accent text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
-            Our Goals
-          </span>
-        </div>
-        <h2 className="text-[26px] sm:text-3xl md:text-4xl lg:text-5xl font-bold font-display text-primary-dark tracking-tight">
-          Our Objectives
-        </h2>
-      </motion.div>
+    <section data-header-theme="light" className="relative overflow-hidden py-14 sm:py-20 md:py-24 bg-[#fdfbf4] border-b border-black/5">
+      {/* Drafting-paper ruling */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `linear-gradient(to right, rgba(18,18,18,0.045) 1px, transparent 1px),
+                            linear-gradient(to bottom, rgba(18,18,18,0.045) 1px, transparent 1px)`,
+          backgroundSize: '32px 32px',
+        }}
+      />
+      <span aria-hidden className="absolute left-6 sm:left-12 top-0 bottom-0 w-px bg-accent/25 pointer-events-none" />
 
-      <div className="grid md:grid-cols-3 gap-4 sm:gap-8">
-        {objectives.map((objective, index) => (
-          <motion.div
-            key={objective.title}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ 
-              duration: 0.6,
-              delay: index * 0.1,
-              ease: [0.21, 0.47, 0.32, 0.98]
-            }}
-          >
-            <Tilt3DContainer maxRotation={8} className="h-full">
-              <SpotlightCard className={`group relative ${tier === 'very-low' ? 'bg-[#fdfbf4]' : 'bg-[#fdfbf4]/95 liquid-glass-card'} rounded-[2rem] overflow-hidden border border-gray-200 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 will-change-transform hover:-translate-y-2 p-6 sm:p-8 flex flex-col h-full hover:border-gray-300 ${isHigh ? 'premium-card-hover-shine premium-border-glow' : ''}`}>
-                {/* Subtle Gradient background on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-accent/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                
-                <div className="relative z-10 flex flex-col items-start h-full">
-                  <div className="relative mb-6 p-3 sm:p-4 rounded-2xl bg-[#fdfbf4] group-hover:bg-accent/10 transition-colors duration-500 shadow-sm border border-black/5">
-                    {isHigh && (
-                      <div className="absolute inset-0 rounded-2xl bg-accent/10 animate-[pulse-ring_3s_ease-in-out_infinite] pointer-events-none" />
-                    )}
-                    <objective.icon className="w-6 h-6 sm:w-8 sm:h-8 text-gray-700 group-hover:text-accent transition-colors duration-500" />
-                  </div>
-                  
-                  <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-gray-900 group-hover:text-accent transition-colors duration-300">
+      <ArchPlans tone="light" variant="settingout" />
+
+      {/* Sheet-index watermark */}
+      <SheetWatermark text="02" tone="dark" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-14 lg:px-16">
+        <motion.div
+          initial={noReveal ? { opacity: 1, y: 0 } : { opacity: 0, y: 30, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: noReveal ? 0 : 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="mb-10 sm:mb-14"
+        >
+          <div className="flex items-center gap-3 mb-6">
+            <span className="font-display font-bold text-[11px] sm:text-xs text-accent-dark/70 tracking-[0.25em] uppercase">Sheet 02&thinsp;/&thinsp;05</span>
+            <span className="h-[2px] w-12 bg-accent"></span>
+            <span className="text-accent-dark text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
+              Our Goals
+            </span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display tracking-tight leading-[1.05]">
+            <span className="text-primary-dark">Our </span>
+            <span className="text-outline-ink">Objectives</span>
+          </h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
+          {objectives.map((objective, index) => {
+            const Icon = objective.icon;
+            return (
+              <motion.div
+                key={objective.code}
+                initial={noReveal ? { opacity: 1, y: 0 } : { opacity: 0, y: 24, scale: 0.98 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{
+                  duration: noReveal ? 0 : 0.6,
+                  delay: noReveal ? 0 : index * 0.1,
+                  ease: [0.21, 0.47, 0.32, 0.98]
+                }}
+                className="h-full"
+              >
+                <SpotlightCard
+                  className={`group relative flex flex-col h-full p-5 sm:p-7 rounded-2xl sm:rounded-3xl border overflow-hidden ${
+                    isHigh
+                      ? 'liquid-glass-card-light !border-black/5 premium-card-hover-shine'
+                      : tier === 'mid'
+                      ? 'mid-glass-card-light !border-black/5'
+                      : 'bg-white border-black/10'
+                  } ${
+                    isStatic
+                      ? ''
+                      : 'transition-all duration-500 hover:!border-accent-dark/40 hover:shadow-[0_20px_40px_rgba(10,10,10,0.08)] hover:-translate-y-1.5'
+                  }`}
+                >
+                  <span className="flex items-start justify-between mb-6 sm:mb-8">
+                    <span
+                      className={`font-display font-bold text-lg sm:text-xl tracking-[0.1em] text-accent-dark/50 ${
+                        isStatic ? '' : 'transition-colors duration-500 group-hover:text-accent-dark'
+                      }`}
+                      aria-hidden
+                    >
+                      {objective.code}
+                    </span>
+                    <span
+                      className={`flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-xl shrink-0 border ${
+                        tier === 'very-low'
+                          ? 'bg-accent border-accent'
+                          : `bg-[#fdfbf4] border-black/10 ${isStatic ? '' : 'transition-colors duration-500 group-hover:bg-accent/10 group-hover:border-accent-dark/40'}`
+                      }`}
+                      aria-hidden
+                    >
+                      <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${tier === 'very-low' ? 'text-black' : `text-primary-dark ${isStatic ? '' : 'group-hover:text-accent-dark transition-colors duration-300'}`}`} />
+                    </span>
+                  </span>
+
+                  <h3 className={`text-lg sm:text-xl font-bold text-primary-dark leading-tight mb-3 ${isStatic ? '' : 'transition-colors duration-300 group-hover:text-accent-dark'}`}>
                     {objective.title}
                   </h3>
-                  
-                  <p className="text-sm sm:text-base text-gray-500 leading-relaxed font-light mt-auto">
+                  <p className="text-xs sm:text-sm text-gray-500 font-light leading-relaxed mt-auto">
                     {objective.description}
                   </p>
-                </div>
-              </SpotlightCard>
-            </Tilt3DContainer>
-          </motion.div>
-        ))}
+                </SpotlightCard>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
 }
-

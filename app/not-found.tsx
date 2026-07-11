@@ -34,7 +34,7 @@ export default function NotFound() {
                 Page Not Found
               </h1>
               <p className="text-gray-600 max-w-lg mx-auto lg:mx-0 text-base sm:text-lg xl:text-xl leading-relaxed">
-                Oops! The page you're looking for seems to have gone missing or has been moved to a new address.
+                Oops! The page you&apos;re looking for seems to have gone missing or has been moved to a new address.
               </p>
             </div>
 

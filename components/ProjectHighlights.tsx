@@ -1,12 +1,16 @@
 "use client";
 
+import ArchPlans from "./ui/ArchPlans";
+import SheetWatermark from "./ui/SheetWatermark";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, MapPin, Calendar, Church, Home, Factory, GraduationCap, Route, Grid3x3 } from "lucide-react";
+import { ArrowRight, MapPin, Church, Home, Factory, GraduationCap, Route, Grid3x3 } from "lucide-react";
 import { useHPOE } from "./HPOE";
 import SpotlightCard from "./ui/SpotlightCard";
-import Tilt3DContainer from "./ui/Tilt3DContainer";
+import GeometricParticleField from "./ui/GeometricParticleField";
+import ArrowLink from "./ui/ArrowLink";
+import ParallaxFrame from "./ui/ParallaxFrame";
 
 const getCategoryIcon = (category: string) => {
   const categoryIcons: Record<string, typeof Church> = {
@@ -22,6 +26,7 @@ const getCategoryIcon = (category: string) => {
 const featuredProjects = [
   {
     id: 1,
+    code: "P-01",
     title: "CSI Church Buildings",
     category: "Church",
     location: "Multiple Locations",
@@ -31,6 +36,7 @@ const featuredProjects = [
   },
   {
     id: 2,
+    code: "P-02",
     title: "Residential Flats",
     category: "Residential",
     location: "T. Nagar, West Mambalam, Kolathur",
@@ -40,6 +46,7 @@ const featuredProjects = [
   },
   {
     id: 3,
+    code: "P-03",
     title: "Industrial Buildings",
     category: "Industrial",
     location: "Ford Alliance Group, MM Nagar",
@@ -52,152 +59,172 @@ const featuredProjects = [
 export default function ProjectHighlights() {
   const { tier, reducedMotion } = useHPOE();
   const isHigh = tier === 'high' && !reducedMotion;
+  const isStatic = tier === 'low' || tier === 'very-low' || reducedMotion;
+  const noReveal = tier === "very-low" || reducedMotion;
 
   return (
     <section
       id="home-project-highlights"
-      className={`relative z-10 py-12 sm:py-20 md:py-28 ${tier === 'very-low' ? 'bg-[#fdfbf4]' : 'bg-gradient-to-b from-white/95 to-gray-50/95'} overflow-hidden border-y border-black/5`}
+      data-header-theme="dark"
+      className={`relative z-10 py-14 sm:py-24 md:py-32 ${tier === 'very-low' ? 'bg-primary-dark' : 'bg-primary-dark/95'} overflow-hidden border-y border-white/5`}
     >
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+      {/* Faint site grid */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                            linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px)`,
+          backgroundSize: '32px 32px',
+        }}
+      />
+
+      <ArchPlans tone="dark" variant="crane" />
+
+      {/* Sheet-index watermark */}
+      <SheetWatermark text="02" tone="light" />
+
+      {isHigh && (
+        <GeometricParticleField
+          quantity={50}
+          color="#D4AF37"
+          className="z-[1]"
+          staticity={60}
+        />
+      )}
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Editorial header row */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={noReveal ? { opacity: 1, y: 0 } : { opacity: 0, y: 30, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="text-center mb-12 sm:mb-16 md:mb-20"
+          transition={{ duration: noReveal ? 0 : 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 sm:mb-16"
         >
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <span className="h-[2px] w-8 bg-accent"></span>
-            <span className="text-accent text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
-              Our Portfolio
-            </span>
-            <span className="h-[2px] w-8 bg-accent"></span>
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <span className="font-display font-bold text-[11px] sm:text-xs text-accent/60 tracking-[0.25em] uppercase">Sheet 02&thinsp;/&thinsp;06</span>
+              <span className="h-[2px] w-12 bg-accent"></span>
+              <span className="text-accent text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
+                Our Portfolio
+              </span>
+            </div>
+            <h2 className="text-[28px] sm:text-4xl md:text-5xl lg:text-7xl font-bold font-display tracking-tight leading-[1.05]">
+              <span className="text-white">Featured </span>
+              <span className="text-outline-display">Projects</span>
+            </h2>
           </div>
-          <h2 className="text-[28px] sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 font-display text-primary-dark tracking-tight">
-            Featured Projects
-          </h2>
-          <p className="text-sm sm:text-lg md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed font-light">
-            Showcasing our excellence across various sectors with innovative design and quality construction
-          </p>
+          <div className="md:text-right md:max-w-sm">
+            <p className="text-sm sm:text-base text-gray-400 leading-relaxed font-light mb-4">
+              From CSI church halls to the Ford Alliance factory floor - a
+              cross-section of 100+ builds across Tamil Nadu.
+            </p>
+            <ArrowLink href="/projects" tone="onDark" className="hidden md:inline-flex">
+              View all projects
+            </ArrowLink>
+          </div>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-10 mb-12 sm:mb-16 md:mb-20">
-          {featuredProjects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ 
-                duration: 0.6,
-                delay: index * 0.1,
-                ease: [0.21, 0.47, 0.32, 0.98]
-              }}
-              className="group relative will-change-transform h-full"
-            >
-              <Tilt3DContainer maxRotation={6} className="h-full w-full">
-                <SpotlightCard className={`rounded-3xl sm:rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 flex flex-col h-full ${tier === 'very-low' ? 'bg-[#fdfbf4]' : (isHigh ? 'liquid-glass-card-light premium-border-glow' : 'bg-[#fdfbf4] border border-gray-100 hover:-translate-y-2')}`}>
-                  <div className="relative h-56 sm:h-72 w-full overflow-hidden bg-gray-100 flex-shrink-0">
-                    {project.image ? (
+        {/* Feature grid: one full-width card, two supporting */}
+        <div className="grid md:grid-cols-2 gap-5 sm:gap-8">
+          {featuredProjects.map((project, index) => {
+            const CategoryIcon = getCategoryIcon(project.category);
+            const isFeature = index === 0;
+            return (
+              <motion.article
+                key={project.id}
+                initial={noReveal ? { opacity: 1, y: 0 } : { opacity: 0, y: 30, scale: 0.98 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{
+                  duration: noReveal ? 0 : 0.7,
+                  delay: noReveal ? 0 : index * 0.12,
+                  ease: [0.21, 0.47, 0.32, 0.98]
+                }}
+                className={`group relative will-change-transform ${isFeature ? 'md:col-span-2' : ''}`}
+              >
+                <Link href={`/projects#project-${project.id}`} aria-label={`${project.title} - view project`} className="block h-full">
+                  <SpotlightCard
+                    className={`relative overflow-hidden rounded-3xl sm:rounded-[2rem] border border-white/10 ${isFeature ? 'h-[22rem] sm:h-[26rem] lg:h-[30rem]' : 'h-[20rem] sm:h-[24rem]'} ${tier === 'very-low' ? 'bg-black' : 'bg-black'} ${tier === 'high' || tier === 'mid' ? 'shadow-[0_16px_40px_rgba(0,0,0,0.4)] hover:shadow-[0_28px_60px_rgba(0,0,0,0.6)] hover:border-accent/30 transition-all duration-500' : ''} ${isHigh ? 'premium-border-glow' : ''}`}
+                  >
+                    <ParallaxFrame range={42}>
                       <Image
                         src={project.image}
                         alt={`${project.title} - ${project.category} construction project by Delphin Associates in ${project.location}`}
                         fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        priority={index === 0}
+                        className={`object-cover ${isStatic ? '' : 'transition-transform duration-700 ease-out group-hover:scale-[1.06]'}`}
+                        sizes={isFeature ? "(max-width: 768px) 100vw, 90vw" : "(max-width: 768px) 100vw, 45vw"}
+                        priority={isFeature}
                       />
-                    ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200"></div>
-                    )}
-                    
-                    {!project.image && (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-8xl opacity-20 group-hover:opacity-30 group-hover:scale-110 transition-all duration-500">🏗️</div>
-                      </div>
-                    )}
-                    
-                    {tier !== 'very-low' && (
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                    )}
-                    
-                    <div className="absolute top-5 left-5 z-10 transition-transform duration-500 group-hover:translate-y-1">
-                      <div className={`${tier === 'very-low' ? 'bg-[#fdfbf4]' : (tier === 'low' ? 'bg-[#fdfbf4]' : 'backdrop-blur-md bg-[#fdfbf4]/95')} shadow-[0_4px_12px_rgb(0,0,0,0.1)] border border-white/20 px-4 py-2 rounded-full flex items-center gap-2 group-hover:bg-accent group-hover:border-accent transition-colors duration-300`}>
-                        {(() => {
-                          const CategoryIcon = getCategoryIcon(project.category);
-                          return <CategoryIcon className="w-4 h-4 text-accent group-hover:text-white transition-colors" />;
-                        })()}
-                        <span className="text-xs font-bold uppercase tracking-wider text-gray-900 group-hover:text-white transition-colors">{project.category}</span>
-                      </div>
-                    </div>
-                  </div>
+                    </ParallaxFrame>
 
-                  <div className="p-5 sm:p-8 flex flex-col flex-grow relative z-10">
-                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-5 group-hover:text-accent transition-colors duration-300 leading-tight">
-                      {project.title}
-                    </h3>
-                    
-                    <div className="space-y-4 mb-6">
-                      <div className="flex items-center text-gray-500 text-sm font-medium">
-                        <div className="w-8 h-8 rounded-full bg-[#fdfbf4] flex items-center justify-center mr-3 group-hover:bg-accent/10 group-hover:text-accent transition-colors shrink-0">
-                          <MapPin className="w-4 h-4 text-gray-400 group-hover:text-accent transition-colors" />
-                        </div>
-                        <span className="break-words line-clamp-1 font-light">{project.location}</span>
-                      </div>
-                      <div className="flex items-center text-gray-500 text-sm font-medium">
-                        <div className="w-8 h-8 rounded-full bg-[#fdfbf4] flex items-center justify-center mr-3 group-hover:bg-accent/10 group-hover:text-accent transition-colors shrink-0">
-                          <Calendar className="w-4 h-4 text-gray-400 group-hover:text-accent transition-colors" />
-                        </div>
-                        <span className="font-light">{project.year}</span>
-                      </div>
-                    </div>
+                    {/* Readability scrim */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10 pointer-events-none" aria-hidden />
 
-                    <p className="text-sm sm:text-base text-gray-500 mb-6 sm:mb-8 leading-relaxed font-light flex-grow">
-                      {project.description}
-                    </p>
-
-                    <div className="mt-auto">
-                      <Link
-                        href={`/projects#project-${project.id}`}
-                        className="inline-flex items-center gap-3 text-primary-dark font-semibold text-sm group/link hover:text-accent transition-colors duration-300 uppercase tracking-widest mt-auto w-fit"
+                    {/* Category chip */}
+                    <div className="absolute top-5 left-5 z-10">
+                      <span
+                        className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-white ${
+                          isHigh
+                            ? 'backdrop-blur-md bg-white/10 border-white/25'
+                            : tier === 'very-low'
+                            ? 'bg-black border-white/30'
+                            : 'bg-black/70 border-white/15'
+                        } ${isStatic ? '' : 'transition-colors duration-300 group-hover:bg-accent group-hover:border-accent group-hover:text-black'}`}
                       >
-                        <span className="relative">
-                          View Project
-                          <span className="absolute left-0 -bottom-1 w-full h-[2px] bg-accent scale-x-0 group-hover/link:scale-x-100 transition-transform origin-left duration-300 ease-out"></span>
-                        </span>
-                        <div className="w-8 h-8 rounded-full bg-[#fdfbf4] flex items-center justify-center group-hover/link:bg-accent group-hover/link:text-white transition-all duration-300 group-hover/link:translate-x-1">
-                          <ArrowRight className="w-4 h-4" />
-                        </div>
-                      </Link>
+                        <CategoryIcon className="w-4 h-4" aria-hidden />
+                        <span className="text-xs font-bold uppercase tracking-wider">{project.category}</span>
+                      </span>
                     </div>
-                  </div>
-                </SpotlightCard>
-              </Tilt3DContainer>
-            </motion.div>
-          ))}
+
+                    {/* Drawing code + period */}
+                    <span className="absolute top-6 right-6 z-10 text-right">
+                      <span className="block font-display font-bold text-sm sm:text-base tracking-[0.2em] text-accent">
+                        {project.code}
+                      </span>
+                      <span className="block text-[10px] sm:text-[11px] font-bold tracking-[0.2em] text-white/60 uppercase mt-1">
+                        {project.year}
+                      </span>
+                    </span>
+
+                    {/* Overlaid info panel */}
+                    <div className="absolute inset-x-0 bottom-0 z-10 p-5 sm:p-7 lg:p-9">
+                      <h3 className={`font-bold text-white font-display tracking-tight leading-tight mb-2 sm:mb-3 ${isFeature ? 'text-2xl sm:text-3xl lg:text-4xl' : 'text-xl sm:text-2xl'} ${isStatic ? '' : 'transition-colors duration-300 group-hover:text-accent-light'}`}>
+                        {project.title}
+                      </h3>
+                      <p className="flex items-center gap-2 text-white/70 text-xs sm:text-sm font-light mb-2 sm:mb-3">
+                        <MapPin className="w-4 h-4 text-accent shrink-0" aria-hidden />
+                        <span className="line-clamp-1">{project.location}</span>
+                      </p>
+                      <p className={`text-white/60 font-light leading-relaxed text-xs sm:text-sm ${isFeature ? 'max-w-xl' : ''} line-clamp-2 mb-3 sm:mb-4`}>
+                        {project.description}
+                      </p>
+                      <span className="inline-flex items-center gap-2 text-accent font-semibold text-xs sm:text-sm uppercase tracking-[0.2em]">
+                        View Project
+                        <ArrowRight className={`w-4 h-4 ${isStatic ? '' : 'transition-transform duration-300 group-hover:translate-x-1.5'}`} aria-hidden />
+                      </span>
+                    </div>
+                  </SpotlightCard>
+                </Link>
+              </motion.article>
+            );
+          })}
         </div>
 
+        {/* Mobile / fallback all-projects CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={noReveal ? { opacity: 1, y: 0 } : { opacity: 0, y: 20, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-center"
+          transition={{ duration: noReveal ? 0 : 0.6, delay: noReveal ? 0 : 0.3 }}
+          className="flex justify-center mt-10 sm:mt-14 md:hidden"
         >
-          <Link
-            href="/projects"
-            className={`group inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-black transition-all duration-300 bg-accent rounded-xl hover:bg-accent-light hover:shadow-xl ${tier === 'low' || tier === 'very-low' ? '' : 'hover:shadow-accent/20'} ${isHigh ? 'liquid-glass-btn-accent-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-accent-invert' : ''}`}
-          >
-            <span className="flex items-center gap-2">
-              Explore All Projects
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-300" />
-            </span>
-          </Link>
+          <ArrowLink href="/projects" tone="onDark">
+            Explore All Projects
+          </ArrowLink>
         </motion.div>
       </div>
     </section>
   );
 }
-

@@ -1,190 +1,107 @@
 "use client";
 
+import ArchPlans from "../ui/ArchPlans";
+import SheetWatermark from "../ui/SheetWatermark";
 import { motion } from "framer-motion";
 import { useHPOE } from "../HPOE";
 import GeometricParticleField from "../ui/GeometricParticleField";
 
+const heroStats = [
+  { value: "25+", label: "Years Experience" },
+  { value: "100%", label: "Quality Assurance" },
+  { value: "E2E", label: "Execution & Consultancy" },
+];
+
 export default function AboutHero() {
   const { tier, reducedMotion } = useHPOE();
   const isHigh = tier === "high" && !reducedMotion;
+  const isStatic = tier === "low" || tier === "very-low" || reducedMotion;
+  const noReveal = tier === "very-low" || reducedMotion;
+
+  const fadeUp = (delay: number) => ({
+    initial: noReveal ? { opacity: 1, y: 0 } : { opacity: 0, y: 24, scale: 0.98 },
+    animate: { opacity: 1, y: 0, scale: 1 },
+    transition: {
+      duration: noReveal ? 0 : 0.7,
+      delay: noReveal ? 0 : delay,
+      ease: [0.21, 0.47, 0.32, 0.98] as const,
+    },
+  });
 
   return (
-    <div className={`relative overflow-hidden rounded-[2.5rem] border ${isHigh ? 'border-accent/20' : 'border-gray-100'} ${tier === 'very-low' ? 'bg-[#fdfbf4]' : 'bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.08)_0%,transparent_55%),linear-gradient(180deg,rgba(255,255,255,0.95)_0%,rgba(250,250,250,0.95)_100%)]'} shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-5 pt-8 pb-12 sm:px-12 sm:pt-10 sm:pb-20 xl:pt-12 xl:pb-24 mb-12 sm:mb-20 md:mb-24`}>
-      {/* Decorative dots pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
-      
-      {/* Animated Golden Border Glow - High Tier */}
+    <section data-header-theme="light" className="relative overflow-hidden bg-[#fdfbf4] border-b border-black/5 min-h-[calc(100dvh-5rem)] flex flex-col">
+      {/* Drafting-paper ruling */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `linear-gradient(to right, rgba(18,18,18,0.045) 1px, transparent 1px),
+                            linear-gradient(to bottom, rgba(18,18,18,0.045) 1px, transparent 1px)`,
+          backgroundSize: '32px 32px',
+        }}
+      />
+      {/* Drafting margin rule */}
+      <span aria-hidden className="absolute left-6 sm:left-12 top-0 bottom-0 w-px bg-accent/25 pointer-events-none" />
+
+      <ArchPlans tone="light" variant="campus" />
+
+      {/* Sheet-index watermark */}
+      <SheetWatermark text="DA" tone="dark" />
+
       {isHigh && (
-        <motion.div
-          className="absolute inset-0 rounded-[2.5rem] pointer-events-none z-[2]"
-          style={{
-            background: `linear-gradient(90deg, transparent 0%, rgba(212,175,55,0.15) 50%, transparent 100%)`,
-            backgroundSize: '200% 100%',
-          }}
-          animate={{ backgroundPosition: ['200% 0%', '-200% 0%'] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+        <GeometricParticleField
+          quantity={40}
+          color="#9C7B1E"
+          className="z-[1] opacity-50"
+          staticity={60}
         />
       )}
 
-      {/* Animated Floating Orbs - High Tier */}
-      {isHigh && (
-        <>
-          <motion.div
-            className="pointer-events-none absolute -top-20 -right-20 w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-accent/8 blur-[80px]"
-            animate={{ 
-              x: [0, 30, -20, 0], 
-              y: [0, -25, 15, 0],
-              scale: [1, 1.15, 0.9, 1],
-              opacity: [0.6, 0.9, 0.5, 0.6],
-            }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="pointer-events-none absolute -bottom-20 -left-20 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-accent/6 blur-[80px]"
-            animate={{ 
-              x: [0, -25, 20, 0], 
-              y: [0, 20, -30, 0],
-              scale: [1, 0.9, 1.1, 1],
-              opacity: [0.5, 0.8, 0.4, 0.5],
-            }}
-            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="pointer-events-none absolute top-1/3 left-1/2 w-48 h-48 rounded-full bg-yellow-400/5 blur-[60px]"
-            animate={{ 
-              x: [0, 40, -30, 0], 
-              y: [0, -20, 25, 0],
-              opacity: [0.3, 0.6, 0.2, 0.3],
-            }}
-            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </>
-      )}
-
-      {/* Static Orbs - Mid/Low Tier */}
-      {!isHigh && tier !== 'very-low' && (
-        <>
-          <div className="pointer-events-none absolute -top-32 -right-32 w-96 h-96 rounded-full bg-accent/5 blur-[100px]" />
-          <div className="pointer-events-none absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-accent/5 blur-[100px]" />
-        </>
-      )}
-
-      {/* Floating Diamond Accents - High Tier */}
-      {isHigh && (
-        <>
-          <motion.div
-            className="absolute top-12 right-16 w-4 h-4 sm:w-5 sm:h-5 border border-accent/30 pointer-events-none z-[2]"
-            style={{ rotate: 45 }}
-            animate={{ y: [0, -15, 0], opacity: [0.4, 0.8, 0.4], rotate: [45, 90, 45] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="absolute bottom-16 left-12 w-3 h-3 sm:w-4 sm:h-4 border border-accent/25 pointer-events-none z-[2]"
-            style={{ rotate: 45 }}
-            animate={{ y: [0, 12, 0], opacity: [0.3, 0.7, 0.3], rotate: [45, 0, 45] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          />
-          <motion.div
-            className="absolute top-1/2 right-24 w-2.5 h-2.5 bg-accent/15 pointer-events-none z-[2]"
-            style={{ rotate: 45 }}
-            animate={{ y: [0, -10, 5, 0], opacity: [0.2, 0.5, 0.3, 0.2] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-          />
-        </>
-      )}
-
-      {/* Structural Network Particle Field - High Tier Exclusive */}
-      {isHigh && (
-        <GeometricParticleField 
-          quantity={70} 
-          color="#D4AF37"
-          className="z-[1]"
-          staticity={50}
-          ease={40}
-        />
-      )}
-
-      <div className="relative z-10 text-center max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="flex items-center justify-center gap-3 mb-6"
-        >
-          {/* Animated expanding accent lines - High Tier */}
-          <motion.span 
-            className="h-[2px] bg-accent"
-            initial={{ width: isHigh ? 0 : 32 }}
-            animate={{ width: 32 }}
-            transition={{ duration: 1.2, delay: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
-          />
-          <span className="text-accent text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-14 lg:px-16 py-14 sm:py-16 flex-1 flex flex-col justify-center">
+        <motion.div {...fadeUp(0.05)} className="flex items-center gap-3 mb-6">
+          <span className="font-display font-bold text-[11px] sm:text-xs text-accent-dark/70 tracking-[0.25em] uppercase">Project Dossier</span>
+          <span className="h-[2px] w-12 bg-accent"></span>
+          <span className="text-accent-dark text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
             Since 1999
           </span>
-          <motion.span 
-            className="h-[2px] bg-accent"
-            initial={{ width: isHigh ? 0 : 32 }}
-            animate={{ width: 32 }}
-            transition={{ duration: 1.2, delay: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
-          />
         </motion.div>
 
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="text-[28px] leading-tight sm:text-4xl md:text-5xl lg:text-7xl font-bold font-display tracking-tight mb-4 sm:mb-6"
+          {...fadeUp(0.15)}
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-display tracking-tight leading-[1.05] mb-6"
         >
-          {isHigh ? (
-            <motion.span
-              className="text-transparent bg-clip-text bg-gradient-to-r from-primary-dark via-accent to-primary-dark bg-[length:200%_auto]"
-              animate={{ backgroundPosition: ['0% center', '200% center'] }}
-              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-            >
-              Delphin Associates
-            </motion.span>
-          ) : (
-            <span className="text-primary-dark">Delphin Associates</span>
-          )}
+          <span className="block text-primary-dark">Delphin</span>
+          <span className="block text-outline-ink">Associates</span>
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="mx-auto max-w-2xl text-base sm:text-xl text-gray-500 leading-relaxed font-light"
+          {...fadeUp(0.28)}
+          className="max-w-2xl text-base sm:text-xl text-gray-500 leading-relaxed font-light"
         >
           <strong className="text-gray-900 font-semibold">You Dream We Build:</strong> Building trust through quality since 1999.
           Leading civil construction company in Chennai, Tamil Nadu.
         </motion.p>
+      </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 max-w-3xl mx-auto"
-        >
-          {[
-            { value: "25+", label: "Years Experience" },
-            { value: "100%", label: "Quality Assurance" },
-            { value: "E2E", label: "Execution & Consultancy" },
-          ].map((stat, idx) => (
+      {/* Full-width stats band - pinned to the sheet's bottom edge */}
+      <div className="relative z-10 border-t border-black/10 mt-auto">
+        <div className="max-w-7xl mx-auto px-6 sm:px-14 lg:px-16 grid grid-cols-1 sm:grid-cols-3">
+          {heroStats.map((stat, index) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.5 + idx * 0.12, ease: [0.21, 0.47, 0.32, 0.98] }}
-              whileHover={isHigh ? { scale: 1.05, y: -4, boxShadow: "0 20px 40px -8px rgba(212,175,55,0.15)" } : { y: -4 }}
-              className={`rounded-2xl border border-gray-100 ${tier === 'very-low' ? 'bg-[#fdfbf4]' : (tier === 'low' ? 'bg-[#fdfbf4]/95' : 'bg-[#fdfbf4]/60 backdrop-blur-md')} p-5 sm:p-8 transition-colors hover:border-accent/20 ${isHigh ? 'cursor-default' : ''}`}
+              {...fadeUp(0.4 + index * 0.1)}
+              className={`group py-7 sm:py-10 px-4 sm:px-8 ${index > 0 ? 'sm:border-l border-t sm:border-t-0 border-black/10' : ''}`}
             >
-              <div className="text-2xl sm:text-4xl font-black text-primary-dark mb-2 font-display">{stat.value}</div>
-              <div className="text-xs sm:text-sm font-semibold text-gray-500 uppercase tracking-wider">{stat.label}</div>
+              <span className={`block text-3xl sm:text-4xl lg:text-5xl font-display font-bold tracking-tight text-primary-dark ${isStatic ? '' : 'transition-colors duration-500 group-hover:text-accent-dark'}`}>
+                {stat.value}
+              </span>
+              <span className="block mt-2 text-[10px] sm:text-xs text-gray-500 font-bold tracking-[0.2em] uppercase">
+                {stat.label}
+              </span>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
-
-

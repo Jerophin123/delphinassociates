@@ -1,17 +1,19 @@
 "use client";
 
+import ArchPlans from "./ui/ArchPlans";
+import SheetWatermark from "./ui/SheetWatermark";
 import { motion, useInView } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
-import Link from "next/link";
+import { useRef, useEffect } from "react";
 import { Award, Users, CheckCircle2, TrendingUp } from "lucide-react";
 import { useHPOE } from "@/components/HPOE";
-import GeometricParticleField from "./ui/GeometricParticleField";
+import ArrowLink from "./ui/ArrowLink";
+import { useLiquidGlass } from "./ui/useLiquidGlass";
 
 const stats = [
-  { icon: Award, value: "25+", label: "Years of Experience", color: "from-accent to-accent-light" },
-  { icon: TrendingUp, value: "100+", label: "Projects Completed", color: "from-accent-light to-accent" },
-  { icon: Users, value: "50+", label: "Happy Clients", color: "from-accent-light to-accent" },
-  { icon: CheckCircle2, value: "100%", label: "Quality Assured", color: "from-accent to-accent-dark" },
+  { icon: Award, value: "25+", label: "Years of Experience" },
+  { icon: TrendingUp, value: "100+", label: "Projects Completed" },
+  { icon: Users, value: "50+", label: "Happy Clients" },
+  { icon: CheckCircle2, value: "100%", label: "Quality Assured" },
 ];
 
 function AnimatedCounter({
@@ -73,165 +75,144 @@ export default function QuickIntro() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const { tier, reducedMotion } = useHPOE();
   const isHigh = tier === 'high' && !reducedMotion;
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, x: -50 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.21, 0.47, 0.32, 0.98]
-      }
-    }
-  };
+  const isStatic = tier === 'low' || tier === 'very-low' || reducedMotion;
+  const noReveal = tier === "very-low" || reducedMotion;
+  // Real liquid-glass refraction on the founder stamp card (high tier)
+  const founderGlassRef = useLiquidGlass<HTMLDivElement>({ scale: -60, chroma: 4, blur: 3, mapBlur: 10 });
 
   return (
     <section
       id="home-quickintro"
+      data-header-theme="light"
       itemScope
       itemType="https://schema.org/AboutPage"
-      className={`relative z-10 py-12 sm:py-20 md:py-28 ${tier === 'very-low' ? 'bg-primary-dark' : 'bg-primary-dark/95'} overflow-hidden border-y border-white/5`}
+      className="relative z-10 bg-[#fdfbf4] overflow-hidden border-y border-black/5"
       aria-labelledby="about-heading"
     >
-      {tier !== 'low' && tier !== 'very-low' && (
-        <>
-          <div
-            className={`absolute top-0 right-0 w-[500px] h-[500px] bg-accent/10 rounded-full ${tier === 'mid' ? 'blur-[30px] sm:blur-[40px]' : 'blur-[60px] sm:blur-[120px]'} pointer-events-none`}
-            style={{ transform: "translate3d(33%, -50%, 0)", willChange: "transform" }}
-          ></div>
-          <div
-            className={`absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent-light/5 rounded-full ${tier === 'mid' ? 'blur-[30px] sm:blur-[40px]' : 'blur-[50px] sm:blur-[100px]'} pointer-events-none`}
-            style={{ transform: "translate3d(-25%, 33%, 0)", willChange: "transform" }}
-          ></div>
-          
-          {isHigh && (
-            <GeometricParticleField 
-              quantity={40} 
-              color="#D4AF37"
-              className="z-[1]"
-              staticity={60}
-            />
-          )}
-        </>
-      )}
+      {/* Drafting-paper ruling */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `linear-gradient(to right, rgba(18,18,18,0.045) 1px, transparent 1px),
+                            linear-gradient(to bottom, rgba(18,18,18,0.045) 1px, transparent 1px)`,
+          backgroundSize: '32px 32px',
+        }}
+      />
+      {/* Drafting margin rule */}
+      <span aria-hidden className="absolute left-6 sm:left-12 top-0 bottom-0 w-px bg-accent/25 pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <ArchPlans tone="light" variant="surveyor" />
+
+      {/* Sheet-index watermark */}
+      <SheetWatermark text="01" tone="dark" />
+
+      {/* Full-width stats band */}
+      <div ref={ref} className="relative border-b border-black/10">
+        <div className="max-w-7xl mx-auto px-6 sm:px-14 lg:px-16 grid grid-cols-2 lg:grid-cols-4">
+          {stats.map((stat, index) => {
+            const Icon = stat.icon;
+            return (
+              <motion.div
+                key={stat.label}
+                initial={noReveal ? { opacity: 1, y: 0 } : { opacity: 0, y: 24, scale: 0.98 }}
+                animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+                transition={{
+                  duration: noReveal ? 0 : 0.6,
+                  delay: noReveal ? 0 : index * 0.1,
+                  ease: [0.21, 0.47, 0.32, 0.98]
+                }}
+                className={`group relative py-8 sm:py-12 px-4 sm:px-8 ${index > 0 ? 'border-l border-black/10' : ''} ${index > 1 ? 'border-t lg:border-t-0' : ''} ${index === 2 ? 'border-l-0 lg:border-l' : ''}`}
+              >
+                <Icon className={`w-5 h-5 sm:w-6 sm:h-6 mb-3 sm:mb-4 ${tier === 'very-low' ? 'text-accent-dark' : `text-accent-dark/60 ${isStatic ? '' : 'group-hover:text-accent-dark transition-colors duration-500'}`}`} aria-hidden />
+                <span className={`block text-3xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tight text-primary-dark ${isStatic ? '' : 'transition-colors duration-500 group-hover:text-accent-dark'}`}>
+                  <AnimatedCounter value={stat.value} isInView={isInView} />
+                </span>
+                <span className="block mt-2 text-[10px] sm:text-xs text-gray-500 font-bold tracking-[0.2em] uppercase">
+                  {stat.label}
+                </span>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Editorial body */}
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-14 lg:px-16 py-14 sm:py-24 md:py-28">
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-16">
           <motion.div
-            ref={ref}
-            initial="hidden"
-            whileInView="visible"
+            initial={noReveal ? { opacity: 1, y: 0 } : { opacity: 0, y: 30, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, margin: "-50px" }}
-            variants={containerVariants}
+            transition={{ duration: noReveal ? 0 : 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+            className="lg:col-span-6 min-w-0"
           >
-            <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="font-display font-bold text-[11px] sm:text-xs text-accent-dark/70 tracking-[0.25em] uppercase">Sheet 01&thinsp;/&thinsp;06</span>
               <span className="h-[2px] w-12 bg-accent"></span>
-              <span className="text-accent text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
+              <span className="text-accent-dark text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
                 About Us
               </span>
-            </motion.div>
-            <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6 font-display text-white leading-[1.15] tracking-tight">
-              Excellence in <br />
-              <span className={`${tier === 'very-low' ? 'text-white' : 'text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400'}`}>Construction</span>
-              <span className="block mt-2 text-xl sm:text-2xl md:text-4xl text-accent font-medium">Since 1999</span>
-            </motion.h2>
-            <motion.div variants={itemVariants} className="space-y-6 mb-10">
-              <p className="text-sm sm:text-base text-gray-400 leading-relaxed font-light">
-                Delphin Associates was established in <strong className="text-white font-medium">1999</strong> by{" "}
-                <strong className="text-white font-medium">Mr. Delphin P. Stanley (DCE, B.Tech)</strong>, leading a team of
-                young engineers across Tamil Nadu. Our organization provides building consultancy,
-                construction, and project execution services for residential,
-                industrial, commercial, institutional, and church projects.
-              </p>
-              <p className="text-sm sm:text-base text-gray-400 leading-relaxed font-light">
-                We are known for <strong className="text-white font-medium">transparency</strong>, <strong className="text-white font-medium">timely completion</strong>, and
-                <strong className="text-white font-medium"> post-completion support</strong>. Our commitment to quality and customer
-                satisfaction has made us a trusted name in the construction industry.
-              </p>
-            </motion.div>
+            </div>
+            <h2 id="about-heading" className="text-[1.6rem] sm:text-3xl md:text-4xl xl:text-5xl font-bold font-display leading-[1.12] tracking-tight mb-6">
+              <span className="block text-primary-dark whitespace-nowrap">Excellence in</span>
+              <span className="block text-outline-ink whitespace-nowrap">Construction</span>
+              <span className="block mt-3 text-base sm:text-lg md:text-xl text-accent-dark font-medium">Since 1999</span>
+            </h2>
 
-            <motion.div variants={itemVariants}>
-              <Link
-                href="/about"
-                className={`group relative inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 font-bold text-sm sm:text-base text-white transition-all duration-300 bg-primary-dark rounded-xl border border-gray-800 hover:bg-gray-900 overflow-hidden ${isHigh ? 'liquid-glass-btn-dark !bg-[#fdfbf4]/5' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-dark !bg-[#fdfbf4]/5' : ''}`}
-              >
-                <span className={`relative z-10 flex items-center gap-2 ${isHigh ? '!text-accent' : ''}`}>
-                  Learn More About Us
-                  <svg className="w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
+            {/* Founder stamp (desktop) - real liquid glass over the drafting paper on high tier */}
+            <div ref={founderGlassRef} className={`hidden sm:flex items-center gap-4 p-4 sm:p-5 rounded-2xl border w-fit ${
+              isHigh ? 'liquid-real-light border-black/5' : tier === 'mid' ? 'mid-glass-card-light border-black/5' : 'bg-white border-black/10'
+            }`}>
+              <span className="flex items-center justify-center w-12 h-12 rounded-md border border-accent-dark/50 p-[3px] shrink-0" aria-hidden>
+                <span className="flex items-center justify-center w-full h-full rounded-[4px] border border-accent-dark/30 bg-accent/10 font-display font-bold text-accent-dark text-sm tracking-widest">
+                  DS
                 </span>
-                {tier !== 'very-low' && <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />}
-              </Link>
-            </motion.div>
+              </span>
+              <span>
+                <span className="block text-primary-dark font-bold text-sm sm:text-base">Mr. Delphin P. Stanley</span>
+                <span className="block text-gray-500 text-xs sm:text-sm font-light mt-0.5">Founder &mdash; DCE, B.Tech</span>
+              </span>
+            </div>
           </motion.div>
 
           <motion.div
-            initial={reducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 100 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={noReveal ? { opacity: 1, y: 0 } : { opacity: 0, y: 30, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: reducedMotion ? 0 : 1, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="relative"
+            transition={{ duration: noReveal ? 0 : 0.8, delay: noReveal ? 0 : 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
+            className="lg:col-span-6 min-w-0"
           >
-            <div className="grid grid-cols-2 gap-3 sm:gap-6">
-              {stats.map((stat, index) => {
-                const Icon = stat.icon;
-                return (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                    transition={{
-                      duration: 0.6,
-                      delay: index * 0.1,
-                      ease: [0.21, 0.47, 0.32, 0.98]
-                    }}
-                    style={{ willChange: "transform, opacity" }}
-                    className={`group relative rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-8 overflow-hidden ${tier === 'very-low' ? 'bg-black opacity-100' : (tier === 'high' ? 'liquid-glass-card-dark' : (tier === 'mid' ? 'bg-[#fdfbf4]/[0.05]' : 'bg-black/50'))} border border-white/10 hover:border-accent/40 transition-all duration-500 ${tier === 'high' || tier === 'mid' ? 'hover:shadow-2xl hover:shadow-accent/10 hover:-translate-y-1.5 hover:scale-[1.02]' : ''} ${isHigh ? 'premium-card-hover-shine premium-border-glow' : ''}`}
-                  >
-                    {tier !== 'low' && tier !== 'very-low' && (
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-accent/10 via-transparent to-transparent pointer-events-none" style={{ transform: "translate3d(0,0,0)", willChange: "opacity" }} />
-                    )}
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-700 font-light leading-relaxed mb-6">
+              We build with <strong className="text-primary-dark font-medium">transparency</strong>, finish{" "}
+              <strong className="text-primary-dark font-medium">on time</strong>, and stay after handover.
+            </p>
+            <p className="text-sm sm:text-base text-gray-500 leading-relaxed font-light mb-8 max-w-2xl">
+              Delphin Associates provides building consultancy, construction, and project
+              execution services for residential, industrial, commercial, institutional,
+              and church projects &mdash; led by a team of young engineers working across
+              Tamil Nadu. Our commitment to quality and customer satisfaction has made us
+              a trusted name in the construction industry.
+            </p>
 
-                    <div className="relative z-10 flex flex-col items-start gap-y-4">
-                      {/* Icon */}
-                      <div className="relative p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-[#fdfbf4]/5 border border-white/10 group-hover:border-accent/40 group-hover:bg-accent/10 transition-colors duration-500 shadow-inner">
-                        {isHigh && (
-                          <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-accent/10 animate-[pulse-ring_3s_ease-in-out_infinite] pointer-events-none" />
-                        )}
-                        <Icon className="w-5 h-5 sm:w-8 sm:h-8 text-white group-hover:text-accent transition-colors duration-300" />
-                      </div>
-
-                      {/* Value & Label */}
-                      <div>
-                        <span className={`text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold ${tier === 'very-low' ? 'text-white' : 'text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 group-hover:from-accent group-hover:to-accent-light'} tracking-tight transition-all duration-500`}>
-                          <AnimatedCounter value={stat.value} isInView={isInView} />
-                        </span>
-                        <div className="mt-1 sm:mt-2 text-xs sm:text-base text-gray-400 font-medium tracking-wide group-hover:text-gray-300 transition-colors duration-300 font-light">
-                          {stat.label}
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
+            {/* Founder stamp (mobile) - compact full-width sign-off after the copy */}
+            <div className={`sm:hidden flex items-center gap-3 p-3 rounded-xl border w-full mb-7 ${
+              tier === 'mid' ? 'mid-glass-card-light border-black/5' : 'bg-white border-black/10'
+            }`}>
+              <span className="flex items-center justify-center w-10 h-10 rounded-md border border-accent-dark/50 p-[2px] shrink-0" aria-hidden>
+                <span className="flex items-center justify-center w-full h-full rounded-[4px] border border-accent-dark/30 bg-accent/10 font-display font-bold text-accent-dark text-xs tracking-widest">
+                  DS
+                </span>
+              </span>
+              <span className="min-w-0">
+                <span className="block text-primary-dark font-bold text-sm leading-tight truncate">Mr. Delphin P. Stanley</span>
+                <span className="block text-gray-500 text-[11px] font-light mt-0.5 truncate">Founder &mdash; DCE, B.Tech</span>
+              </span>
             </div>
 
-            {isHigh && (
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-accent/5 rounded-full blur-[60px] sm:blur-[100px] -z-10 pointer-events-none" style={{ transform: "translateZ(0)" }}></div>
-            )}
+            <ArrowLink href="/about" tone="onLight">
+              Learn More About Us
+            </ArrowLink>
           </motion.div>
         </div>
       </div>

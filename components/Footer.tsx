@@ -6,8 +6,11 @@ import { motion } from "framer-motion";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { FaInstagram, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter, FaThreads } from "react-icons/fa6";
+import { useHPOE } from "./HPOE";
 
 export default function Footer() {
+  const { tier, reducedMotion } = useHPOE();
+  const isStatic = tier === "low" || tier === "very-low" || reducedMotion;
   const currentYear = new Date().getFullYear();
 
   return (
@@ -23,7 +26,8 @@ export default function Footer() {
                 alt="Delphin Associates - Leading Civil Engineers and Contractors in Chennai, Tamil Nadu - Official Logo"
                 width={200}
                 height={70}
-                className="h-10 sm:h-12 md:h-14 w-auto object-contain"
+                className="h-10 sm:h-12 md:h-14 w-auto object-contain shrink-0"
+                style={{ width: "auto" }}
                 unoptimized
                 itemProp="logo"
               />
@@ -37,7 +41,7 @@ export default function Footer() {
             <div className="space-y-1.5 sm:space-y-2">
               <div className="flex items-start sm:items-center space-x-2" itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
                 <motion.div
-                  whileHover={{ scale: 1.1 }}
+                  whileHover={isStatic ? undefined : { scale: 1.1 }}
                   transition={{ duration: 0.2 }}
                   className="flex-shrink-0 mt-0.5 sm:mt-0"
                 >
@@ -49,7 +53,7 @@ export default function Footer() {
               </div>
               <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                 <motion.div
-                  whileHover={{ scale: 1.1 }}
+                  whileHover={isStatic ? undefined : { scale: 1.1 }}
                   transition={{ duration: 0.2 }}
                   className="flex-shrink-0"
                 >
@@ -73,7 +77,7 @@ export default function Footer() {
               </div>
               <div className="flex items-start sm:items-center space-x-2">
                 <motion.div
-                  whileHover={{ scale: 1.1 }}
+                  whileHover={isStatic ? undefined : { scale: 1.1 }}
                   transition={{ duration: 0.2 }}
                   className="flex-shrink-0 mt-0.5 sm:mt-0"
                 >
@@ -89,7 +93,7 @@ export default function Footer() {
               </div>
               <div className="flex items-start sm:items-center space-x-2">
                 <motion.div
-                  whileHover={{ scale: 1.1 }}
+                  whileHover={isStatic ? undefined : { scale: 1.1 }}
                   transition={{ duration: 0.2 }}
                   className="flex-shrink-0 mt-0.5 sm:mt-0"
                 >
@@ -117,7 +121,7 @@ export default function Footer() {
                   className="text-[#B0B0B0] hover:text-accent transition-colors"
                   aria-label="Instagram"
                   itemProp="sameAs"
-                  whileHover={{ scale: 1.15 }}
+                  whileHover={isStatic ? undefined : { scale: 1.15 }}
                   transition={{ duration: 0.2 }}
                 >
                   <FaInstagram className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -129,7 +133,7 @@ export default function Footer() {
                   className="text-[#B0B0B0] hover:text-accent transition-colors"
                   aria-label="X (formerly Twitter)"
                   itemProp="sameAs"
-                  whileHover={{ scale: 1.15 }}
+                  whileHover={isStatic ? undefined : { scale: 1.15 }}
                   transition={{ duration: 0.2 }}
                 >
                   <FaXTwitter className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -141,7 +145,7 @@ export default function Footer() {
                   className="text-[#B0B0B0] hover:text-accent transition-colors"
                   aria-label="LinkedIn"
                   itemProp="sameAs"
-                  whileHover={{ scale: 1.15 }}
+                  whileHover={isStatic ? undefined : { scale: 1.15 }}
                   transition={{ duration: 0.2 }}
                 >
                   <FaLinkedin className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -153,7 +157,7 @@ export default function Footer() {
                   className="text-[#B0B0B0] hover:text-accent transition-colors"
                   aria-label="Threads"
                   itemProp="sameAs"
-                  whileHover={{ scale: 1.15 }}
+                  whileHover={isStatic ? undefined : { scale: 1.15 }}
                   transition={{ duration: 0.2 }}
                 >
                   <FaThreads className="w-5 h-5 sm:w-6 sm:h-6" />

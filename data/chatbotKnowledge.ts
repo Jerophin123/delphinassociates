@@ -283,7 +283,7 @@ export const chatbotKnowledge: KnowledgeItem[] = [
   },
   {
     keywords: ["contract", "agreement", "hidden cost", "transparency", "how you work", "process", "lump sum", "turnkey", "contractor", "package", "hidden charges"],
-    answer: "We operate on a transparent <strong>Turnkey Contract</strong> basis. Everything from exact material specifications, project timelines, to phase-wise payment schedules is documented clearly in a legal agreement before work begins—ensuring absolute trust and zero hidden costs.",
+    answer: "We operate on a transparent <strong>Turnkey Contract</strong> basis. Everything from exact material specifications, project timelines, to phase-wise payment schedules is documented clearly in a legal agreement before work begins - ensuring absolute trust and zero hidden costs.",
   },
   // --- ADVANCED STRUCTURAL, INTERIOR & LOGISTICAL KNOWLEDGE ---
   {
@@ -373,7 +373,7 @@ export const chatbotKnowledge: KnowledgeItem[] = [
   },
   {
     keywords: ["hard rock", "pallavaram", "chromepet", "tambaram", "excavation", "rock breaking", "hard strata", "footing depth"],
-    answer: "In areas like Pallavaram, Chromepet, and parts of Tambaram, we often hit hard rock within just 3 to 5 feet. For this, we use mechanical rock breakers instead of blasting (for neighborhood safety). Finding rock is actually excellent for foundation stability—we anchor the column footings directly to the rock strata for unmatched strength.",
+    answer: "In areas like Pallavaram, Chromepet, and parts of Tambaram, we often hit hard rock within just 3 to 5 feet. For this, we use mechanical rock breakers instead of blasting (for neighborhood safety). Finding rock is actually excellent for foundation stability - we anchor the column footings directly to the rock strata for unmatched strength.",
   },
   {
     keywords: ["surki", "weathering course", "kerala tile", "terracotta", "pressed clay tile", "cool roof", "terrace heat"],
@@ -397,7 +397,7 @@ export const chatbotKnowledge: KnowledgeItem[] = [
   },
   {
     keywords: ["civil engineer", "expert", "local knowledge", "chennai engineer", "tamil nadu typical", "why hire you"],
-    answer: "As native Civil Engineers rooted in Chennai, we don't just build; we engineer for our exact climate and regulations. From understanding Patta/Chitta legality, surviving monsoon cyclones, combatting saline coastal air, to securing CMDA approvals and Metro Water lines—we know Tamil Nadu construction inside and out.",
+    answer: "As native Civil Engineers rooted in Chennai, we don't just build; we engineer for our exact climate and regulations. From understanding Patta/Chitta legality, surviving monsoon cyclones, combatting saline coastal air, to securing CMDA approvals and Metro Water lines - we know Tamil Nadu construction inside and out.",
   },
   // --- EXTREME LOCAL KNOWLEDGE (CHENNAI TANGLISH & PROFESSIONAL CIVIL ENGINEERING) ---
   {
@@ -475,7 +475,7 @@ export const chatbotKnowledge: KnowledgeItem[] = [
   },
   {
     keywords: ["steel", "tmt bar", "tata tiscon", "jsw", "vizag steel", "rust", "corrosion", "fe500d", "fe550d", "kambi"],
-    answer: "Steel is the backbone of your house. Because Chennai air is highly humid, cheap steel rusts inside the pillars, expands, and cracks the concrete. I only procure primary Fe500D or Fe550D grade TMT bars from primary steel makers (Tata Tiscon, JSW, Vizag). 'D' stands for Ductility—it allows the building to flex safely during earthquakes instead of snapping."
+    answer: "Steel is the backbone of your house. Because Chennai air is highly humid, cheap steel rusts inside the pillars, expands, and cracks the concrete. I only procure primary Fe500D or Fe550D grade TMT bars from primary steel makers (Tata Tiscon, JSW, Vizag). 'D' stands for Ductility - it allows the building to flex safely during earthquakes instead of snapping."
   },
   {
     keywords: ["load calculation", "rcc", "beam", "slab", "column", "weight", "crack", "structural drawing", "load bearing", "pillers"],
@@ -483,7 +483,7 @@ export const chatbotKnowledge: KnowledgeItem[] = [
   },
   {
     keywords: ["common mistake", "contractor mistake", "honeycomb", "honeycombing", "cover block", "steel exposed", "concrete packing"],
-    answer: "A massive mistake I see on amateur sites is 'Honeycombing'—when concrete is poured without a vibrator, leaving ugly stony gaps. Another fatal error is forgetting 'Cover Blocks' (small concrete spacers). Without cover blocks, the steel touches the wooden centering plate, gets exposed to air after removing the wood, and rusts immediately. Our engineers overlap these site checks vigorously."
+    answer: "A massive mistake I see on amateur sites is 'Honeycombing' - when concrete is poured without a vibrator, leaving ugly stony gaps. Another fatal error is forgetting 'Cover Blocks' (small concrete spacers). Without cover blocks, the steel touches the wooden centering plate, gets exposed to air after removing the wood, and rusts immediately. Our engineers overlap these site checks vigorously."
   },
   {
     keywords: ["cmda rule", "corporation approval", "fsi", "setback", "leaving space", "plot coverage", "how much can build", "approval delay"],
@@ -491,7 +491,7 @@ export const chatbotKnowledge: KnowledgeItem[] = [
   },
   {
     keywords: ["cost", "sq ft rate", "market rate", "chennai price", "labour rate", "budget", "premium", "why is it costly", "cheap contractor"],
-    answer: "Construction rates in Chennai currently run from ₹1,900/sq.ft for a standard finish up to ₹2,500+/sq.ft for luxury. Beware of 'cheap' contractors quoting below ₹1,700/sq.ft—they survive by using unauthorized sub-standard steel, unwashed M-sand, or hitting you with massive hidden 'escalation' charges mid-project. Our turnkey quotes are locked and 100% transparent."
+    answer: "Construction rates in Chennai currently run from ₹1,900/sq.ft for a standard finish up to ₹2,500+/sq.ft for luxury. Beware of 'cheap' contractors quoting below ₹1,700/sq.ft - they survive by using unauthorized sub-standard steel, unwashed M-sand, or hitting you with massive hidden 'escalation' charges mid-project. Our turnkey quotes are locked and 100% transparent."
   },
   {
     keywords: ["stage", "stages", "step by step", "how to start", "process", "construction flow", "payment stage", "lintel", "roofing"],
@@ -586,7 +586,7 @@ export const chatbotKnowledge: KnowledgeItem[] = [
   },
   {
     keywords: ["uds", "undivided share", "flat buying", "apartment share", "carpet area", "land value", "real estate legal"],
-    answer: "If you buy an apartment, <strong>UDS (Undivided Share of Land)</strong> is the most critical metric! Your building degrades over 50 years, but the land appreciates. Ensure the builder gives you a high UDS percentage—if you buy a 1000 sq.ft flat, a healthy UDS should be at least 400 to 500 sq.ft assigned directly in your registration document."
+    answer: "If you buy an apartment, <strong>UDS (Undivided Share of Land)</strong> is the most critical metric! Your building degrades over 50 years, but the land appreciates. Ensure the builder gives you a high UDS percentage - if you buy a 1000 sq.ft flat, a healthy UDS should be at least 400 to 500 sq.ft assigned directly in your registration document."
   },
   {
     keywords: ["registration", "stamp duty", "guideline value", "market value", "sub registrar", "property tax", "register land", "document charges"],

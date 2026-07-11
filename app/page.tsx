@@ -2,7 +2,9 @@ import { Metadata } from "next";
 import Hero from "@/components/Hero";
 import QuickIntro from "@/components/QuickIntro";
 import ProjectHighlights from "@/components/ProjectHighlights";
+import UpcomingProjects from "@/components/UpcomingProjects";
 import ServicesPreview from "@/components/ServicesPreview";
+import Testimonials from "@/components/Testimonials";
 import CTASection from "@/components/CTASection";
 import FAQ from "@/components/FAQ";
 
@@ -49,7 +51,9 @@ export default function Home() {
       <Hero />
       <QuickIntro />
       <ProjectHighlights />
+      <UpcomingProjects tone="light" sheetNo="03" sheetOf="06" watermark="03" archVariant="sunpath" />
       <ServicesPreview />
+      <Testimonials />
       <CTASection />
       <FAQ />
     </>

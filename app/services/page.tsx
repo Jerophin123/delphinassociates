@@ -41,20 +41,9 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   return (
-    <div className="pt-20 bg-[#fdfbf4]/95 text-primary-dark pb-16 sm:pb-20 md:pb-24 relative z-10">
+    <div className="pt-20 bg-[#fdfbf4] text-primary-dark relative z-10">
       <ServicesHero />
-
-      {/* Services List Section */}
-      <section className="relative mt-8 sm:mt-12 md:mt-16 bg-[#fdfbf4]/95 pt-8 pb-16 sm:pb-20 md:pb-24 overflow-hidden">
-        <div className="absolute top-[-12rem] left-[-10rem] w-[500px] h-[500px] bg-accent/5 rounded-full blur-[80px] pointer-events-none" />
-        <div className="absolute bottom-[-14rem] right-[-10rem] w-[500px] h-[500px] bg-accent/3 rounded-full blur-[80px] pointer-events-none" />
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ServicesList />
-        </div>
-      </section>
-
-      {/* Lets Build Together Section */}
+      <ServicesList />
       <ServicesCTA />
     </div>
   );

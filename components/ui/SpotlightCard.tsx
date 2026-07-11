@@ -1,28 +1,37 @@
 "use client";
 
-import { useRef, useState, ReactNode } from "react";
+import { useRef, useState, ReactNode, forwardRef, ForwardedRef } from "react";
 import { motion } from "framer-motion";
 import { useHPOE } from "../HPOE";
 
 interface SpotlightCardProps {
   children: ReactNode;
   className?: string;
-  spotlightColor?: string; // e.g. "rgba(212, 175, 55, 0.05)"
+  spotlightColor?: string; // e.g. "rgba(212, 55, 0.05)" - kept for API compat
 }
 
-export default function SpotlightCard({ 
-  children, 
-  className = "", 
-  spotlightColor = "rgba(212, 175, 55, 0.07)" 
-}: SpotlightCardProps) {
+const SpotlightCard = forwardRef(function SpotlightCard(
+  { children, className = "" }: SpotlightCardProps,
+  forwarded: ForwardedRef<HTMLDivElement>
+) {
   const { tier, reducedMotion } = useHPOE();
   const boxRef = useRef<HTMLDivElement>(null);
-  
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const setRefs = (node: HTMLDivElement | null) => {
+    boxRef.current = node;
+    if (typeof forwarded === "function") forwarded(node);
+    else if (forwarded) forwarded.current = node;
+  };
+
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0, ratio: 0 });
   const [isHovered, setIsHovered] = useState(false);
 
   if (tier !== "high" || reducedMotion) {
-    return <div className={className}>{children}</div>;
+    return (
+      <div ref={setRefs} className={className}>
+        {children}
+      </div>
+    );
   }
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -30,13 +39,14 @@ export default function SpotlightCard({
       const rect = boxRef.current.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      setMousePosition({ x, y });
+      const ratio = boxRef.current.clientWidth > 0 ? x / boxRef.current.clientWidth : 0;
+      setMousePosition({ x, y, ratio });
     }
   };
 
   return (
     <div
-      ref={boxRef}
+      ref={setRefs}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -50,8 +60,8 @@ export default function SpotlightCard({
         <div
           className="absolute inset-0 z-10 mix-blend-overlay"
           style={{
-            background: boxRef.current 
-              ? `linear-gradient(105deg, transparent ${(mousePosition.x / boxRef.current.clientWidth) * 50}%, rgba(255, 255, 255, 0.4) ${(mousePosition.x / boxRef.current.clientWidth) * 100}%, transparent ${(mousePosition.x / boxRef.current.clientWidth) * 150 + 20}%)`
+            background: isHovered
+              ? `linear-gradient(105deg, transparent ${mousePosition.ratio * 50}%, rgba(255, 255, 255, 0.4) ${mousePosition.ratio * 100}%, transparent ${mousePosition.ratio * 150 + 20}%)`
               : 'none',
           }}
         />
@@ -70,4 +80,6 @@ export default function SpotlightCard({
       </div>
     </div>
   );
-}
+});
+
+export default SpotlightCard;

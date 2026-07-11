@@ -1,22 +1,32 @@
 "use client";
 
-import Link from "next/link";
+import ArchPlans from "../ui/ArchPlans";
+import SheetWatermark from "../ui/SheetWatermark";
 import { motion } from "framer-motion";
 import {
   Building2,
   Factory,
   School,
-  Church,
   Wrench,
-  CheckCircle,
-  ArrowRight,
 } from "lucide-react";
 import { useHPOE } from "../HPOE";
 import SpotlightCard from "../ui/SpotlightCard";
-import Tilt3DContainer from "../ui/Tilt3DContainer";
+import ArrowLink from "../ui/ArrowLink";
+import { useLiquidGlass } from "../ui/useLiquidGlass";
+
+/** Card shell with real liquid-glass refraction on high tier */
+function GlassSpecCard({ children, className }: { children: React.ReactNode; className: string }) {
+  const glassRef = useLiquidGlass<HTMLDivElement>({ scale: -60, chroma: 4, blur: 4, mapBlur: 12 });
+  return (
+    <SpotlightCard ref={glassRef} className={className}>
+      {children}
+    </SpotlightCard>
+  );
+}
 
 const services = [
   {
+    code: "SP-01",
     icon: Building2,
     title: "Residential Construction",
     description:
@@ -29,6 +39,7 @@ const services = [
     ],
   },
   {
+    code: "SP-02",
     icon: Factory,
     title: "Industrial & Commercial Projects",
     description:
@@ -41,6 +52,7 @@ const services = [
     ],
   },
   {
+    code: "SP-03",
     icon: School,
     title: "Institutional & Church Buildings",
     description:
@@ -53,6 +65,7 @@ const services = [
     ],
   },
   {
+    code: "SP-04",
     icon: Wrench,
     title: "Consultancy & Turnkey Projects",
     description:
@@ -69,87 +82,135 @@ const services = [
 export default function ServicesList() {
   const { tier, reducedMotion } = useHPOE();
   const isHigh = tier === 'high' && !reducedMotion;
+  const isStatic = tier === 'low' || tier === 'very-low' || reducedMotion;
+  const noReveal = tier === "very-low" || reducedMotion;
 
   return (
-    <div className="grid md:grid-cols-2 gap-6 sm:gap-10">
-      {services.map((service, index) => {
-        const Icon = service.icon;
-        
-        return (
-          <motion.div
-            key={service.title}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ 
-              duration: 0.6,
-              delay: index * 0.1,
-              ease: [0.21, 0.47, 0.32, 0.98]
-            }}
-          >
-            <Tilt3DContainer maxRotation={6} className="h-full">
-              <SpotlightCard className={`group relative ${tier === 'very-low' ? 'bg-[#fdfbf4] shadow-none hover:translate-y-0' : 'bg-[#fdfbf4]/95 liquid-glass-card'} rounded-[2.5rem] overflow-hidden border border-gray-200 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 will-change-transform flex flex-col h-full hover:border-gray-300 ${isHigh ? 'premium-card-hover-shine premium-border-glow' : 'hover:-translate-y-2'}`}>
-                {/* Soft Hover Overlay Effect */}
-                {tier !== 'very-low' && <div className="absolute inset-0 bg-gradient-to-br from-accent/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />}
+    <section
+      data-header-theme="dark"
+      className={`relative overflow-hidden py-14 sm:py-20 md:py-24 ${tier === 'very-low' ? 'bg-primary-dark' : 'bg-primary-dark/95'} border-y border-white/5`}
+    >
+      {/* Faint site grid */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                            linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px)`,
+          backgroundSize: '32px 32px',
+        }}
+      />
 
-                {/* Gradient Header Section */}
-                <div className={`relative h-24 sm:h-40 ${tier === 'very-low' ? 'bg-[#fdfbf4]' : 'bg-[#fdfbf4]/50'} border-b border-gray-100 p-5 sm:p-8 flex items-center justify-center overflow-hidden ${tier === 'very-low' ? '' : 'group-hover:bg-accent/5'} transition-colors duration-500`}>
-                  {/* Subtle pattern */}
-                  {tier !== 'very-low' && (
-                    <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: `radial-gradient(circle at 1px 1px, black 1px, transparent 0)`, backgroundSize: '24px 24px' }} />
-                  )}
-                  
-                  {/* Icon Container */}
-                  <div className={`relative z-10 w-14 h-14 sm:w-20 sm:h-20 bg-[#fdfbf4] border border-gray-100/60 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] ${tier === 'very-low' ? '' : 'group-hover:shadow-[0_8px_30px_rgba(212,175,55,0.15)] group-hover:scale-110'} transition-all duration-500`}>
-                    {isHigh && (
-                      <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-accent/10 animate-[pulse-ring_3s_ease-in-out_infinite] pointer-events-none" />
-                    )}
-                    <Icon className="w-6 h-6 sm:w-10 sm:h-10 text-gray-700 group-hover:text-accent transition-colors duration-500" />
-                  </div>
-                </div>
+      <ArchPlans tone="dark" variant="axon" />
 
-                {/* Content Section */}
-                <div className="p-6 sm:p-10 flex-1 flex flex-col relative z-10">
-                  <h3 className="text-xl sm:text-3xl font-bold mb-3 sm:mb-4 text-primary-dark font-display group-hover:text-accent transition-colors duration-300">
+      {/* Sheet-index watermark */}
+      <SheetWatermark text="01" tone="light" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={noReveal ? { opacity: 1, y: 0 } : { opacity: 0, y: 30, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: noReveal ? 0 : 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="mb-10 sm:mb-14"
+        >
+          <div className="flex items-center gap-3 mb-6">
+            <span className="font-display font-bold text-[11px] sm:text-xs text-accent/60 tracking-[0.25em] uppercase">Sheet 01&thinsp;/&thinsp;01</span>
+            <span className="h-[2px] w-12 bg-accent"></span>
+            <span className="text-accent text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
+              What We Deliver
+            </span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-display tracking-tight leading-[1.05]">
+            <span className="text-white">Full </span>
+            <span className="text-outline-display">Specification</span>
+          </h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
+          {services.map((service, index) => {
+            const Icon = service.icon;
+            return (
+              <motion.div
+                key={service.code}
+                initial={noReveal ? { opacity: 1, y: 0 } : { opacity: 0, y: 24, scale: 0.98 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{
+                  duration: noReveal ? 0 : 0.6,
+                  delay: noReveal ? 0 : index * 0.1,
+                  ease: [0.21, 0.47, 0.32, 0.98]
+                }}
+                className="h-full"
+              >
+                <GlassSpecCard
+                  className={`group relative flex flex-col h-full p-6 sm:p-9 rounded-2xl sm:rounded-3xl border border-white/10 overflow-hidden ${
+                    isHigh
+                      ? 'liquid-real-dark premium-card-hover-shine'
+                      : tier === 'mid'
+                      ? 'mid-glass-card-dark'
+                      : tier === 'very-low'
+                      ? 'bg-black'
+                      : 'bg-black/50'
+                  } ${
+                    isStatic
+                      ? ''
+                      : 'transition-all duration-500 hover:border-accent/50 hover:shadow-2xl hover:shadow-accent/10 hover:-translate-y-1.5'
+                  }`}
+                >
+                  {/* Code + icon row */}
+                  <span className="flex items-start justify-between mb-6 sm:mb-8">
+                    <span
+                      className={`font-display font-bold text-lg sm:text-xl tracking-[0.1em] text-accent/50 ${
+                        isStatic ? '' : 'transition-colors duration-500 group-hover:text-accent'
+                      }`}
+                      aria-hidden
+                    >
+                      {service.code}
+                    </span>
+                    <span
+                      className={`flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-xl shrink-0 border ${
+                        tier === 'very-low'
+                          ? 'bg-accent border-accent'
+                          : `bg-white/5 border-white/10 ${isStatic ? '' : 'transition-colors duration-500 group-hover:bg-accent/10 group-hover:border-accent/40'}`
+                      }`}
+                      aria-hidden
+                    >
+                      <Icon className={`w-6 h-6 sm:w-7 sm:h-7 ${tier === 'very-low' ? 'text-black' : `text-white ${isStatic ? '' : 'group-hover:text-accent transition-colors duration-300'}`}`} />
+                    </span>
+                  </span>
+
+                  <h3 className={`text-xl sm:text-2xl font-bold text-white font-display leading-tight mb-3 sm:mb-4 ${isStatic ? '' : 'transition-colors duration-300 group-hover:text-accent'}`}>
                     {service.title}
                   </h3>
-                  
-                  <p className="text-gray-500 font-light mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
+
+                  <p className="text-sm sm:text-base text-gray-400 font-light leading-relaxed mb-6 sm:mb-8">
                     {service.description}
                   </p>
-                  
-                  {/* Features Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-auto mb-8 sm:mb-10">
+
+                  {/* Scope items */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-auto mb-7 sm:mb-9">
                     {service.features.map((feature) => (
-                      <div key={feature} className="flex items-start space-x-3 group/feature">
-                        <div className="mt-1 flex-shrink-0">
-                          <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-accent/80 group-hover/feature:text-accent transition-colors" />
-                        </div>
-                        <span className="text-sm sm:text-base text-gray-600 font-medium group-hover/feature:text-gray-900 transition-colors">
+                      <span key={feature} className="flex items-start gap-3">
+                        <span className="mt-1.5 w-1.5 h-1.5 rotate-45 bg-accent shrink-0" aria-hidden />
+                        <span className="text-sm text-gray-300 font-medium leading-snug">
                           {feature}
                         </span>
-                      </div>
+                      </span>
                     ))}
                   </div>
 
-                  {/* Action Button */}
-                  <div>
-                    <Link
-                      href="/contact"
-                      className={`group/btn inline-flex items-center justify-center w-full px-5 py-3 sm:px-6 sm:py-4 ${tier === 'very-low' ? 'bg-[#fdfbf4]' : 'bg-[#fdfbf4] hover:bg-accent'} border border-gray-100 rounded-xl font-bold text-sm sm:text-base text-gray-700 hover:text-black transition-all duration-300 shadow-sm ${tier === 'very-low' ? '' : 'hover:shadow-[0_8px_30px_rgba(212,175,55,0.25)]'} ${isHigh ? 'liquid-glass-btn-accent-invert !bg-accent/10 hover:!bg-accent' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-accent-invert !bg-accent/10 hover:!bg-accent' : ''}`}
-                    >
-                      <span>Discuss This Service</span>
-                      <div className={`ml-2 ${tier === 'very-low' ? '' : 'group-hover/btn:translate-x-1.5'} transition-transform duration-300`}>
-                        <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-                      </div>
-                    </Link>
-                  </div>
-                </div>
-              </SpotlightCard>
-            </Tilt3DContainer>
-          </motion.div>
-        );
-      })}
-    </div>
+                  <span className="pt-5 border-t border-white/10">
+                    <ArrowLink href="/contact" tone="onDark" size="sm">
+                      Discuss This Service
+                    </ArrowLink>
+                  </span>
+                </GlassSpecCard>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
   );
 }

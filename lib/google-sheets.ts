@@ -1,6 +1,16 @@
 import { google } from 'googleapis';
 import crypto from 'crypto';
 
+// Escape formula characters (=, +, -, @) to prevent CSV/Formula injection in Google Sheets
+function sanitizeFormula(value: any): string {
+  if (value === null || value === undefined) return '';
+  const str = String(value);
+  if (/^[=\+\-@]/.test(str)) {
+    return `'${str}`;
+  }
+  return str;
+}
+
 export async function appendToGoogleSheet(data: any, emailStatus: string = 'Sent') {
   const timeout = 15000; // 15 second timeout
   try {
@@ -43,14 +53,14 @@ export async function appendToGoogleSheet(data: any, emailStatus: string = 'Sent
       requestBody: {
         values: [
           [
-            data.name || 'N/A',            // Full Name
-            data.email || 'N/A',           // Email Address
-            data.phone || 'N/A',           // Phone Number
-            data.subject || 'N/A',         // Subject
-            data.message || 'N/A',         // Message
-            timestamp,                     // Timestamp
-            emailStatus,                   // Email Status
-            documentId                     // DocumentID
+            sanitizeFormula(data.name),            // Full Name
+            sanitizeFormula(data.email),           // Email Address
+            sanitizeFormula(data.phone),           // Phone Number
+            sanitizeFormula(data.subject),         // Subject
+            sanitizeFormula(data.message),         // Message
+            timestamp,                             // Timestamp
+            emailStatus,                           // Email Status
+            documentId                             // DocumentID
           ]
         ]
       }
@@ -86,32 +96,32 @@ export async function logVisitorToGoogleSheet(data: any) {
 
     const rowData = [
       data.timestamp || new Date().toLocaleString(),
-      data.ip || '',
-      data.city || '',
-      data.region || '',
-      data.country || '',
-      data.postalcode || data.postalCode || '',
-      data.timezone || '',
-      data.maplink || data.mapLink || '',
-      data.isp || '',
-      data.deviceBrand || '',
-      data.deviceModel || '',
-      data.os || '',
-      data.browser || '',
-      data.screenSize || '',
-      data.deviceType || '',
-      data.referrer || '',
-      data.pageVisited || '',
-      data.language || '',
-      data.connection || '',
-      data.cpuCores || '',
-      data.deviceMemory || '',
-      data.colorDepth || '',
-      data.pixelRatio || '',
-      data.urlParameters || '',
-      data.fullUserAgent || '',
-      data.localTime || '',
-      data.platform || ''
+      sanitizeFormula(data.ip),
+      sanitizeFormula(data.city),
+      sanitizeFormula(data.region),
+      sanitizeFormula(data.country),
+      sanitizeFormula(data.postalcode || data.postalCode),
+      sanitizeFormula(data.timezone),
+      sanitizeFormula(data.maplink || data.mapLink),
+      sanitizeFormula(data.isp),
+      sanitizeFormula(data.deviceBrand),
+      sanitizeFormula(data.deviceModel),
+      sanitizeFormula(data.os),
+      sanitizeFormula(data.browser),
+      sanitizeFormula(data.screenSize),
+      sanitizeFormula(data.deviceType),
+      sanitizeFormula(data.referrer),
+      sanitizeFormula(data.pageVisited),
+      sanitizeFormula(data.language),
+      sanitizeFormula(data.connection),
+      sanitizeFormula(data.cpuCores),
+      sanitizeFormula(data.deviceMemory),
+      sanitizeFormula(data.colorDepth),
+      sanitizeFormula(data.pixelRatio),
+      sanitizeFormula(data.urlParameters),
+      sanitizeFormula(data.fullUserAgent),
+      sanitizeFormula(data.localTime),
+      sanitizeFormula(data.platform)
     ];
 
     try {

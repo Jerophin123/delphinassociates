@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import ArrowLink from "../ui/ArrowLink";
 
 export default function MapSection() {
   const address =
@@ -15,32 +16,34 @@ export default function MapSection() {
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 30, scale: 0.98 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
       className="mt-8 sm:mt-10 md:mt-12"
     >
-      <div className="flex items-start justify-between gap-4 mb-4 sm:mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-4 sm:mb-6">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-primary font-display tracking-[0.01em]">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="font-display font-bold text-[11px] sm:text-xs text-accent-dark/70 tracking-[0.25em] uppercase">M-01</span>
+            <span className="h-[2px] w-10 bg-accent"></span>
+            <span className="text-accent-dark text-xs sm:text-sm font-bold tracking-[0.2em] uppercase">
+              Site Location
+            </span>
+          </div>
+          <h2 className="text-xl sm:text-2xl font-bold text-primary-dark font-display tracking-[0.01em]">
             Find Us on Map
           </h2>
-          <p className="mt-2 text-xs sm:text-sm text-gray-600">
+          <p className="mt-2 text-xs sm:text-sm text-gray-600 font-light">
             {address}
           </p>
         </div>
-        <a
-          href={mapsAppUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden sm:inline-flex items-center justify-center px-5 py-2 rounded-xl bg-primary/5 border border-accent/60 text-primary-dark font-bold text-xs sm:text-sm hover:bg-accent/15 hover:text-accent transition-colors shadow-sm"
-        >
+        <ArrowLink href={mapsAppUrl} tone="onLight" external className="hidden sm:inline-flex shrink-0">
           Open in Google Maps
-        </a>
+        </ArrowLink>
       </div>
 
-      <div className="bg-gradient-to-br from-white/95 via-gray-50/95 to-white/95 rounded-[2.5rem] overflow-hidden border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(212,175,55,0.08)] transition-all duration-500">
+      <div className="bg-white rounded-3xl overflow-hidden border border-black/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(212,175,55,0.08)] transition-all duration-500">
         <div className="bg-gray-100 relative h-[300px] sm:h-[350px] md:h-[400px] overflow-hidden">
           <iframe
             src={mapEmbedUrl}

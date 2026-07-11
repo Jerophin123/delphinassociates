@@ -342,11 +342,20 @@ export function HPOE({ children }: { children: ReactNode }) {
         calculatedTier = "mid";
       }
 
-      // Developer/Testing Override via URL parameter e.g., ?forceTier=high
+      // Developer/Testing Overrides via URL parameters:
+      //   ?forceTier=high|mid|low|very-low - pin the tier for testing.
+      //     A forced tier also disables the FPS watchdog downgrade, so the
+      //     tier under test stays exactly as requested.
+      //   ?disableDowngrade=true - keep the detected tier but disable the
+      //     watchdog demotion on its own.
       const matchTier = window.location.search.match(/[?&]forceTier=(high|mid|low|very-low)/);
+      const tierForced = !!matchTier;
+      const downgradeDisabled = tierForced || window.location.search.includes("disableDowngrade=true");
       if (matchTier) {
         calculatedTier = matchTier[1] as HPOETier;
-        console.info(`[Hardware Profiler] Tier forcefully overridden to: ${calculatedTier}`);
+        console.info(`[Hardware Profiler] Tier forcefully overridden to: ${calculatedTier} (watchdog downgrade disabled).`);
+      } else if (downgradeDisabled) {
+        console.info("[Hardware Profiler] Watchdog downgrade disabled via ?disableDowngrade=true.");
       }
 
       currentTierRef.current = calculatedTier;
@@ -463,9 +472,7 @@ export function HPOE({ children }: { children: ReactNode }) {
                 sustainedDropTicks = Math.max(0, sustainedDropTicks - 2);
               }
 
-              const disableDowngrade = window.location.search.includes("disableDowngrade=true");
-
-              if (sustainedDropTicks >= currentRequiredDropTicks && !disableDowngrade) {
+              if (sustainedDropTicks >= currentRequiredDropTicks && !downgradeDisabled) {
                 let downgradeTarget: HPOETier = "low";
                 if (currentTier === "high") downgradeTarget = "mid";
                 else if (currentTier === "mid") downgradeTarget = "low";
@@ -539,12 +546,9 @@ export function HPOE({ children }: { children: ReactNode }) {
               </div>
               
               <div className="flex flex-col items-center gap-4">
-                <motion.div 
-                  animate={{ rotate: 360 }}
-                  transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-                >
+                <div className="animate-spin">
                   <Loader2 className="w-8 h-8 text-primary" />
-                </motion.div>
+                </div>
                 <p className="text-sm font-medium tracking-widest text-muted-foreground uppercase opacity-80 animate-pulse">
                   Optimizing Experience
                 </p>

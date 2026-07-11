@@ -15,6 +15,8 @@ import { HPOE } from "@/components/HPOE";
 import CustomCursor from "@/components/ui/CustomCursor";
 import GlobalParticleNetwork from "@/components/GlobalParticleNetwork";
 import FrontendSecurity from "@/components/FrontendSecurity";
+import LiquidGlassManager from "@/components/LiquidGlassManager";
+import ScrollProgress from "@/components/ScrollProgress";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -224,10 +226,12 @@ export default function RootLayout({
             <GA />
           </Suspense>
           <VisitorTracking />
+          <ScrollProgress />
           <Header />
           <main className="min-h-[100dvh]">{children}</main>
           <CustomCursor />
           <GlobalParticleNetwork />
+          <LiquidGlassManager />
           <FloatingChatbot />
           <ScrollToTop />
           <Footer />

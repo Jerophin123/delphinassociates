@@ -13,14 +13,23 @@ export default function ContactInfo() {
   return (
     <Tilt3DContainer maxRotation={4} className="h-full">
       <SpotlightCard
-        className={`h-full flex flex-col bg-gradient-to-br from-[#fdfbf4]/95 to-[#faf7ec]/95 liquid-glass-card rounded-[2.5rem] border border-[#f0ead6] shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 p-5 sm:p-8 md:p-10 will-change-transform ${isHigh ? 'premium-border-glow hover:border-[#e6dfc8]' : 'hover:-translate-y-2 hover:border-[#e6dfc8]'}`}
+        className={`h-full flex flex-col rounded-3xl border p-5 sm:p-8 md:p-10 will-change-transform ${
+          isHigh
+            ? 'liquid-glass-card-light !border-black/5 premium-border-glow'
+            : tier === 'mid'
+            ? 'mid-glass-card-light !border-black/5'
+            : 'bg-white border-black/10'
+        } ${tier === 'very-low' || tier === 'low' ? '' : 'shadow-[0_8px_24px_-4px_rgba(0,0,0,0.08)] hover:shadow-[0_24px_48px_-12px_rgba(0,0,0,0.14)] transition-all duration-500'}`}
       >
         <div className="mb-3 sm:mb-6 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 sm:px-5 py-1.5 sm:py-2 rounded-full border border-accent/25 bg-accent/10 text-accent font-semibold text-[10px] sm:text-sm">
-            <MapPin className="w-3 sm:w-4 h-3 sm:h-4" />
-            Contact Details
+          <div className="flex items-center gap-3 mb-4">
+            <span className="font-display font-bold text-[11px] sm:text-xs text-accent-dark/70 tracking-[0.25em] uppercase">C-01</span>
+            <span className="h-[2px] w-10 bg-accent"></span>
+            <span className="text-accent-dark text-xs sm:text-sm font-bold tracking-[0.2em] uppercase">
+              Contact Details
+            </span>
           </div>
-          <h2 className="mt-3 sm:mt-4 text-lg sm:text-2xl font-bold text-primary font-display">
+          <h2 className="text-lg sm:text-2xl font-bold text-primary-dark font-display">
             Talk to Our Team
           </h2>
           <p className="mt-2 text-[13px] sm:text-base text-gray-600 font-light">

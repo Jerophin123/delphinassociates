@@ -1,231 +1,150 @@
 "use client";
 
+import ArchPlans from "../ui/ArchPlans";
 import { motion } from "framer-motion";
-import { Mail, Phone, Sparkles } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import { useHPOE } from "../HPOE";
 import GeometricParticleField from "../ui/GeometricParticleField";
+import ArrowLink from "../ui/ArrowLink";
+
+const quickContacts = [
+  {
+    icon: Phone,
+    value: "+91 98412 43345",
+    label: "Quick call support",
+    href: "tel:+919841243345",
+  },
+  {
+    icon: Mail,
+    value: "delphinassociates@gmail.com",
+    label: "Email for consultations",
+    href: "mailto:delphinassociates@gmail.com",
+  },
+];
 
 export default function ContactHero() {
   const { tier, reducedMotion } = useHPOE();
   const isHigh = tier === "high" && !reducedMotion;
+  const isStatic = tier === "low" || tier === "very-low" || reducedMotion;
+  const noReveal = tier === "very-low" || reducedMotion;
+
+  const fadeUp = (delay: number) => ({
+    initial: noReveal ? { opacity: 1, y: 0 } : { opacity: 0, y: 24, scale: 0.98 },
+    animate: { opacity: 1, y: 0, scale: 1 },
+    transition: {
+      duration: noReveal ? 0 : 0.7,
+      delay: noReveal ? 0 : delay,
+      ease: [0.21, 0.47, 0.32, 0.98] as const,
+    },
+  });
 
   return (
-    <div className={`relative overflow-hidden rounded-[2.5rem] border ${isHigh ? 'border-accent/20' : 'border-gray-100'} ${tier === 'very-low' ? 'bg-[#fdfbf4]' : 'bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.08)_0%,transparent_55%),linear-gradient(180deg,rgba(255,255,255,0.95)_0%,rgba(250,250,250,0.95)_100%)]'} shadow-[0_8px_30px_rgb(0,0,0,0.04)] px-5 pt-8 pb-12 sm:px-12 sm:pt-14 sm:pb-20 xl:pt-16 xl:pb-24 mb-12 sm:mb-20 md:mb-24`}>
-      {/* Decorative dots pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+    <section
+      data-header-theme="light"
+      className="relative overflow-hidden bg-[#fdfbf4] border-b border-black/5 min-h-[calc(100dvh-5rem)] flex flex-col"
+    >
+      {/* Drafting-paper ruling */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `linear-gradient(to right, rgba(18,18,18,0.045) 1px, transparent 1px),
+                            linear-gradient(to bottom, rgba(18,18,18,0.045) 1px, transparent 1px)`,
+          backgroundSize: '32px 32px',
+        }}
+      />
+      {/* Drafting margin rule */}
+      <span aria-hidden className="absolute left-6 sm:left-12 top-0 bottom-0 w-px bg-accent/25 pointer-events-none" />
 
-      {/* Animated Golden Border Sweep - High Tier */}
+      <ArchPlans tone="light" variant="locus" />
+
       {isHigh && (
-        <motion.div
-          className="absolute inset-0 rounded-[2.5rem] pointer-events-none z-[2]"
-          style={{
-            background: `linear-gradient(90deg, transparent 0%, rgba(212,175,55,0.12) 50%, transparent 100%)`,
-            backgroundSize: '200% 100%',
-          }}
-          animate={{ backgroundPosition: ['200% 0%', '-200% 0%'] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+        <GeometricParticleField
+          quantity={40}
+          color="#9C7B1E"
+          className="z-[1] opacity-50"
+          staticity={60}
         />
       )}
 
-      {/* Animated Floating Orbs - High Tier */}
-      {isHigh && (
-        <>
-          <motion.div
-            className="pointer-events-none absolute -top-20 -right-20 w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-accent/8 blur-[80px]"
-            animate={{
-              x: [0, 30, -20, 0],
-              y: [0, -25, 15, 0],
-              scale: [1, 1.15, 0.9, 1],
-              opacity: [0.6, 0.9, 0.5, 0.6],
-            }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="pointer-events-none absolute -bottom-20 -left-20 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-accent/6 blur-[80px]"
-            animate={{
-              x: [0, -25, 20, 0],
-              y: [0, 20, -30, 0],
-              scale: [1, 0.9, 1.1, 1],
-              opacity: [0.5, 0.8, 0.4, 0.5],
-            }}
-            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="pointer-events-none absolute top-1/2 right-1/4 w-48 h-48 rounded-full bg-yellow-400/5 blur-[60px]"
-            animate={{
-              x: [0, 40, -30, 0],
-              y: [0, -20, 25, 0],
-              opacity: [0.3, 0.6, 0.2, 0.3],
-            }}
-            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </>
-      )}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-14 lg:px-16 py-14 sm:py-16 flex-1 flex flex-col justify-center">
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+          <div className="lg:col-span-7">
+            <motion.div {...fadeUp(0.05)} className="flex items-center gap-3 mb-6">
+              <span className="font-display font-bold text-[11px] sm:text-xs text-accent-dark/70 tracking-[0.25em] uppercase">Correspondence</span>
+              <span className="h-[2px] w-12 bg-accent"></span>
+              <span className="text-accent-dark text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
+                Contact Delphin Associates
+              </span>
+            </motion.div>
 
-      {/* Static Orbs - Mid/Low Tier */}
-      {!isHigh && tier !== 'very-low' && (
-        <>
-          <div className="pointer-events-none absolute -top-32 -right-32 w-96 h-96 rounded-full bg-accent/5 blur-[100px]" />
-          <div className="pointer-events-none absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-accent/5 blur-[100px]" />
-        </>
-      )}
-
-      {/* Floating Diamond Accents */}
-      {isHigh && (
-        <>
-          <motion.div
-            className="absolute top-12 right-16 w-4 h-4 sm:w-5 sm:h-5 border border-accent/30 pointer-events-none z-[2]"
-            style={{ rotate: 45 }}
-            animate={{ y: [0, -15, 0], opacity: [0.4, 0.8, 0.4], rotate: [45, 90, 45] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="absolute bottom-16 left-12 w-3 h-3 sm:w-4 sm:h-4 border border-accent/25 pointer-events-none z-[2]"
-            style={{ rotate: 45 }}
-            animate={{ y: [0, 12, 0], opacity: [0.3, 0.7, 0.3], rotate: [45, 0, 45] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          />
-          <motion.div
-            className="absolute top-1/2 right-24 w-2.5 h-2.5 bg-accent/15 pointer-events-none z-[2]"
-            style={{ rotate: 45 }}
-            animate={{ y: [0, -10, 5, 0], opacity: [0.2, 0.5, 0.3, 0.2] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-          />
-        </>
-      )}
-
-      {/* Structural Network Particle Field */}
-      {isHigh && (
-        <GeometricParticleField 
-          quantity={70} 
-          color="#D4AF37"
-          className="z-[1]"
-          staticity={50}
-          ease={40}
-        />
-      )}
-
-      <div className="relative z-10 grid lg:grid-cols-[1fr_minmax(auto,400px)] gap-12 lg:gap-16 items-center max-w-6xl mx-auto">
-        <div className="text-left">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="flex items-center gap-3 mb-4 sm:mb-6"
-          >
-            <motion.span 
-              className="h-[2px] bg-accent"
-              initial={{ width: isHigh ? 0 : 32 }}
-              animate={{ width: 32 }}
-              transition={{ duration: 1.2, delay: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
-            />
-            <span className="text-accent text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
-              Contact Delphin Associates
-            </span>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="mt-4 text-[28px] sm:text-4xl md:text-5xl lg:text-6xl font-bold font-display tracking-tight mb-4 sm:mb-6"
-          >
-            {isHigh ? (
-              <motion.span
-                className="text-transparent bg-clip-text bg-gradient-to-r from-primary-dark via-accent to-primary-dark bg-[length:200%_auto]"
-                animate={{ backgroundPosition: ['0% center', '200% center'] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-              >
-                Contact Us
-              </motion.span>
-            ) : (
-              <span className="text-primary-dark">Contact Us</span>
-            )}
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="mt-4 sm:mt-6 text-base sm:text-xl text-gray-500 leading-relaxed font-light"
-          >
-            Get in touch with us for construction and consultancy needs. Share your scope and we will respond quickly.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-start items-stretch sm:items-start"
-          >
-            <a
-              href="tel:+919841243345"
-              className={`group inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl bg-accent text-black text-sm sm:text-base font-bold shadow-[0_8px_30px_rgba(212,175,55,0.25)] hover:bg-[#b0912f] transition-all duration-300 transform hover:-translate-y-0.5 ${isHigh ? 'liquid-glass-btn-accent-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-accent-invert' : ''}`}
+            <motion.h1
+              {...fadeUp(0.15)}
+              className="text-4xl sm:text-5xl md:text-6xl font-bold font-display tracking-tight leading-[1.05] mb-6"
             >
-              <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
-              Call Now
-            </a>
-            <a
-              href="mailto:delphinassociates@gmail.com"
-              className={`group inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl bg-[#fdfbf4] border border-gray-200 text-primary-dark text-sm sm:text-base font-bold hover:border-gray-300 hover:shadow-sm transition-all duration-300 transform hover:-translate-y-0.5 ${isHigh ? 'liquid-glass-btn-light-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-light-invert' : ''}`}
+              <span className="block text-primary-dark">Get In</span>
+              <span className="block text-outline-ink">Touch</span>
+            </motion.h1>
+
+            <motion.p
+              {...fadeUp(0.28)}
+              className="max-w-xl text-base sm:text-lg text-gray-500 leading-relaxed font-light mb-9"
             >
-              <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
-              Send Email
-            </a>
-          </motion.div>
+              Get in touch with us for construction and consultancy needs. Share your
+              scope and we will respond quickly.
+            </motion.p>
+
+            <motion.div {...fadeUp(0.4)} className="flex flex-wrap items-center gap-x-12 gap-y-6">
+              <ArrowLink href="tel:+919841243345" tone="onLight" icon={<Phone className="w-full h-full" />}>
+                Call Now
+              </ArrowLink>
+              <ArrowLink href="mailto:delphinassociates@gmail.com" tone="onLight" outline icon={<Mail className="w-full h-full" />}>
+                Send Email
+              </ArrowLink>
+            </motion.div>
+          </div>
+
+          {/* Quick-contact tiles */}
+          <div className="lg:col-span-5 grid gap-4">
+            {quickContacts.map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <motion.a
+                  key={item.href}
+                  href={item.href}
+                  {...fadeUp(0.5 + idx * 0.12)}
+                  className={`group relative rounded-2xl border p-5 sm:p-6 flex items-center gap-4 sm:gap-5 ${
+                    isHigh
+                      ? 'liquid-glass-card-light border-black/5'
+                      : tier === 'mid'
+                      ? 'mid-glass-card-light border-black/5'
+                      : 'bg-white border-black/10'
+                  } ${isStatic ? '' : 'transition-all duration-300 hover:border-accent-dark/40 hover:-translate-y-1 hover:shadow-[0_16px_32px_rgba(10,10,10,0.08)]'}`}
+                >
+                  <span
+                    className={`flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-xl shrink-0 border ${
+                      tier === 'very-low'
+                        ? 'bg-accent border-accent'
+                        : `bg-[#fdfbf4] border-black/10 ${isStatic ? '' : 'transition-colors duration-500 group-hover:bg-accent/10 group-hover:border-accent-dark/40'}`
+                    }`}
+                    aria-hidden
+                  >
+                    <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${tier === 'very-low' ? 'text-black' : `text-primary-dark ${isStatic ? '' : 'group-hover:text-accent-dark transition-colors duration-300'}`}`} />
+                  </span>
+                  <span className="min-w-0">
+                    <span className={`block font-display font-bold text-primary-dark text-base sm:text-xl break-all sm:break-normal ${isStatic ? '' : 'transition-colors duration-300 group-hover:text-accent-dark'}`}>
+                      {item.value}
+                    </span>
+                    <span className="block text-[10px] sm:text-xs font-bold text-gray-500 uppercase tracking-[0.2em] mt-1">
+                      {item.label}
+                    </span>
+                  </span>
+                </motion.a>
+              );
+            })}
+          </div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.4, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="grid gap-3 sm:gap-5 mt-6 sm:mt-0 lg:-ml-8"
-        >
-          {[
-            {
-              icon: Phone,
-              value: "+91 98412 43345",
-              label: "Quick call support",
-              valueClass: "text-lg sm:text-2xl",
-            },
-            {
-              icon: Mail,
-              value: "delphinassociates@gmail.com",
-              label: "Email for consultations",
-              valueClass: "text-[15px] sm:text-xl break-all sm:break-normal",
-            },
-          ].map((item, idx) => {
-            const Icon = item.icon;
-            return (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: 20, scale: 0.95 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.5 + idx * 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
-                whileHover={isHigh ? { scale: 1.03, x: -4, boxShadow: "0 20px 40px -8px rgba(212,175,55,0.15)" } : { y: -4 }}
-                className={`group relative rounded-2xl border border-gray-100 ${tier === 'very-low' ? 'bg-[#fdfbf4]' : (tier === 'low' ? 'bg-[#fdfbf4]/95' : 'bg-[#fdfbf4]/60 backdrop-blur-md')} p-4 sm:p-6 flex flex-col justify-center transition-colors hover:border-accent/20`}
-              >
-                {/* Animated accent border on hover - High Tier */}
-                {isHigh && (
-                  <motion.div 
-                    className="absolute inset-0 rounded-2xl border-2 border-accent/0 group-hover:border-accent/20 transition-colors duration-500 pointer-events-none"
-                  />
-                )}
-                <div className="flex items-center gap-4 sm:gap-5">
-                  <div className="bg-accent/10 w-12 sm:w-14 h-12 sm:h-14 shrink-0 rounded-xl flex items-center justify-center border border-accent/10">
-                    <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-accent group-hover:text-yellow-600 transition-colors" />
-                  </div>
-                  <div className="flex flex-col">
-                    <div className={`${item.valueClass} font-black text-primary-dark font-display`}>{item.value}</div>
-                    <div className="text-[10px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider mt-0.5">{item.label}</div>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
       </div>
-    </div>
+    </section>
   );
 }
-

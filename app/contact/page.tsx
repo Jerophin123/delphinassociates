@@ -1,4 +1,6 @@
 import { Metadata } from "next";
+import ArchPlans from "@/components/ui/ArchPlans";
+import SheetWatermark from "@/components/ui/SheetWatermark";
 import ContactForm from "@/components/contact/ContactForm";
 import ContactInfo from "@/components/contact/ContactInfo";
 import MapSection from "@/components/contact/MapSection";
@@ -41,18 +43,22 @@ export default function ContactPage() {
   return (
     <>
       <SEOStructuredData type="LocalBusiness" />
-      <div className="pt-20 bg-[#fdfbf4]/95 text-primary-dark min-h-[100dvh] relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 sm:pt-6 sm:pb-10 md:pt-8 md:pb-12">
-          <ContactHero />
+      <div className="pt-20 bg-[#fdfbf4] text-primary-dark min-h-[100dvh] relative z-10">
+        <ContactHero />
 
-          <div className="mt-8 sm:mt-12 md:mt-16">
+        {/* Correspondence sheet */}
+        <section data-header-theme="light" className="relative bg-[#fdfbf4] py-14 sm:py-20 overflow-hidden">
+          {/* Sheet-index watermark */}
+      <ArchPlans tone="light" variant="titleblock" />
+          <SheetWatermark text="01" tone="dark" />
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 mb-8 sm:mb-10 md:mb-12">
               <ContactForm />
               <ContactInfo />
             </div>
             <MapSection />
           </div>
-        </div>
+        </section>
       </div>
     </>
   );

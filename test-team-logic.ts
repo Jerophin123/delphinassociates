@@ -9,7 +9,7 @@ const chatbotKnowledge = [
     answer: "SUNDAR_SINGH"
   },
   {
-    keywords: ["darwin rholland", "technical leader"],
+    keywords: ["darwin rholland", "technical leader", "technical", "division", "head"],
     answer: "DARWIN_RHOLLAND"
   },
   {
@@ -28,6 +28,10 @@ const getAnswerFromKnowledgeBase = (question: string) => {
   const filteredWords = words.filter(w => !stopwords.includes(w));
 
   const searchWords = filteredWords.length > 0 ? filteredWords : words;
+
+  if (searchWords.includes("not") || searchWords.includes("no")) {
+    return "FALLBACK";
+  }
 
   let bestMatch: { item: any; score: number } = { item: null, score: 0 };
 

@@ -40,25 +40,13 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="pt-20 bg-[#fdfbf4]/95 relative z-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 sm:pt-6 sm:pb-10 md:pt-4 md:pb-12">
-        <AboutHero />
-        <div className="mt-8 sm:mt-16 md:mt-24">
-          <CompanyHistory />
-        </div>
-        <div className="mt-8 sm:mt-16 md:mt-24">
-          <Objectives />
-        </div>
-        <div className="mt-8 sm:mt-16 md:mt-24">
-          <ManagementTeam />
-        </div>
-        <div className="mt-8 sm:mt-16 md:mt-24">
-          <TechnicalTeam />
-        </div>
-        <div className="mt-8 sm:mt-16 md:mt-24">
-          <OrganizationStrengths />
-        </div>
-      </div>
+    <div className="pt-20 bg-[#fdfbf4] relative z-10">
+      <AboutHero />
+      <CompanyHistory />
+      <Objectives />
+      <ManagementTeam />
+      <TechnicalTeam />
+      <OrganizationStrengths />
     </div>
   );
 }

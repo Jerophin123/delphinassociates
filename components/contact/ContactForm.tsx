@@ -84,13 +84,23 @@ export default function ContactForm() {
       className="h-full"
     >
       <SpotlightCard
-        className={`h-full flex flex-col ${tier === 'very-low' ? 'bg-[#fdfbf4]' : 'bg-[#fdfbf4]/95 liquid-glass-card'} rounded-[2.5rem] border border-gray-100 shadow-[0_8px_24px_-4px_rgba(0,0,0,0.12),0_4px_12px_-2px_rgba(0,0,0,0.08)] hover:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.2),0_16px_32px_-8px_rgba(0,0,0,0.12)] transition-all duration-500 p-5 sm:p-8 md:p-10 will-change-transform ${isHigh ? 'premium-border-glow hover:border-gray-200' : 'hover:-translate-y-2 hover:border-gray-200'}`}
+        className={`h-full flex flex-col rounded-3xl border p-5 sm:p-8 md:p-10 will-change-transform ${
+          isHigh
+            ? 'liquid-glass-card-light !border-black/5 premium-border-glow'
+            : tier === 'mid'
+            ? 'mid-glass-card-light !border-black/5'
+            : 'bg-white border-black/10'
+        } ${tier === 'very-low' || tier === 'low' ? '' : 'shadow-[0_8px_24px_-4px_rgba(0,0,0,0.08)] hover:shadow-[0_24px_48px_-12px_rgba(0,0,0,0.14)] transition-all duration-500'}`}
       >
         <div className="mb-3 sm:mb-6 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 sm:px-5 py-1.5 sm:py-2 rounded-full border border-accent/25 bg-accent/10 text-accent font-semibold text-[10px] sm:text-sm">
-            Send Your Requirement
+          <div className="flex items-center gap-3 mb-4">
+            <span className="font-display font-bold text-[11px] sm:text-xs text-accent-dark/70 tracking-[0.25em] uppercase">F-01</span>
+            <span className="h-[2px] w-10 bg-accent"></span>
+            <span className="text-accent-dark text-xs sm:text-sm font-bold tracking-[0.2em] uppercase">
+              Send Your Requirement
+            </span>
           </div>
-          <h2 className="mt-3 sm:mt-4 text-lg sm:text-2xl font-bold text-primary font-display">
+          <h2 className="text-lg sm:text-2xl font-bold text-primary-dark font-display">
             Send Us a Message
           </h2>
           <p className="mt-2 text-[13px] sm:text-base text-gray-600 font-light">
@@ -129,7 +139,7 @@ export default function ContactForm() {
                 Thank you for your message!
               </p>
               <p className="text-sm sm:text-base text-gray-600 font-light">
-                We'll get back to you as soon as possible.
+                We&apos;ll get back to you as soon as possible.
               </p>
             </motion.div>
           ) : (
@@ -231,23 +241,37 @@ export default function ContactForm() {
                   />
                 </div>
 
-                <motion.button
+                {/* Engineer's-stamp submit - tier materials: high glass, mid gradient+glow, low flat */}
+                <button
                   type="submit"
                   disabled={isSubmitting}
-                  whileHover={isHigh ? { scale: 1.02 } : {}}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                  className={`shrink-0 w-full mt-2 group inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-xl bg-accent text-black text-sm sm:text-base font-bold shadow-[0_8px_30px_rgba(212,175,55,0.25)] hover:bg-[#b0912f] transition-all duration-300 disabled:bg-accent/40 disabled:hover:translate-y-0 disabled:shadow-none disabled:cursor-not-allowed ${isHigh ? 'liquid-glass-btn-accent-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-accent-invert' : 'hover:-translate-y-0.5'}`}
+                  className={`shrink-0 w-full mt-2 group rounded-md border p-[2px] border-accent/70 disabled:opacity-60 disabled:cursor-not-allowed ${
+                    tier === 'very-low' || tier === 'low' || reducedMotion
+                      ? ''
+                      : 'transition-all duration-300 hover:-translate-y-0.5 disabled:hover:translate-y-0'
+                  }`}
                 >
-                  <span>{isSubmitting ? "Submitting..." : "Send Message"}</span>
-                  {!isSubmitting && (
-                    <motion.div
-                      animate={isHigh ? { x: [0, 3, 0] } : {}}
-                      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                    >
-                      <Send className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
-                    </motion.div>
-                  )}
-                </motion.button>
+                  <span
+                    className={`flex items-center justify-center gap-3 w-full rounded-[4px] border px-6 py-3.5 sm:py-4 text-xs sm:text-sm font-bold uppercase tracking-[0.2em] ${
+                      isHigh
+                        ? 'backdrop-blur-md bg-accent/25 border-accent-dark/40 text-accent-dark shadow-[inset_0_1px_1px_rgba(255,255,255,0.5)] group-hover:bg-accent/40 transition-colors duration-300'
+                        : tier === 'mid' && !reducedMotion
+                        ? 'bg-gradient-to-br from-[#F0D264] via-accent to-[#B8942C] text-black border-accent/40 shadow-[0_0_16px_rgba(212,175,55,0.5)] group-hover:shadow-[0_0_24px_rgba(212,175,55,0.75)] transition-shadow duration-300'
+                        : 'bg-accent text-black border-black/10'
+                    }`}
+                  >
+                    <span>{isSubmitting ? "Submitting..." : "Send Message"}</span>
+                    {!isSubmitting && (
+                      <motion.span
+                        animate={isHigh ? { x: [0, 3, 0] } : undefined}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                        aria-hidden
+                      >
+                        <Send className="w-4 h-4 sm:w-5 sm:h-5" />
+                      </motion.span>
+                    )}
+                  </span>
+                </button>
               </form>
 
               <p className="shrink-0 mt-4 text-[11px] sm:text-xs text-gray-500 font-light">

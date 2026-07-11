@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -17,6 +17,87 @@ const navItems = [
   { name: "Contact", href: "/contact" },
 ];
 
+/** Engineer's-stamp CTA: double-ring bordered block, filled (accent) or outline.
+ *  HPOE ladder: noMotion kills color transitions (very-low), noLift kills the
+ *  hover translate (low and below) while keeping colors alive on low. */
+function StampButton({
+  href,
+  children,
+  icon,
+  filled = false,
+  darkGround,
+  noMotion,
+  noLift,
+  external = false,
+  className = "",
+  onClick,
+}: {
+  href: string;
+  children: ReactNode;
+  icon: ReactNode;
+  filled?: boolean;
+  darkGround: boolean;
+  noMotion: boolean;
+  noLift: boolean;
+  external?: boolean;
+  className?: string;
+  onClick?: () => void;
+}) {
+  const { tier, reducedMotion } = useHPOE();
+  const isHigh = tier === "high" && !reducedMotion;
+  const isMid = tier === "mid" && !reducedMotion;
+
+  const outer = filled
+    ? "border-accent/70"
+    : darkGround
+    ? "border-accent/50"
+    : "border-accent-dark/50";
+
+  // Plate material per HPOE tier: high = glass, mid = gradient + glow, low/very-low = flat
+  let inner: string;
+  if (isHigh) {
+    inner = filled
+      ? `backdrop-blur-md bg-accent/25 border-accent/40 shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)] ${
+          darkGround ? "text-accent" : "text-accent-dark"
+        } group-hover:bg-accent/40`
+      : darkGround
+      ? "backdrop-blur-md bg-white/10 text-accent border-white/25 shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)] group-hover:bg-accent/20"
+      : "backdrop-blur-md bg-black/5 text-accent-dark border-black/15 shadow-[inset_0_1px_1px_rgba(255,255,255,0.5)] group-hover:bg-accent/15";
+  } else if (isMid) {
+    inner = filled
+      ? "bg-gradient-to-br from-[#F0D264] via-accent to-[#B8942C] text-black border-accent/40 shadow-[0_0_14px_rgba(212,175,55,0.5)] group-hover:shadow-[0_0_22px_rgba(212,175,55,0.75)]"
+      : darkGround
+      ? "bg-gradient-to-br from-white/12 to-transparent text-accent border-accent/40 shadow-[0_0_10px_rgba(212,175,55,0.3)] group-hover:shadow-[0_0_16px_rgba(212,175,55,0.5)]"
+      : "bg-gradient-to-br from-black/5 to-transparent text-accent-dark border-accent-dark/40 shadow-[0_0_10px_rgba(156,123,30,0.3)] group-hover:shadow-[0_0_16px_rgba(156,123,30,0.5)]";
+  } else {
+    inner = filled
+      ? `bg-accent text-black border-black/10 ${noMotion ? "" : "group-hover:bg-accent-light"}`
+      : darkGround
+      ? `bg-accent/10 text-accent border-accent/30 ${noMotion ? "" : "group-hover:bg-accent/20"}`
+      : `bg-accent/10 text-accent-dark border-accent-dark/30 ${noMotion ? "" : "group-hover:bg-accent/20"}`;
+  }
+
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      className={`group inline-flex rounded-md border p-[2px] ${outer} ${
+        noLift ? "" : "transition-all duration-300 hover:-translate-y-0.5"
+      } ${className}`}
+    >
+      <span
+        className={`flex items-center justify-center gap-2 w-full rounded-[4px] border px-3.5 py-2 text-[11px] font-bold uppercase tracking-[0.18em] ${inner} ${
+          noMotion ? "" : "transition-colors duration-300"
+        }`}
+      >
+        {icon}
+        {children}
+      </span>
+    </Link>
+  );
+}
+
 export default function Header() {
   const [scrollY, setScrollY] = useState(0);
   const [viewportHeight, setViewportHeight] = useState(1000);
@@ -25,26 +106,32 @@ export default function Header() {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
-  const [isLightHomeSection, setIsLightHomeSection] = useState(false);
+  const [sectionTheme, setSectionTheme] = useState<"light" | "dark" | null>(null);
   const { tier, reducedMotion } = useHPOE();
-  const isHigh = tier === "high" && !reducedMotion;
-  
+  // HPOE ladder for the bar:
+  //  - noReveal: entrance animations off (very-low / reduced motion)
+  //  - noMotion: color/underline transitions off (very-low / reduced motion)
+  //  - noLift:   transform hovers + animated indicator off (low and below)
+  const noReveal = tier === "very-low" || reducedMotion;
+  const noMotion = tier === "very-low" || reducedMotion;
+  const noLift = tier === "low" || tier === "very-low" || reducedMotion;
+
   const isHomePage = pathname === "/";
 
   useEffect(() => {
     const updateViewportHeight = () => setViewportHeight(window.innerHeight);
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    
+
     updateViewportHeight();
     checkMobile();
 
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       const vh = window.innerHeight;
-      
+
       setScrollY(currentScrollY);
       setViewportHeight(vh);
-      
+
       // Detect scroll direction
       if (currentScrollY < lastScrollY && currentScrollY > 50) {
         setIsScrollingUp(true);
@@ -53,27 +140,26 @@ export default function Header() {
       }
       setLastScrollY(currentScrollY);
 
-      // Light section detection (Direct check)
-      if (isHomePage) {
-        const lightIds = ["home-project-highlights", "home-cta-section", "home-faq"];
-        const isLight = lightIds.some((id) => {
-          const el = document.getElementById(id);
-          if (!el) return false;
-          const rect = el.getBoundingClientRect();
-          // Header height is roughly 80px. Check if header overlaps this section.
-          return rect.top <= 80 && rect.bottom >= 20;
-        });
-        setIsLightHomeSection(isLight);
-      }
+      // Section ground detection: sheets declare their ground via data-header-theme
+      const themedSections = document.querySelectorAll<HTMLElement>("[data-header-theme]");
+      let theme: "light" | "dark" | null = null;
+      themedSections.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        // Header height is roughly 80px. Check if header overlaps this section.
+        if (rect.top <= 80 && rect.bottom >= 20) {
+          theme = el.dataset.headerTheme === "light" ? "light" : "dark";
+        }
+      });
+      setSectionTheme(theme);
     };
-    
+
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", () => {
-        updateViewportHeight();
-        checkMobile();
+      updateViewportHeight();
+      checkMobile();
     });
-    
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", updateViewportHeight);
@@ -93,7 +179,7 @@ export default function Header() {
     } else if (isAtTop) {
       headerStyle = "bg-transparent";
       textStyle = "text-accent";
-    } else if (isLightHomeSection) {
+    } else if (sectionTheme === "light") {
       // Force light style if we are in a light section
       headerStyle = "bg-[#fdfbf4]/80 backdrop-blur-md shadow-sm border-b border-accent/20";
       textStyle = "text-gray-900";
@@ -106,6 +192,10 @@ export default function Header() {
       headerStyle = "bg-primary-dark/85 backdrop-blur-md shadow-lg border-b border-accent/20";
       textStyle = "text-accent";
     }
+  } else if (sectionTheme === "dark") {
+    // Inner pages: match the header to whichever sheet sits under it
+    headerStyle = "bg-primary-dark/92 backdrop-blur-md shadow-lg border-b border-accent/20";
+    textStyle = "text-gray-100";
   }
 
   // Tier-based overrides
@@ -119,171 +209,210 @@ export default function Header() {
       .trim();
   }
 
+  // Everything except the solid-light ground reads as a dark ground for content colors
+  const darkGround = textStyle !== "text-gray-900";
+  const hairline = darkGround ? "border-white/10" : "border-black/10";
+
   return (
     <motion.header
-      initial={{ y: -100 }}
+      initial={noReveal ? { y: 0 } : { y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${headerStyle}`}
+      className={`fixed top-0 left-0 right-0 z-50 ${noMotion ? "" : "transition-all duration-300"} ${headerStyle}`}
     >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main Navigation">
+      <nav className="max-w-[90rem] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 xl:px-20" aria-label="Main Navigation">
         <div className="flex items-center justify-between h-20 relative">
-          <Link href="/" className="flex items-center z-10" aria-label="Delphin Associates Home">
+          <Link href="/" className="flex items-center z-10 shrink-0" aria-label="Delphin Associates Home">
             <Image
               src="/logo.jpg"
               alt="Delphin Associates - Leading Civil Engineers and Contractors in Chennai, Tamil Nadu - Official Logo"
               width={200}
               height={70}
-              className="h-12 md:h-14 w-auto object-contain"
+              className="h-12 md:h-14 w-auto object-contain shrink-0"
+              style={{ width: "auto" }}
               priority
               unoptimized
             />
           </Link>
 
-          {/* Desktop Navigation - Centered */}
-          <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center space-x-8">
-            {navItems.filter(item => item.name !== "Contact").map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`group relative text-[13px] font-bold uppercase tracking-[0.15em] transition-colors duration-300 ease-out ${
-                  pathname === item.href
-                    ? "text-accent"
-                    : `${textStyle} hover:text-accent`
-                } hover:drop-shadow-[0_0_14px_rgba(212,175,55,0.25)] after:absolute after:left-0 after:bottom-[-0.25rem] after:h-[2px] after:w-full after:origin-left after:scale-x-0 after:bg-gradient-to-r after:from-accent after:to-accent-light after:transition-transform after:duration-300 after:ease-out group-hover:after:scale-x-100`}
-              >
-                {item.name}
-                {pathname === item.href && (
-                  <motion.div
-                    layoutId="navbar-indicator"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-accent to-accent-light shadow-[0_0_14px_rgba(212,175,55,0.35)]"
-                  />
-                )}
-              </Link>
-            ))}
+          {/* Desktop Navigation - numbered drawing index */}
+          <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center space-x-7 lg:space-x-9">
+            {navItems.filter((item) => item.name !== "Contact").map((item, index) => {
+              const active = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`group relative flex items-baseline gap-1.5 text-[12px] font-bold uppercase tracking-[0.18em] ${
+                    active ? "text-accent" : `${textStyle} ${noMotion ? "" : "transition-colors duration-300 hover:text-accent"}`
+                  }`}
+                >
+                  <span
+                    className={`font-display text-[9px] tracking-[0.1em] ${
+                      active ? "text-accent" : darkGround ? "text-accent/60" : "text-accent-dark/60"
+                    }`}
+                    aria-hidden
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  {item.name}
+                  {/* Hover underline - simple grow allowed down to low tier */}
+                  {!active && !noMotion && (
+                    <span
+                      className="absolute left-0 -bottom-1.5 w-full h-[2px] bg-accent/60 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 ease-out"
+                      aria-hidden
+                    />
+                  )}
+                  {/* Active datum bar - animates between links on mid/high only */}
+                  {active &&
+                    (noLift ? (
+                      <span className="absolute left-0 -bottom-1.5 w-full h-[2px] bg-accent" aria-hidden />
+                    ) : (
+                      <motion.span
+                        layoutId="navbar-indicator"
+                        className="absolute left-0 -bottom-1.5 w-full h-[2px] bg-accent"
+                        aria-hidden
+                      />
+                    ))}
+                </Link>
+              );
+            })}
           </div>
 
-          <div className="flex items-center space-x-4 z-10">
-            {/* Desktop Contact Nav */}
-            <div className="hidden md:flex items-center space-x-3">
-              <Link
+          <div className="flex items-center gap-3 z-10">
+            {/* Desktop stamp CTAs */}
+            <div className="hidden md:flex items-center gap-3">
+              <StampButton
                 href="https://delphinassociates-app.vercel.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`group relative inline-flex items-center justify-center px-5 py-2.5 font-bold text-sm transition-all duration-300 rounded-xl hover:shadow-xl overflow-hidden border ${
-                  isHigh 
-                    ? 'liquid-glass-btn-accent-invert' 
-                    : (tier === 'mid' && !reducedMotion)
-                      ? 'mid-glass-btn-accent-invert'
-                      : 'bg-primary-dark text-accent border-accent/20 hover:bg-primary-light'
-                }`}
-                style={{ transform: 'translateZ(0)' }}
-                title="Engineer Login"
+                external
+                darkGround={darkGround}
+                noMotion={noMotion}
+                noLift={noLift}
+                icon={<HardHat className="w-4 h-4" aria-hidden />}
               >
-                <span className={`relative z-10 flex items-center gap-2 uppercase tracking-wider ${isHigh ? 'text-accent' : ''}`}>
-                  <HardHat className={`w-4 h-4 ${tier === 'low' || tier === 'very-low' ? '' : 'group-hover:scale-110 group-hover:rotate-3'} transition-transform duration-300 ease-out ${isHigh ? 'text-accent' : ''}`} />
-                  Login
-                </span>
-                {isHigh && <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-accent/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out z-0" />}
-              </Link>
-
-              <Link
+                Login
+              </StampButton>
+              <StampButton
                 href="/contact"
-                className={`group relative inline-flex items-center justify-center px-5 py-2.5 font-bold text-sm text-black transition-all duration-300 bg-accent rounded-xl hover:bg-accent-light hover:shadow-xl ${tier === 'low' || tier === 'very-low' ? '' : 'hover:shadow-accent/20'} overflow-hidden border border-transparent ${isHigh ? 'liquid-glass-btn-accent-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-accent-invert' : ''}`}
-                style={{ transform: 'translateZ(0)' }}
+                filled
+                darkGround={darkGround}
+                noMotion={noMotion}
+                noLift={noLift}
+                icon={<Phone className="w-4 h-4" aria-hidden />}
               >
-                <span className={`relative z-10 flex items-center gap-2 uppercase tracking-wider ${isHigh ? '!text-accent' : ''}`}>
-                  <Phone className={`w-4 h-4 ${tier === 'low' || tier === 'very-low' ? '' : 'group-hover:scale-110 group-hover:-rotate-3'} transition-transform duration-300 ease-out`} />
-                  Contact us
-                </span>
-                {isHigh && <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out z-0" />}
-              </Link>
+                Contact Us
+              </StampButton>
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile menu button - drafting stamp */}
             <button
-              className={`md:hidden w-10 h-10 flex items-center justify-center ${textStyle} hover:text-accent transition-colors`}
+              className={`md:hidden w-10 h-10 flex items-center justify-center rounded-md border ${
+                darkGround ? "border-white/25" : "border-black/15"
+              } ${textStyle} ${noMotion ? "" : "transition-colors duration-300 hover:text-accent hover:border-accent/50"}`}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
             >
               <motion.div
                 animate={isMobileMenuOpen ? { rotate: 90 } : { rotate: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: noLift ? 0 : 0.3 }}
               >
-                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
               </motion.div>
             </button>
           </div>
         </div>
 
+        {/* Mobile drawer - numbered drawing index */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
+              initial={noReveal ? { opacity: 1, height: "auto" } : { opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className={`md:hidden overflow-hidden mt-4 pt-2 pb-6 border-t ${tier === 'high' ? 'border-white/10' : 'border-black/5'}`}
+              className={`md:hidden overflow-hidden border-t-2 border-accent`}
             >
-              <div className="flex flex-col space-y-1">
-                {navItems.filter((item) => item.name !== "Contact").map((item, i) => (
-                  <motion.div
-                    key={item.href}
-                    initial={reducedMotion ? { opacity: 1 } : { opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: reducedMotion ? 0 : i * 0.05 + 0.1 }}
-                  >
-                    <Link
-                      href={item.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={`block px-4 py-3.5 text-[13px] font-bold uppercase tracking-[0.15em] rounded-xl transition-all ${
-                        pathname === item.href
-                          ? "bg-accent/10 text-accent"
-                          : `${textStyle} hover:bg-black/5 hover:text-accent`
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
-                  </motion.div>
-                ))}
-                
-                <motion.div
-                  initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: reducedMotion ? 0 : 0.3 }}
-                  className="pt-4 px-2 space-y-3"
-                >
-                  <Link
-                    href="https://delphinassociates-app.vercel.app/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`group relative flex items-center justify-center w-full px-5 py-3 font-bold text-sm transition-all duration-300 rounded-xl hover:shadow-xl overflow-hidden border ${
-                      isHigh 
-                        ? 'liquid-glass-btn-accent-invert' 
-                        : (tier === 'mid' && !reducedMotion)
-                          ? 'mid-glass-btn-accent-invert'
-                          : 'bg-primary-dark text-accent border-accent/20 hover:bg-primary-light'
-                    }`}
-                    style={{ transform: 'translateZ(0)' }}
-                  >
-                    <span className={`relative z-10 flex items-center gap-2 uppercase tracking-wider ${isHigh ? 'text-accent' : ''}`}>
-                      <HardHat className={`w-4 h-4 ${tier === 'low' || tier === 'very-low' ? '' : 'group-hover:scale-110 group-hover:rotate-3'} transition-transform duration-300 ease-out ${isHigh ? 'text-accent' : ''}`} />
-                      Engineer Login
-                    </span>
-                  </Link>
+              {/* Sheet eyebrow */}
+              <div className="flex items-center gap-3 pt-5 pb-1">
+                <span className={`font-display font-bold text-[10px] tracking-[0.25em] uppercase ${darkGround ? "text-accent/70" : "text-accent-dark/70"}`}>
+                  Index
+                </span>
+                <span className="h-[2px] w-10 bg-accent" aria-hidden></span>
+                <span className={`text-[10px] font-bold tracking-[0.25em] uppercase ${darkGround ? "text-white/40" : "text-gray-500"}`}>
+                  Delphin Associates
+                </span>
+              </div>
 
-                  <Link
-                    href="/contact"
+              <div className="flex flex-col pb-6">
+                {navItems.filter((item) => item.name !== "Contact").map((item, i) => {
+                  const active = pathname === item.href;
+                  return (
+                    <motion.div
+                      key={item.href}
+                      initial={noReveal ? { opacity: 1 } : { opacity: 0, x: -16 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: noReveal ? 0 : i * 0.05 + 0.1 }}
+                    >
+                      <Link
+                        href={item.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`flex items-center gap-4 py-4 border-b ${hairline} ${
+                          active ? "text-accent" : `${textStyle} ${noMotion ? "" : "transition-colors duration-300 hover:text-accent"}`
+                        }`}
+                      >
+                        <span
+                          className={`font-display font-bold text-[11px] tracking-[0.1em] w-7 ${
+                            active ? "text-accent" : darkGround ? "text-accent/60" : "text-accent-dark/60"
+                          }`}
+                          aria-hidden
+                        >
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className="text-[13px] font-bold uppercase tracking-[0.18em]">{item.name}</span>
+                        {active && <span className="ml-auto w-1.5 h-1.5 rotate-45 bg-accent" aria-hidden />}
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+
+                <motion.div
+                  initial={noReveal ? { opacity: 1 } : { opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: noReveal ? 0 : 0.3 }}
+                  className="pt-5 grid grid-cols-2 gap-3"
+                >
+                  <StampButton
+                    href="https://delphinassociates-app.vercel.app/"
+                    external
+                    darkGround={darkGround}
+                    noMotion={noMotion}
+                    noLift={noLift}
+                    icon={<HardHat className="w-4 h-4" aria-hidden />}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`group relative flex items-center justify-center w-full px-5 py-3 font-bold text-sm text-black transition-all duration-300 bg-accent rounded-xl hover:bg-accent-light hover:shadow-xl ${tier === 'low' || tier === 'very-low' ? '' : 'shadow-lg shadow-accent/20 hover:shadow-accent/40'} overflow-hidden border border-transparent ${isHigh ? 'liquid-glass-btn-accent-invert' : tier === 'mid' && !reducedMotion ? 'mid-glass-btn-accent-invert' : ''}`}
-                    style={{ transform: 'translateZ(0)' }}
+                    className="w-full"
                   >
-                    <span className={`relative z-10 flex items-center gap-2 uppercase tracking-wider ${isHigh ? '!text-accent' : ''}`}>
-                      <Phone className={`w-4 h-4 ${tier === 'low' || tier === 'very-low' ? '' : 'group-hover:scale-110 group-hover:-rotate-3'} transition-transform duration-300 ease-out`} />
-                      Contact us
-                    </span>
-                    {isHigh && <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out z-0" />}
-                  </Link>
+                    Login
+                  </StampButton>
+                  <StampButton
+                    href="/contact"
+                    filled
+                    darkGround={darkGround}
+                    noMotion={noMotion}
+                    noLift={noLift}
+                    icon={<Phone className="w-4 h-4" aria-hidden />}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="w-full"
+                  >
+                    Contact Us
+                  </StampButton>
                 </motion.div>
+
+                {/* Sheet footer line */}
+                <div className="mt-6 flex items-center justify-center gap-3">
+                  <span className="w-1.5 h-1.5 rotate-45 bg-accent/60" aria-hidden />
+                  <span className={`text-[9px] font-bold uppercase tracking-[0.3em] ${darkGround ? "text-white/35" : "text-gray-400"}`}>
+                    Est. 1999 - Chennai, Tamil Nadu
+                  </span>
+                  <span className="w-1.5 h-1.5 rotate-45 bg-accent/60" aria-hidden />
+                </div>
               </div>
             </motion.div>
           )}

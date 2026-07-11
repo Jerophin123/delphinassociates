@@ -29,58 +29,6 @@ export default function GeometricParticleField({
   const dpr = typeof window !== "undefined" ? window.devicePixelRatio : 1;
   const { tier } = useHPOE();
 
-  useEffect(() => {
-    if (canvasRef.current) {
-      context.current = canvasRef.current.getContext("2d");
-    }
-    
-    let animationFrameId: number;
-    
-    const renderLoop = () => {
-      animate();
-      animationFrameId = requestAnimationFrame(renderLoop);
-    };
-    
-    initCanvas();
-    animationFrameId = requestAnimationFrame(renderLoop);
-    window.addEventListener("resize", initCanvas);
-
-    return () => {
-      window.removeEventListener("resize", initCanvas);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, [tier]);
-
-  useEffect(() => {
-    initCanvas();
-  }, [refresh]);
-
-  const initCanvas = () => {
-    resizeCanvas();
-    drawParticles();
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (canvasContainerRef.current) {
-      const rect = canvasContainerRef.current.getBoundingClientRect();
-      mouse.current.x = e.clientX - rect.left;
-      mouse.current.y = e.clientY - rect.top;
-    }
-  };
-
-  const resizeCanvas = () => {
-    if (canvasContainerRef.current && canvasRef.current && context.current) {
-      circles.current = [];
-      canvasSize.current.w = canvasContainerRef.current.offsetWidth;
-      canvasSize.current.h = canvasContainerRef.current.offsetHeight;
-      canvasRef.current.width = canvasSize.current.w * dpr;
-      canvasRef.current.height = canvasSize.current.h * dpr;
-      canvasRef.current.style.width = `${canvasSize.current.w}px`;
-      canvasRef.current.style.height = `${canvasSize.current.h}px`;
-      context.current.scale(dpr, dpr);
-    }
-  };
-
   type Circle = {
     x: number;
     y: number;
@@ -94,7 +42,26 @@ export default function GeometricParticleField({
     magnetism: number;
   };
 
-  const circleParams = (): Circle => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (canvasContainerRef.current) {
+      const rect = canvasContainerRef.current.getBoundingClientRect();
+      mouse.current.x = e.clientX - rect.left;
+      mouse.current.y = e.clientY - rect.top;
+    }
+  };
+
+  function remapValue(
+    value: number,
+    start1: number,
+    stop1: number,
+    start2: number,
+    stop2: number
+  ): number {
+    const rel = (value - start1) / (stop1 - start1);
+    return start2 + rel * (stop2 - start2);
+  }
+
+  function circleParams(): Circle {
     const x = Math.floor(Math.random() * canvasSize.current.w);
     const y = Math.floor(Math.random() * canvasSize.current.h);
     const translateX = 0;
@@ -117,9 +84,9 @@ export default function GeometricParticleField({
       dy,
       magnetism,
     };
-  };
+  }
 
-  const drawCircle = (circle: Circle, update = false) => {
+  function drawCircle(circle: Circle, update = false) {
     if (context.current) {
       const { x, y, translateX, translateY, size, alpha } = circle;
       context.current.translate(translateX, translateY);
@@ -135,9 +102,22 @@ export default function GeometricParticleField({
         circles.current.push(circle);
       }
     }
-  };
+  }
 
-  const drawParticles = () => {
+  function resizeCanvas() {
+    if (canvasContainerRef.current && canvasRef.current && context.current) {
+      circles.current = [];
+      canvasSize.current.w = canvasContainerRef.current.offsetWidth;
+      canvasSize.current.h = canvasContainerRef.current.offsetHeight;
+      canvasRef.current.width = canvasSize.current.w * dpr;
+      canvasRef.current.height = canvasSize.current.h * dpr;
+      canvasRef.current.style.width = `${canvasSize.current.w}px`;
+      canvasRef.current.style.height = `${canvasSize.current.h}px`;
+      context.current.scale(dpr, dpr);
+    }
+  }
+
+  function drawParticles() {
     if (context.current) {
       context.current.clearRect(0, 0, canvasSize.current.w, canvasSize.current.h);
       const actualQuantity = tier === "high" ? quantity : Math.floor(quantity / 2);
@@ -146,20 +126,9 @@ export default function GeometricParticleField({
         drawCircle(circle);
       }
     }
-  };
+  }
 
-  const remapValue = (
-    value: number,
-    start1: number,
-    stop1: number,
-    start2: number,
-    stop2: number
-  ): number => {
-    const rel = (value - start1) / (stop1 - start1);
-    return start2 + rel * (stop2 - start2);
-  };
-
-  const animate = () => {
+  function animate() {
     if (context.current) {
       context.current.clearRect(0, 0, canvasSize.current.w, canvasSize.current.h);
       circles.current.forEach((circle: Circle, i: number) => {
@@ -231,7 +200,38 @@ export default function GeometricParticleField({
         }
       });
     }
-  };
+  }
+
+  function initCanvas() {
+    resizeCanvas();
+    drawParticles();
+  }
+
+  useEffect(() => {
+    if (canvasRef.current) {
+      context.current = canvasRef.current.getContext("2d");
+    }
+    
+    let animationFrameId: number;
+    
+    const renderLoop = () => {
+      animate();
+      animationFrameId = requestAnimationFrame(renderLoop);
+    };
+    
+    initCanvas();
+    animationFrameId = requestAnimationFrame(renderLoop);
+    window.addEventListener("resize", initCanvas);
+
+    return () => {
+      window.removeEventListener("resize", initCanvas);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [tier]);
+
+  useEffect(() => {
+    initCanvas();
+  }, [refresh]);
 
   return (
     <div

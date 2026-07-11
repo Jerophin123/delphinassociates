@@ -15,6 +15,7 @@
 }
 
 html, body {
+  position: relative;
   overflow-x: hidden;
   max-width: 100vw;
 }
@@ -74,13 +75,14 @@ body::-webkit-scrollbar {
     100% { background-position: -200% 0%; }
   }
 
-  /* Glass for Light Backgrounds */
+  /* Glass for Light Backgrounds - dressing only; the OPTICS (refraction via
+     backdrop-filter) are applied inline by liquid-glass.js through
+     LiquidGlassManager on high tier. Do not reintroduce backdrop-filter here:
+     the !important would defeat the module's inline style. */
   html[data-tier="high"]:not([data-reduced-motion="true"]) .liquid-glass-card-light,
   html[data-tier="high"]:not([data-reduced-motion="true"]) .liquid-glass-card {
     position: relative;
     background: linear-gradient(135deg, rgba(253, 251, 244, 0.7) 0%, rgba(255, 255, 255, 0.3) 100%) !important;
-    backdrop-filter: blur(32px) !important;
-    -webkit-backdrop-filter: blur(32px) !important;
     border: 1px solid rgba(255, 255, 255, 0.6) !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
     border-right: 1px solid rgba(255, 255, 255, 0.2) !important;
@@ -103,12 +105,10 @@ body::-webkit-scrollbar {
     animation: sweep-gradient 7s linear infinite;
   }
 
-  /* Glass for Dark Backgrounds */
+  /* Glass for Dark Backgrounds - dressing only; optics come from liquid-glass.js */
   html[data-tier="high"]:not([data-reduced-motion="true"]) .liquid-glass-card-dark {
     position: relative;
     background: linear-gradient(135deg, rgba(50, 50, 50, 0.7) 0%, rgba(20, 20, 20, 0.3) 100%) !important;
-    backdrop-filter: blur(32px) !important;
-    -webkit-backdrop-filter: blur(32px) !important;
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
     border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
@@ -222,17 +222,25 @@ body::-webkit-scrollbar {
   /* ---------------------------------------------------------------------- */
   /* MID TIER: 135DEG GRADIENT FALLBACKS (Replaces High-Tier Glass) */
   /* ---------------------------------------------------------------------- */
+  /* Mid cards need real separation: their borders alone vanish against both
+     grounds, so lift them with visible ink shadows (light) and a gold ambient
+     ring (dark, where dark shadows can't read). */
   html[data-tier="mid"]:not([data-reduced-motion="true"]) [class*="mid-glass-card-light"] {
-    background: linear-gradient(135deg, rgba(253, 251, 244, 0.95) 0%, rgba(245, 245, 245, 0.88) 100%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.4) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.7) !important;
-    box-shadow: 0 16px 32px -8px rgba(0,0,0,0.03) !important;
+    background: linear-gradient(135deg, rgba(253, 251, 244, 0.97) 0%, rgba(245, 245, 245, 0.92) 100%) !important;
+    border: 1px solid rgba(18, 18, 18, 0.08) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.8) !important;
+    box-shadow:
+      0 14px 30px -6px rgba(10, 10, 10, 0.14),
+      0 3px 10px rgba(10, 10, 10, 0.06) !important;
   }
 
   html[data-tier="mid"]:not([data-reduced-motion="true"]) [class*="mid-glass-card-dark"] {
-    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(10, 10, 10, 0.9) 100%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
-    box-shadow: 0 16px 40px -8px rgba(0,0,0,0.2) !important;
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.97) 0%, rgba(10, 10, 10, 0.92) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow:
+      0 18px 44px -8px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(255, 255, 255, 0.06),
+      0 0 26px rgba(212, 175, 55, 0.1) !important;
   }
 
   html[data-tier="mid"]:not([data-reduced-motion="true"]) [class*="mid-glass-btn-light-invert"] {
@@ -389,6 +397,167 @@ body::-webkit-scrollbar {
   }
   .premium-border-glow:hover::before {
     opacity: 1;
+  }
+}
+
+@layer utilities {
+  /* ---------------------------------------------------------------------- */
+  /* DRAWING-SHEET EDITORIAL REFRESH - shared utilities                      */
+  /* ---------------------------------------------------------------------- */
+
+  /* Seamless ticker: content is rendered twice, -50% shifts exactly one copy */
+  @keyframes marquee-x {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .animate-marquee {
+    animation: marquee-x 32s linear infinite;
+  }
+  .animate-marquee-slow {
+    animation: marquee-x 48s linear infinite;
+  }
+  html[data-reduced-motion="true"] .animate-marquee,
+  html[data-reduced-motion="true"] .animate-marquee-slow,
+  html[data-tier="low"] .animate-marquee,
+  html[data-tier="low"] .animate-marquee-slow,
+  html[data-tier="very-low"] .animate-marquee,
+  html[data-tier="very-low"] .animate-marquee-slow {
+    animation: none;
+  }
+
+  /* Button sweep used via animate-[shimmer_1.5s_infinite] */
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* Outlined sheet-index numerals (architectural drawing style) */
+  .text-outline-light {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.16);
+  }
+  .text-outline-dark {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(10, 10, 10, 0.14);
+  }
+  .text-outline-gold {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(212, 175, 55, 0.4);
+  }
+  /* Flat tiers get a faint solid fill instead of a stroke */
+  html[data-tier="very-low"] .text-outline-light {
+    color: rgba(255, 255, 255, 0.1);
+    -webkit-text-stroke: 0;
+  }
+  html[data-tier="very-low"] .text-outline-dark {
+    color: rgba(10, 10, 10, 0.1);
+    -webkit-text-stroke: 0;
+  }
+  html[data-tier="very-low"] .text-outline-gold {
+    color: rgba(212, 175, 55, 0.3);
+    -webkit-text-stroke: 0;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* REAL LIQUID GLASS (high tier) - material dressing only.
+     The vendored liquid-glass.js owns the optics via inline backdrop-filter
+     (SVG displacement refraction), so these classes must NOT set any
+     backdrop-filter of their own. Tint, specular highlight, glass border. */
+  /* ---------------------------------------------------------------------- */
+  html[data-tier="high"]:not([data-reduced-motion="true"]) .liquid-real-dark {
+    position: relative;
+    background: linear-gradient(180deg, rgba(20, 20, 28, 0.28) 0%, rgba(20, 20, 28, 0.42) 100%) !important;
+    box-shadow:
+      0 24px 60px rgba(0, 0, 0, 0.4),
+      inset 0 1px 1px rgba(255, 255, 255, 0.35),
+      inset 0 -8px 20px rgba(255, 255, 255, 0.05),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.12) !important;
+  }
+  html[data-tier="high"]:not([data-reduced-motion="true"]) .liquid-real-light {
+    position: relative;
+    background: linear-gradient(180deg, rgba(253, 251, 244, 0.3) 0%, rgba(253, 251, 244, 0.5) 100%) !important;
+    box-shadow:
+      0 20px 50px rgba(0, 0, 0, 0.12),
+      inset 0 1px 1px rgba(255, 255, 255, 0.7),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.35) !important;
+  }
+
+  /* Display-scale outlined words (hero + section headings) */
+  .text-outline-display {
+    color: rgba(212, 175, 55, 0.08);
+    -webkit-text-stroke: 2.5px #D4AF37;
+  }
+  .text-outline-ink {
+    /* Opaque paper fill so drafting grid lines don't show through the glyphs */
+    color: #fdfbf4;
+    -webkit-text-stroke: 2px #121212;
+  }
+  /* On the gold CTA band: transparent fill lets the gold show through the ink stroke */
+  .text-outline-on-gold {
+    color: transparent;
+    -webkit-text-stroke: 2px #121212;
+  }
+  html[data-tier="very-low"] .text-outline-display {
+    color: #D4AF37;
+    -webkit-text-stroke: 0;
+  }
+  html[data-tier="very-low"] .text-outline-ink {
+    color: #121212;
+    -webkit-text-stroke: 0;
+  }
+  html[data-tier="very-low"] .text-outline-on-gold {
+    color: #121212;
+    -webkit-text-stroke: 0;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /* ARCH DRAWINGS - high-tier live plot, scrubbed by scroll.
+     ArchPlans sets data-arch="scrub" and drives --arch-p (0→1) from scroll
+     progress. The paused keyframes are advanced via negative animation-delay,
+     so the pen follows the reader: scroll forward and the sheet draws itself,
+     scroll back and it un-draws. Solid strokes plot first; dashed lines,
+     fills and text ink in during the final stretch. Timeline: 4s virtual. */
+  /* ---------------------------------------------------------------------- */
+  @keyframes arch-draw {
+    from { stroke-dashoffset: 4000; }
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes arch-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  [data-arch="scrub"] svg line:not([stroke-dasharray]),
+  [data-arch="scrub"] svg path:not([stroke-dasharray]),
+  [data-arch="scrub"] svg rect:not([stroke-dasharray]),
+  [data-arch="scrub"] svg circle:not([stroke-dasharray]) {
+    stroke-dasharray: 4000;
+    stroke-dashoffset: 4000;
+    animation: arch-draw 3s cubic-bezier(0.4, 0, 0.2, 1) both paused;
+    animation-delay: calc(var(--arch-p, 0) * -4s);
+  }
+  [data-arch="scrub"] svg text,
+  [data-arch="scrub"] svg [stroke="none"],
+  [data-arch="scrub"] svg [stroke-dasharray] {
+    opacity: 0;
+    animation: arch-fade 1.2s ease both paused;
+    animation-delay: calc(var(--arch-p, 0) * -4s + 1.6s);
+  }
+
+  /* Scroll cue: a thin gold plumb line dropping repeatedly */
+  @keyframes plumb-drop {
+    0% { transform: scaleY(0); transform-origin: top; }
+    45% { transform: scaleY(1); transform-origin: top; }
+    55% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+  .animate-plumb {
+    animation: plumb-drop 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+  html[data-reduced-motion="true"] .animate-plumb,
+  html[data-tier="low"] .animate-plumb,
+  html[data-tier="very-low"] .animate-plumb {
+    animation: none;
+    transform: scaleY(1);
   }
 }
 

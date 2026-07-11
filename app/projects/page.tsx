@@ -1,9 +1,12 @@
 import { Metadata } from "next";
+import ArchPlans from "@/components/ui/ArchPlans";
+import SheetWatermark from "@/components/ui/SheetWatermark";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import ProjectGallery from "@/components/projects/ProjectGallery";
 import ProjectsHero from "@/components/projects/ProjectsHero";
 import ProjectsCTA from "@/components/projects/ProjectsCTA";
+import UpcomingProjects from "@/components/UpcomingProjects";
 import projectsData from "@/data/projects.json";
 
 export const metadata: Metadata = {
@@ -54,17 +57,29 @@ export default function ProjectsPage() {
   const uniqueCategories = Array.from(new Set(projects.map((p) => p.category))).length;
 
   return (
-    <div className="pt-20 bg-[#fdfbf4]/95 text-primary-dark pb-16 sm:pb-20 md:pb-24 relative z-10">
+    <div className="pt-20 bg-[#fdfbf4] text-primary-dark relative z-10">
       <ProjectsHero />
 
-      <section className="relative mt-8 sm:mt-12 md:mt-16 bg-[#fdfbf4]/95 pt-8 pb-16 sm:pb-20 md:pb-24 overflow-hidden">
-        <div className="absolute top-[-12rem] left-[-10rem] w-[500px] h-[500px] bg-accent/5 rounded-full blur-[80px] pointer-events-none" />
-        <div className="absolute bottom-[-14rem] right-[-10rem] w-[500px] h-[500px] bg-accent/3 rounded-full blur-[80px] pointer-events-none" />
+      {/* Complete register sheet */}
+      <section data-header-theme="light" className="relative bg-[#fdfbf4] py-14 sm:py-20 md:py-24 overflow-hidden border-b border-black/5">
+        {/* Sheet-index watermark */}
+      <ArchPlans tone="light" variant="floorplan" />
+      <SheetWatermark text="01" tone="dark" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-3 mb-10 sm:mb-12">
+            <span className="font-display font-bold text-[11px] sm:text-xs text-accent-dark/70 tracking-[0.25em] uppercase">Sheet 01&thinsp;/&thinsp;02</span>
+            <span className="h-[2px] w-12 bg-accent"></span>
+            <span className="text-accent-dark text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
+              Complete Register
+            </span>
+          </div>
           <ProjectGallery />
         </div>
       </section>
+
+      {/* Upcoming projects sheet */}
+      <UpcomingProjects tone="dark" sheetNo="02" sheetOf="02" watermark="02" />
 
       {/* Lets Build Together CTA Section aligned with Services Page */}
       <ProjectsCTA />

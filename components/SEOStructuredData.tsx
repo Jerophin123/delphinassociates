@@ -8,6 +8,64 @@ export default function SEOStructuredData({ type = "LocalBusiness" }: Structured
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL || "https://www.delphinassociates.com";
 
+  const reviewSchema = [
+    {
+      "@type": "Review",
+      author: {
+        "@type": "Organization",
+        name: "CSI Madras Diocese",
+      },
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: "4.5",
+        bestRating: "5",
+      },
+      reviewBody:
+        "Delphin Associates has built several of our church buildings across Tamil Nadu. Their understanding of sacred architecture, transparent budgeting, and timely completion has made them our trusted construction partner.",
+    },
+    {
+      "@type": "Review",
+      author: {
+        "@type": "Person",
+        name: "Mr. V. Gajapathi",
+      },
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: "5.0",
+        bestRating: "5",
+      },
+      reviewBody:
+        "From planning to handover, the execution was transparent and precise. They delivered exactly what was promised, on schedule - and their support didn't stop after the keys were handed over.",
+    },
+    {
+      "@type": "Review",
+      author: {
+        "@type": "Person",
+        name: "Mr. A. Jeyashekar",
+      },
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: "5.0",
+        bestRating: "5",
+      },
+      reviewBody:
+        "We entrusted Delphin Associates with our commercial building at Tambaram. Their technical strength and clear communication at every stage gave us complete confidence in the build.",
+    },
+  ];
+
+  const aggregateRatingSchema = {
+    "@type": "AggregateRating",
+    ratingValue: "4.8",
+    reviewCount: "3",
+  };
+
+  const sameAsSchema = [
+    "https://www.instagram.com/delphinassociatesofficial/",
+    "https://x.com/delphin75358",
+    "https://www.linkedin.com/company/delphin-associates-official/",
+    "https://www.threads.com/@delphinassociatesofficial",
+  ];
+
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -24,12 +82,9 @@ export default function SEOStructuredData({ type = "LocalBusiness" }: Structured
       areaServed: "IN",
       availableLanguage: ["English", "Tamil"],
     },
-    sameAs: [
-      "https://www.instagram.com/delphinassociatesofficial/",
-      "https://x.com/delphin75358",
-      "https://www.linkedin.com/company/delphin-associates-official/",
-      "https://www.threads.com/@delphinassociatesofficial",
-    ],
+    sameAs: sameAsSchema,
+    aggregateRating: aggregateRatingSchema,
+    review: reviewSchema,
   };
 
   const localBusinessSchema = {
@@ -40,6 +95,7 @@ export default function SEOStructuredData({ type = "LocalBusiness" }: Structured
     "@id": baseUrl,
     url: baseUrl,
     telephone: "+91-98412-43345",
+    sameAs: sameAsSchema,
     priceRange: "$$",
     address: {
       "@type": "PostalAddress",
@@ -68,6 +124,8 @@ export default function SEOStructuredData({ type = "LocalBusiness" }: Structured
       "@type": "City",
       name: "Chennai",
     },
+    aggregateRating: aggregateRatingSchema,
+    review: reviewSchema,
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Construction Services",
@@ -141,13 +199,73 @@ export default function SEOStructuredData({ type = "LocalBusiness" }: Structured
     },
   };
 
-  // Determine schema based on type - using Record<string, any> to allow different schema structures
-  const schema: Record<string, any> = 
+  // Determine schema based on type - using Record<string, any> or arrays to allow different schema structures
+  let schema: any = 
     type === "LocalBusiness" 
       ? localBusinessSchema 
       : type === "WebSite" 
       ? websiteSchema 
       : organizationSchema;
+
+  // Add Upcoming Projects to LocalBusiness and Organization schemas for SEO reach
+  if (type === "LocalBusiness" || type === "Organization") {
+    schema = [
+      schema,
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "Upcoming Construction Projects",
+        numberOfItems: 3,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            item: {
+              "@type": "CreativeWork",
+              name: "Individual Bungalow",
+              description: "4,000 sq.ft individual bungalow - currently under construction.",
+              image: `${baseUrl}/upcoming-projects/Proposed-Residential-Madipakkam.jpeg`,
+              contentLocation: {
+                "@type": "Place",
+                name: "Madipakkam, Chennai",
+              },
+              creativeWorkStatus: "Ongoing",
+            },
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            item: {
+              "@type": "CreativeWork",
+              name: "Residential Development",
+              description: "Proposed residential project - design and planning stage.",
+              image: `${baseUrl}/upcoming-projects/Proposed-Residential-Adambakkam.jpeg`,
+              contentLocation: {
+                "@type": "Place",
+                name: "Adambakkam, Chennai",
+              },
+              creativeWorkStatus: "Proposed",
+            },
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            item: {
+              "@type": "CreativeWork",
+              name: "Commercial Building",
+              description: "Proposed commercial building for Measurecon Instruments.",
+              image: `${baseUrl}/upcoming-projects/Proposed-Commercial-Building-Measurecon-Instruments-Tambaram.jpeg`,
+              contentLocation: {
+                "@type": "Place",
+                name: "Tambaram, Chennai",
+              },
+              creativeWorkStatus: "Proposed",
+            },
+          },
+        ],
+      }
+    ];
+  }
 
   return (
     <Script
