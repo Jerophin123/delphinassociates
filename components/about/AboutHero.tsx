@@ -29,7 +29,7 @@ export default function AboutHero() {
   });
 
   return (
-    <section data-header-theme="light" className="relative overflow-hidden bg-[#fdfbf4] border-b border-black/5 min-h-[calc(100dvh-5rem)] flex flex-col">
+    <section data-header-theme="light" className="relative overflow-hidden bg-[#fdfbf4] border-b border-black/5 sm:min-h-[calc(100dvh-5rem)] flex flex-col">
       {/* Drafting-paper ruling */}
       <div
         aria-hidden

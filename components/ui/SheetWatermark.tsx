@@ -29,7 +29,7 @@ export default function SheetWatermark({ text, tone = "dark" }: SheetWatermarkPr
       ref={ref}
       aria-hidden
       style={factor ? { y, rotate, willChange: "transform" } : undefined}
-      className={`pointer-events-none select-none absolute -top-4 sm:top-2 right-3 sm:right-10 font-display font-bold leading-none text-[6rem] sm:text-[10rem] lg:text-[13rem] ${
+      className={`pointer-events-none select-none absolute -top-4 sm:top-2 right-3 sm:right-10 font-display font-bold leading-none text-[4.5rem] sm:text-[10rem] lg:text-[13rem] ${
         tone === "dark" ? "text-outline-dark" : "text-outline-light"
       }`}
     >

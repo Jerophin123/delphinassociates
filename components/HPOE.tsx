@@ -388,7 +388,7 @@ export function HPOE({ children }: { children: ReactNode }) {
         let sustainedDropTicks = 0;
 
         // Adaptive thresholds: mid-tier naturally runs 40-55 FPS; only react to genuine sustained drops
-        const gracePeriodMs = 3000; // Ignore first 3 seconds (page-load jank)
+        const gracePeriodMs = 6000; // Ignore the settle window (hydration, image decode, entrance choreography)
         
         let baselineFpsMeasurements: number[] = [];
         let detectedBaselineFps = 60; // Assume standard 60fps by default
@@ -398,9 +398,32 @@ export function HPOE({ children }: { children: ReactNode }) {
         let previousFrameTime = performance.now();
         let maxFrameDelta = 0; // Tracks maximum MS between consecutive frames
 
+        // Tab switches pause rAF and produce a huge phantom frame delta on
+        // return — never count that second as evidence against the hardware.
+        let skipUntil = 0;
+        const onVisibility = () => {
+          if (!document.hidden) {
+            skipUntil = performance.now() + 1500;
+            sustainedDropTicks = 0;
+            frameCount = 0;
+            lastTime = performance.now();
+            previousFrameTime = lastTime;
+            maxFrameDelta = 0;
+          }
+        };
+        document.addEventListener("visibilitychange", onVisibility);
+
         const measureFPS = (currentTime: number) => {
+          if (document.hidden || currentTime < skipUntil) {
+            frameCount = 0;
+            lastTime = currentTime;
+            previousFrameTime = currentTime;
+            maxFrameDelta = 0;
+            animationFrameId = requestAnimationFrame(measureFPS);
+            return;
+          }
           frameCount++;
-          
+
           const frameDelta = currentTime - previousFrameTime;
           if (frameDelta > maxFrameDelta) {
              maxFrameDelta = frameDelta;
@@ -464,7 +487,10 @@ export function HPOE({ children }: { children: ReactNode }) {
                 currentFpsFloor = 40;
               }
               
-              const currentRequiredDropTicks = 3;
+              // Five sustained bad seconds before demoting: capable hardware
+              // hitting a transient spike (route change, image decode, GC)
+              // must not lose its tier. Good seconds heal at double rate.
+              const currentRequiredDropTicks = 5;
 
               if (fps < currentFpsFloor) {
                 sustainedDropTicks++;
@@ -505,6 +531,7 @@ export function HPOE({ children }: { children: ReactNode }) {
         animationFrameId = requestAnimationFrame(measureFPS);
         return () => {
           cancelAnimationFrame(animationFrameId);
+          document.removeEventListener("visibilitychange", onVisibility);
           clearTimeout(initTimeout);
         };
       }
@@ -524,7 +551,11 @@ export function HPOE({ children }: { children: ReactNode }) {
 
   return (
     <HPOEContext.Provider value={metrics}>
-      <MotionConfig reducedMotion={metrics.tier === 'very-low' ? 'always' : 'user'}>
+      {/* metrics.reducedMotion is fixed at initial detection. Keying MotionConfig
+          off the LIVE tier caused DOM removeChild crashes: a mid-session watchdog
+          downgrade to very-low flipped animation behavior while AnimatePresence
+          exit nodes were in flight, orphaning them. */}
+      <MotionConfig reducedMotion={metrics.reducedMotion ? 'always' : 'user'}>
         <AnimatePresence>
           {!metrics.isInitialized && (
             <motion.div

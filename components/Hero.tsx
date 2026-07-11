@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -84,7 +84,9 @@ export default function Hero() {
   const noReveal = tier === "very-low" || reducedMotion;
   // Real liquid-glass refraction on the scope-of-work ticker (high tier)
   const tickerGlassRef = useLiquidGlass<HTMLDivElement>({ scale: -55, chroma: 4, blur: 5, mapBlur: 10 });
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  // Spotlight follows the cursor via direct style mutation — holding the
+  // position in state re-rendered the entire hero tree on every mouse move.
+  const spotlightRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
   // Tier-graded parallax: high = full depth, mid = 65%, low/very-low = static
   const parallaxFactor = reducedMotion ? 0 : tier === "high" ? 1 : tier === "mid" ? 0.65 : 0;
@@ -97,12 +99,14 @@ export default function Hero() {
   useEffect(() => {
     if (tier !== 'high' || reducedMotion) return;
 
-    // Throttle for performance
+    // Throttle for performance; write straight to the compositor layer
     let ticking = false;
     const handleMouseMove = (e: MouseEvent) => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setMousePosition({ x: e.clientX, y: e.clientY });
+          if (spotlightRef.current) {
+            spotlightRef.current.style.background = `radial-gradient(800px circle at ${e.clientX}px ${e.clientY}px, rgba(212, 175, 55, 0.08), transparent 40%)`;
+          }
           ticking = false;
         });
         ticking = true;
@@ -200,13 +204,11 @@ export default function Hero() {
         />
       </div>
 
-      {/* Flagship Interactive Engine Spotlight */}
+      {/* Flagship Interactive Engine Spotlight — style mutated directly, no re-renders */}
       {isHigh && (
         <div
+          ref={spotlightRef}
           className="pointer-events-none fixed inset-0 z-[2] transition-opacity duration-300"
-          style={{
-            background: `radial-gradient(800px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(212, 175, 55, 0.08), transparent 40%)`,
-          }}
         />
       )}
 

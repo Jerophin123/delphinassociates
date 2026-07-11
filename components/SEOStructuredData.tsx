@@ -71,7 +71,7 @@ export default function SEOStructuredData({ type = "LocalBusiness" }: Structured
     "@type": "Organization",
     name: "Delphin Associates",
     url: baseUrl,
-    logo: `${baseUrl}/favicon.png`,
+    logo: `${baseUrl}/logo.jpg`,
     description:
       "Delphin Associates - You Dream We Build. Building Trust Through Quality Since 1999. Leading civil construction company in Chennai, Tamil Nadu.",
     foundingDate: "1999",
@@ -91,7 +91,7 @@ export default function SEOStructuredData({ type = "LocalBusiness" }: Structured
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: "Delphin Associates",
-    image: `${baseUrl}/favicon.png`,
+    image: `${baseUrl}/logo.jpg`,
     "@id": baseUrl,
     url: baseUrl,
     telephone: "+91-98412-43345",
@@ -182,21 +182,18 @@ export default function SEOStructuredData({ type = "LocalBusiness" }: Structured
     },
   };
 
+  // Note: no SearchAction — the project search is client-state only, and a
+  // SearchAction pointing at a non-functional URL parameter is a schema error.
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Delphin Associates",
+    alternateName: "Delphin Associates Chennai",
     url: baseUrl,
+    inLanguage: "en-IN",
+    publisher: { "@id": baseUrl },
     description:
       "Delphin Associates - You Dream We Build. Building Trust Through Quality Since 1999. Leading civil construction company in Chennai, Tamil Nadu.",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${baseUrl}/projects?search={search_term_string}`,
-      },
-      "query-input": "required name=search_term_string",
-    },
   };
 
   // Determine schema based on type - using Record<string, any> or arrays to allow different schema structures

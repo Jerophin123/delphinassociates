@@ -27,7 +27,7 @@ export default function ServicesHero() {
     <section
       id="services-hero"
       data-header-theme="light"
-      className="relative overflow-hidden bg-[#fdfbf4] border-b border-black/5 min-h-[calc(100dvh-5rem)] flex flex-col"
+      className="relative overflow-hidden bg-[#fdfbf4] border-b border-black/5 sm:min-h-[calc(100dvh-5rem)] flex flex-col"
     >
       {/* Drafting-paper ruling */}
       <div
@@ -54,9 +54,9 @@ export default function ServicesHero() {
       )}
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-14 lg:px-16 py-14 sm:py-16 flex-1 flex flex-col justify-center">
-        <motion.div {...fadeUp(0.05)} className="flex items-center gap-3 mb-6">
+        <motion.div {...fadeUp(0.05)} className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-6">
           <span className="font-display font-bold text-[11px] sm:text-xs text-accent-dark/70 tracking-[0.25em] uppercase">Service Register</span>
-          <span className="h-[2px] w-12 bg-accent"></span>
+          <span className="h-[2px] w-8 sm:w-12 bg-accent shrink-0"></span>
           <span className="text-accent-dark text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
             Our Expertise
           </span>

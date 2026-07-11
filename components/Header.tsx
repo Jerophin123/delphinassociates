@@ -99,11 +99,13 @@ function StampButton({
 }
 
 export default function Header() {
-  const [scrollY, setScrollY] = useState(0);
-  const [viewportHeight, setViewportHeight] = useState(1000);
-  const [isScrollingUp, setIsScrollingUp] = useState(false);
+  // Booleans only — raw scrollY in state caused a full Header re-render on
+  // every scrolled pixel, one of the main jank sources tripping the HPOE
+  // watchdog on capable hardware.
+  const [isAtTop, setIsAtTop] = useState(true);
+  const [isPastHero, setIsPastHero] = useState(false);
+  const [inHeroViewport, setInHeroViewport] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
   const [sectionTheme, setSectionTheme] = useState<"light" | "dark" | null>(null);
@@ -119,61 +121,68 @@ export default function Header() {
   const isHomePage = pathname === "/";
 
   useEffect(() => {
-    const updateViewportHeight = () => setViewportHeight(window.innerHeight);
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
-
-    updateViewportHeight();
     checkMobile();
 
-    const handleScroll = () => {
+    // Cache the themed sections once per route — querying the DOM on every
+    // scroll event was measurably expensive. Sections are static after mount.
+    let themedSections: HTMLElement[] = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-header-theme]")
+    );
+    // Late-mounting sections (client components hydrating) get one re-scan.
+    const rescan = setTimeout(() => {
+      themedSections = Array.from(document.querySelectorAll<HTMLElement>("[data-header-theme]"));
+      update();
+    }, 600);
+
+    let ticking = false;
+    const update = () => {
+      ticking = false;
       const currentScrollY = window.scrollY;
       const vh = window.innerHeight;
 
-      setScrollY(currentScrollY);
-      setViewportHeight(vh);
-
-      // Detect scroll direction
-      if (currentScrollY < lastScrollY && currentScrollY > 50) {
-        setIsScrollingUp(true);
-      } else if (currentScrollY > lastScrollY) {
-        setIsScrollingUp(false);
-      }
-      setLastScrollY(currentScrollY);
+      // Booleans change rarely — React bails out when values are unchanged.
+      setIsAtTop(currentScrollY < 50);
+      setIsPastHero(currentScrollY > vh * 0.9);
+      setInHeroViewport(currentScrollY < vh);
 
       // Section ground detection: sheets declare their ground via data-header-theme
-      const themedSections = document.querySelectorAll<HTMLElement>("[data-header-theme]");
       let theme: "light" | "dark" | null = null;
-      themedSections.forEach((el) => {
+      for (const el of themedSections) {
         const rect = el.getBoundingClientRect();
         // Header height is roughly 80px. Check if header overlaps this section.
         if (rect.top <= 80 && rect.bottom >= 20) {
           theme = el.dataset.headerTheme === "light" ? "light" : "dark";
         }
-      });
+      }
       setSectionTheme(theme);
     };
 
-    handleScroll();
+    const handleScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    };
+
+    update();
     window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", () => {
-      updateViewportHeight();
-      checkMobile();
-    });
+    window.addEventListener("resize", handleScroll, { passive: true });
+    window.addEventListener("resize", checkMobile, { passive: true });
 
     return () => {
+      clearTimeout(rescan);
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", updateViewportHeight);
+      window.removeEventListener("resize", handleScroll);
+      window.removeEventListener("resize", checkMobile);
     };
-  }, [lastScrollY, isHomePage]);
+  }, [pathname]);
 
   let headerStyle = "bg-[#fdfbf4]/80 backdrop-blur-md shadow-sm border-b border-accent/20";
   let textStyle = "text-gray-900";
 
   if (isHomePage) {
-    const isAtTop = scrollY < 50;
-    const isPastHero = scrollY > viewportHeight * 0.9;
-
-    if (isMobile && isMobileMenuOpen && scrollY < viewportHeight) {
+    if (isMobile && isMobileMenuOpen && inHeroViewport) {
       headerStyle = "bg-primary-dark/80 backdrop-blur-md shadow-lg border-b border-accent/20";
       textStyle = "text-white";
     } else if (isAtTop) {

@@ -48,8 +48,15 @@ export default function ArchPlans({ tone = "light", variant = "campus", classNam
   // High tier: the plot is scrubbed by scroll - the pen follows the reader.
   // Progress 0→1 maps onto the paused CSS draw/fade timeline via --arch-p.
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.92", "end 0.4"], layoutEffect: false });
+  // Quantize to 1/200 steps: each --arch-p write forces a style recalc over
+  // ~200 SVG nodes, so only pay for visually meaningful progress changes.
+  const lastPlotStep = useRef(-1);
   useMotionValueEvent(scrollYProgress, "change", (v) => {
-    if (plot) ref.current?.style.setProperty("--arch-p", v.toFixed(4));
+    if (!plot) return;
+    const step = Math.round(v * 200);
+    if (step === lastPlotStep.current) return;
+    lastPlotStep.current = step;
+    ref.current?.style.setProperty("--arch-p", (step / 200).toFixed(3));
   });
 
   // Layered depth drift: the vignette drawings float faster than the ghosted
@@ -85,7 +92,7 @@ export default function ArchPlans({ tone = "light", variant = "campus", classNam
       ref={ref}
       aria-hidden
       data-arch={plot ? "scrub" : undefined}
-      className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}
+      className={`absolute inset-0 overflow-hidden pointer-events-none max-sm:opacity-60 ${className}`}
     >
       {/* ================================================================
           MASTER-PLAN UNDERLAY - a big ghosted drawing spanning the sheet.

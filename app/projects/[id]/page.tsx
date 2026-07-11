@@ -85,8 +85,23 @@ export default async function ProjectDetailPage({
 
   const code = `P-${String(project.id).padStart(2, "0")}`;
 
+  const baseUrl = "https://www.delphinassociates.com";
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${baseUrl}/` },
+      { "@type": "ListItem", position: 2, name: "Projects", item: `${baseUrl}/projects` },
+      { "@type": "ListItem", position: 3, name: project.title, item: `${baseUrl}/projects/${project.id}` },
+    ],
+  };
+
   return (
     <div className="pt-20 bg-[#fdfbf4] text-primary-dark min-h-[100dvh] relative z-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <section data-header-theme="light" className="relative overflow-hidden">
         {/* Drafting-paper ruling */}
         <div
