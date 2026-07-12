@@ -4,15 +4,9 @@ import React, { createContext, useContext, useEffect, useState, ReactNode, useRe
 import Image from "next/image";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import { Loader2 } from "lucide-react";
+import { classifyHardware, type HPOETier, type HardwareSpecs } from "@/lib/hpoe-classifier";
 
-export type HPOETier = "high" | "mid" | "low" | "very-low";
-
-interface HardwareSpecs {
-  vendor: string;
-  architecture: string;
-  type: "Discrete" | "Integrated" | "Mobile" | "Unknown";
-  estimatedClass: "High-End" | "Mid-Range" | "Budget/Legacy" | "Unknown";
-}
+export type { HPOETier, HardwareSpecs } from "@/lib/hpoe-classifier";
 
 interface HPOEContextProps {
   tier: HPOETier;
@@ -43,287 +37,69 @@ export function HPOE({ children }: { children: ReactNode }) {
     hardwareSpecs: null,
     isInitialized: false,
   });
-  
+
   const [isMounted, setIsMounted] = useState(false);
 
   const currentTierRef = useRef<HPOETier>("high");
 
   useEffect(() => {
     setIsMounted(true);
-    
+
     try {
       const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const coreCount = navigator.hardwareConcurrency || 4;
       // @ts-ignore
-      const memory = navigator.deviceMemory || 4; 
+      const memory = navigator.deviceMemory || 4;
 
       let gpuInfo = "Unknown GPU";
       let maxTextureSize = 0;
+      let webgl2 = false;
       const canvas = document.createElement("canvas");
-      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      
-      let calculatedTier: HPOETier = "high";
-      let specs: HardwareSpecs = {
-        vendor: "Unknown",
-        architecture: "Unknown",
-        type: "Unknown",
-        estimatedClass: "Unknown",
-      };
-
-      let renderer = "unknown";
+      // iPadOS 13+ masquerades as desktop Safari ("Macintosh") but is still a
+      // passively-cooled tablet — multi-touch on a Mac UA gives it away.
+      const isIPadOS = navigator.maxTouchPoints > 1 && /macintosh/i.test(navigator.userAgent);
+      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || isIPadOS;
 
       let gl: WebGLRenderingContext | null = null;
-        try {
-          gl = (canvas.getContext("webgl") || canvas.getContext("experimental-webgl")) as WebGLRenderingContext;
-          if (gl) {
-            const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
-            let unmaskedRenderer = "";
-            if (debugInfo) {
-              unmaskedRenderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) as string || "";
-            }
-            
-            const standardRenderer = gl.getParameter(gl.RENDERER) as string || "";
-            
-            // Keep both WEBGL_debug_renderer_info and standard RENDERER working at the same time
-            gpuInfo = `${unmaskedRenderer} ${standardRenderer}`.trim() || "Unknown GPU";
-            
-            maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+      try {
+        gl = (canvas.getContext("webgl") || canvas.getContext("experimental-webgl")) as WebGLRenderingContext;
+        if (gl) {
+          const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+          let unmaskedRenderer = "";
+          if (debugInfo) {
+            unmaskedRenderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) as string || "";
           }
-        } catch (e) {}
 
-        // Strip trademarks like (R) or (TM) that break rigid regex matching
-        renderer = gpuInfo.toLowerCase().replace(/\((r|tm)\)/g, '').replace(/graphics/g, '').trim();
+          const standardRenderer = gl.getParameter(gl.RENDERER) as string || "";
 
-        // ---------------------------------------------------------
-        // MASSIVE HEURISTIC GPU CLASSIFICATION MATRIX
-        // ---------------------------------------------------------
+          // Keep both WEBGL_debug_renderer_info and standard RENDERER working at the same time
+          gpuInfo = `${unmaskedRenderer} ${standardRenderer}`.trim() || "Unknown GPU";
 
-      // 1. APPLE SILICON & A-SERIES
-      if (renderer.includes("apple")) {
-        specs.vendor = "Apple";
-        if (/m[1-9]/.test(renderer)) {
-          specs.architecture = "M-Series Silicon";
-          specs.type = "Integrated";
-          specs.estimatedClass = renderer.includes("max") || renderer.includes("pro") || renderer.includes("ultra") ? "High-End" : "Mid-Range";
-          calculatedTier = specs.estimatedClass === "High-End" ? "high" : "mid"; 
-        } else {
-          specs.architecture = "A-Series Silicon";
-          specs.type = "Mobile";
-          if (coreCount >= 6 && maxTextureSize >= 8192) {
-            specs.estimatedClass = "High-End";
-            calculatedTier = "high";
-          } else {
-            specs.estimatedClass = "Mid-Range";
-            calculatedTier = "mid";
-          }
-        } 
-      } 
-      // 2. NVIDIA DESKTOP & LAPTOP
-      else if (renderer.includes("nvidia") || renderer.includes("geforce") || renderer.includes("quadro")) {
-        specs.vendor = "NVIDIA";
-        specs.type = "Discrete";
-        
-        if (/rtx\s*[2-9][0-9]{3}/.test(renderer) || /titan/.test(renderer) || /quadro\s*rtx/.test(renderer)) {
-          specs.architecture = "RTX / Ampere / Ada / Turing";
-          specs.estimatedClass = "High-End";
-          calculatedTier = "high";
-        } else if (/gtx\s*(?:10[6-9][0-9]|16[5-9][0-9]|9[8-9][0-9])/.test(renderer)) {
-          specs.architecture = "GTX High/Mid";
-          specs.estimatedClass = "High-End";
-          calculatedTier = "high";
-        } else if (/gtx\s*(?:1050|970|960|950|780)/.test(renderer)) {
-          specs.architecture = "GTX Legacy Mid";
-          specs.estimatedClass = "Mid-Range";
-          calculatedTier = "mid";
-        } else if (/gtx\s*(?:4|5|6)[0-9]{2}/.test(renderer) || /gt\s*[0-9]+/.test(renderer) || /[7-9][1-4]0m/.test(renderer) || /mx[1-4][0-9]{2}/.test(renderer)) {
-          specs.architecture = "Legacy / Low-End Mobile (GT/MX)";
-          specs.estimatedClass = "Budget/Legacy";
-          calculatedTier = "low";
-        } else {
-          specs.architecture = "Unknown NVIDIA";
-          specs.estimatedClass = "Mid-Range";
-          calculatedTier = "mid";
+          maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
         }
-      }
-      // 3. AMD RADEON
-      else if (renderer.includes("amd") || renderer.includes("radeon")) {
-        specs.vendor = "AMD";
-        if (/rx\s*[5-8][0-9]{3}/.test(renderer) || /vega\s*(?:56|64)/.test(renderer) || /radeon\s*pro/.test(renderer)) {
-          specs.architecture = "RDNA / High-End Vega";
-          specs.type = "Discrete";
-          specs.estimatedClass = "High-End";
-          calculatedTier = "high";
-        } else if (/rx\s*(?:4[0-9]{2}|5[7-9][0-9])/.test(renderer) || /6[6-9]0m/.test(renderer)) {
-          specs.architecture = "Polaris / Modern APU";
-          specs.type = "Integrated";
-          specs.estimatedClass = "Mid-Range";
-          calculatedTier = "mid";
-        } else {
-          specs.architecture = "Legacy GCN or Budget APU";
-          specs.type = "Integrated";
-          specs.estimatedClass = "Budget/Legacy";
-          calculatedTier = "low";
-        }
-      }
-      // 4. INTEL GRAPHICS
-      else if (renderer.includes("intel")) {
-        specs.vendor = "Intel";
-        if (/arc\s*a[3-7][0-9]{2}/.test(renderer)) {
-          specs.architecture = "Arc Alchemist";
-          specs.type = "Discrete";
-          specs.estimatedClass = "Mid-Range";
-          calculatedTier = "mid"; // Intel drivers on WebGL are unreliable for complex CSS blurs
-        } else if ((renderer.includes("iris") && renderer.includes("xe")) || /iris\s*(?:plus|pro)/.test(renderer)) {
-          specs.architecture = "Iris Xe/Plus";
-          specs.type = "Integrated";
-          specs.estimatedClass = "Mid-Range";
-          calculatedTier = "mid";
-        } else /* HD, UHD, Generic Intel */ {
-          specs.architecture = "UHD / HD Legacy";
-          specs.type = "Integrated";
-          specs.estimatedClass = "Budget/Legacy";
-          calculatedTier = "low"; 
-        }
-      }
-      // 5. QUALCOMM ADRENO / SNAPDRAGON (ANDROID & ARM PC)
-      else if (renderer.includes("adreno") || renderer.includes("snapdragon")) {
-        specs.vendor = "Qualcomm";
-        const match = renderer.match(/adreno\s*([0-9]{3})/);
-        const series = match ? parseInt(match[1]) : 0;
-        
-        if (renderer.includes("snapdragon x") || renderer.includes("x elite") || renderer.includes("x plus") || (series >= 900)) {
-          specs.type = "Integrated";
-          specs.architecture = "Snapdragon X Series (ARM Desktop)";
-          specs.estimatedClass = "High-End";
-          calculatedTier = "high";
-        } else {
-          specs.type = isMobileDevice ? "Mobile" : "Integrated";
-          if (series >= 800 || renderer.includes("snapdragon 8 elite") || renderer.includes("elite")) {
-            specs.architecture = series ? `Adreno ${series}` : "Snapdragon 8 Elite Flagship";
-            specs.estimatedClass = "High-End";
-            calculatedTier = "high"; // Will be capped to mid by fail-safe for thermals
-          } else if (series >= 730 || renderer.includes("snapdragon 8 gen")) {
-            specs.architecture = series ? `Adreno ${series}` : "Snapdragon 8 Gen Flagship";
-            specs.estimatedClass = "High-End";
-            calculatedTier = "high";
-          } else if (series >= 650 || renderer.includes("snapdragon 8") || renderer.includes("snapdragon 7")) {
-            specs.architecture = series ? `Adreno ${series}` : "Snapdragon 7/8 Series";
-            specs.estimatedClass = "Mid-Range";
-            calculatedTier = "mid";
-          } else if ((series === 0 && coreCount >= 8 && maxTextureSize >= 8192) || renderer.includes("snapdragon")) {
-            // Fallback logic! If browser scrubbed the Adreno version number from string
-            // but phone has 8 cores and supports heavy textures, it's a modern Snapdragon (Mid Tier).
-            specs.architecture = `Modern Adreno/Snapdragon (Masked)`;
-            specs.estimatedClass = "Mid-Range";
-            calculatedTier = "mid";
-          } else {
-            specs.architecture = `Adreno ${series || "Legacy"}`;
-            specs.estimatedClass = "Budget/Legacy";
-            calculatedTier = "low";
-          }
-        }
-      }
-      // 6. ARM MALI (MOBILE & ARM DESKTOP)
-      else if (renderer.includes("mali")) {
-        specs.vendor = "ARM";
-        specs.type = isMobileDevice ? "Mobile" : "Integrated";
-        if (/immortalis/.test(renderer) || /g[7-9][1-9][0-9]/.test(renderer) || /g7[7-9]/.test(renderer)) {
-          specs.architecture = "Mali Valhall / Immortalis Flagship";
-          specs.estimatedClass = "High-End";
-          calculatedTier = "high";
-        } else if (/g[7-9][0-9]/.test(renderer)) {
-          specs.architecture = "Mali Valhall / Immortalis";
-          specs.estimatedClass = "Mid-Range";
-          calculatedTier = "mid";
-        } else {
-          specs.architecture = "Legacy Mali / Budget G-Series";
-          specs.estimatedClass = "Budget/Legacy";
-          calculatedTier = "low";
-        }
-      }
-      // 7. POWERVR (OLDER IOS / MEDIATEK)
-      else if (renderer.includes("powervr")) {
-        specs.vendor = "Imagination Technologies";
-        specs.type = "Mobile";
-        specs.architecture = "PowerVR Rogue/SGX";
-        specs.estimatedClass = "Budget/Legacy";
-        calculatedTier = "low";
-      }
-      // 8. SAMSUNG XCLIPSE / EXYNOS (MOBILE)
-      else if (renderer.includes("xclipse") || renderer.includes("exynos")) {
-        specs.vendor = "Samsung";
-        specs.type = "Mobile";
-        if (renderer.includes("xclipse")) {
-          const match = renderer.match(/xclipse\s*([0-9]{3})/);
-          const series = match && match[1] ? parseInt(match[1], 10) : 0;
-          if (series >= 920) {
-            specs.architecture = `Xclipse ${series} (RDNA Flagship)`.trim();
-            specs.estimatedClass = "High-End"; 
-            calculatedTier = "high";
-          } else {
-            specs.architecture = `Xclipse ${series} (RDNA)`.trim();
-            specs.estimatedClass = "Mid-Range"; 
-            calculatedTier = "mid";
-          }
-        } else {
-          if (coreCount >= 8 && maxTextureSize >= 8192) {
-            specs.architecture = "Exynos Flagship";
-            specs.estimatedClass = "High-End";
-            calculatedTier = "high";
-          } else {
-            specs.architecture = "Exynos Legacy/Masked";
-            specs.estimatedClass = "Budget/Legacy";
-            calculatedTier = "low";
-          }
-        }
-      }
-      // 9. MEDIATEK (DIMENSITY / HELIO)
-      else if (renderer.includes("mediatek") || renderer.includes("dimensity") || renderer.includes("helio")) {
-        specs.vendor = "MediaTek";
-        specs.type = "Mobile";
-        if (renderer.includes("dimensity 9") || renderer.includes("dimensity 8")) {
-          specs.architecture = "Dimensity 8000/9000 Flagship";
-          specs.estimatedClass = "High-End";
-          calculatedTier = "high";
-        } else if (renderer.includes("dimensity") || renderer.includes("helio g9") || (coreCount >= 8 && maxTextureSize >= 8192)) {
-          specs.architecture = "Dimensity / High-End Helio";
-          specs.estimatedClass = "Mid-Range";
-          calculatedTier = "mid";
-        } else {
-          specs.architecture = "Helio Legacy / Entry SoC";
-          specs.estimatedClass = "Budget/Legacy";
-          calculatedTier = "low";
-        }
-      }
-      // 10. UNISOC / SPREADTRUM
-      else if (renderer.includes("unisoc") || renderer.includes("spreadtrum") || renderer.includes("tigert")) {
-        specs.vendor = "Unisoc";
-        specs.type = "Mobile";
-        specs.architecture = "Unisoc / Spreadtrum";
-        specs.estimatedClass = "Budget/Legacy";
-        calculatedTier = "low"; // Mostly entry-level hardware
-      }
-      // 11. BROADCOM / RASPBERRY PI
-      else if (renderer.includes("videocore") || renderer.includes("v3d") || renderer.includes("broadcom") || renderer.includes("raspberry")) {
-        specs.vendor = "Broadcom";
-        specs.type = "Integrated";
-        if (renderer.includes("v3d 4") || renderer.includes("v3d 4.2") || renderer.includes("videocore vi") || renderer.includes("videocore vii")) {
-          specs.architecture = "VideoCore VI/VII (Raspberry Pi 4/5)";
-          specs.estimatedClass = "Budget/Legacy";
-          calculatedTier = "low"; // Pi 4/5 are capable but struggle with high-end blurs
-        } else {
-          specs.architecture = "VideoCore IV/V (Raspberry Pi Legacy)";
-          specs.estimatedClass = "Budget/Legacy";
-          calculatedTier = "very-low";
-        }
-      }
+      } catch (e) {}
+      try {
+        webgl2 = !!document.createElement("canvas").getContext("webgl2");
+      } catch (e) {}
 
-      // 12. FALLBACK FOR UNKNOWN GPUs
-      if (renderer === "unknown gpu" || renderer === "unknown" || specs.vendor === "Unknown") {
-        specs.estimatedClass = "Budget/Legacy";
-        calculatedTier = "low";
-        specs.architecture = "Unknown (Fallback)";
-      }
+      // ---------------------------------------------------------
+      // HEURISTIC GPU/CPU CLASSIFICATION
+      // The full matrix lives in lib/hpoe-classifier.ts: per-vendor numeric
+      // generation parsing (open-ended for future silicon), laptop/desktop
+      // form-factor detection, software/VM renderer handling, and a
+      // capability-probe fallback for unknown vendors.
+      // ---------------------------------------------------------
+      const classification = classifyHardware({
+        renderer: gpuInfo,
+        coreCount,
+        memory,
+        maxTextureSize,
+        webgl2,
+        isMobileDevice,
+      });
+      const specs = classification.specs;
+      const renderer = classification.normalizedRenderer;
+      let calculatedTier: HPOETier = classification.tier;
 
       // Hard limits and Accessibility Overrides
       if (prefersReducedMotion) {
@@ -334,7 +110,7 @@ export function HPOE({ children }: { children: ReactNode }) {
         // <=3GB memory can't sustain high-tier backdrop-blur stacks; cap at mid
         calculatedTier = "mid";
       }
-      
+
       // Absolute fail-safe: Mobile devices NEVER get "High" tier effects.
       // Even with elite processors (Snapdragon 8 Elite, Exynos 2400), complex CSS blurs
       // will aggressively thermal throttle the mobile chip. We strictly cap them at Mid.
@@ -359,7 +135,7 @@ export function HPOE({ children }: { children: ReactNode }) {
       }
 
       currentTierRef.current = calculatedTier;
-      
+
       // Extremely subtle animations mode: forcefully enable reducedMotion for very-low tier
       const finalReducedMotion = prefersReducedMotion || calculatedTier === "very-low";
 
@@ -389,12 +165,12 @@ export function HPOE({ children }: { children: ReactNode }) {
 
         // Adaptive thresholds: mid-tier naturally runs 40-55 FPS; only react to genuine sustained drops
         const gracePeriodMs = 6000; // Ignore the settle window (hydration, image decode, entrance choreography)
-        
+
         let baselineFpsMeasurements: number[] = [];
         let detectedBaselineFps = 60; // Assume standard 60fps by default
         let midSessionBatterySaverTicks = 0;
         let isBaselineLocked = false;
-        
+
         let previousFrameTime = performance.now();
         let maxFrameDelta = 0; // Tracks maximum MS between consecutive frames
 
@@ -442,7 +218,7 @@ export function HPOE({ children }: { children: ReactNode }) {
               // Lock in baseline detection once grace period concludes
               if (baselineFpsMeasurements.length > 0 && !isBaselineLocked) {
                 const avg = baselineFpsMeasurements.reduce((a, b) => a + b, 0) / baselineFpsMeasurements.length;
-                
+
                 if (avg > 65) {
                   detectedBaselineFps = Math.round(avg);
                   console.info(`[Hardware Profiler] Uncapped high refresh rate detected (~${detectedBaselineFps}Hz). Optimizing threshold for infinite-refresh smoothness.`);
@@ -476,17 +252,17 @@ export function HPOE({ children }: { children: ReactNode }) {
 
               const currentTier = currentTierRef.current;
               let currentFpsFloor;
-              
+
               if (detectedBaselineFps === 30) {
                 // Battery Saver Mode active: Re-assign the thresholds to avoid aggressively killing animations
                 // The device can easily handle mid-tier glass, it is just artificially clipped by the OS.
-                currentFpsFloor = 22; 
+                currentFpsFloor = 22;
               } else {
                 // This logic is followed universally regardless of what display type is running (60Hz -> 700Hz+)
                 // Drop below 40 FPS for 3 consecutive seconds
                 currentFpsFloor = 40;
               }
-              
+
               // Five sustained bad seconds before demoting: capable hardware
               // hitting a transient spike (route change, image decode, GC)
               // must not lose its tier. Good seconds heal at double rate.
@@ -507,7 +283,7 @@ export function HPOE({ children }: { children: ReactNode }) {
                 console.warn(`[Hardware Profiler] Thermal Throttling / Resource Limit Detected (${fps} FPS, floor ${currentFpsFloor}, ${sustainedDropTicks}/${currentRequiredDropTicks} ticks). Emergency Downgrading to Tier: ${downgradeTarget}.`);
 
                 currentTierRef.current = downgradeTarget;
-                
+
                 // Defer state update to prevent Next.js/React re-render conflict inside requestAnimationFrame
                 setTimeout(() => {
                   setMetrics(prev => ({ ...prev, tier: downgradeTarget }));
@@ -566,16 +342,16 @@ export function HPOE({ children }: { children: ReactNode }) {
               className={`fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-background select-none`}
             >
               <div className="relative mb-8 w-32 h-32 md:w-48 md:h-48 overflow-hidden rounded-full shadow-2xl ring-4 ring-primary/10">
-                <Image 
-                  src="/splash.png" 
-                  alt="Delphin Associates Splash" 
-                  fill 
+                <Image
+                  src="/splash.png"
+                  alt="Delphin Associates Splash"
+                  fill
                   sizes="(max-width: 768px) 128px, 192px"
                   className="object-cover"
                   priority
                 />
               </div>
-              
+
               <div className="flex flex-col items-center gap-4">
                 <div className="animate-spin">
                   <Loader2 className="w-8 h-8 text-primary" />
