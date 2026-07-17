@@ -245,16 +245,16 @@ export default function ContactForm() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`shrink-0 w-full mt-2 group rounded-md border p-[2px] border-accent/70 disabled:opacity-60 disabled:cursor-not-allowed ${
+                  className={`shrink-0 w-full mt-2 group rounded-2xl border p-[2px] border-accent/70 disabled:opacity-60 disabled:cursor-not-allowed ${
                     tier === 'very-low' || tier === 'low' || reducedMotion
                       ? ''
                       : 'transition-all duration-300 hover:-translate-y-0.5 disabled:hover:translate-y-0'
                   }`}
                 >
                   <span
-                    className={`flex items-center justify-center gap-3 w-full rounded-[4px] border px-6 py-3.5 sm:py-4 text-xs sm:text-sm font-bold uppercase tracking-[0.2em] ${
+                    className={`flex items-center justify-center gap-3 w-full rounded-[14px] border px-6 py-3.5 sm:py-4 text-xs sm:text-sm font-bold uppercase tracking-[0.2em] ${
                       isHigh
-                        ? 'backdrop-blur-md bg-accent/25 border-accent-dark/40 text-accent-dark shadow-[inset_0_1px_1px_rgba(255,255,255,0.5)] group-hover:bg-accent/40 transition-colors duration-300'
+                        ? 'liquid-glass-chip backdrop-blur-md bg-accent/25 border-accent-dark/40 text-accent-dark shadow-[inset_0_1px_1px_rgba(255,255,255,0.5)] group-hover:bg-accent/40 transition-colors duration-300'
                         : tier === 'mid' && !reducedMotion
                         ? 'bg-gradient-to-br from-[#F0D264] via-accent to-[#B8942C] text-black border-accent/40 shadow-[0_0_16px_rgba(212,175,55,0.5)] group-hover:shadow-[0_0_24px_rgba(212,175,55,0.75)] transition-shadow duration-300'
                         : 'bg-accent text-black border-black/10'

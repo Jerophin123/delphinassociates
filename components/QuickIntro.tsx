@@ -164,8 +164,8 @@ export default function QuickIntro() {
             <div ref={founderGlassRef} className={`hidden sm:flex items-center gap-4 p-4 sm:p-5 rounded-2xl border w-fit ${
               isHigh ? 'liquid-real-light border-black/5' : tier === 'mid' ? 'mid-glass-card-light border-black/5' : 'bg-white border-black/10'
             }`}>
-              <span className="flex items-center justify-center w-12 h-12 rounded-md border border-accent-dark/50 p-[3px] shrink-0" aria-hidden>
-                <span className="flex items-center justify-center w-full h-full rounded-[4px] border border-accent-dark/30 bg-accent/10 font-display font-bold text-accent-dark text-sm tracking-widest">
+              <span className="flex items-center justify-center w-12 h-12 rounded-xl border border-accent-dark/50 p-[3px] shrink-0" aria-hidden>
+                <span className="flex items-center justify-center w-full h-full rounded-[9px] border border-accent-dark/30 bg-accent/10 font-display font-bold text-accent-dark text-sm tracking-widest">
                   DS
                 </span>
               </span>
@@ -199,8 +199,8 @@ export default function QuickIntro() {
             <div className={`sm:hidden flex items-center gap-3 p-3 rounded-xl border w-full mb-7 ${
               tier === 'mid' ? 'mid-glass-card-light border-black/5' : 'bg-white border-black/10'
             }`}>
-              <span className="flex items-center justify-center w-10 h-10 rounded-md border border-accent-dark/50 p-[2px] shrink-0" aria-hidden>
-                <span className="flex items-center justify-center w-full h-full rounded-[4px] border border-accent-dark/30 bg-accent/10 font-display font-bold text-accent-dark text-xs tracking-widest">
+              <span className="flex items-center justify-center w-10 h-10 rounded-xl border border-accent-dark/50 p-[2px] shrink-0" aria-hidden>
+                <span className="flex items-center justify-center w-full h-full rounded-[10px] border border-accent-dark/30 bg-accent/10 font-display font-bold text-accent-dark text-xs tracking-widest">
                   DS
                 </span>
               </span>

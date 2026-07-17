@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X, Phone, HardHat } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useHPOE } from "./HPOE";
+import { useLiquidGlass } from "./ui/useLiquidGlass";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -82,12 +83,14 @@ function StampButton({
       href={href}
       onClick={onClick}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className={`group inline-flex rounded-md border p-[2px] ${outer} ${
+      className={`group inline-flex rounded-xl border p-[2px] ${outer} ${
         noLift ? "" : "transition-all duration-300 hover:-translate-y-0.5"
       } ${className}`}
     >
       <span
-        className={`flex items-center justify-center gap-2 w-full rounded-[4px] border px-3.5 py-2 text-[11px] font-bold uppercase tracking-[0.18em] ${inner} ${
+        className={`flex items-center justify-center gap-2 w-full rounded-[10px] border px-3.5 py-2 text-[11px] font-bold uppercase tracking-[0.18em] ${isHigh ? "liquid-glass-chip " : ""}${
+          isHigh && filled ? "gold-breathe " : ""
+        }${inner} ${
           noMotion ? "" : "transition-colors duration-300"
         }`}
       >
@@ -117,6 +120,7 @@ export default function Header() {
   const noReveal = tier === "very-low" || reducedMotion;
   const noMotion = tier === "very-low" || reducedMotion;
   const noLift = tier === "low" || tier === "very-low" || reducedMotion;
+  const isHigh = tier === "high" && !reducedMotion;
 
   const isHomePage = pathname === "/";
 
@@ -150,8 +154,8 @@ export default function Header() {
       let theme: "light" | "dark" | null = null;
       for (const el of themedSections) {
         const rect = el.getBoundingClientRect();
-        // Header height is roughly 80px. Check if header overlaps this section.
-        if (rect.top <= 80 && rect.bottom >= 20) {
+        // The floating bar spans roughly 10-90px from the viewport top.
+        if (rect.top <= 90 && rect.bottom >= 30) {
           theme = el.dataset.headerTheme === "light" ? "light" : "dark";
         }
       }
@@ -178,33 +182,50 @@ export default function Header() {
     };
   }, [pathname]);
 
-  let headerStyle = "bg-[#fdfbf4]/80 backdrop-blur-md shadow-sm border-b border-accent/20";
+  // Floating bar: the shell carries a full border + rounding, so styles here
+  // set only ground/blur/shadow/border-color. Transparent-at-top keeps the
+  // chrome invisible (border-transparent) without a border-width layout jump.
+  let headerStyle = "bg-[#fdfbf4]/80 backdrop-blur-md shadow-sm border-accent/20";
   let textStyle = "text-gray-900";
 
   if (isHomePage) {
     if (isMobile && isMobileMenuOpen && inHeroViewport) {
-      headerStyle = "bg-primary-dark/80 backdrop-blur-md shadow-lg border-b border-accent/20";
+      headerStyle = "bg-primary-dark/80 backdrop-blur-md shadow-lg border-accent/20";
       textStyle = "text-white";
     } else if (isAtTop) {
-      headerStyle = "bg-transparent";
+      headerStyle = "bg-transparent border-transparent shadow-none";
       textStyle = "text-accent";
     } else if (sectionTheme === "light") {
       // Force light style if we are in a light section
-      headerStyle = "bg-[#fdfbf4]/80 backdrop-blur-md shadow-sm border-b border-accent/20";
+      headerStyle = "bg-[#fdfbf4]/80 backdrop-blur-md shadow-sm border-accent/20";
       textStyle = "text-gray-900";
     } else if (isPastHero) {
       // General dark style for non-light sections past hero
-      headerStyle = "bg-primary-dark/92 backdrop-blur-md shadow-lg border-b border-accent/20";
+      headerStyle = "bg-primary-dark/92 backdrop-blur-md shadow-lg border-accent/20";
       textStyle = "text-gray-100";
     } else {
       // Still in hero but not at top
-      headerStyle = "bg-primary-dark/85 backdrop-blur-md shadow-lg border-b border-accent/20";
+      headerStyle = "bg-primary-dark/85 backdrop-blur-md shadow-lg border-accent/20";
       textStyle = "text-accent";
     }
   } else if (sectionTheme === "dark") {
     // Inner pages: match the header to whichever sheet sits under it
-    headerStyle = "bg-primary-dark/92 backdrop-blur-md shadow-lg border-b border-accent/20";
+    headerStyle = "bg-primary-dark/92 backdrop-blur-md shadow-lg border-accent/20";
     textStyle = "text-gray-100";
+  }
+
+  // High tier: the vendored liquid-glass module owns the optics whenever the
+  // bar has chrome (inline SVG-displacement backdrop-filter; frosted fallback
+  // on Safari/Firefox). Thin the tint so the refraction reads through it —
+  // backdrop-blur-md stays as the progressive fallback while the module loads.
+  const glassActive = isHigh && !headerStyle.includes("bg-transparent");
+  if (glassActive) {
+    headerStyle = headerStyle
+      .replace("bg-[#fdfbf4]/80", "bg-[#fdfbf4]/60")
+      .replace("bg-primary-dark/80", "bg-primary-dark/60")
+      .replace("bg-primary-dark/85", "bg-primary-dark/60")
+      .replace("bg-primary-dark/92", "bg-primary-dark/65")
+      .trim();
   }
 
   // Tier-based overrides
@@ -222,13 +243,29 @@ export default function Header() {
   const darkGround = textStyle !== "text-gray-900";
   const hairline = darkGround ? "border-white/10" : "border-black/10";
 
+  // Real liquid-glass refraction on the floating shell (high tier). The
+  // instance attaches/destroys as the bar gains/loses chrome; destroy wipes
+  // the inline backdrop-filter so the transparent-at-top state stays clean,
+  // and the module's ResizeObserver re-fits when the mobile drawer expands.
+  const shellGlassRef = useLiquidGlass<HTMLDivElement>(
+    { scale: -48, chroma: 3, blur: 4, mapBlur: 10, saturate: 1.3 },
+    glassActive
+  );
+
   return (
     <motion.header
       initial={noReveal ? { y: 0 } : { y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 ${noMotion ? "" : "transition-all duration-300"} ${headerStyle}`}
+      className="fixed top-0 left-0 right-0 z-50 px-3 sm:px-5 lg:px-8 pt-2.5 sm:pt-3 pointer-events-none"
     >
-      <nav className="max-w-[90rem] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 xl:px-20" aria-label="Main Navigation">
+      {/* Floating shell - detached from the edges, rounded, carries the ground */}
+      <div
+        ref={shellGlassRef}
+        className={`pointer-events-auto max-w-[90rem] mx-auto rounded-2xl border ${
+          glassActive ? "glass-sheen " : ""
+        }${noMotion ? "" : "transition-all duration-300"} ${headerStyle}`}
+      >
+        <nav className="px-4 sm:px-6 md:px-8" aria-label="Main Navigation">
         <div className="flex items-center justify-between h-20 relative">
           <Link href="/" className="flex items-center z-10 shrink-0" aria-label="Delphin Associates Home">
             <Image
@@ -314,7 +351,7 @@ export default function Header() {
 
             {/* Mobile menu button - drafting stamp */}
             <button
-              className={`md:hidden w-10 h-10 flex items-center justify-center rounded-md border ${
+              className={`md:hidden w-10 h-10 flex items-center justify-center rounded-xl border ${
                 darkGround ? "border-white/25" : "border-black/15"
               } ${textStyle} ${noMotion ? "" : "transition-colors duration-300 hover:text-accent hover:border-accent/50"}`}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -426,7 +463,8 @@ export default function Header() {
             </motion.div>
           )}
         </AnimatePresence>
-      </nav>
+        </nav>
+      </div>
     </motion.header>
   );
 }

@@ -527,8 +527,8 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
               <div className="flex items-center space-x-3 sm:space-x-3.5 relative z-10">
                 {/* Engineer's stamp mark */}
                 <div className="relative">
-                  <span className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-md border border-accent-dark/50 p-[3px]" aria-hidden>
-                    <span className="flex items-center justify-center w-full h-full rounded-[4px] border border-accent-dark/30 bg-accent/15">
+                  <span className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-xl border border-accent-dark/50 p-[3px]" aria-hidden>
+                    <span className="flex items-center justify-center w-full h-full rounded-[9px] border border-accent-dark/30 bg-accent/15">
                       <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-accent-dark" />
                     </span>
                   </span>
@@ -576,7 +576,7 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
                         <div
                           className={`px-4 sm:px-5 py-3 sm:py-3.5 rounded-[1.2rem] sm:rounded-[1.5rem] text-[14px] sm:text-[14.5px] leading-relaxed shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] ${
                             msg.sender === "user"
-                              ? `${(tier === 'high' && !reducedMotion ? 'bg-accent/40 backdrop-blur-md border border-accent/30 shadow-none' : tier === 'mid' ? 'border border-accent/40 shadow-[0_4px_15px_-3px_rgba(212,175,55,0.15)] ring-1 ring-accent/5' : 'bg-accent')} text-primary rounded-tr-none font-medium`
+                              ? `${(tier === 'high' && !reducedMotion ? 'liquid-glass-chip bg-accent/40 backdrop-blur-md border border-accent/30 shadow-none' : tier === 'mid' ? 'border border-accent/40 shadow-[0_4px_15px_-3px_rgba(212,175,55,0.15)] ring-1 ring-accent/5' : 'bg-accent')} text-primary rounded-tr-none font-medium`
                               : `${(tier === 'high' && !reducedMotion ? 'liquid-glass-msg' : tier === 'mid' ? 'border border-[#eadca6]/50 shadow-[0_6px_20px_-4px_rgba(0,0,0,0.06)]' : 'bg-[#fdfbf4]')} text-gray-800 rounded-tl-none border border-gray-100/50`
                           }`}
                           style={
@@ -678,15 +678,15 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
                 <button
                   type="submit"
                   disabled={inputDisabled || !inputValue.trim()}
-                  className={`w-10 h-10 sm:w-11 sm:h-11 rounded-md border p-[2px] border-accent/70 group relative shrink-0 disabled:opacity-50 disabled:cursor-not-allowed ${
+                  className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl border p-[2px] border-accent/70 group relative shrink-0 disabled:opacity-50 disabled:cursor-not-allowed ${
                     tier === 'low' || reducedMotion ? '' : 'transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0'
                   }`}
                   aria-label="Send message"
                 >
                   <span
-                    className={`flex items-center justify-center w-full h-full rounded-[4px] border ${
+                    className={`flex items-center justify-center w-full h-full rounded-[10px] border ${
                       tier === 'high' && !reducedMotion
-                        ? 'backdrop-blur-md bg-accent/25 border-accent-dark/40 text-accent-dark shadow-[inset_0_1px_1px_rgba(255,255,255,0.5)]'
+                        ? 'liquid-glass-chip backdrop-blur-md bg-accent/25 border-accent-dark/40 text-accent-dark shadow-[inset_0_1px_1px_rgba(255,255,255,0.5)]'
                         : tier === 'mid' && !reducedMotion
                         ? 'bg-gradient-to-br from-[#F0D264] via-accent to-[#B8942C] border-accent/40 text-black shadow-[0_0_12px_rgba(212,175,55,0.45)]'
                         : 'bg-accent border-black/10 text-black'
@@ -712,11 +712,11 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
           >
             <motion.div 
               whileHover={{ y: -5 }}
-              className={`rounded-[1.5rem] rounded-br-lg shadow-[0_15px_40px_rgba(0,0,0,0.15)] p-4 cursor-pointer relative flex items-center space-x-3 sm:space-x-4 max-w-[280px] sm:max-w-sm group ${(tier === 'high' && !reducedMotion ? 'bg-[#fdfbf4]/95 backdrop-blur-xl border border-white/50' : 'bg-[#fdfbf4] border border-gray-100')}`}
+              className={`rounded-[1.5rem] rounded-br-lg shadow-[0_15px_40px_rgba(0,0,0,0.15)] p-4 cursor-pointer relative flex items-center space-x-3 sm:space-x-4 max-w-[280px] sm:max-w-sm group ${(tier === 'high' && !reducedMotion ? 'liquid-glass-chip bg-[#fdfbf4]/85 backdrop-blur-xl border border-white/50' : 'bg-[#fdfbf4] border border-gray-100')}`}
               onClick={() => { setIsOpen(true); setShowNotification(false); setHasUnread(false); }}
             >
-              <span className="flex-shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-md border border-accent-dark/50 p-[3px] group-hover:scale-110 transition-transform duration-300" aria-hidden>
-                <span className="flex items-center justify-center w-full h-full rounded-[4px] border border-accent-dark/30 bg-accent/15">
+              <span className="flex-shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-xl border border-accent-dark/50 p-[3px] group-hover:scale-110 transition-transform duration-300" aria-hidden>
+                <span className="flex items-center justify-center w-full h-full rounded-[9px] border border-accent-dark/30 bg-accent/15">
                   <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-accent-dark" />
                 </span>
               </span>
@@ -759,7 +759,7 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
             whileHover={tier === 'low' || reducedMotion ? undefined : { scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => { setIsOpen(!isOpen); setShowNotification(false); if (!isOpen) setHasUnread(false); }}
-            className={`w-14 h-14 sm:w-16 sm:h-16 rounded-md border p-[2px] relative z-50 border-accent/70 ${
+            className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border p-[2px] relative z-50 border-accent/70 ${
               tier === 'low'
                 ? ''
                 : 'transition-all shadow-[0_8px_25px_rgba(212,175,55,0.3)] hover:shadow-[0_8px_30px_rgba(212,175,55,0.5)] active:shadow-none'
@@ -779,9 +779,9 @@ Our core motto is simple: <em>"You Dream We Build."</em> We focus on building li
             </AnimatePresence>
 
             <span
-              className={`flex items-center justify-center w-full h-full rounded-[4px] border ${
+              className={`flex items-center justify-center w-full h-full rounded-[14px] border ${
                 tier === 'high' && !reducedMotion
-                  ? 'backdrop-blur-md bg-accent/25 border-accent/40 text-accent shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)]'
+                  ? 'liquid-glass-chip gold-breathe backdrop-blur-md bg-accent/25 border-accent/40 text-accent shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)]'
                   : tier === 'mid' && !reducedMotion
                   ? 'bg-gradient-to-br from-[#F0D264] via-accent to-[#B8942C] border-accent/40 text-black'
                   : 'bg-accent border-black/10 text-black'

@@ -43,15 +43,15 @@ export default function ScrollToTop() {
             whileHover={isStatic ? undefined : { scale: 1.08, y: -2 }}
             whileTap={{ scale: 0.92 }}
             onClick={scrollToTop}
-            className={`pointer-events-auto w-10 h-10 rounded-md border p-[2px] border-accent/70 ${
+            className={`pointer-events-auto w-10 h-10 rounded-xl border p-[2px] border-accent/70 ${
               isStatic ? '' : 'shadow-[0_6px_18px_rgba(212,175,55,0.3)]'
             }`}
             aria-label="Scroll to top"
           >
             <span
-              className={`flex items-center justify-center w-full h-full rounded-[4px] border ${
+              className={`flex items-center justify-center w-full h-full rounded-[10px] border ${
                 tier === 'high' && !reducedMotion
-                  ? 'backdrop-blur-md bg-accent/25 border-accent/40 text-accent shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)]'
+                  ? 'liquid-glass-chip gold-breathe backdrop-blur-md bg-accent/25 border-accent/40 text-accent shadow-[inset_0_1px_1px_rgba(255,255,255,0.35)]'
                   : tier === 'mid' && !reducedMotion
                   ? 'bg-gradient-to-br from-[#F0D264] via-accent to-[#B8942C] border-accent/40 text-black'
                   : 'bg-accent border-black/10 text-black'

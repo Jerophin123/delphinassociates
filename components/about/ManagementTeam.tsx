@@ -133,8 +133,8 @@ export default function ManagementTeam() {
 
                 <div className="relative z-10 flex items-start gap-5 h-full">
                   {/* Engineer's stamp initials */}
-                  <span className="flex items-center justify-center w-14 h-14 rounded-md border border-accent/50 p-[3px] shrink-0" aria-hidden>
-                    <span className="flex items-center justify-center w-full h-full rounded-[4px] border border-accent/30 bg-accent/10 font-display font-bold text-accent text-base tracking-widest">
+                  <span className="flex items-center justify-center w-14 h-14 rounded-2xl border border-accent/50 p-[3px] shrink-0" aria-hidden>
+                    <span className="flex items-center justify-center w-full h-full rounded-[13px] border border-accent/30 bg-accent/10 font-display font-bold text-accent text-base tracking-widest">
                       {getInitials(member.name)}
                     </span>
                   </span>

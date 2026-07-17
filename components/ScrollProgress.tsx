@@ -5,8 +5,8 @@ import { useHPOE } from "./HPOE";
 
 /**
  * Gold hairline reading progress bar pinned above the header.
- * HPOE ladder: high = springy premium tracking, mid/low = direct linear tracking,
- * very-low = none.
+ * HPOE ladder: high = springy premium tracking, mid/low = the same gradient
+ * bar with direct linear tracking, very-low = none.
  */
 export default function ScrollProgress() {
   const { tier, reducedMotion } = useHPOE();
@@ -18,8 +18,8 @@ export default function ScrollProgress() {
   return (
     <motion.div
       aria-hidden
-      className={`fixed top-0 left-0 right-0 h-[3px] z-[60] origin-left ${
-        tier === "low" ? "bg-accent" : "bg-gradient-to-r from-accent-dark via-accent to-accent-light"
+      className={`fixed top-0 left-0 right-0 h-[3px] z-[60] origin-left bg-gradient-to-r from-accent-dark via-accent to-accent-light ${
+        tier === "high" ? "shadow-[0_0_10px_rgba(212,175,55,0.55)]" : ""
       }`}
       style={{ scaleX: tier === "high" ? sprung : scrollYProgress, willChange: "transform" }}
     />

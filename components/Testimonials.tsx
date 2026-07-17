@@ -174,8 +174,8 @@ export default function Testimonials() {
 
                 {/* Client - engineer's stamp mark */}
                 <figcaption className="flex items-center gap-4 pt-5 border-t border-white/10">
-                  <span className="flex items-center justify-center w-12 h-12 rounded-md border border-accent/50 p-[3px] shrink-0" aria-hidden>
-                    <span className="flex items-center justify-center w-full h-full rounded-[4px] border border-accent/30 bg-accent/10 font-display font-bold text-accent text-xs tracking-widest">
+                  <span className="flex items-center justify-center w-12 h-12 rounded-xl border border-accent/50 p-[3px] shrink-0" aria-hidden>
+                    <span className="flex items-center justify-center w-full h-full rounded-[9px] border border-accent/30 bg-accent/10 font-display font-bold text-accent text-xs tracking-widest">
                       {testimonial.initials}
                     </span>
                   </span>

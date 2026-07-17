@@ -118,7 +118,9 @@ export default function ArrowLink({
 
   const chipEl = (
     <span
-      className={`flex items-center justify-center rounded-full shrink-0 ${sizing.circle} ${circle} ${
+      className={`flex items-center justify-center rounded-full shrink-0 ${isHigh ? "liquid-glass-chip " : ""}${
+        isHigh && !outline ? "gold-breathe " : ""
+      }${sizing.circle} ${circle} ${
         isStatic
           ? ""
           : `transition-all duration-300 ${back ? "group-hover:-translate-x-1" : "group-hover:translate-x-1"}${

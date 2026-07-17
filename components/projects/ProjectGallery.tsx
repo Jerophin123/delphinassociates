@@ -232,8 +232,8 @@ export default function ProjectGallery() {
             exit={{ opacity: 0, y: 8 }}
             className="text-center py-16 rounded-3xl border-2 border-dashed border-black/15"
           >
-            <span className="inline-flex items-center justify-center w-12 h-12 rounded-md border border-accent-dark/50 p-[3px]" aria-hidden>
-              <span className="flex items-center justify-center w-full h-full rounded-[4px] border border-accent-dark/30 bg-accent/10">
+            <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl border border-accent-dark/50 p-[3px]" aria-hidden>
+              <span className="flex items-center justify-center w-full h-full rounded-[9px] border border-accent-dark/30 bg-accent/10">
                 <Grid3x3 className="w-5 h-5 text-accent-dark" />
               </span>
             </span>
@@ -298,7 +298,7 @@ export default function ProjectGallery() {
                       <span
                         className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-white ${
                           isHigh
-                            ? "backdrop-blur-md bg-white/10 border-white/25"
+                            ? "liquid-glass-chip backdrop-blur-md bg-white/10 border-white/25"
                             : tier === "very-low"
                             ? "bg-black border-white/30"
                             : "bg-black/70 border-white/15"

@@ -482,6 +482,55 @@ body::-webkit-scrollbar {
       inset 0 0 0 1px rgba(255, 255, 255, 0.35) !important;
   }
 
+  /* ---------------------------------------------------------------------- */
+  /* HIGH-TIER AMBIENT MOTION - the "alive" layer.
+     A specular light pass periodically glides across every real-glass
+     surface, and the primary gold plates breathe. The identical keyframe
+     pairs hold each cycle idle ~65% of the time, so paint work only happens
+     during the visible sweep. None of this exists below high tier. */
+  /* ---------------------------------------------------------------------- */
+  @keyframes glass-sheen-pass {
+    0%, 64% { background-position: 180% 0; }
+    88%, 100% { background-position: -80% 0; }
+  }
+  html[data-tier="high"]:not([data-reduced-motion="true"]) .liquid-glass-card::after,
+  html[data-tier="high"]:not([data-reduced-motion="true"]) .liquid-glass-card-light::after,
+  html[data-tier="high"]:not([data-reduced-motion="true"]) .liquid-glass-card-dark::after,
+  html[data-tier="high"]:not([data-reduced-motion="true"]) .liquid-real-light::after,
+  html[data-tier="high"]:not([data-reduced-motion="true"]) .liquid-real-dark::after,
+  html[data-tier="high"]:not([data-reduced-motion="true"]) .glass-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background-image: linear-gradient(
+      105deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.07) 47%,
+      rgba(255, 255, 255, 0.16) 50%,
+      rgba(255, 255, 255, 0.07) 53%,
+      transparent 60%
+    );
+    background-size: 260% 100%;
+    background-repeat: no-repeat;
+    background-position: 180% 0;
+    animation: glass-sheen-pass 9s ease-in-out infinite;
+  }
+  html[data-tier="high"]:not([data-reduced-motion="true"]) .glass-sheen {
+    position: relative;
+  }
+
+  /* Primary gold plates: slow breathing glow. drop-shadow (not box-shadow)
+     so the plates' inset specular shadows survive the animation. */
+  @keyframes gold-breathe {
+    0%, 100% { filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.25)); }
+    50% { filter: drop-shadow(0 0 16px rgba(212, 175, 55, 0.6)); }
+  }
+  html[data-tier="high"]:not([data-reduced-motion="true"]) .gold-breathe {
+    animation: gold-breathe 3.6s ease-in-out infinite;
+  }
+
   /* Display-scale outlined words (hero + section headings) */
   .text-outline-display {
     color: rgba(212, 175, 55, 0.08);

@@ -17,9 +17,18 @@ import { useHPOE } from "./HPOE";
  * Per the module's guidance: cards use the subtle tuning (scale −60,
  * chroma 4) and elements larger than ~900px per side are skipped
  * (per-frame GPU cost grows with filtered area).
+ *
+ * `.liquid-glass-chip` marks small controls (ArrowLink chips, stamp-button
+ * plates, category chips): they get a gentler displacement so tiny filter
+ * regions don't smear their backdrop.
  */
 
-const SELECTOR = ".liquid-glass-card, .liquid-glass-card-light, .liquid-glass-card-dark";
+const CARD_SELECTOR = ".liquid-glass-card, .liquid-glass-card-light, .liquid-glass-card-dark";
+const CHIP_SELECTOR = ".liquid-glass-chip";
+const SELECTOR = `${CARD_SELECTOR}, ${CHIP_SELECTOR}`;
+
+const CARD_OPTIONS = { scale: -60, chroma: 4, blur: 4, mapBlur: 12, saturate: 1.4 };
+const CHIP_OPTIONS = { scale: -28, chroma: 2, blur: 3, mapBlur: 8, saturate: 1.35 };
 
 export default function LiquidGlassManager() {
   const { tier, reducedMotion } = useHPOE();
@@ -39,7 +48,7 @@ export default function LiquidGlassManager() {
       const h = el.offsetHeight;
       if (!w || !h) return; // not laid out yet; a later mutation will retry
       if (w > 900 && h > 900) return; // too large for a per-frame GPU filter
-      instances.set(el, lg(el, { scale: -60, chroma: 4, blur: 4, mapBlur: 12, saturate: 1.4 }));
+      instances.set(el, lg(el, el.matches(CHIP_SELECTOR) ? CHIP_OPTIONS : CARD_OPTIONS));
     };
 
     const scan = (root: ParentNode) => {

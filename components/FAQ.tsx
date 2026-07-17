@@ -91,7 +91,7 @@ function FAQItem({ faq, isOpen, onClick, index, isStatic, noReveal }: FAQItemPro
 
         {/* Drafting toggle stamp */}
         <span
-          className={`flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-md border ${
+          className={`flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl border ${
             isOpen
               ? "bg-accent border-accent text-black"
               : `border-white/20 text-gray-400 ${isStatic ? "" : "transition-all duration-300 group-hover:border-accent/60 group-hover:text-accent"}`
@@ -227,8 +227,8 @@ export default function FAQ() {
               isHigh ? 'liquid-glass-card-dark border-white/10' : tier === 'mid' ? 'mid-glass-card-dark border-white/10' : tier === 'very-low' ? 'bg-black border-white/20' : 'bg-black/40 border-white/10'
             }`}>
               <p className="flex items-center gap-3 text-[11px] text-accent uppercase tracking-[0.25em] font-bold mb-5">
-                <span className="flex items-center justify-center w-9 h-9 rounded-md border border-accent/50 p-[2px]" aria-hidden>
-                  <span className="flex items-center justify-center w-full h-full rounded-[4px] border border-accent/30 bg-accent/10">
+                <span className="flex items-center justify-center w-9 h-9 rounded-xl border border-accent/50 p-[2px]" aria-hidden>
+                  <span className="flex items-center justify-center w-full h-full rounded-[10px] border border-accent/30 bg-accent/10">
                     <Phone className="w-4 h-4 text-accent" />
                   </span>
                 </span>

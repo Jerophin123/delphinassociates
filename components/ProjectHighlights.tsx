@@ -167,7 +167,7 @@ export default function ProjectHighlights() {
                       <span
                         className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-white ${
                           isHigh
-                            ? 'backdrop-blur-md bg-white/10 border-white/25'
+                            ? 'liquid-glass-chip backdrop-blur-md bg-white/10 border-white/25'
                             : tier === 'very-low'
                             ? 'bg-black border-white/30'
                             : 'bg-black/70 border-white/15'

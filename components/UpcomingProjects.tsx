@@ -184,7 +184,7 @@ export default function UpcomingProjects({
                       ongoing
                         ? "bg-accent border-accent text-black"
                         : isHigh
-                        ? "backdrop-blur-md bg-white/10 border-white/25 text-white"
+                        ? "liquid-glass-chip backdrop-blur-md bg-white/10 border-white/25 text-white"
                         : tier === "very-low"
                         ? "bg-black border-white/30 text-white"
                         : "bg-black/70 border-white/15 text-white"

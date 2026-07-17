@@ -138,9 +138,9 @@ export default function TechnicalTeam() {
               >
                 <div className="flex items-start gap-4 mb-4">
                   {/* Engineer's stamp initials */}
-                  <span className="relative flex items-center justify-center w-12 h-12 rounded-md border border-accent-dark/50 p-[3px] shrink-0" aria-hidden>
+                  <span className="relative flex items-center justify-center w-12 h-12 rounded-xl border border-accent-dark/50 p-[3px] shrink-0" aria-hidden>
                     <HardHat className="absolute -top-2 -right-2 w-4 h-4 text-accent-dark" />
-                    <span className="flex items-center justify-center w-full h-full rounded-[4px] border border-accent-dark/30 bg-accent/10 font-display font-bold text-accent-dark text-sm tracking-widest">
+                    <span className="flex items-center justify-center w-full h-full rounded-[9px] border border-accent-dark/30 bg-accent/10 font-display font-bold text-accent-dark text-sm tracking-widest">
                       {getInitials(member.name)}
                     </span>
                   </span>
