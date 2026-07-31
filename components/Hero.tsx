@@ -3,12 +3,22 @@
 import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { Play } from "lucide-react";
 import { useHPOE } from "@/components/HPOE";
 import MagneticButton from "./ui/MagneticButton";
 import ArrowLink from "./ui/ArrowLink";
 import { useLiquidGlass } from "./ui/useLiquidGlass";
+
+// Cloudinary delivery URL with dynamic transformations:
+//   f_auto      - negotiates the lightest codec the browser accepts (AV1/WebM/H.265)
+//   q_auto:good - measured identical in bytes to bare q_auto (4.70 MB vs the
+//                 7.82 MB raw), so it is pinned explicitly rather than left to
+//                 drift. q_auto:best was measured at 8.25 MB — LARGER than the
+//                 source — for no visible gain, so it is deliberately not used.
+//   w_1920,c_limit - caps delivery at 1920px WITHOUT upscaling a smaller source
+//                 (bare w_1920 would stretch and soften it).
+const HERO_VIDEO_SRC =
+  "https://res.cloudinary.com/whfwy65k/video/upload/f_auto,q_auto:good,w_1920,c_limit/v1785474185/Untitled_design_2_1_h37trp.mp4";
 
 // The firm's three standing promises - stats live in the About sheet below
 const commitments = ["Transparent Pricing", "On-Time Delivery", "Post-Completion Support"];
@@ -87,6 +97,7 @@ export default function Hero() {
   // Spotlight follows the cursor via direct style mutation — holding the
   // position in state re-rendered the entire hero tree on every mouse move.
   const spotlightRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const { scrollY } = useScroll();
   // Tier-graded parallax: high = full depth, mid = 65%, low/very-low = static
   const parallaxFactor = reducedMotion ? 0 : tier === "high" ? 1 : tier === "mid" ? 0.65 : 0;
@@ -95,6 +106,19 @@ export default function Hero() {
   // Content plane drifts up slower than the scroll - full on high, gentler on mid
   const contentY = useTransform(scrollY, [0, 800], [0, -70 * parallaxFactor]);
   const contentOpacity = useTransform(scrollY, [0, 700], [1, tier === "high" && !reducedMotion ? 0.35 : 1]);
+
+  // Autoplay guarantee. Browsers only permit unattended playback on a video
+  // that is genuinely muted, and React can drop the `muted` attribute during
+  // hydration — so assert it on the element and kick off play() ourselves.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    video.defaultMuted = true;
+    video.play().catch(() => {
+      // Playback refused (e.g. iOS Low Power Mode). The poster frame stands in.
+    });
+  }, [tier]);
 
   useEffect(() => {
     if (tier !== 'high' || reducedMotion) return;
@@ -148,39 +172,35 @@ export default function Hero() {
       role="banner"
       aria-label="Welcome to Delphin Associates"
     >
-      {/* Hero Image Background - covers full viewport including header area */}
-      <div className="fixed inset-0 w-full h-full z-0" style={{ transform: 'translateZ(0)', bottom: 0, height: '100vh', backgroundColor: tier === 'very-low' ? '#0A0A0A' : 'transparent' }}>
+      {/* Hero Video Background - ABSOLUTE, not fixed: the layer is scoped to
+          this section (which carries overflow-hidden) so it can never bleed
+          into or paint over the sheets below. */}
+      <div
+        className="absolute inset-0 w-full h-full z-0 overflow-hidden"
+        style={{ transform: 'translateZ(0)', backgroundColor: '#0A0A0A' }}
+      >
         {tier !== 'very-low' && (
-          <div className="absolute inset-0 w-full h-full will-change-transform" style={{ transform: 'translateZ(0)', bottom: 0, height: '100vh' }}>
-            <Image
-              src="/hero_background.jpg"
-              alt="Hero background"
-              fill
-              priority
-              unoptimized
-              quality={85}
-              className="object-cover hidden sm:block"
-              sizes="100vw"
-              style={{
-                transform: 'translateZ(0)',
-                filter: 'brightness(0.65)',
-              }}
-            />
-            <Image
-              src="/hero_background_mobile.jpg"
-              alt="Hero background mobile"
-              fill
-              priority
-              unoptimized
-              quality={85}
-              className="object-cover sm:hidden"
-              sizes="100vw"
-              style={{
-                transform: 'translateZ(0)',
-                filter: 'brightness(0.65)',
-              }}
-            />
-          </div>
+          <video
+            ref={videoRef}
+            src={HERO_VIDEO_SRC}
+            poster="/hero_background.jpg"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            disablePictureInPicture
+            aria-hidden
+            tabIndex={-1}
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{
+              transform: 'translateZ(0)',
+              // Was brightness(0.65) for the still photo. Motion footage reads
+              // far darker under the same value, so only a light knock-down
+              // here — the gradient below does the contrast work for the text.
+              filter: 'brightness(0.92) contrast(1.04) saturate(1.05)',
+            }}
+          />
         )}
 
         {/* Optimized combined gradient overlay for depth and readability */}
@@ -189,17 +209,19 @@ export default function Hero() {
           style={{
             background: tier === 'very-low'
               ? `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0z' fill='none'/%3E%3Cpath d='M40 0H0v40' stroke='rgba(255,255,255,0.05)' stroke-width='1' fill='none'/%3E%3C/svg%3E")`
+              // Scrim rebalanced for motion: the gold veils and the flat dark
+              // wash were tuned against a still and buried the footage. The
+              // weight is now concentrated bottom-LEFT (behind the headline and
+              // CTAs) so the right side of the frame stays legible.
               : `
-                radial-gradient(ellipse at top left, rgba(212, 175, 55, 0.18) 0%, transparent 52%),
-                radial-gradient(ellipse at top right, rgba(197, 164, 109, 0.14) 0%, transparent 52%),
-                radial-gradient(ellipse at bottom center, rgba(10, 10, 10, 0.85) 0%, transparent 55%),
-                linear-gradient(to top, rgba(10, 10, 10, 0.98) 0%, rgba(18, 18, 18, 0.72) 45%, transparent 100%)
+                linear-gradient(to right, rgba(10, 10, 10, 0.8) 0%, rgba(10, 10, 10, 0.52) 30%, rgba(10, 10, 10, 0.14) 52%, transparent 68%),
+                radial-gradient(ellipse at top left, rgba(212, 175, 55, 0.11) 0%, transparent 48%),
+                radial-gradient(ellipse at top right, rgba(197, 164, 109, 0.08) 0%, transparent 48%),
+                radial-gradient(ellipse at bottom left, rgba(10, 10, 10, 0.5) 0%, transparent 58%),
+                linear-gradient(to top, rgba(10, 10, 10, 0.72) 0%, rgba(18, 18, 18, 0.3) 34%, transparent 68%)
               `,
             willChange: tier === 'very-low' ? 'auto' : 'opacity',
             transform: 'translateZ(0)',
-            bottom: 0,
-            height: '100vh',
-            width: '100%',
           }}
         />
       </div>
@@ -266,26 +288,28 @@ export default function Hero() {
               text="We"
               delay={0.15}
               pb="pb-1"
-              className={`${tier === 'very-low' ? 'text-white' : `text-transparent bg-clip-text ${tier === 'high' ? 'bg-[linear-gradient(110deg,#D4AF37_0%,#C5A46D_15%,#FFF2B3_30%,#FFFFFF_50%,#FFF2B3_70%,#C5A46D_85%,#D4AF37_100%)] hero-text-premium hero-text-premium-glow' : 'bg-gradient-to-l from-[#FFFFFF] via-[#FFF2B3] to-[#D4AF37]'}`} ${tier === 'low' || tier === 'very-low' ? '' : 'drop-shadow-[0_0_22px_rgba(212,175,55,0.65)]'}`}
+              className={`${tier === 'very-low' ? 'text-white' : `text-transparent bg-clip-text ${tier === 'high' ? 'bg-[linear-gradient(110deg,#D4AF37_0%,#C5A46D_15%,#FFF2B3_30%,#FFFFFF_50%,#FFF2B3_70%,#C5A46D_85%,#D4AF37_100%)] hero-text-premium hero-text-premium-glow' : 'bg-gradient-to-l from-[#FFFFFF] via-[#FFF2B3] to-[#D4AF37]'}`} ${tier === 'low' || tier === 'very-low' ? '' : '[filter:drop-shadow(0_3px_10px_rgba(0,0,0,0.9))_drop-shadow(0_0_24px_rgba(212,175,55,0.45))]'}`}
             />
             <KineticLine
               text="Create"
               delay={0.3}
               pb="pb-1"
-              className={`${tier === 'very-low' ? 'text-white' : `text-transparent bg-clip-text ${tier === 'high' ? 'bg-[linear-gradient(110deg,#D4AF37_0%,#C5A46D_15%,#FFF2B3_30%,#FFFFFF_50%,#FFF2B3_70%,#C5A46D_85%,#D4AF37_100%)] hero-text-premium hero-text-premium-glow' : 'bg-gradient-to-l from-[#FFFFFF] via-[#FFF2B3] to-[#D4AF37]'}`} ${tier === 'low' || tier === 'very-low' ? '' : 'drop-shadow-[0_0_22px_rgba(212,175,55,0.65)]'}`}
+              className={`${tier === 'very-low' ? 'text-white' : `text-transparent bg-clip-text ${tier === 'high' ? 'bg-[linear-gradient(110deg,#D4AF37_0%,#C5A46D_15%,#FFF2B3_30%,#FFFFFF_50%,#FFF2B3_70%,#C5A46D_85%,#D4AF37_100%)] hero-text-premium hero-text-premium-glow' : 'bg-gradient-to-l from-[#FFFFFF] via-[#FFF2B3] to-[#D4AF37]'}`} ${tier === 'low' || tier === 'very-low' ? '' : '[filter:drop-shadow(0_3px_10px_rgba(0,0,0,0.9))_drop-shadow(0_0_24px_rgba(212,175,55,0.45))]'}`}
             />
             <KineticLine
               text="Comfort"
               delay={0.5}
               pb="pb-2"
-              className={`text-outline-display ${tier === 'low' || tier === 'very-low' ? '' : 'drop-shadow-[0_0_28px_rgba(212,175,55,0.4)]'}`}
+              className={`text-outline-display ${tier === 'low' || tier === 'very-low' ? '' : '[filter:drop-shadow(0_3px_10px_rgba(0,0,0,0.95))_drop-shadow(0_0_18px_rgba(212,175,55,0.35))]'}`}
             />
           </h1>
 
           {/* Lede - anchored to the headline baseline, ruled like a drawing note */}
+          {/* Lede sits to the RIGHT of the headline, outside the left scrim,
+              so it carries its own shadow to stay readable over the footage. */}
           <motion.p
             {...fadeUp(0.45)}
-            className={`text-xs sm:text-sm text-[#C5C5C5] font-light leading-relaxed max-w-sm drop-shadow-md lg:mb-3 lg:pl-6 ${tier === 'very-low' ? 'lg:border-l-2 lg:border-accent' : 'lg:border-l lg:border-accent/40'}`}
+            className={`text-xs sm:text-sm text-white/90 font-light leading-relaxed max-w-sm [text-shadow:0_1px_8px_rgba(0,0,0,0.95)] lg:mb-3 lg:pl-6 ${tier === 'very-low' ? 'lg:border-l-2 lg:border-accent' : 'lg:border-l lg:border-accent/40'}`}
             style={{ willChange: 'opacity, transform' }}
           >
             Leading civil construction company in Chennai, Tamil Nadu, delivering
@@ -320,7 +344,9 @@ export default function Hero() {
             {commitments.map((promise, index) => (
               <span key={promise} className="flex items-center gap-x-6">
                 {index > 0 && <span className="hidden sm:block w-1 h-1 rounded-full bg-white/20" aria-hidden />}
-                <span className="text-[9px] sm:text-[10px] text-white/40 font-semibold tracking-[0.25em] uppercase">
+                {/* Slightly stronger than the still-photo era: small tracked
+                    caps over MOVING footage need more separation to stay read. */}
+                <span className="text-[9px] sm:text-[10px] text-white/60 font-semibold tracking-[0.25em] uppercase [text-shadow:0_1px_6px_rgba(0,0,0,0.9)]">
                   {promise}
                 </span>
               </span>
